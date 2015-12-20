@@ -1,0 +1,1107 @@
+package hokage.kaede.gmail.com.BBViewLib;
+
+import hokage.kaede.gmail.com.Lib.Java.KVCStore;
+import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
+
+/**
+ * ボーダーブレイクのパーツ・武器データを管理するクラス。
+ */
+public class BBData extends KVCStore {
+
+	public static final int ID_ITEM_NOTHING = -1;
+	
+	public static final String STR_VALUE_NOTHING = "情報なし";
+	public static final double NUM_VALUE_NOTHING = Double.MIN_NORMAL;
+
+	// 属性を示す文字列
+	private static final String SHOT_ABS_BULLET    = "実弾";
+	private static final String SHOT_ABS_NEWD      = "ニュード";
+	private static final String SHOT_ABS_EXPLOSION = "爆発";
+	private static final String SHOT_ABS_SLASH     = "近接";
+	
+	// スイッチ武器の表示タイプ設定
+	private static int sRecentSwitchIdx = 0;
+
+	public int id;
+	
+	/**
+	 * コンストラクタ
+	 */
+	public BBData() {
+		this.id = ID_ITEM_NOTHING;
+	}
+	
+	/**
+	 * 値の取得
+	 * @param key
+	 * @return
+	 */
+	@Override
+	public String get(String key) {
+		String ret = STR_VALUE_NOTHING;
+		
+		if(super.existKey(key)) {
+			ret = super.get(key);
+		}
+		else {
+			double calc_value = getCalcValue(key);
+			if(calc_value > NUM_VALUE_NOTHING) {
+				ret = String.valueOf(calc_value);
+			}
+		}
+
+		return ret;
+	}
+	
+	public static String DEF_RECORVER_TIME_KEY  = "DEF回復時間";
+	
+	public static String FULL_POWER_KEY         = "総火力";
+	public static String MAGAZINE_POWER_KEY     = "マガジン火力";
+	public static String SEC_POWER_KEY          = "瞬間火力";
+	public static String BATTLE_POWER_KEY       = "戦術火力";
+	public static String BULLET_SUM_KEY         = "総弾数(合計)";
+	public static String CARRY_KEY              = "積載猶予";
+	
+	public static String FLAIGHT_TIME_KEY       = "飛翔時間";
+	public static String SEARCH_SPACE_KEY       = "索敵面積";
+	public static String SEARCH_SPACE_START_KEY = "初動索敵面積";
+	public static String SEARCH_SPACE_MAX_KEY   = "総索敵面積";
+	public static String SEARCH_SPACE_TIME_KEY  = "戦術索敵面積";
+	
+	public static String MAX_REPAIR_KEY         = "最大修理量";
+	
+	public static String ARMOR_BREAK_KEY        = "大破判定";
+	public static String ARMOR_DOWN_KEY         = "転倒判定";
+	public static String ARMOR_KB_KEY           = "KB判定";
+	public static String ARMOR_CS_BREAK_KEY     = "大破判定(CS)";
+	public static String ARMOR_CS_DOWN_KEY      = "転倒判定(CS)";
+	public static String ARMOR_CS_KB_KEY        = "KB判定(CS)";
+	
+	public static String SLASH_DAMAGE_NL_KEY    = "通常攻撃(総威力)";
+	public static String SLASH_DAMAGE_EX_KEY    = "特殊攻撃(総威力)";
+	
+	/**
+	 * 算出値データを取得する
+	 * @param key 取得する算出値データのキー。(CALC_KEY)
+	 * @return 算出値データ
+	 */
+	public double getCalcValue(String key) {
+		double ret = NUM_VALUE_NOTHING;
+		
+		if(key == null) {
+			// Do Nothing
+		}
+		else if(key.equals(DEF_RECORVER_TIME_KEY)) {
+			ret = getDefRecoverTime();
+		}
+		else if(key.equals(FULL_POWER_KEY)) {
+			ret = getFullPower();
+		}
+		else if(key.equals(MAGAZINE_POWER_KEY)) {
+			ret = getMagazinePower();
+		}
+		else if(key.equals(SEC_POWER_KEY)) {
+			ret = getSecPower();
+		}
+		else if(key.equals(BATTLE_POWER_KEY)) {
+			ret = getBattlePower();
+		}
+		else if(key.equals(BULLET_SUM_KEY)) {
+			ret = getBulletSum();
+		}
+		else if(key.equals(CARRY_KEY)) {
+			ret = getCarry();
+		}
+		else if(key.equals(FLAIGHT_TIME_KEY)) {
+			ret = getFlaightTime();
+		}
+		else if(key.equals(SEARCH_SPACE_KEY)) {
+			ret = getSearchSpace();
+		}
+		else if(key.equals(SEARCH_SPACE_START_KEY)) {
+			ret = getSearchSpaceStart();
+		}
+		else if(key.equals(SEARCH_SPACE_MAX_KEY)) {
+			ret = getSearchSpaceMax();
+		}
+		else if(key.equals(SEARCH_SPACE_TIME_KEY)) {
+			ret = getSearchSpaceTime();
+		}
+		else if(key.equals(MAX_REPAIR_KEY)) {
+			ret = getMaxRepair();
+		}
+		else if(key.equals(ARMOR_BREAK_KEY)) {
+			ret = getArmorBreakJdg(false);
+		}
+		else if(key.equals(ARMOR_DOWN_KEY)) {
+			ret = getArmorDownJdg(false);
+		}
+		else if(key.equals(ARMOR_KB_KEY)) {
+			ret = getArmorKBJdg(false);
+		}
+		else if(key.equals(ARMOR_CS_BREAK_KEY)) {
+			ret = getArmorBreakJdg(true);
+		}
+		else if(key.equals(ARMOR_CS_DOWN_KEY)) {
+			ret = getArmorDownJdg(true);
+		}
+		else if(key.equals(ARMOR_CS_KB_KEY)) {
+			ret = getArmorKBJdg(true);
+		}
+		else if(key.equals(SLASH_DAMAGE_NL_KEY)) {
+			ret = getSlashDamage(false);
+		}
+		else if(key.equals(SLASH_DAMAGE_EX_KEY)) {
+			ret = getSlashDamage(true);
+		}
+		
+		
+		return ret;
+	}
+	
+	/**
+	 * 積載猶予を取得する。
+	 * @return 積載猶予
+	 */
+	public int getCarry() {
+		int ret = 0;
+		String weight_str = super.get("重量");
+		String anti_weight_str = super.get("重量耐性");
+		
+		if(weight_str.equals(BBData.EMPTY_VALUE) || anti_weight_str.equals(BBData.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		try {
+			int weight = Integer.valueOf(weight_str);
+			int anti_weight = (int)(SpecValues.getSpecValue(anti_weight_str, "重量耐性", false));
+			ret = anti_weight - weight;
+			
+		} catch(NumberFormatException e) {
+			ret = 0;
+			
+		} catch(IndexOutOfBoundsException e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+
+	//--------------------------------------------------
+	// 索敵面積関連
+	//--------------------------------------------------
+	
+	/**
+	 * 偵察機の飛翔時間を算出する。
+	 * @return
+	 */
+	public double getFlaightTime() {
+		double ret = 0;
+		
+		String flaight_speed_str = super.get("飛翔速度");
+		String flaight_distance_str = super.get("飛翔距離");
+
+		if(flaight_speed_str.equals(BBData.EMPTY_VALUE) || flaight_distance_str.equals(BBData.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		try {
+			double flaight_speed = Double.valueOf(flaight_speed_str);
+			double flaight_distance = Double.valueOf(flaight_distance_str);
+			ret = flaight_distance / flaight_speed;
+			
+		} catch(NumberFormatException e) {
+			ret = 0;
+			
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 索敵範囲を取得する。
+	 * @return
+	 */
+	public double getRadius() {
+		double ret = 0;
+		String radius_str = super.get("索敵範囲");
+
+		if(radius_str.equals(BBData.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		try {
+			ret = Double.valueOf(radius_str);
+			
+		} catch(NumberFormatException e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 索敵装備の索敵面積を算出する。
+	 * @return
+	 */
+	public double getSearchSpace() {
+		double ret = 0;
+		double radius = getRadius();
+		
+		if(radius == 0) {
+			return ret;
+		}
+		
+		if(super.existCategory("偵察機系統")) {
+			ret = getSearchSpaceCircle(radius);
+		}
+		else if(super.existCategory("索敵センサー系統") || super.existCategory("滞空索敵弾系統")) {
+			ret = getSearchSpaceCircle(radius);
+		}
+		else if(super.existCategory("レーダーユニット系統")) {
+			ret = getSearchSpaceFan(radius);
+		}
+		else if(super.existCategory("ND索敵センサー系統")) {
+			ret = getSearchSpaceLine(radius);
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 索敵装備の初動索敵面積を算出する。
+	 * @return
+	 */
+	public double getSearchSpaceStart() {
+		double ret = 0;
+		double radius = getRadius();
+		
+		if(radius == 0) {
+			return ret;
+		}
+		
+		if(super.existCategory("偵察機系統") || super.existCategory("索敵センサー系統") || super.existCategory("滞空索敵弾系統")) {
+			ret = getSearchSpaceCircle(radius);
+		}
+		else if(super.existCategory("レーダーユニット系統")) {
+			ret = 0;
+		}
+		else if(super.existCategory("ND索敵センサー系統")) {
+			ret = getSearchSpaceLine(radius);
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 偵察機の索敵面積を算出する。
+	 * @param radius
+	 * @return
+	 */
+	/*
+	private double getSearchSpacePlane(double radius) {
+		double flaight_distance = getFlaightDistance();
+		return (flaight_distance * radius) + (radius * radius * Math.PI);
+	}
+	*/
+	
+	/**
+	 * 円形の索敵装備(索敵センサー、滞空索敵弾)の索敵面積を算出する。
+	 * @param radius
+	 * @return
+	 */
+	private double getSearchSpaceCircle(double radius) {
+		return radius * radius * Math.PI;
+	}
+	
+	/**
+	 * 扇形の索敵装備(レーダーユニット)の索敵面積を算出する。
+	 * @param radius
+	 * @return
+	 */
+	private double getSearchSpaceFan(double radius) {
+		double ret = 0;
+
+		String degree_str = super.get("索敵角度");
+
+		if(degree_str.equals(BBData.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		try {
+			double degree = Double.valueOf(degree_str);
+			ret = (radius * radius * Math.PI) * (degree / 360);
+			
+		} catch(NumberFormatException e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 線形の索敵装備(ND索敵センサー)の索敵面積を算出する。(直径)
+	 * @param radius
+	 * @return
+	 */
+	private double getSearchSpaceLine(double radius) {
+		return radius * 2;
+	}
+
+	/**
+	 * 総索敵面積を取得する。
+	 * @return 
+	 */
+	private double getSearchSpaceMax() {
+		double ret = 0;
+		
+		// レーダーユニットは所持数データが無いため、索敵面積を返す
+		if(super.existCategory("レーダーユニット系統")) {
+			return getSearchSpace();
+		}
+		
+		String count_str = super.get("所持数");
+
+		if(count_str.equals(BBData.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		try {
+			double count = Double.valueOf(count_str);
+			double space = getSearchSpace();
+			ret = space * count;
+			
+		} catch(NumberFormatException e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 戦術索敵面積を算出する。
+	 * @return
+	 */
+	private double getSearchSpaceTime() {
+		double ret = 0;
+
+		if(super.existCategory("偵察機系統") || super.existCategory("滞空索敵弾系統")) {
+
+			String float_time_str = super.get("滞空時間");
+
+			if(float_time_str.equals(BBData.EMPTY_VALUE)) {
+				return 0;
+			}
+			
+			try {
+				double float_time = Double.valueOf(float_time_str);
+				double space = getSearchSpaceMax();
+				ret = space * float_time / 600;
+				
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+		else if(super.existCategory("索敵センサー系統")) {
+			ret = getSearchSpaceMax();
+		}
+		else if(super.existCategory("ND索敵センサー系統")) {
+			ret = getSearchSpaceMax();
+		}
+		else if(super.existCategory("レーダーユニット系統")) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 最大修理量を取得する。
+	 * @return
+	 */
+	public double getMaxRepair() {
+		double ret = 0;
+		
+		if(super.existCategory("リペアユニット系統") ||
+		   super.existCategory("リペアポスト系統") ||
+		   super.existCategory("リペアフィールド系統") ||
+		   super.existCategory("リペアインジェクター系統")) {
+			try {
+				String max_repair = super.get("容量");
+				ret = Double.valueOf(max_repair);
+				
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+		else if(super.existCategory("リペアショット系統")) {
+			try {
+				String repair_power = super.get("修理量");
+				String repair_count = super.get("最大発射回数");
+				ret = getOneShotPowerMain(repair_power) * Double.valueOf(repair_count);
+				
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+		else if(super.existCategory("リペアセントリー系統")) {
+			try {
+				String repair_power = super.get("修理量");
+				String repair_count = super.get("最大発射回数");
+				ret = Double.valueOf(repair_power) * Double.valueOf(repair_count);
+				
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+		
+		return ret;
+	}
+	
+	//--------------------------------------------------
+	// 属性武器関連
+	//--------------------------------------------------
+	
+	public int getBulletAbsPer() {
+		return readAbsolutePer(SHOT_ABS_BULLET);
+	}
+	
+	public int getNewdAbsPer() {
+		return readAbsolutePer(SHOT_ABS_NEWD);
+	}
+
+	public int getExplosionAbsPer() {
+		return readAbsolutePer(SHOT_ABS_EXPLOSION);
+	}
+
+	public int getSlashAbsPer() {
+		return readAbsolutePer(SHOT_ABS_SLASH);
+	}
+
+	/**
+	 * 指定の属性値の数値を読み込む。
+	 * @param abs_str 武器の属性値
+	 * @param abs_type 属性値の種類
+	 * @return 属性値 [%]
+	 */
+	private int readAbsolutePer(String abs_type) {
+		int ret = 0;
+		
+		String abs_str = this.get("属性");
+		int start_idx = abs_str.indexOf(abs_type);
+		
+		if(start_idx >= 0) {
+			try {
+				int per_idx = abs_str.indexOf("%", start_idx + 1);
+				if(per_idx >= 0) {
+					String per_value = abs_str.substring(start_idx + abs_type.length(), per_idx);
+					ret = Integer.valueOf(per_value);
+				}
+				else {
+					ret = 100;
+				}
+				
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				ret = 0;
+				
+			} catch(IndexOutOfBoundsException e) {
+				e.printStackTrace();
+				ret = 0;
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 射撃武器かどうか。実弾武器またはニュード100%の武器を射撃武器とする。
+	 * また、炸薬砲系統も射撃武器とする。
+	 * @return 射撃武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isShotWeapon() {
+		String abs_str = super.get("属性");
+		String name = super.get("名称");
+
+		// スタナー系統、バインドマイン系統はニュード100%だが除外する
+		if(name.contains("スタナー") || name.contains("バインドマイン")) {
+			return false;
+		}
+		else if(abs_str.contains(SHOT_ABS_BULLET)) {
+			return true;
+		}
+		else if(abs_str.contains(SHOT_ABS_NEWD) && readAbsolutePer(SHOT_ABS_NEWD) == 100) {
+			return true;
+		}
+		else if(name.contains("炸薬砲")) {
+			return true;
+		}
+		else if(name.contains("炸薬狙撃銃")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 近接武器かどうか。
+	 * @return 近接武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isSlashWeapon() {
+		String abs_str = super.get("属性");
+		
+		if(abs_str.contains(SHOT_ABS_SLASH)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 爆発武器かどうか。
+	 * @return 爆発武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isExplosionWeapon() {
+		String abs_str = super.get("属性");
+		
+		if(abs_str.contains(SHOT_ABS_EXPLOSION)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 拡散武器かどうか。
+	 * 文字に"x"が含まれる場合は拡散武器とする。(ショットガン系統など)
+	 * @return 拡散武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isSpreadWeapon() {
+		String power_str = super.get("威力");
+		
+		if(power_str.contains("x")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * チャージ武器かどうか。
+	 * @return チャージ武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isChargeWeapon() {
+		String abs_str = super.get("属性");
+		
+		if(abs_str.contains("(チャージ)")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * チャージレベルに応じた威力の文字列を取得する。
+	 * @param power_str 威力
+	 * @param charge_level チャージレベル
+	 * @return チャージレベルに応じた威力の文字列
+	 */
+	private String getChargeString(String power_str, int charge_level) {
+		String ret = "";
+		String[] buf = power_str.split("/");
+		
+		if(charge_level >= 0 && charge_level < buf.length) {
+			ret = buf[charge_level];
+		}
+		else {
+			ret = buf[0];
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * チャージの最大レベルを取得する。
+	 * @return
+	 */
+	public int getChargeMaxCount() {
+		if(isChargeWeapon()) {
+			return getChargeMaxCount(getSwitchValue(super.get("威力")));
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * チャージの最大レベルを取得する。
+	 * @param power_str 威力の文字列
+	 * @return チャージの最大レベル
+	 */
+	private int getChargeMaxCount(String power_str) {
+		return power_str.split("/").length;
+	}
+	
+	/**
+	 * 1ショットの威力を返す。
+	 * ショットガンの場合、1ショットで発射される弾と威力の積を返す。
+	 * @param charge_level チャージのレベル
+	 * @return 1ショットの威力を返す。
+	 */
+	public int getOneShotPower(int charge_level) {
+		String power_str = getSwitchValue(super.get("威力"));
+		
+		// チャージ武器の場合、チャージレベルに応じた武器の威力を取得する。
+		if(isChargeWeapon()) {
+			power_str = getChargeString(power_str, charge_level);
+		}
+
+		return getOneShotPowerMain(power_str);
+	}
+	
+	/**
+	 * 1ショットの威力を返す。
+	 * ショットガンの場合、1ショットで発射される弾と威力の積を返す。
+	 * チャージ武器の場合、最大威力で発射した場合の威力を返す。
+	 * @return 1ショットの威力を返す。
+	 */
+	public int getOneShotPower() {
+		String power_str = getSwitchValue(super.get("威力"));
+
+		// チャージ武器の場合、最大レベル時の武器の威力を取得する。
+		if(isChargeWeapon()) {
+			int charge_level = getChargeMaxCount(power_str);
+			power_str = getChargeString(power_str, charge_level - 1);
+		}
+		
+		return getOneShotPowerMain(power_str);
+	}
+	
+	/**
+	 * 1ショットの威力を返す。チャージ関連の算出を終わらせた後の文字列に対して処理を行う。
+	 * @param power_str 威力の文字列
+	 * @return 1ショットの威力を返す。
+	 */
+	private int getOneShotPowerMain(String power_str) {
+		int ret = 0;
+
+		// 威力の取得に失敗した場合、0を返す。
+		if(power_str.equals(KeyValueStore.EMPTY_VALUE)) {
+			return 0;
+		}
+		
+		// イコールがある場合はその後ろの数値を結果として返す。
+		String[] power_strs = power_str.split("=");
+		
+		if(power_strs.length == 2) {
+			try {
+				ret = Integer.valueOf(power_strs[1]);
+				
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+		else {
+			// イコールがない場合、発射する弾数と1発の威力の積を結果として返す。
+			power_strs = power_str.split("x");
+			
+			try {
+				if(power_strs.length == 2) {
+					int power_num1 = Integer.valueOf(power_strs[0]);
+					int power_num2 = Integer.valueOf(power_strs[1]);
+					ret = power_num1 * power_num2;
+				}
+				else {
+					ret = Integer.valueOf(power_strs[0]);
+				}
+
+			} catch(NumberFormatException e) {
+				ret = 0;
+			}
+		}
+
+		return ret;
+	}
+	
+	/**
+	 * 総火力を返す。
+	 * @return 総火力。威力、総弾数が設定されていない場合は0を返す。
+	 */
+	public int getFullPower() {
+		return getOneShotPower() * getBulletSum();
+	}
+	
+	/**
+	 * 1マガジンの弾数を返す。
+	 * @return 1マガジンの弾数
+	 */
+	public int getMagazine() {
+		int ret = 0;
+		int bullet_index = super.indexOf("総弾数");
+		
+		if(bullet_index >= 0) {
+			String[] bullet_str = super.get(bullet_index).split("x");
+
+			try {
+				ret = Integer.valueOf(bullet_str[0]);
+
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * マガジン火力を返す。
+	 * @return マガジン火力を返す。威力、総弾数が設定されていない場合は0を返す。
+	 */
+	public int getMagazinePower() {
+		int power = getOneShotPower(0);
+		
+		if(existCategory("フレアグレネード系統")) {
+			
+			try {
+				double time = Double.valueOf(get("効果持続"));
+				power = (int)(power * time);
+				
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return power * getMagazine();
+	}
+	
+	/**
+	 * 連射速度を返す。
+	 * @return 連射速度。
+	 */
+	public int getShotSpeed() {
+		int ret = -1;
+		int speed_index = super.indexOf("連射速度");
+		
+		if(speed_index >= 0) {
+			String speed_str = getSwitchValue(super.get(speed_index));
+			
+			try {
+				ret = Integer.valueOf(speed_str);
+				
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 瞬間火力を返す。
+	 * @return 秒間火力を返す。威力、総弾数が設定されていない場合、0を返す。
+	 * 連射速度が設定されていない場合は単発の威力を返す。
+	 */
+	public int getSecPower() {
+		int ret = 0;
+		int speed_num = getShotSpeed();
+		int power_num = getOneShotPower(0);
+
+		if(speed_num > 0) {
+			int magazine_power = getMagazinePower();
+			
+			ret = (int)(power_num * speed_num / 60);
+			
+			if(ret > magazine_power) {
+				ret = magazine_power;
+			}
+		}
+		else {
+			ret = power_num;
+		}
+
+		return ret;
+	}
+
+	/**
+	 * リロード時間を取得する。
+	 * @return リロード時間。単位は秒。
+	 */
+	public double getReloadTime() {
+		double ret = 0;
+
+		try {
+			String reload_time_str = super.get("リロード時間");
+			ret = Double.valueOf(reload_time_str);
+			
+		} catch (Exception e) {
+			ret = SpecValues.ERROR_VALUE;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 戦術火力を取得する。
+	 * @return
+	 */
+	public double getBattlePower() {
+		double ret = 0;
+		double magazine_power = getMagazinePower();
+		double all_shot_time = 0;
+		double shot_speed = getShotSpeed();
+		double reload_time = 0;
+		double power = 0;
+		int magazine = getMagazine();
+		
+		if(shot_speed > 0) {
+		
+			// OH武器はOHの条件で判定する
+			all_shot_time = getOverheatTime();
+			reload_time = getOverheatRepairTime();
+			power = getOneShotPower() * (shot_speed / 60) * all_shot_time;
+			
+			// OH武器以外は撃ち切り時間とリロード時間で判定する
+			if(reload_time == 0) {
+				reload_time = getReloadTime();
+				all_shot_time = magazine / shot_speed * 60;
+				power = magazine_power;
+			}
+			
+			ret = power / (all_shot_time + reload_time);
+		}
+		else {
+			ret = getOneShotPower();
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * OH耐性を返す。
+	 * @return
+	 */
+	public double getOverheatTime() {
+		double ret = 0;
+		
+		try {
+			String oh_str = getSwitchValue(super.get("OH耐性"));
+			ret = Double.valueOf(oh_str);
+			
+		} catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * OH復帰時間を返す。
+	 * @return
+	 */
+	public double getOverheatRepairTime() {
+		double ret = 0;
+		
+		try {
+			String oh_repair_str = getSwitchValue(super.get("OH復帰時間"));
+			ret = Double.valueOf(oh_repair_str);
+			
+		} catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 総弾数(合計)を取得する。
+	 * @return 総弾数。設定されていない場合、0を返す。
+	 */
+	public int getBulletSum() {
+		int ret = 0;
+		int index = super.indexOf("総弾数");
+		
+		if(index >= 0) {
+			String[] num = super.get(index).split("x");
+			
+			try {
+				int bullet = Integer.valueOf(num[0]);
+				int magazine = Integer.valueOf(num[1]);
+				ret = bullet * magazine;
+
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				
+			} catch(ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * 近接武器のダメージを取得する。
+	 * @param is_dash ダッシュの場合はtrueを設定し、そうでない場合はfalseを設定する。
+	 * @return 近接武器のダメージ。
+	 */
+	public int getSlashDamage(boolean is_dash) {
+		return getSlashDamage(is_dash, 0);
+	}
+	
+	/**
+	 * 近接武器のダメージを取得する。
+	 * @param is_dash ダッシュの場合はtrueを設定し、そうでない場合はfalseを設定する。
+	 * @return 近接武器のダメージ。
+	 */
+	public int getSlashDamage(boolean is_dash, int charge_level) {
+		int ret = 0;
+		String damage_str = "";
+		
+		if(is_dash) {
+			damage_str = super.get("特殊攻撃(威力)");
+		}
+		else {
+			damage_str = super.get("通常攻撃(威力)");
+		}
+		
+		// 括弧内の文字列を取得する
+		int start_idx = damage_str.indexOf("(");
+		int end_idx = damage_str.indexOf(")", start_idx);
+		
+		if(start_idx >= 0 || end_idx >= 0) {
+			damage_str = damage_str.substring(start_idx + 1, end_idx);
+		}
+		
+		// チャージ武器の場合、チャージレベルに応じた威力の文字列を取得する
+		if(isChargeWeapon()) {
+			damage_str = getChargeString(damage_str, charge_level);
+		}
+		
+		// イコール以降の文字列を取得する
+		start_idx = damage_str.indexOf("=");
+		if(start_idx >= 0) {
+			damage_str = damage_str.substring(start_idx + 1);
+		}
+
+		// 数値に変換する
+		try {
+			ret = Integer.valueOf(damage_str);
+
+		} catch(NumberFormatException e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	private static final String[] SWITCH_WEAPONS = {
+		"スイッチアサルト系統",
+		"S90アイビス系統",
+		"サーバル可変機関銃系統",
+		"可変狙撃銃系統",
+		"BSR系統",
+		"SBR系統",
+		"トグルショット系統",
+		"SLS系統",
+		"SLG系統",
+		"マシンカノン系統"
+	};
+	
+	/**
+	 * スイッチ武器かどうか
+	 * @return スイッチ武器の場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isSwitchWeapon() {
+		boolean ret = false;
+		
+		int size = SWITCH_WEAPONS.length;
+		for(int i=0; i<size; i++) {
+			if(super.existCategory(SWITCH_WEAPONS[i])) {
+				ret = true;
+				break;
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * スイッチ武器の性能を返す。
+	 * @param target_str 性能の文字列
+	 * @return タイプに応じた性能の文字列を返す
+	 */
+	private String getSwitchValue(String target_str) {
+		if(isSwitchWeapon()) {
+			String[] values = target_str.split("｜");
+			return values[sRecentSwitchIdx];
+		}
+		else {
+			return target_str;
+		}
+	}
+	
+	/**
+	 * DEF回復時間を取得する。
+	 * @return
+	 */
+	public double getDefRecoverTime() {
+		double ret = NUM_VALUE_NOTHING;
+		
+		String point = super.get("DEF回復");
+		String spec = SpecValues.DEF_RECOVER.get(point);
+		
+		try {
+			double value = Double.valueOf(spec);
+			ret = 30.0 / (1 + (value / 100));
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 大破可能な装甲値(スペック)を表示する。
+	 * @param is_critilal クリティカルかどうか
+	 * @return
+	 */
+	public double getArmorBreakJdg(boolean is_critical) {
+		double power = getOneShotPower();
+		
+		if(is_critical) {
+			power = power * 2.5;
+		}
+		
+		return (2 - (SpecValues.BLUST_BREAK_DAMAGE / power)) * 100;
+	}
+	
+	/**
+	 * 転倒可能な装甲値(スペック)を表示する。
+	 * @param is_critilal クリティカルかどうか
+	 * @return
+	 */
+	public double getArmorDownJdg(boolean is_critical) {
+		double power = getOneShotPower();
+
+		if(is_critical) {
+			power = power * 2.5;
+		}
+		
+		return (2 - (SpecValues.BLUST_DOWN_DAMAGE / power)) * 100;
+	}
+	
+	/**
+	 * ノックバック可能な装甲値(スペック)を表示する。
+	 * @param is_critilal クリティカルかどうか
+	 * @return
+	 */
+	public double getArmorKBJdg(boolean is_critical) {
+		double power = getOneShotPower();
+
+		if(is_critical) {
+			power = power * 2.5;
+		}
+		
+		return (2 - (SpecValues.BLUST_KB_DAMAGE / power)) * 100;
+	}
+}
