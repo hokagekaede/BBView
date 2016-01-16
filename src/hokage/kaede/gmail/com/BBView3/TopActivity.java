@@ -136,12 +136,10 @@ public class TopActivity extends BaseActivity {
 		purchase_btn.setOnClickListener(new OnMovePurchaseListener());
 		layout.addView(purchase_btn);
 
-		/*
 		Button shop_btn = new Button(this);
 		shop_btn.setText(BTN_TEXT_SHOP);
 		shop_btn.setOnClickListener(new OnMoveShopListener());
 		layout.addView(shop_btn);
-		*/
 		
 		Button blog_btn = new Button(this);
 		blog_btn.setText(BTN_TEXT_BLOG);

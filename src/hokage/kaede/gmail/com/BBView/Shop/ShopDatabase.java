@@ -11,6 +11,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 public class ShopDatabase {
 
 	// 地域情報1
@@ -28,11 +32,14 @@ public class ShopDatabase {
 	};
 	
 	// 店舗情報が記載されたスクリプトファイルのURL
-	private static final String PLACE_URL = "http://borderbreak.com/store/place.js";
+	private static final String PLACE_URL = "http://borderbreak.com/json/stores.json";
 
 	// 店舗データ
 	private String mShopDataString;
 	
+	// 店舗データjson
+	private JSONObject mShopDataJSON;
+
 	// 店舗名データ一覧
 	private ArrayList<ShopData> mShopDataList;
 	
@@ -81,6 +88,13 @@ public class ShopDatabase {
 			if(mShopDataString == null) {
 				return false;
 			}
+
+			try {
+				mShopDataJSON = new JSONObject(mShopDataString);
+			} catch (JSONException e) {
+				mShopDataString = "";
+				return false;
+			}
 		}
 		
 		return true;
@@ -101,92 +115,30 @@ public class ShopDatabase {
 		// 店舗リストをクリアする
 		mShopDataList.clear();
 		
+		// 店舗データのルート要素を取得
+		JSONArray shop_list;
+		try {
+			shop_list = mShopDataJSON.getJSONArray("stores");
+		} catch (JSONException e) {
+			return;
+		}
+
 		// 店舗名と住所を取得する
-		int shop_count = readCount(mShopDataString, location_name);
-		for(int i=0; i<shop_count; i++) {
-			ShopData tmp_data = new ShopData();
-			tmp_data.name = readShopName(mShopDataString, location_name, i);
-			tmp_data.address = readShopAddress(mShopDataString, location_name, i);
-			mShopDataList.add(tmp_data);
+		for (int i = 0; i < shop_list.length(); i++) {
+			try {
+				JSONObject shop = shop_list.getJSONObject(i);
+				if(shop.getString("prefecture").equals(location_name)) {
+					ShopData tmp_data = new ShopData();
+					tmp_data.name = shop.getString("name");
+					tmp_data.address = shop.getString("address");
+					mShopDataList.add(tmp_data);
+				}
+			} catch (JSONException e) {
+				break;
+			}
 		}
 	}
-	
-	/**
-	 * place.jsの文字列データから指定地域の店舗数を取得する
-	 * @param location_data place.jsの文字列データ
-	 * @param location_name 取得する地域
-	 * @return 店舗数
-	 */
-	private int readCount(String location_data, String location_name) {
-		int start_point = 0;
-		int end_point = 0;
-		
-		String target_tag = "count";
-		String return_tag = "return ";
-		String end_tag = ";";
-		
-		start_point = location_data.indexOf("\"" + location_name + "\"");
-		start_point = location_data.indexOf(target_tag, start_point);
-		start_point = location_data.indexOf(return_tag, start_point);
-		
-		end_point = location_data.indexOf(end_tag, start_point);
-		
-		String count_str = location_data.substring(start_point + return_tag.length(), end_point);
-		return Integer.valueOf(count_str);
-	}
-	
-	/**
-	 * place.jsの文字列データから指定地域の店舗名を取得する
-	 * @param location_data place.jsの文字列データ
-	 * @param location_name 取得する地域
-	 * @param index 取得する店舗番号
-	 * @return 店舗名
-	 */
-	private String readShopName(String location_data, String location_name, int index) {
-		int start_point = 0;
-		int end_point = 0;
-		
-		String target_tag = "name";
-		String index_tag = "case " + String.valueOf(index);
-		String return_tag = "return ";
-		String end_tag = ";";
-		
-		start_point = location_data.indexOf("\"" + location_name + "\"");
-		start_point = location_data.indexOf(target_tag, start_point);
-		start_point = location_data.indexOf(index_tag, start_point);
-		start_point = location_data.indexOf(return_tag, start_point);
-		
-		end_point = location_data.indexOf(end_tag, start_point);
-		
-		return location_data.substring(start_point + return_tag.length() + 1, end_point - 1);
-	}
 
-	/**
-	 * place.jsの文字列データから指定地域の店舗の住所を取得する
-	 * @param location_data place.jsの文字列データ
-	 * @param location_name 取得する地域
-	 * @param index 取得する店舗番号
-	 * @return 店舗の住所
-	 */
-	private String readShopAddress(String location_data, String location_name, int index) {
-		int start_point = 0;
-		int end_point = 0;
-		
-		String target_tag = "address";
-		String index_tag = "case " + String.valueOf(index);
-		String return_tag = "return ";
-		String end_tag = ";";
-		
-		start_point = location_data.indexOf("\"" + location_name + "\"");
-		start_point = location_data.indexOf(target_tag, start_point);
-		start_point = location_data.indexOf(index_tag, start_point);
-		start_point = location_data.indexOf(return_tag, start_point);
-		
-		end_point = location_data.indexOf(end_tag, start_point);
-		
-		return location_data.substring(start_point + return_tag.length() + 1, end_point - 1);
-	}
-	
 	/**
 	 * 店舗数を取得する
 	 * @return 店舗数
