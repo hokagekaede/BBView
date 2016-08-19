@@ -58,14 +58,29 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		setContentView(mLayout);
 	}
 	
+	/**
+	 * 画面再表示時の処理を行う。
+	 * 画面の各数値を更新する。
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
 		updateView();
 	}
 	
+	/**
+	 * 画面非表示字の処理を行う。
+	 * SBや要請兵器の所持状況をリセットする。
+	 */
+	protected void onPause() {
+		super.onPause();
+		CustomData custom_data = CustomDataManager.getCustomData();
+		custom_data.setHavingExtraItem(CustomData.HAVING_NOTHING);
+	}
+	
 	private void updateView() {
 		CustomData custom_data = CustomDataManager.getCustomData();
+		custom_data.setHavingExtraItem(CustomData.HAVING_NOTHING);
 		
 		mLayout.removeAllViews();
 		mLayout.addView(createTopLayout());

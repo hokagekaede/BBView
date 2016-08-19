@@ -163,7 +163,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	}
 	
 	/**
-	 * 大破判定、転倒判定、
+	 * 大破判定、転倒判定、KB判定の文字列を生成する。
 	 * @param key
 	 * @param value
 	 * @return

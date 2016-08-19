@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib;
 
+import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 
 import java.math.BigDecimal;
@@ -115,6 +116,8 @@ public class SpecValues {
 	 * ブラストが大破するダメージ値
 	 */
 	public static final int BLUST_BREAK_DAMAGE = 10000;
+	public static final int BLUST_BREAK_DAMAGE_X = 15000;
+	public static final int BLUST_BREAK_GUARD_VAL = 1500;  // 大破抑制チップ
 	
 	/**
 	 * ブラストが転倒するダメージ値
@@ -159,9 +162,9 @@ public class SpecValues {
 	public static KeyValueStore ACCELERATION;
 
 	/**
-	 * 静的初期化子
+	 * スペック値の初期化を行う。
 	 */
-	static {
+	public static void init() {
 		initSetBonus();
 		initArmor();
 		initShotBonus();
@@ -235,22 +238,22 @@ public class SpecValues {
 	 */
 	private static void initSpareBullet() {
 		SPARE_BULLET = new KeyValueStore();
-		SPARE_BULLET.set("S",  "0.68");  // 3.5該当パーツなし (2015/10/22)
-		SPARE_BULLET.set("S-", "0.63");  // 3.5該当パーツなし (2015/10/31)
-		SPARE_BULLET.set("A+", "0.59");
-		SPARE_BULLET.set("A",  "0.54");
-		SPARE_BULLET.set("A-", "0.50");
-		SPARE_BULLET.set("B+", "0.45");
-		SPARE_BULLET.set("B",  "0.41");
-		SPARE_BULLET.set("B-", "0.36");
-		SPARE_BULLET.set("C+", "0.32");
-		SPARE_BULLET.set("C",  "0.27");
-		SPARE_BULLET.set("C-", "0.23");
-		SPARE_BULLET.set("D+", "0.18");
-		SPARE_BULLET.set("D",  "0.14");
-		SPARE_BULLET.set("D-", "0.09");
-		SPARE_BULLET.set("E+", "0.05");
-		SPARE_BULLET.set("E",  "0.00");
+		SPARE_BULLET.set("S",  "68");  // 3.5該当パーツなし (2015/10/22)
+		SPARE_BULLET.set("S-", "63");  // 3.5該当パーツなし (2015/10/31)
+		SPARE_BULLET.set("A+", "59");
+		SPARE_BULLET.set("A",  "54");
+		SPARE_BULLET.set("A-", "50");
+		SPARE_BULLET.set("B+", "45");
+		SPARE_BULLET.set("B",  "41");
+		SPARE_BULLET.set("B-", "36");
+		SPARE_BULLET.set("C+", "32");
+		SPARE_BULLET.set("C",  "27");
+		SPARE_BULLET.set("C-", "23");
+		SPARE_BULLET.set("D+", "18");
+		SPARE_BULLET.set("D",  "14");
+		SPARE_BULLET.set("D-",  "9");
+		SPARE_BULLET.set("E+",  "5");
+		SPARE_BULLET.set("E",   "0");
 	}
 
 	/**
@@ -274,37 +277,72 @@ public class SpecValues {
 		ACCELERATION.set("D-", "5.31");
 		ACCELERATION.set("E+", "5.64");
 		ACCELERATION.set("E",  "5.97");
+		ACCELERATION.set("E-", "6.30");   // 2016/3/27 暫定 (ヤクシャ・零)
 	}
 	
 	/**
 	 * セットボーナスの説明文を初期化する
 	 */
 	private static void initSetBonus() {
-		SETBONUS = new KeyValueStore();
-		SETBONUS.set("クーガー", "重量耐性UP");
-		SETBONUS.set("ヘヴィガード", "装甲UP");
-		SETBONUS.set("シュライク", "歩行速度UP");
-		SETBONUS.set("ツェーブラ", "索敵UP");
-		SETBONUS.set("エンフォーサー", "ブースターUP");
-		SETBONUS.set("ケーファー", "反動吸収UP");
-		SETBONUS.set("E.D.G.", "リロード速度UP");
-		SETBONUS.set("ヤクシャ", "ダッシュ速度UP");
-		SETBONUS.set("セイバー", "エリア移動UP");
-		SETBONUS.set("ディスカス", "SP供給率UP");
-		SETBONUS.set("ネレイド", "射撃補正UP");
-		SETBONUS.set("迅牙", "ロックオン距離UP");
-		SETBONUS.set("ロージー", "装甲値上昇");
-		SETBONUS.set("B.U.Z.", "通常移動UP");
-		SETBONUS.set("ランドバルク", "重量耐性UP");
-		SETBONUS.set("フォーミュラ", "高速移動UP");
-		SETBONUS.set("雷花", "ブースターUP");
-		SETBONUS.set("ヤーデ", "ダッシュ速度UP");
-		SETBONUS.set("アスラ", "武器変更UP");
-		SETBONUS.set("ジーシェン", "エリア移動UP");
-		SETBONUS.set("月影", "リロードUP");
-		SETBONUS.set("スペクター", "重量耐性UP");
-		SETBONUS.set("グライフ", "DEF回復UP");
-		SETBONUS.set("ザオレン", "SP供給率UP");
+
+		if(BBViewSettingManager.IS_VER_X_ON) {
+			SETBONUS = new KeyValueStore();
+			SETBONUS.set("クーガー", "重量耐性UP / 射撃補正UP");
+			SETBONUS.set("ヘヴィガード", "装甲UP / DEF耐久UP");
+			SETBONUS.set("シュライク", "歩行UP / ブースターUP");
+			SETBONUS.set("ツェーブラ", "索敵UP / リロードUP");
+			SETBONUS.set("エンフォーサー", "ブースターUP");
+			SETBONUS.set("ケーファー", "反動吸収UP / 歩行UP");
+			SETBONUS.set("E.D.G.", "リロードUP");
+			SETBONUS.set("ヤクシャ", "ダッシュUP / ロックオンUP");
+			SETBONUS.set("セイバー", "エリア移動UP / SP供給UP");
+			SETBONUS.set("ディスカス", "SP供給UP");
+			SETBONUS.set("ネレイド", "射撃補正UP / 加速UP");
+			SETBONUS.set("迅牙", "ロックオンUP / SP供給UP");
+			SETBONUS.set("ロージー", "装甲UP");
+			SETBONUS.set("B.U.Z.", "通常移動UP / DEF回復UP");
+			SETBONUS.set("ランドバルク", "重量耐性UP / リロードUP");
+			SETBONUS.set("フォーミュラ", "高速移動UP / 加速UP");
+			SETBONUS.set("雷花", "ブースターUP / エリア移動UP");
+			SETBONUS.set("ヤーデ", "ダッシュUP / ロックオンUP");
+			SETBONUS.set("アスラ", "武器変更UP / 射撃補正UP");
+			SETBONUS.set("ジーシェン", "エリア移動UP / 加速UP");
+			SETBONUS.set("月影", "リロードUP / 武器変更UP");
+			SETBONUS.set("スペクター", "重量耐性UP / ブースターUP");
+			SETBONUS.set("グライフ", "DEF回復UP / DEF耐久UP");
+			SETBONUS.set("ザオレン", "SP供給UP / 予備弾数UP");
+			SETBONUS.set("ガルム", "加速UP / DEF耐久UP");
+			SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
+		}
+		else {
+			SETBONUS = new KeyValueStore();
+			SETBONUS.set("クーガー", "重量耐性UP");
+			SETBONUS.set("ヘヴィガード", "装甲UP");
+			SETBONUS.set("シュライク", "歩行速度UP");
+			SETBONUS.set("ツェーブラ", "索敵UP");
+			SETBONUS.set("エンフォーサー", "ブースターUP");
+			SETBONUS.set("ケーファー", "反動吸収UP");
+			SETBONUS.set("E.D.G.", "リロード速度UP");
+			SETBONUS.set("ヤクシャ", "ダッシュ速度UP");
+			SETBONUS.set("セイバー", "エリア移動UP");
+			SETBONUS.set("ディスカス", "SP供給率UP");
+			SETBONUS.set("ネレイド", "射撃補正UP");
+			SETBONUS.set("迅牙", "ロックオン距離UP");
+			SETBONUS.set("ロージー", "装甲値上昇");
+			SETBONUS.set("B.U.Z.", "通常移動UP");
+			SETBONUS.set("ランドバルク", "重量耐性UP");
+			SETBONUS.set("フォーミュラ", "高速移動UP");
+			SETBONUS.set("雷花", "ブースターUP");
+			SETBONUS.set("ヤーデ", "ダッシュ速度UP");
+			SETBONUS.set("アスラ", "武器変更UP");
+			SETBONUS.set("ジーシェン", "エリア移動UP");
+			SETBONUS.set("月影", "リロードUP");
+			SETBONUS.set("スペクター", "重量耐性UP");
+			SETBONUS.set("グライフ", "DEF回復UP");
+			SETBONUS.set("ザオレン", "SP供給率UP");
+			SETBONUS.set("ガルム", "加速UP");
+			SETBONUS.set("アイアンフォート", "予備弾数UP");
+		}
 	}
 	
 	/**
@@ -503,24 +541,46 @@ public class SpecValues {
 	 * リロードのデータを初期化する
 	 */
 	private static void initReload() {
-		RELOAD = new KeyValueStore();
-		RELOAD.set("S",  "0.45");   // 3.5該当パーツなし (2015/10/31)
-		RELOAD.set("S-", "0.50");
-		RELOAD.set("A+", "0.55");
-		RELOAD.set("A",  "0.60");
-		RELOAD.set("A-", "0.65");
-		RELOAD.set("B+", "0.75");
-		RELOAD.set("B",  "0.80");
-		RELOAD.set("B-", "0.85");
-		RELOAD.set("C+", "0.90");
-		RELOAD.set("C",  "0.95");
-		RELOAD.set("C-", "1.00");
-		RELOAD.set("D+", "1.05");
-		RELOAD.set("D",  "1.10");
-		RELOAD.set("D-", "1.15");
-		RELOAD.set("E+", "1.20");
-		RELOAD.set("E",  "1.30");
-		RELOAD.set("E-", "1.40");   // 3.5該当パーツなし (2015/10/31)
+		if(BBViewSettingManager.IS_VER_X_ON) {
+			RELOAD = new KeyValueStore();
+			RELOAD.set("S",  "0.55");   // 5.0該当パーツなし (2016/6/1)
+			RELOAD.set("S-", "0.60");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("A+", "0.65");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("A",  "0.70");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("A-", "0.74");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("B+", "0.78");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("B",  "0.83");   // 5.0暫定 (2016/6/1)
+			RELOAD.set("B-", "0.85");
+			RELOAD.set("C+", "0.90");
+			RELOAD.set("C",  "0.95");
+			RELOAD.set("C-", "1.00");
+			RELOAD.set("D+", "1.05");
+			RELOAD.set("D",  "1.10");
+			RELOAD.set("D-", "1.15");
+			RELOAD.set("E+", "1.20");
+			RELOAD.set("E",  "1.30");
+			RELOAD.set("E-", "1.40");   // 3.5該当パーツなし (2015/10/31)
+		}
+		else {
+			RELOAD = new KeyValueStore();
+			RELOAD.set("S",  "0.45");   // 3.5該当パーツなし (2015/10/31)
+			RELOAD.set("S-", "0.50");
+			RELOAD.set("A+", "0.55");
+			RELOAD.set("A",  "0.60");
+			RELOAD.set("A-", "0.65");
+			RELOAD.set("B+", "0.75");
+			RELOAD.set("B",  "0.80");
+			RELOAD.set("B-", "0.85");
+			RELOAD.set("C+", "0.90");
+			RELOAD.set("C",  "0.95");
+			RELOAD.set("C-", "1.00");
+			RELOAD.set("D+", "1.05");
+			RELOAD.set("D",  "1.10");
+			RELOAD.set("D-", "1.15");
+			RELOAD.set("E+", "1.20");
+			RELOAD.set("E",  "1.30");
+			RELOAD.set("E-", "1.40");   // 3.5該当パーツなし (2015/10/31)
+		}
 	}
 
 	/**
@@ -528,23 +588,23 @@ public class SpecValues {
 	 */
 	private static void initChangeWeapon() {
 		CHANGEWEAPON = new KeyValueStore();
-		CHANGEWEAPON.set("S",  "1.60");
-		CHANGEWEAPON.set("S-", "1.55");  // 3.5該当パーツなし (2015/10/31)
-		CHANGEWEAPON.set("A+", "1.50");
-		CHANGEWEAPON.set("A",  "1.40");
-		CHANGEWEAPON.set("A-", "1.35");
-		CHANGEWEAPON.set("B+", "1.30");
-		CHANGEWEAPON.set("B",  "1.25");
-		CHANGEWEAPON.set("B-", "1.20");
-		CHANGEWEAPON.set("C+", "1.10");
-		CHANGEWEAPON.set("C",  "1.05");
-		CHANGEWEAPON.set("C-", "1.00");
-		CHANGEWEAPON.set("D+", "0.95");
-		CHANGEWEAPON.set("D",  "0.90");
-		CHANGEWEAPON.set("D-", "0.80");
-		CHANGEWEAPON.set("E+", "0.75");
-		CHANGEWEAPON.set("E",  "0.70");
-		CHANGEWEAPON.set("E-", "0.65");  // 3.5該当パーツなし (2015/10/31)
+		CHANGEWEAPON.set("S",   "60");
+		CHANGEWEAPON.set("S-",  "55");
+		CHANGEWEAPON.set("A+",  "50");
+		CHANGEWEAPON.set("A",   "40");
+		CHANGEWEAPON.set("A-",  "35");
+		CHANGEWEAPON.set("B+",  "30");
+		CHANGEWEAPON.set("B",   "25");
+		CHANGEWEAPON.set("B-",  "20");
+		CHANGEWEAPON.set("C+",  "10");
+		CHANGEWEAPON.set("C",    "5");
+		CHANGEWEAPON.set("C-",   "0");
+		CHANGEWEAPON.set("D+",  "-5");
+		CHANGEWEAPON.set("D",  "-10");
+		CHANGEWEAPON.set("D-", "-20");
+		CHANGEWEAPON.set("E+", "-24");
+		CHANGEWEAPON.set("E",  "-30");
+		CHANGEWEAPON.set("E-", "-35");  // 3.5該当パーツなし (2015/10/31)
 	}
 	
 	/**
@@ -963,7 +1023,7 @@ public class SpecValues {
 			ret = String.format("x%.2f", value);
 		}
 		else if(key.equals("武器変更")) {
-			ret = String.format("/%.2f", value);
+			ret = String.format("%.0f(%%)", value);
 		}
 		else if(key.equals("重量耐性")) {
 			ret = String.format("%.0f", value);
@@ -987,7 +1047,7 @@ public class SpecValues {
 			ret = String.format("%.0f", value);
 		}
 		else if(key.equals("予備弾数")) {
-			ret = String.format("%.2f", value);
+			ret = String.format("%.0f(%%)", value);
 		}
 		else if(key.equals("加速")) {
 			ret = String.format("%.2f (秒)", value);
@@ -1126,5 +1186,19 @@ public class SpecValues {
 		}
 
 		return ret;
+	}
+	
+	/**
+	 * ブラストが大破するダメージ値を返す。
+	 * @return ダメージ値
+	 */
+	public static int getBlustBreakDamage() {
+
+		if(BBViewSettingManager.IS_VER_X_ON) {
+			return BLUST_BREAK_DAMAGE_X;
+		}
+		else {
+			return BLUST_BREAK_DAMAGE;
+		}
 	}
 }

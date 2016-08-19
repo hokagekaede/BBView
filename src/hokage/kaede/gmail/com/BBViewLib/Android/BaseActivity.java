@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +12,10 @@ import android.widget.TextView;
  * BBViewの各画面のベースとなるクラス。
  */
 public abstract class BaseActivity extends Activity {
+	
+	private static final String TRADEMARK_TEXT = "©SEGA";
+	
+	private static final int VER_VIEW_ID = 1000;
 	
 	public void setContentView(View view) {
 
@@ -23,12 +28,39 @@ public abstract class BaseActivity extends Activity {
 		
 		view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
+		// 既存のコード
+		//TextView sega_text_view = new TextView(this);
+		//sega_text_view.setText("©SEGA");
+		//sega_text_view.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+		
+		//main_layout.addView(view);
+		//main_layout.addView(sega_text_view);
+		
+		// Xとの切り替え用のコード
+
+		FrameLayout bottom_layout = new FrameLayout(this);
+		
 		TextView sega_text_view = new TextView(this);
-		sega_text_view.setText("©SEGA");
+		sega_text_view.setText(TRADEMARK_TEXT);
 		sega_text_view.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+		bottom_layout.addView(sega_text_view);
+		
+		String ver_text_str = "";
+		if(BBViewSettingManager.IS_VER_X_ON) {
+			ver_text_str = "X Data = ON";
+		}
+		else {
+			ver_text_str = "X Data = OFF";
+		}
+		
+		TextView ver_text_view = new TextView(this);
+		ver_text_view.setText(ver_text_str);
+		ver_text_view.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+		ver_text_view.setId(VER_VIEW_ID);
+		bottom_layout.addView(ver_text_view);
 		
 		main_layout.addView(view);
-		main_layout.addView(sega_text_view);
+		main_layout.addView(bottom_layout);
 		
 		super.setContentView(main_layout);
 	}
@@ -39,5 +71,19 @@ public abstract class BaseActivity extends Activity {
 		if(res_id != BBViewSettingManager.THEME_DEFAULT_ID) {
 			setTheme(res_id);
 		}
+	}
+	
+	public void updateVer() {
+		TextView ver_text_view = (TextView)this.findViewById(VER_VIEW_ID);
+
+		String ver_text_str = "";
+		if(BBViewSettingManager.IS_VER_X_ON) {
+			ver_text_str = "X Data = ON";
+		}
+		else {
+			ver_text_str = "X Data = OFF";
+		}
+		
+		ver_text_view.setText(ver_text_str);
 	}
 }

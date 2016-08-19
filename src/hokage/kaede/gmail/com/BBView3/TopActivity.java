@@ -12,9 +12,9 @@ import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataReader;
+import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.CustomCodeReader;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
 import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
@@ -32,10 +32,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class TopActivity extends BaseActivity {
 	
@@ -58,8 +61,11 @@ public class TopActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		BBViewSettingManager.IS_VER_X_ON = false;
 		
 		// 初期化する
+		SpecValues.init();
 		loadPartsData();
 		initCustomData();
 		
@@ -147,39 +153,39 @@ public class TopActivity extends BaseActivity {
 		layout.addView(blog_btn);
 		
 		/* 次回のバージョンアップ用(データ切り替え) */
-		/*
 		ToggleButton ver_btn = new ToggleButton(this);
-		BBViewSettings.IS_45 = false;
-		ver_btn.setChecked(false);
-		ver_btn.setText("4.5データ [OFF]");
-		ver_btn.setTextOn("4.5データ [ON]");
-		ver_btn.setTextOff("4.5データ [OFF]");
+		ver_btn.setChecked(BBViewSettingManager.IS_VER_X_ON);
+		ver_btn.setText("Xデータ [OFF]");
+		ver_btn.setTextOn("Xデータ [ON]");
+		ver_btn.setTextOff("Xデータ [OFF]");
 		ver_btn.setOnCheckedChangeListener(new OnChangeVersionListener());
 		layout.addView(ver_btn);
-		*/
 
 		setContentView(layout);
 	}
 	
 	/* 次回のバージョンアップ用(データ切り替え) */
-	/*
 	private class OnChangeVersionListener implements OnCheckedChangeListener {
 
 		@Override
 		public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+			
 			if(arg1) {
-				loadPartsData(R.raw.bb_data_45);
-				initData();
-				BBViewSettings.IS_45 = true;
+				BBViewSettingManager.IS_VER_X_ON = true;
+				SpecValues.init();
+				loadPartsData(R.raw.bb_data_x);
+				initCustomData();
 			}
 			else {
+				BBViewSettingManager.IS_VER_X_ON = false;
+				SpecValues.init();
 				loadPartsData();
-				initData();
-				BBViewSettings.IS_45 = false;
+				initCustomData();
 			}
+			
+			TopActivity.this.updateVer();
 		}
 	}
-	*/
 
 	/**
 	 * 既存のアクティビティを使用する場合の処理を行う。

@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
  * BBView専用の設定データを管理するクラス。
  */
 public class BBViewSettingManager extends SettingManager {
+	
+	// Xのデータ設定
+	public static boolean IS_VER_X_ON = false;
 
 	/**
 	 * 全ての設定値を読み込む。

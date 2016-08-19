@@ -384,6 +384,13 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	private static final String[] CMP_SUPPORT_ASSALT = {
 		"重量", BBData.SLASH_DAMAGE_NL_KEY, BBData.SLASH_DAMAGE_EX_KEY
 	};
+
+	private static final String[] CMP_SUPPORT_HEAVY = {
+		"重量", "威力", "爆発半径",
+		BBData.ARMOR_BREAK_KEY,
+		BBData.ARMOR_DOWN_KEY,
+		BBData.ARMOR_KB_KEY
+	};
 	
 	private static final String[] CMP_SUPPORT_SUPPORT = {
 		"重量", "耐久力", "索敵範囲", "索敵面積", "初動索敵面積", "総索敵面積", "戦術索敵面積", "索敵時間"
@@ -433,6 +440,9 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 		else if(item.existCategory(WEAPON_TYPE_SUPPORT)) {
 			if(item.existCategory(BLUST_TYPE_ASSALT)) {
 				ret = CMP_SUPPORT_ASSALT;
+			}
+			else if(item.existCategory(BLUST_TYPE_HEAVY)) {
+				ret = CMP_SUPPORT_HEAVY;
 			}
 			else if(item.existCategory(BLUST_TYPE_SUPPORT)) {
 				ret = CMP_SUPPORT_SUPPORT;

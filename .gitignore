@@ -1,1 +1,17 @@
 res/values/enc.xml
+*.classpath
+*.i
+.hg/branch
+.hg/cache/branch2-base
+.hg/cache/tags
+.hg/cur-message.txt
+.hg/dirstate
+.hg/hgrc
+.hg/requires
+*.d
+.hg/store/fncache
+.hg/thgstatus
+*.hgignore
+.project
+proguard-project.txt
+project.properties

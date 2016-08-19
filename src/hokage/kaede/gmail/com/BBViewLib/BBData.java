@@ -1067,12 +1067,17 @@ public class BBData extends KVCStore {
 	 */
 	public double getArmorBreakJdg(boolean is_critical) {
 		double power = getOneShotPower();
+
+		// ハウルHSGのダウン値は4倍
+		if(existCategory("ハウルHSG系統")) {
+			power = power * 4.0;
+		}
 		
 		if(is_critical) {
 			power = power * 2.5;
 		}
 		
-		return (2 - (SpecValues.BLUST_BREAK_DAMAGE / power)) * 100;
+		return (2 - (SpecValues.getBlustBreakDamage() / power)) * 100;
 	}
 	
 	/**
@@ -1083,6 +1088,11 @@ public class BBData extends KVCStore {
 	public double getArmorDownJdg(boolean is_critical) {
 		double power = getOneShotPower();
 
+		// ハウルHSGのダウン値は4倍
+		if(existCategory("ハウルHSG系統")) {
+			power = power * 4.0;
+		}
+		
 		if(is_critical) {
 			power = power * 2.5;
 		}
@@ -1098,6 +1108,11 @@ public class BBData extends KVCStore {
 	public double getArmorKBJdg(boolean is_critical) {
 		double power = getOneShotPower();
 
+		// ハウルHSGのダウン値は4倍
+		if(existCategory("ハウルHSG系統")) {
+			power = power * 4.0;
+		}
+		
 		if(is_critical) {
 			power = power * 2.5;
 		}
