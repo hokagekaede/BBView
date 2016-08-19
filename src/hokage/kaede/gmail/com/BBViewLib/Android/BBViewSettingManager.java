@@ -16,7 +16,7 @@ public class BBViewSettingManager extends SettingManager {
 
 	/**
 	 * 全ての設定値を読み込む。
-	 * @param context
+	 * @param context コンテキスト
 	 */
 	public static void loadSettings(Context context) {
 		IS_KB_PER_HOUR = isKbPerHour(context);

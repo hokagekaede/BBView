@@ -120,22 +120,22 @@ public class SpecValues {
 	/**
 	 * ブラストが転倒するダメージ値
 	 */
-	public static final int BLUST_DOWN_DAMAGE = 6000;
+	public static final int BLUST_DOWN_DAMAGE = 6600;
 	
 	/**
 	 * ブラストがノックバックするダメージ値
 	 */
-	public static final int BLUST_KB_DAMAGE = 3000;
+	public static final int BLUST_KB_DAMAGE = 3300;
 	
 	/**
 	 * ブラスト(ホバー)が転倒するダメージ値
 	 */
-	public static final int HOVER_DOWN_DAMAGE = 5000;
+	public static final int HOVER_DOWN_DAMAGE = 5600;
 	
 	/**
 	 * ブラスト(ホバー)がノックバックするダメージ値
 	 */
-	public static final int HOVER_KB_DAMAGE = 2500;
+	public static final int HOVER_KB_DAMAGE = 2800;
 	
 
 	// 4.5対応
@@ -309,6 +309,7 @@ public class SpecValues {
 		SETBONUS.set("ザオレン", "SP供給UP / 予備弾数UP");
 		SETBONUS.set("ガルム", "加速UP / DEF耐久UP");
 		SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
+		SETBONUS.set("X－", "リロードUP / 重量耐性UP");
 	}
 	
 	/**
@@ -557,8 +558,8 @@ public class SpecValues {
 	private static void initAntiWeight() {
 		ANTIWEIGHT = new KeyValueStore();
 		ANTIWEIGHT.set("S",  "7000"); // 3.5該当パーツなし (2015/10/24)
-		ANTIWEIGHT.set("S-", "6850"); // 3.5該当パーツなし (2015/10/31)
-		ANTIWEIGHT.set("A+", "6650");
+		ANTIWEIGHT.set("S-", "6800");
+		ANTIWEIGHT.set("A+", "6550");
 		ANTIWEIGHT.set("A",  "6350");
 		ANTIWEIGHT.set("A-", "6150");
 		ANTIWEIGHT.set("B+", "5900");
@@ -723,7 +724,7 @@ public class SpecValues {
 	 * @return ポイント番号(E～S)
 	 */
 	private static String getPointAsc(KeyValueStore store, double value) {
-		String point = "情報無し";
+		String point = BBDataManager.SPEC_POINT[BBDataManager.SPEC_POINT.length - 1];
 		double cmp_value = Double.MAX_VALUE;
 		int size = BBDataManager.SPEC_POINT.length;
 		
@@ -752,7 +753,7 @@ public class SpecValues {
 	 * @return ポイント番号(E～S)
 	 */
 	private static String getPointDsc(KeyValueStore store, double value) {
-		String point = "情報無し";
+		String point = BBDataManager.SPEC_POINT[BBDataManager.SPEC_POINT.length - 1];
 		double cmp_value = Double.MIN_VALUE;
 		int size = BBDataManager.SPEC_POINT.length;
 		
@@ -921,7 +922,7 @@ public class SpecValues {
 			ret = String.format("%.0f", value);
 		}
 		else if(key.equals("初速")) {
-			ret = String.format("%.2f", value);
+			ret = String.format("%.3f", value);
 			is_speed = true;
 		}
 		else if(key.equals("巡航")) {

@@ -272,9 +272,9 @@ public class CompareActivity extends BaseActivity {
 			
 			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-			
-			if(target_key.equals("重量")) {
-				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_point, to_point));
+
+			if(target_key.equals("重量") || target_key.equals("チップ容量") || target_key.equals("積載猶予") || target_key.equals("DEF回復時間")) {
+				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_str, to_str));
 			}
 			else {
 				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_point + " (" + from_str + ")", to_point + " (" + to_str + ")"));

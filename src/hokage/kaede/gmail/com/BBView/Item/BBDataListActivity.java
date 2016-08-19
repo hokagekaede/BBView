@@ -42,18 +42,28 @@ public class BBDataListActivity extends BaseActivity implements OnItemClickListe
 		BBDataManager data_manager = BBDataManager.getInstance();
 		data_manager.setSortKey(null);
 		
+		// フィルタを設定する
 		BBDataFilter filter = new BBDataFilter();
+
+		if(main_filter_str.equals("勲章") || main_filter_str.equals("素材")) {
+			filter.setType(main_filter_str);
+			filter.setNotHavingShow(true);
+		}
+		if(sub_filter_str.equals("")) {
+			filter.setType(main_filter_str);
+		}
+		else {
+			filter.setType(main_filter_str);
+			filter.setType(sub_filter_str);
+		}
 
 		// タイトル名を決定する
 		String filter_name = "";
 		
 		if(sub_filter_str.equals("")) {
-			filter.setType(main_filter_str);
 			filter_name = main_filter_str;
 		}
 		else {
-			filter.setType(main_filter_str);
-			filter.setType(sub_filter_str);
 			filter_name = main_filter_str + "/" + sub_filter_str;
 		}
 

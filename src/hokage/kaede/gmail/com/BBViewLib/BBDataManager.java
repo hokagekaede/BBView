@@ -18,7 +18,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	
 	public static final String BLUST_TYPE_ASSALT  = "強襲兵装";
 	public static final String BLUST_TYPE_HEAVY   = "重火力兵装";
-	public static final String BLUST_TYPE_SNIPER  = "狙撃兵装";
+	public static final String BLUST_TYPE_SNIPER  = "遊撃兵装";
 	public static final String BLUST_TYPE_SUPPORT = "支援兵装";
 	
 	public static final String WEAPON_TYPE_MAIN    = "主武器";
@@ -108,7 +108,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 
 	/**
 	 * ソートキーを設定する。
-	 * @param key ソートする対象のキー文字列。指定誤りの場合、"名称"がキーにする。
+	 * @param key ソートする対象のキー文字列。指定誤りの場合、"名称"をキーにする。
 	 */
 	@Override
 	public void setSortKey(String key) {
@@ -381,6 +381,15 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 		BBData.ARMOR_KB_KEY
 	};
 
+	private static final String[] CMP_SUB_WEAPON = {
+		"重量", "威力", "連射速度", "リロード時間",
+		"総火力", "マガジン火力", "瞬間火力", "戦術火力", "総弾数(合計)",
+		"爆発半径",
+		BBData.ARMOR_BREAK_KEY,
+		BBData.ARMOR_DOWN_KEY,
+		BBData.ARMOR_KB_KEY
+	};
+
 	private static final String[] CMP_SUPPORT_ASSALT = {
 		"重量", BBData.SLASH_DAMAGE_NL_KEY, BBData.SLASH_DAMAGE_EX_KEY
 	};
@@ -435,7 +444,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 			ret = CMP_MAIN_WEAPON;
 		}
 		else if(item.existCategory(WEAPON_TYPE_SUB)) {
-			ret = CMP_MAIN_WEAPON;
+			ret = CMP_SUB_WEAPON;
 		}
 		else if(item.existCategory(WEAPON_TYPE_SUPPORT)) {
 			if(item.existCategory(BLUST_TYPE_ASSALT)) {

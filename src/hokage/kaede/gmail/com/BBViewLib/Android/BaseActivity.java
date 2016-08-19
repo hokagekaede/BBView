@@ -20,6 +20,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * 画面を生成する。
 	 */
+	@Override
 	public void setContentView(View view) {
 		createLayout(view);
 	}

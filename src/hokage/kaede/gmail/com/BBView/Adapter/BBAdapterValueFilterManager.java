@@ -32,7 +32,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	private String[] mKeys;    // 表示項目
 	private boolean[] mFlags; // フィルタの有効無効切り替え
 	private String[] mValues;  // フィルタの値
-	private View[] UIs;      // UIのID値
+	private View[] UIs;        // UIのID値
 
 	private String mSaveKey;
 	private Dialog mDialog;
@@ -75,6 +75,9 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 		}
 		else if(key.equals("チップ容量")) {
 			return "2.0";
+		}
+		else if(key.equals("積載猶予")) {
+			return "4000";
 		}
 		else {
 			return "C";
@@ -137,9 +140,8 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			mCheckBoxs.add(box);
 			row.addView(box);
 			
-			if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量")) {
+			if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals(("積載猶予"))) {
 				EditText edit_text = new EditText(mActivity);
-				//edit_text.setInputType(InputType.TYPE_CLASS_NUMBER);
 				edit_text.setText(mValues[i]);
 				UIs[i] = edit_text;
 				
@@ -200,7 +202,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 
 			int size = mKeys.length;
 			for(int i=0; i<size; i++) {
-				if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量")) {
+				if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals("積載猶予")) {
 					EditText edit_text = (EditText)UIs[i];
 					edit_text.setText(mSelectData.get(mKeys[i]));
 

@@ -19,12 +19,12 @@ E.D.G.|ƒÆ	3.0	560	E+	S	C+	C	B+	E.D.G.-ƒÂ^“ªƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒh—Z‘fŽ
 ƒfƒBƒXƒJƒXEƒvƒƒg	1.9	700	B	B+	D-	C	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ36000•bˆÈãB‚Ü‚½‚Í7875ptˆÈãB	ƒjƒ…[ƒh‘fŽqx10 ƒƒ^ƒ‚ƒ`ƒbƒvx2	50
 ƒfƒBƒXƒJƒXEƒ_[ƒg	2.4	530	C	B+	C-	D	C+	ƒfƒBƒXƒJƒXEƒvƒƒg^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x20 ƒjƒ…[ƒhŒQ‘Ìx5 ‹â•Ðx10	100
 ƒfƒBƒXƒJƒXEƒmƒ”ƒ@	2.1	770	B+	B	E+	C+	C	ƒfƒBƒXƒJƒXEƒ_[ƒg^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x5 ƒjƒ…[ƒhWÏ‘Ìx2 ƒJƒƒ‰ƒ`ƒbƒvx1	200
-ƒfƒBƒXƒJƒXEƒGƒ”ƒHƒ‹	2.6	610	C	B	C+	B-	B-	ƒfƒBƒXƒJƒXEƒmƒ”ƒ@^“ªƒp[ƒc‚ðŠŽ	ƒx[ƒXƒK[ƒh/‹àx3 ƒjƒ…[ƒhãóx10 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	300
+ƒfƒBƒXƒJƒXEƒGƒ”ƒHƒ‹	2.6	600	C	B	C+	B-	B-	ƒfƒBƒXƒJƒXEƒmƒ”ƒ@^“ªƒp[ƒc‚ðŠŽ	ƒx[ƒXƒK[ƒh/‹àx3 ƒjƒ…[ƒhãóx10 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	300
 ƒlƒŒƒCƒh45	2.6	550	C	C	C	C+	C+	ƒNƒ‰ƒXB5‚ÅŽx‹‹	‚È‚µ	0
 ƒlƒŒƒCƒh45‰ü	2.5	560	C	C	D+	A	C	ƒlƒŒƒCƒh45^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x10 ‹â•Ðx5 ƒƒ^ƒ‚ƒ`ƒbƒvx2	50
 ƒlƒŒƒCƒh46	2.8	580	C	B-	B-	D+	B	ƒlƒŒƒCƒh45‰ü^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—Z‘fŽqx1 “º•Ðx10	150
 ƒlƒŒƒCƒhRT	2.6	600	C	A+	D-	D+	C+	ƒlƒŒƒCƒh46^“ªƒp[ƒc‚ðŠŽ	ƒI[ƒ‹ƒ}ƒCƒeƒB[x5 ƒjƒ…[ƒhŒQ‘Ìx10 ƒ\ƒmƒ`ƒbƒvx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	250
-v‰å	2.8	580	D+	B	D+	B	B	—ÝŒvƒoƒgƒ‹ŽžŠÔ48000•bˆÈãB‚Ü‚½‚Í11250ptˆÈãB	ƒjƒ…[ƒh‘fŽqx5 ƒjƒ…[ƒhWÏ‘Ìx2 ‰©‹à•Ðx5	100
+v‰å	3.0	580	D+	B	D+	B	B	—ÝŒvƒoƒgƒ‹ŽžŠÔ48000•bˆÈãB‚Ü‚½‚Í11250ptˆÈãB	ƒjƒ…[ƒh‘fŽqx5 ƒjƒ…[ƒhWÏ‘Ìx2 ‰©‹à•Ðx5	100
 v‰åEb	2.2	620	C+	B-	E+	A	B-	v‰å^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x15 ƒjƒ…[ƒhŒQ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx1	150
 v‰åE^	3.3	650	D+	A	A-	C	B	v‰åEb^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x5 ƒjƒ…[ƒh—Z‘fŽqx2 ‹â•Ðx5	250
 v‰åE”ò“V	2.6	630	C	C+	D+	S	C+	v‰åE^^“ªƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx3 ƒjƒ…[ƒhŒQ‘Ìx5 ƒJƒƒ‰ƒ`ƒbƒvx2 ”j‘¹‚h‚bx5	350
@@ -40,6 +40,9 @@ E.D.G.|ƒÆ	3.0	560	E+	S	C+	C	B+	E.D.G.-ƒÂ^“ªƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒh—Z‘fŽ
 ƒUƒIƒŒƒ“EƒKƒC	2.6	630	C+	C+	B+	C	C-	ƒUƒIƒŒƒ“^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhãóx15 ƒJƒƒ`ƒbƒvx1 ”j‘¹‚h‚bx10	200
 ƒUƒIƒŒƒ“EƒŠƒAƒ“	2.8	600	C-	A-	A	D+	C	ƒUƒIƒŒƒ“EƒKƒC^“ªƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹âx1 ƒjƒ…[ƒhŒQ‘Ìx5 ‹â•Ðx20 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	300
 ƒUƒIƒŒƒ“Eƒ_ƒWƒAƒ“	2.7	620	C	B-	B	B	D+	ƒUƒIƒŒƒ“EƒŠƒAƒ“^“ªƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹àx1 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ‹ƒ~ƒmƒ`ƒbƒvx2 ”j‘¹‚h‚bx20	400
+X|Ie	2.2	640	C+	B+	B-	C-	C+	?	ƒjƒ…[ƒh‘fŽqx20 ƒnƒjƒJƒ€‰ñ˜Hx15	150
+X|IIs	2.3	650	C+	S-	B	D	C+	X|Ie^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhWÏ‘Ìx3 ‰©‹à•Ðx15 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	200
+X|IIIcg	2.1	670	B-	C+	C	S-	C-	X|IIs^“ªƒp[ƒc‚ðŠŽ	í“¬Ÿ—˜Íx5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒƒ^ƒ‚ƒ`ƒbƒvx3 —U“dƒwƒŠƒbƒNƒXx2	300
 ƒwƒ”ƒBƒK[ƒhIŒ^	2.4	800	A	E	D-	C+	C	D4ƒNƒ‰ƒX‚ÅŽx‹‹	‚È‚µ	0
 ƒwƒ”ƒBƒK[ƒhIIIŒ^	2.1	850	A+	E+	E+	B+	C-	ƒwƒ”ƒBƒK[ƒhIŒ^^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh‘fŽqx5 ƒjƒ…[ƒhŒQ‘Ìx3 ‰©‹à•Ðx10	50
 ƒwƒ”ƒBƒK[ƒhIVŒ^	2.3	800	A	D-	D	C	C+	ƒwƒ”ƒBƒK[ƒhIIIŒ^^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx2 ‰©‹à•Ðx10 ƒƒ^ƒ‚ƒ`ƒbƒvx2	150
@@ -61,12 +64,13 @@ E.D.G.|ƒÆ	3.0	560	E+	S	C+	C	B+	E.D.G.-ƒÂ^“ªƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒh—Z‘fŽ
 ƒ„[ƒf55	1.6	740	A	B	E+	D	D-	ƒ„[ƒf54S^“ªƒp[ƒc‚ðŠŽ	”j‰óHì/‹âx10 ƒjƒ…[ƒh—‘x5 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	300
 ƒ„[ƒfVMT	1.7	790	A	C+	D-	B	D+	ƒ„[ƒf55^“ªƒp[ƒc‚ðŠŽ	”j‰óHì/‹àx1 ƒjƒ…[ƒh—Z‘fŽqx1 ƒJƒƒ‰ƒ`ƒbƒvx1 ”j‘¹‚h‚bx25	400
 ƒW[ƒVƒFƒ“	2.6	740	B	C-	B	B	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ122000•bˆÈã‚Ü‚½‚Í—ÝŒvƒXƒRƒA22875ptˆÈã	ƒjƒ…[ƒh—‘x15 ‰©‹à•Ðx10 ƒ\ƒmƒ`ƒbƒvx5	150
-ƒW[ƒVƒFƒ“Eƒt[	2.7	760	B+	D+	A-	C	C-	ƒW[ƒVƒFƒ“‚ðŠŽ	ƒjƒ…[ƒhãóx20 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒnƒjƒJƒ€‰ñ˜Hx5	200
-ƒW[ƒVƒFƒ“EƒV[	2.4	770	A-	B+	B+	E+	D+	ƒW[ƒVƒFƒ“Eƒt[‚ðŠŽ	Ž{Ý”j‰óÍx5 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ\ƒmƒ`ƒbƒvx2 ”j‘¹‚h‚bx5	300
-ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.2	830	A	C-	B-	B-	C+	ƒW[ƒVƒFƒ“EƒV[‚ðŠŽ	–h‰qÍx10 ƒjƒ…[ƒhWÏ‘Ìx5 ‰©‹à•Ðx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
+ƒW[ƒVƒFƒ“Eƒt[	2.7	760	B+	D+	A-	C	C-	ƒW[ƒVƒFƒ“^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhãóx20 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒnƒjƒJƒ€‰ñ˜Hx5	200
+ƒW[ƒVƒFƒ“EƒV[	2.4	770	A-	B+	B+	E+	D+	ƒW[ƒVƒFƒ“Eƒt[^“ªƒp[ƒc‚ðŠŽ	Ž{Ý”j‰óÍx5 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ\ƒmƒ`ƒbƒvx2 ”j‘¹‚h‚bx5	300
+ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.2	830	A	C-	B-	B-	B-	ƒW[ƒVƒFƒ“EƒV[^“ªƒp[ƒc‚ðŠŽ	–h‰qÍx10 ƒjƒ…[ƒhWÏ‘Ìx5 ‰©‹à•Ðx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
 ƒXƒyƒNƒ^[IŒ^	2.4	730	B	C+	C+	C	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ128000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA21750ptˆÈãB	ƒjƒ…[ƒhŒQ‘Ìx10 ƒ\ƒmƒ`ƒbƒvx2	150
-ƒXƒyƒNƒ^[IŒ^C	2.2	760	B+	C	C	B	C	ƒXƒyƒNƒ^[IŒ^‚ðŠŽ	ƒjƒ…[ƒh‘fŽqx10 ‰©‹à•Ðx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	200
-ƒXƒyƒNƒ^[IIIŒ^	2.3	780	A-	C-	D+	C	C-	ƒXƒyƒNƒ^[IŒ^C‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 ƒjƒ…[ƒh—Z‘fŽqx1 “º•Ðx10 ‚Ž¥«ƒAƒOƒ~ƒix3	300
+ƒXƒyƒNƒ^[IŒ^C	2.2	760	B+	C	C	B	C	ƒXƒyƒNƒ^[IŒ^^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh‘fŽqx10 ‰©‹à•Ðx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	200
+ƒXƒyƒNƒ^[IIIŒ^	2.3	780	A-	C-	D+	C	C-	ƒXƒyƒNƒ^[IŒ^C^“ªƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 ƒjƒ…[ƒh—Z‘fŽqx1 “º•Ðx10 ‚Ž¥«ƒAƒOƒ~ƒix3	300
+ƒXƒyƒNƒ^[MRG	2.1	700	B	B	B-	D	C	ƒXƒyƒNƒ^[IIIŒ^^“ªƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx10 ƒjƒ…[ƒh‘fŽqx10 ƒ‚ƒmƒŠƒX‚m‚r‚hx2 —U“dƒwƒŠƒbƒNƒXx2	400
 ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^	2.0	740	B+	A-	D-	C-	D-	?	ƒjƒ…[ƒhãóx10 ‹â•Ðx20 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	150
 ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^	2.3	760	B+	B-	E+	B-	E+	ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^^“ªƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx1 ƒjƒ…[ƒh—‘x30 ‹â•Ðx30 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	200
 ƒAƒCƒAƒ“ƒtƒH[ƒgIVŒ^	1.9	810	A	B	D+	C-	E+	ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^^“ªƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx2 ƒjƒ…[ƒhŒQ‘Ìx15 ƒjƒ…[ƒhŒ‹»‘Ìx2 ‚Ž¥«ƒAƒOƒ~ƒix1	810
@@ -77,7 +81,7 @@ E.D.G.|ƒÆ	3.0	560	E+	S	C+	C	B+	E.D.G.-ƒÂ^“ªƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒh—Z‘fŽ
 ƒ„ƒNƒVƒƒ	1.9	500	D	B+	D	B	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ92000•bˆÈãB‚Ü‚½‚Í15000ptˆÈãB	ƒjƒ…[ƒhãóx20 ƒ\ƒmƒ`ƒbƒvx1 ƒƒ^ƒ‚ƒ`ƒbƒvx1	150
 ƒ„ƒNƒVƒƒE‰ü	1.7	500	D	B+	D-	A+	D+	ƒ„ƒNƒVƒƒ^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhWÏ‘Ìx3 ‰©‹à•Ðx10	250
 ƒ„ƒNƒVƒƒE“ó	2.2	520	D-	A-	C-	C+	C+	ƒ„ƒNƒVƒƒE‰ü^“ªƒp[ƒc‚ðŠŽ	‰p—YÍx2 ƒjƒ…[ƒhWÏ‘Ìx2 ‹â•Ðx15 ƒJƒƒ‰ƒ`ƒbƒvx1	350
-ƒ„ƒNƒVƒƒE—ë	2.2	550	D+	A	E	A-	D	ƒ„ƒNƒVƒƒE“ó^“ªƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Í~5@ƒjƒ…[ƒhŒ‹»‘Ì~2 ƒJƒƒ‰ƒ`ƒbƒv~2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜H~10	400
+ƒ„ƒNƒVƒƒE—ë	2.2	550	D+	A	E	A-	D	ƒ„ƒNƒVƒƒE“ó^“ªƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx5@ƒjƒ…[ƒhŒ‹»‘Ìx2 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	400
 ƒZƒCƒo[IŒ^	3.1	480	D-	C-	A-	B+	B	—ÝŒvƒoƒgƒ‹ŽžŠÔ54000•bˆÈãB‚Ü‚½‚Í10125ptˆÈãB	ƒjƒ…[ƒhŒQ‘Ìx2 ƒjƒ…[ƒhWÏ‘Ìx1 ‹â•Ðx15	50
 ƒZƒCƒo[IŒ^R	3.0	490	D-	C-	B	A+	B-	ƒZƒCƒo[IŒ^^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx3 “º•Ðx20 ‹â•Ðx20	100
 ƒZƒCƒo[IIŒ^	3.1	530	D-	C	C+	A+	B-	ƒZƒCƒo[IŒ^R^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhãóx15 ƒjƒ…[ƒh—Z‘fŽqx1 ‰©‹à•Ðx5	200
@@ -89,6 +93,7 @@ B.U.Z.|ƒÉ	2.8	520	E+	S-	B	D	B	B.U.Z.-ƒÁ^“ªƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx5 ƒ
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^	2.9	530	D-	B	D+	B+	B	—ÝŒvƒoƒgƒ‹ŽžŠÔ104000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA20625ptˆÈãB	ƒjƒ…[ƒhWÏ‘Ìx2 “º•Ðx10 ƒ\ƒmƒ`ƒbƒvx5	100
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C	2.7	510	D-	B+	D	A-	C+	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x10 ƒjƒ…[ƒh—Z‘fŽqx1 ƒ\ƒmƒ`ƒbƒvx5	200
 ƒtƒH[ƒ~ƒ…ƒ‰FŒ^	2.9	550	D-	B+	B	C+	B+	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C^“ªƒp[ƒc‚ðŠŽ	”’‹â•ŒMx30 ƒjƒ…[ƒhŒQ‘Ìx10 “º•Ðx5 ƒJƒƒ‰ƒ`ƒbƒvx1	300
+ƒtƒH[ƒ~ƒ…ƒ‰MST	2.7	540	D	A	D	B-	C+	ƒtƒH[ƒ~ƒ…ƒ‰FŒ^‚ðŠŽ	‰©‹à•ŒMx3 ƒjƒ…[ƒhŒ‹»‘Ìx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx25 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
 ƒAƒXƒ‰	2.6	470	E	A+	D	B-	B+	—ÝŒvƒoƒgƒ‹ŽžŠÔ110000•bˆÈã‚à‚µ‚­‚Í—ÝŒvƒXƒRƒA19500ptˆÈã(3.5AB€‹’)‚ÅŠJ•ú	ƒjƒ…[ƒh—‘x20 ƒjƒ…[ƒhãóx10 ƒƒ^ƒ‚ƒ`ƒbƒvx2	150
 ƒAƒXƒ‰E“ó	2.5	460	E	A+	E	A-	B-	ƒAƒXƒ‰^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh‘fŽqx10 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒƒ[ƒ“ƒWd‰ñ˜Hx2	250
 ƒAƒXƒ‰EŽQ	2.6	490	E	S	D-	C	B-	ƒAƒXƒ‰E“ó^“ªƒp[ƒc‚ðŠŽ	ƒvƒ‰ƒ“ƒgƒQƒCƒi[x10 ƒjƒ…[ƒh—‘x5 ƒ\ƒmƒ`ƒbƒvx10 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	350
@@ -98,7 +103,7 @@ B.U.Z.|ƒÉ	2.8	520	E+	S-	B	D	B	B.U.Z.-ƒÁ^“ªƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx5 ƒ
 ŒŽ‰eE—ó•—	2.5	500	D	A+	C	C-	B-	ŒŽ‰eE‹Å^“ªƒp[ƒc‚ðŠŽ	Š®‘SŸ—˜Íx3 ƒjƒ…[ƒh—Z‘fŽqx1 ƒ\ƒmƒ`ƒbƒvx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
 ƒKƒ‹ƒ€67	2.9	480	D-	B+	D-	C-	B+	?	ƒjƒ…[ƒhãóx15 ‰©‹à•Ðx10 ƒnƒjƒJƒ€‰ñ˜Hx15	150
 ƒKƒ‹ƒ€68	2.8	520	D	B	C	D+	A	ƒKƒ‹ƒ€67^“ªƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—‘x30 “º•Ðx30 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	200
-ƒKƒ‹ƒ€67U	2.9	540	C-	B+	D	C	D+	ƒKƒ‹ƒ€68^“ªƒp[ƒc‚ðŠŽ	ƒRƒAƒAƒ^ƒbƒJ[x20 ƒjƒ…[ƒhWÏ‘Ìx3 ƒƒ^ƒ‚ƒ`ƒbƒvx3 —U“d‚ÖƒŠƒbƒNƒXx2	300
+ƒKƒ‹ƒ€67U	2.9	540	C-	B+	D	C	D+	ƒKƒ‹ƒ€68^“ªƒp[ƒc‚ðŠŽ	ƒRƒAƒAƒ^ƒbƒJ[x20 ƒjƒ…[ƒhWÏ‘Ìx3 ƒƒ^ƒ‚ƒ`ƒbƒvx3 —U“dƒwƒŠƒbƒNƒXx2	300
 
 ¡“·•”ƒp[ƒc
 ›–¼Ì	ƒ`ƒbƒv—e—Ê	d—Ê	‘•b	ƒu[ƒXƒ^[	SP‹Ÿ‹‹—¦	ƒGƒŠƒAˆÚ“®	DEF‘Ï‹v	ðŒ	‘fÞEŒMÍ	GP
@@ -142,6 +147,9 @@ E.D.G.|ƒÆ	2.3	1190	D+	B	C-	A+	C	E.D.G.-ƒÂ^“·ƒp[ƒcw“ü	ŠïPÍx3 ƒE[ƒcd|x3 ƒ
 ƒUƒIƒŒƒ“EƒKƒC	2.0	1250	C+	C	B	C-	C-	ƒUƒIƒŒƒ“^“·ƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒh—Z‘fŽqx1 ƒ\ƒmƒ`ƒbƒvx3	200
 ƒUƒIƒŒƒ“EƒŠƒAƒ“	1.3	1310	C-	D+	A	D	D	ƒUƒIƒŒƒ“EƒKƒC^“·ƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹âx1 •¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhãóx20 ƒƒ[ƒ“ƒWd‰ñ˜Hx5	300
 ƒUƒIƒŒƒ“Eƒ_ƒWƒAƒ“	1.8	1350	C	B	B	D	C-	ƒUƒIƒŒƒ“EƒŠƒAƒ“^“·ƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹àx1 è¦“S‰òx15 ƒjƒ…[ƒhŒ‹»‘Ìx2 ƒ‚ƒmƒŠƒX‚m‚r‚hx2	400
+X|Ie	2.1	1330	B-	B	C-	B-	C-	?	è¦“S‰òx15 ƒjƒ…[ƒh—‘x30 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	150
+X|IIs	2.2	1270	C+	C	B-	B	B-	X|Ie^“·ƒp[ƒc‚ðŠŽ	’´„«ƒƒ^ƒ‹x3 ^|ƒeƒNƒ^ƒCƒgx1 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	200
+X|IIIcg	2.1	1360	B	A+	D-	C+	B-	X|IIs^“·ƒp[ƒc‚ðŠŽ	í“¬Ÿ—˜Íx5 è¦“S‰òx5 •¡‘wd‡‹à‘®x2 ƒjƒ…[ƒhŒ‹»‘Ìx2	350
 ƒwƒ”ƒBƒK[ƒhIŒ^	1.9	1430	A	C+	C	D-	C	ƒNƒ‰ƒXD4ƒNƒ‰ƒX‚ÅŽx‹‹B	‚È‚µ	0
 ƒwƒ”ƒBƒK[ƒhIIIŒ^	1.9	1550	A+	B	D+	D-	B	ƒwƒ”ƒBƒK[ƒhIŒ^^“·ƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhãóx10 ƒ\ƒmƒ`ƒbƒvx1	50
 ƒwƒ”ƒBƒK[ƒhIVŒ^	2.0	1500	A	A-	D+	E+	B-	ƒwƒ”ƒBƒK[ƒhIIIŒ^^“·ƒp[ƒc‚ðŠŽ	è¦“S‰òx5 ƒjƒ…[ƒhWÏ‘Ìx2 “º•Ðx15	150
@@ -163,12 +171,13 @@ E.D.G.|ƒÆ	2.3	1190	D+	B	C-	A+	C	E.D.G.-ƒÂ^“·ƒp[ƒcw“ü	ŠïPÍx3 ƒE[ƒcd|x3 ƒ
 ƒ„[ƒf55	1.8	1400	A+	C+	D	C+	C-	ƒ„[ƒf54S^“·ƒp[ƒc‚ðŠŽ	”j‰óHì/‹âx10 ƒE[ƒcd|x10 ƒjƒ…[ƒh‘fŽqx5 ‚Ž¥«ƒAƒOƒ~ƒix2	300
 ƒ„[ƒfVMT	1.9	1510	S-	B-	D-	C-	C+	ƒ„[ƒf55^“·ƒp[ƒc‚ðŠŽ	”j‰óHì/‹àx1 ’´„«ƒƒ^ƒ‹x3 ƒjƒ…[ƒh—Z‘fŽqx1 ƒnƒjƒJƒ€‰ñ˜Hx20	400
 ƒW[ƒVƒFƒ“	2.1	1490	B+	C+	B-	D+	C+	—ÝŒvƒoƒgƒ‹ŽžŠÔ122000•bˆÈã‚Ü‚½‚Í—ÝŒvƒXƒRƒA22875ptˆÈã	è¦“S‰òx20 ƒjƒ…[ƒh‘fŽqx10 ƒ\ƒmƒ`ƒbƒvx1	150
-ƒW[ƒVƒFƒ“Eƒt[	2.3	1460	A-	B+	D+	D+	B	ƒW[ƒVƒFƒ“‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhWÏ‘Ìx3 “º•Ðx15	200
-ƒW[ƒVƒFƒ“EƒV[	1.9	1490	B+	A-	C	C-	C-	ƒW[ƒVƒFƒ“Eƒt[‚ðŠŽ	Ž{Ý”j‰óÍx5 •¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhŒQ‘Ìx5 ƒƒ^ƒ‚ƒ`ƒbƒvx2	300
-ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.3	1520	A	A+	D-	D+	B-	ƒW[ƒVƒFƒ“EƒV[‚ðŠŽ	–h‰qÍx10 •¡‘wd‡‹à‘®x2 ƒjƒ…[ƒh—‘x10 ”j‘¹‚h‚bx20	400
+ƒW[ƒVƒFƒ“Eƒt[	2.3	1460	A-	B+	D+	D+	B	ƒW[ƒVƒFƒ“^“·ƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhWÏ‘Ìx3 “º•Ðx15	200
+ƒW[ƒVƒFƒ“EƒV[	1.9	1490	B+	A-	C	C-	C-	ƒW[ƒVƒFƒ“Eƒt[^“·ƒp[ƒc‚ðŠŽ	Ž{Ý”j‰óÍx5 •¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhŒQ‘Ìx5 ƒƒ^ƒ‚ƒ`ƒbƒvx2	300
+ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.3	1520	A	A+	D-	D+	B-	ƒW[ƒVƒFƒ“EƒV[^“·ƒp[ƒc‚ðŠŽ	–h‰qÍx10 •¡‘wd‡‹à‘®x2 ƒjƒ…[ƒh—‘x10 ”j‘¹‚h‚bx20	400
 ƒXƒyƒNƒ^[IŒ^	2.5	1380	B+	B	D+	C+	C	—ÝŒvƒoƒgƒ‹ŽžŠÔ128000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA21750ptˆÈãB	’´„«ƒƒ^ƒ‹x2 ƒjƒ…[ƒh—‘x20 ‹â•Ðx10	150
-ƒXƒyƒNƒ^[IŒ^C	2.6	1430	A-	B-	D+	C+	C+	ƒXƒyƒNƒ^[IŒ^‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhWÏ‘Ìx3 ƒ\ƒmƒ`ƒbƒvx2	200
-ƒXƒyƒNƒ^[IIIŒ^	2.1	1500	A	C+	C	C+	B-	ƒXƒyƒNƒ^[IŒ^C‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 ‰””Âx30 ƒjƒ…[ƒhWÏ‘Ìx2 ƒJƒƒ‰ƒ`ƒbƒvx1	300
+ƒXƒyƒNƒ^[IŒ^C	2.6	1430	A-	B-	D+	C+	C+	ƒXƒyƒNƒ^[IŒ^^“·ƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhWÏ‘Ìx3 ƒ\ƒmƒ`ƒbƒvx2	200
+ƒXƒyƒNƒ^[IIIŒ^	2.1	1500	A	C+	C	C+	B-	ƒXƒyƒNƒ^[IŒ^C^“·ƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 ‰””Âx30 ƒjƒ…[ƒhWÏ‘Ìx2 ƒJƒƒ‰ƒ`ƒbƒvx1	300
+ƒXƒyƒNƒ^[MRG	1.7	1420	B+	A	C-	C+	C	ƒXƒyƒNƒ^[IIIŒ^^“·ƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx10 è¦“S‰òx10 ^|ƒeƒNƒ^ƒCƒgx2 ƒjƒ…[ƒh—Z‘fŽqx2	400
 ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^	2.2	1390	B+	B-	C	D+	D-	?	‰””Âx20 ƒjƒ…[ƒh‘fŽqx10 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	150
 ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^	2.3	1410	A-	D+	B-	D+	C+	ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^^“·ƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx1 ‰””Âx30 ƒ`ƒ^ƒ“|x20 ƒjƒ…[ƒhŒ‹»‘Ìx1	200
 ƒAƒCƒAƒ“ƒtƒH[ƒgIVŒ^	2.1	1500	A+	B	C-	D+	D-	ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^^“·ƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx2 ƒE[ƒcd|x10 ^|ƒeƒNƒ^ƒCƒgx2 ƒjƒ…[ƒh—Z‘fŽqx1	300
@@ -179,7 +188,7 @@ E.D.G.|ƒÆ	2.3	1190	D+	B	C-	A+	C	E.D.G.-ƒÂ^“·ƒp[ƒcw“ü	ŠïPÍx3 ƒE[ƒcd|x3 ƒ
 ƒ„ƒNƒVƒƒ	2.3	1150	D	B	D+	B+	D+	—ÝŒvƒoƒgƒ‹ŽžŠÔ92000•bˆÈãB‚Ü‚½‚Í15000ptˆÈãB	’´„«ƒƒ^ƒ‹x2 ƒjƒ…[ƒh—‘x25 ƒ\ƒmƒ`ƒbƒvx2	150
 ƒ„ƒNƒVƒƒE‰ü	2.7	1160	D-	A+	E+	B+	C-	ƒ„ƒNƒVƒƒ^“·ƒp[ƒc‚ðŠŽ	è¦“S‰òx25 ƒjƒ…[ƒhŒQ‘Ìx5 ƒƒ^ƒ‚ƒ`ƒbƒvx1	250
 ƒ„ƒNƒVƒƒE“ó	2.2	1180	D	B-	C	B+	D+	ƒ„ƒNƒVƒƒE‰ü^“·ƒp[ƒc‚ðŠŽ	‰p—YÍx2 •¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhãóx20 ƒ\ƒmƒ`ƒbƒvx5	350
-ƒ„ƒNƒVƒƒE—ë	2.4	1210	D	A-	C-	A-	D	ƒ„ƒNƒVƒƒE“ó^“·ƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Í~5 ’´„«ƒƒ^ƒ‹~5 ^|ƒeƒNƒ^ƒCƒg~2 ƒƒ[ƒ“ƒWd‰ñ˜H~7	400
+ƒ„ƒNƒVƒƒE—ë	2.4	1210	D	A-	C-	A-	D	ƒ„ƒNƒVƒƒE“ó^“·ƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx5 ’´„«ƒƒ^ƒ‹x5 ^|ƒeƒNƒ^ƒCƒgx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx7	400
 ƒZƒCƒo[IŒ^	3.3	1130	D-	B-	D	A+	C	—ÝŒvƒoƒgƒ‹ŽžŠÔ54000•bˆÈãB‚Ü‚½‚Í10125ptˆÈãB	‰””Âx10 ƒjƒ…[ƒh‘fŽqx10 ƒ\ƒmƒ`ƒbƒvx3	50
 ƒZƒCƒo[IŒ^R	2.9	1150	D-	C+	C	A	C-	ƒZƒCƒo[IŒ^^“·ƒp[ƒc‚ðŠŽ	‰””Âx10 ƒjƒ…[ƒhWÏ‘Ìx2 ‰©‹à•Ðx10	100
 ƒZƒCƒo[IIŒ^	3.5	1160	D-	A-	E+	A+	C	ƒZƒCƒo[IŒ^R^“·ƒp[ƒc‚ðŠŽ	‰””Âx15 ƒjƒ…[ƒhŒQ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx1	200
@@ -191,6 +200,7 @@ B.U.Z.|ƒÉ	2.9	1030	E+	C+	C-	A	D+	B.U.Z.-ƒÁ^“·ƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^	3.0	1090	D-	C-	C+	A	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ104000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA20625ptˆÈãB	’´„«ƒƒ^ƒ‹x1 ƒjƒ…[ƒh‘fŽqx10 ‹â•Ðx20	100
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C	3.0	1120	D-	B	D+	A	D+	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^^“·ƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhãóx15 ‰©‹à•Ðx5	200
 ƒtƒH[ƒ~ƒ…ƒ‰FŒ^	2.8	1170	D+	D-	B+	A	C	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C^“·ƒp[ƒc‚ðŠŽ	”’‹â•ŒMx30 ‰””Âx15 ƒjƒ…[ƒhWÏ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx1	300
+ƒtƒH[ƒ~ƒ…ƒ‰MST	2.6	1180	D+	B+	D+	A-	B-	ƒtƒH[ƒ~ƒ…ƒ‰FŒ^^“·ƒp[ƒc‚ðŠŽ	‰©‹à•ŒMx3 è¦“S‰òx15 ^|ƒeƒNƒ^ƒCƒgx2 ƒjƒ…[ƒh—Z‘fŽqx2	400
 ƒAƒXƒ‰	3.0	1020	E	C+	D+	A-	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ110000•bˆÈã‚à‚µ‚­‚Í—ÝŒvƒXƒRƒA19500ptˆÈã(3.5AB€‹’)‚ÅŠJ•ú	ƒ`ƒ^ƒ“|x15 ƒjƒ…[ƒhWÏ‘Ìx2 ‹â•Ðx5	150
 ƒAƒXƒ‰E“ó	2.7	1040	E	D+	B	A-	D+	ƒAƒXƒ‰^“·ƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhWÏ‘Ìx1 ƒnƒjƒJƒ€‰ñ˜Hx15	250
 ƒAƒXƒ‰EŽQ	3.2	1070	E	B+	D	A-	D+	ƒAƒXƒ‰E“ó^“·ƒp[ƒc‚ðŠŽ	ƒvƒ‰ƒ“ƒgƒQƒCƒi[x10 ƒE[ƒcd|x5 ƒjƒ…[ƒh—Z‘fŽqx1 ‚Ž¥«ƒAƒOƒ~ƒix2	350
@@ -199,7 +209,7 @@ B.U.Z.|ƒÉ	2.9	1030	E+	C+	C-	A	D+	B.U.Z.-ƒÁ^“·ƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx
 ŒŽ‰eE‹Å	3.0	1110	D+	C	C-	A+	D+	ŒŽ‰eEV^“·ƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx3 ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒhŒQ‘Ìx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	300
 ŒŽ‰eE—ó•—	2.4	1140	D-	C+	C+	A-	C-	ŒŽ‰eE‹Å^“·ƒp[ƒc‚ðŠŽ	Š®‘SŸ—˜Íx3 •¡‘wd‡‹à‘®x1 ƒjƒ…[ƒh—Z‘fŽqx1 ƒƒ[ƒ“ƒWd‰ñ˜Hx5	400
 ƒKƒ‹ƒ€67	2.7	1140	D-	C	C	B-	B	?	è¦“S‰òx20 ƒjƒ…[ƒh—‘x20 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	150
-ƒKƒ‹ƒ€68	2.7	1120	E+	A	D-	B-	B+	ƒKƒ‹ƒ€67^“·ƒp[ƒc‚ðŠŽ	‰””Âx30 ƒjƒ…[ƒhãóx30 —U“d‚ÖƒŠƒbƒNƒXx1	200
+ƒKƒ‹ƒ€68	2.7	1120	E+	A	D-	B-	B+	ƒKƒ‹ƒ€67^“·ƒp[ƒc‚ðŠŽ	‰””Âx30 ƒjƒ…[ƒhãóx30 —U“dƒwƒŠƒbƒNƒXx1	200
 ƒKƒ‹ƒ€67U	2.2	1160	D	B	C+	B-	D-	ƒKƒ‹ƒ€68^“·ƒp[ƒc‚ðŠŽ	ƒRƒAƒAƒ^ƒbƒJ[x20 ƒE[ƒcd|x15 ^|ƒeƒNƒ^ƒCƒgx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	300
 
 ¡˜r•”ƒp[ƒc
@@ -236,7 +246,7 @@ E.D.G.|ƒÆ	1.3	840	D	D+	A-	C	D	E.D.G.]ƒÂ^˜rƒp[ƒc‚ðŠŽ	ŠïPÍx3 •¡‘wd‡‹à‘®x
 —‹‰ÔE‰	1.0	780	D+	D+	B+	C+	C-	—‹‰Ô^˜rƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 “º•Ðx15 ƒnƒjƒJƒ€‰ñ˜Hx10	200
 —‹‰ÔE—í	1.2	880	B-	A-	C+	C-	C+	—‹‰ÔE‰^˜rƒp[ƒc‚ðŠŽ	COMBO/“ºx20 ’´„«ƒƒ^ƒ‹x2 ƒ\ƒmƒ`ƒbƒvx10 ‚Ž¥«ƒAƒOƒ~ƒix1	300
 —‹‰ÔE—Ó	0.9	870	C+	C	A-	D+	E+	—‹‰ÔE—í^˜rƒp[ƒc‚ðŠŽ	COMBO/‹âx20 •¡‘wd‡‹à‘®x2 ‹â•Ðx10 ‚Ž¥«ƒAƒOƒ~ƒix1	400
-ƒOƒ‰ƒCƒt65	1.6	780	D+	D-	C+	A-	D+	?	ƒ`ƒ^ƒ“|x15 ƒ\ƒmƒ`ƒbƒvx3 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	150
+ƒOƒ‰ƒCƒt65	1.6	760	D+	D-	C+	A-	D+	?	ƒ`ƒ^ƒ“|x15 ƒ\ƒmƒ`ƒbƒvx3 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	150
 ƒOƒ‰ƒCƒt66	1.7	810	C-	C	B	C-	C-	ƒOƒ‰ƒCƒt65^˜rƒp[ƒc‚ðŠŽ	‰””Âx20 ƒE[ƒcd|x5 ‰©‹à•Ðx10	200
 ƒOƒ‰ƒCƒt65V	1.3	800	C-	E+	B	B+	D+	ƒOƒ‰ƒCƒt66^˜rƒp[ƒc‚ðŠŽ	ƒI[ƒ‹ƒ}ƒCƒeƒB[x5 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx1 ƒJƒƒ‰ƒ`ƒbƒvx1	300
 ƒOƒ‰ƒCƒt68G	1.6	840	C	B-	B	C	C-	ƒOƒ‰ƒCƒt65V^˜rƒp[ƒc‚ðŠŽ	ƒOƒ‰ƒ“ƒhƒXƒ‰ƒ€x2 ’´„«ƒƒ^ƒ‹x5 •¡‘wd‡‹à‘®x1 ƒ‹ƒ~ƒmƒ`ƒbƒvx2	400
@@ -244,6 +254,9 @@ E.D.G.|ƒÆ	1.3	840	D	D+	A-	C	D	E.D.G.]ƒÂ^˜rƒp[ƒc‚ðŠŽ	ŠïPÍx3 •¡‘wd‡‹à‘®x
 ƒUƒIƒŒƒ“EƒKƒC	1.3	830	C	C-	B	C+	C+	ƒUƒIƒŒƒ“^˜rƒp[ƒc‚ðŠŽ	ƒE[ƒcd|x5 ƒƒ^ƒ‚ƒ`ƒbƒvx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	200
 ƒUƒIƒŒƒ“EƒŠƒAƒ“	1.8	850	C+	A+	C	D+	B-	ƒUƒIƒŒƒ“EƒKƒC^˜rƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹âx1 ’´„«ƒƒ^ƒ‹x3 “º•Ðx15 ‚Ž¥«ƒAƒOƒ~ƒix1	300
 ƒUƒIƒŒƒ“Eƒ_ƒWƒAƒ“	1.6	870	C	B-	B-	C+	C+	ƒUƒIƒŒƒ“EƒŠƒAƒ“^˜rƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹àx1 •¡‘wd‡‹à‘®x2 ^|ƒeƒNƒ^ƒCƒgx2 ƒnƒjƒJƒ€‰ñ˜Hx15	400
+X|Ie	1.7	890	C+	B	C+	B+	C	?	è¦“S‰òx15 ‹â•Ðx15 ”j‘¹‚h‚bx20	150
+X|IIs	1.3	860	C	D	B	B	C-	X|Ie^˜rƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x15 ‚Ž¥«ƒAƒOƒ~ƒix3 —U“dƒwƒŠƒbƒNƒXx1	200
+X|IIIcg	1.4	900	B-	C+	B-	B-	C+	X|IIs^˜rƒp[ƒc‚ðŠŽ	í“¬Ÿ—˜Íx5 ‰””Âx15 ^|ƒeƒNƒ^ƒCƒgx2 ƒƒ^ƒ‚ƒ`ƒbƒvx5	300
 ƒwƒ”ƒBƒK[ƒhIŒ^	2.6	1000	A	B+	E+	D-	A-	ƒNƒ‰ƒXD4‚ÅŽx‹‹B	‚È‚µ	0
 ƒwƒ”ƒBƒK[ƒhIIIŒ^	2.5	1120	A+	S-	E	E	S-	ƒwƒ”ƒBƒK[ƒhIŒ^^˜rƒp[ƒc‚ðŠŽ	‰””Âx15 ƒE[ƒcd|x3 “º•Ðx10	50
 ƒwƒ”ƒBƒK[ƒhIVŒ^	2.3	1050	A	B	D+	D+	A+	ƒwƒ”ƒBƒK[ƒhIIIŒ^^˜rƒp[ƒc‚ðŠŽ	‰””Âx15 ƒE[ƒcd|x3 ƒ\ƒmƒ`ƒbƒvx3	150
@@ -265,12 +278,13 @@ E.D.G.|ƒÆ	1.3	840	D	D+	A-	C	D	E.D.G.]ƒÂ^˜rƒp[ƒc‚ðŠŽ	ŠïPÍx3 •¡‘wd‡‹à‘®x
 ƒ„[ƒf55	1.9	950	A+	C+	D	C	B+	ƒ„[ƒf54S^˜rƒp[ƒc‚ðŠŽ	”j‰óHì/‹âx10 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx5	300
 ƒ„[ƒfVMT	1.6	1000	A+	B+	C	D	B+	ƒ„[ƒf55^˜rƒp[ƒc‚ðŠŽ	”j‰óHì/‹àx1 ‰””Âx15 ƒ\ƒmƒ`ƒbƒvx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx2	400
 ƒW[ƒVƒFƒ“	2.1	960	B+	C	C+	D+	B+	—ÝŒvƒoƒgƒ‹ŽžŠÔ122000•bˆÈã‚Ü‚½‚Í—ÝŒvƒXƒRƒA22875ptˆÈã	ƒE[ƒcd|x10 “º•Ðx10 ‹â•Ðx3	150
-ƒW[ƒVƒFƒ“Eƒt[	1.5	950	B	C-	B-	C+	B	ƒW[ƒVƒFƒ“‚ðŠŽ	•¡‘wd‡‹à‘®x1 ‹â•Ðx10 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	200
-ƒW[ƒVƒFƒ“EƒV[	2.0	980	A-	A-	D	C+	A-	ƒW[ƒVƒFƒ“Eƒt[‚ðŠŽ	Ž{Ý”j‰óÍx5 ƒ`ƒ^ƒ“|x3 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒnƒjƒJƒ€‰ñ˜Hx5	300
-ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.4	1050	A	C+	C-	C	B+	ƒW[ƒVƒFƒ“EƒV[‚ðŠŽ	–h‰qÍx10 ’´„«ƒƒ^ƒ‹x3 ƒ\ƒmƒ`ƒbƒvx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
+ƒW[ƒVƒFƒ“Eƒt[	1.5	950	B	C-	B-	C+	B	ƒW[ƒVƒFƒ“^˜rƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ‹â•Ðx10 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	200
+ƒW[ƒVƒFƒ“EƒV[	2.0	980	A-	A-	D	C+	A-	ƒW[ƒVƒFƒ“Eƒt[^˜rƒp[ƒc‚ðŠŽ	Ž{Ý”j‰óÍx5 ƒ`ƒ^ƒ“|x3 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒnƒjƒJƒ€‰ñ˜Hx5	300
+ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.4	1050	A	C+	C-	C	B+	ƒW[ƒVƒFƒ“EƒV[^˜rƒp[ƒc‚ðŠŽ	–h‰qÍx10 ’´„«ƒƒ^ƒ‹x3 ƒ\ƒmƒ`ƒbƒvx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	400
 ƒXƒyƒNƒ^[IŒ^	1.9	890	B+	C	C	C+	B	—ÝŒvƒoƒgƒ‹ŽžŠÔ128000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA21750ptˆÈãB	è¦“S‰òx20 ƒjƒ…[ƒhWÏ‘Ìx1 “º•Ðx20	150
-ƒXƒyƒNƒ^[IŒ^C	1.8	900	B+	B	C-	C	B+	ƒXƒyƒNƒ^[IŒ^‚ðŠŽ	ƒjƒ…[ƒh—Z‘fŽqx1 ‹â•Ðx10 ”j‘¹‚h‚bx20	200
-ƒXƒyƒNƒ^[IIIŒ^	1.6	950	A-	B-	D+	B-	A-	ƒXƒyƒNƒ^[IŒ^C‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx3 ƒnƒjƒJƒ€‰ñ˜Hx10	300
+ƒXƒyƒNƒ^[IŒ^C	1.8	900	B+	B	C-	C	B+	ƒXƒyƒNƒ^[IŒ^^˜rƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒh—Z‘fŽqx1 ‹â•Ðx10 ”j‘¹‚h‚bx20	200
+ƒXƒyƒNƒ^[IIIŒ^	1.6	950	A-	B-	D+	B-	A-	ƒXƒyƒNƒ^[IŒ^C^˜rƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx3 ƒnƒjƒJƒ€‰ñ˜Hx10	300
+ƒXƒyƒNƒ^[MRG	1.5	860	B	D	C+	C+	B	ƒXƒyƒNƒ^[IIIŒ^^˜rƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx10 •¡‘wd‡‹à‘®x2 ƒ‹ƒ~ƒmƒ`ƒbƒvx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx5	400
 ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^	1.8	930	B+	D+	C-	B	A-	?	è¦“S‰òx10 ‹â•Ðx20 ƒnƒjƒJƒ€‰ñ˜Hx20	150
 ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^	2.0	990	A-	B-	C-	C-	A	ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^^˜rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx1 ƒ`ƒ^ƒ“|x15 ^|ƒeƒNƒ^ƒCƒgx1 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx15	200
 ƒAƒCƒAƒ“ƒtƒH[ƒgIVŒ^	2.2	1040	A+	C	D+	B-	A+	ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^^˜rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx2è¦“S‰òx30 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒ‹ƒ~ƒmƒ`ƒbƒvx2	300
@@ -281,7 +295,7 @@ E.D.G.|ƒÆ	1.3	840	D	D+	A-	C	D	E.D.G.]ƒÂ^˜rƒp[ƒc‚ðŠŽ	ŠïPÍx3 •¡‘wd‡‹à‘®x
 ƒ„ƒNƒVƒƒ	1.0	770	D	D	C+	B+	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ92000•bˆÈãB‚Ü‚½‚Í15000ptˆÈãB	è¦“S‰òx25 ƒE[ƒcd|x3 ƒƒ^ƒ‚ƒ`ƒbƒvx1	150
 ƒ„ƒNƒVƒƒE‰ü	0.5	710	D-	E	B	A+	D	ƒ„ƒNƒVƒƒ^˜rƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x15 ’´„«ƒƒ^ƒ‹x2 ƒ\ƒmƒ`ƒbƒvx3	250
 ƒ„ƒNƒVƒƒE“ó	1.2	790	D	B	C-	B+	C	ƒ„ƒNƒVƒƒE‰ü^˜rƒp[ƒc‚ðŠŽ	‰p—YÍx2 ‰””Âx25 ƒE[ƒcd|x5 ƒJƒƒ‰ƒ`ƒbƒvx1	350
-ƒ„ƒNƒVƒƒE—ë	0.9	750	D	C-	B	B	D	ƒ„ƒNƒVƒƒE“ó^˜rƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Í~5 ‹â•Ð~25 ƒ‹ƒ~ƒmƒ`ƒbƒv~2 ‚Ž¥«ƒAƒOƒ~ƒi~5	400
+ƒ„ƒNƒVƒƒE—ë	0.9	750	D	C-	B	B	D	ƒ„ƒNƒVƒƒE“ó^˜rƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx5 ‹â•Ðx25 ƒ‹ƒ~ƒmƒ`ƒbƒvx2 ‚Ž¥«ƒAƒOƒ~ƒix5	400
 ƒZƒCƒo[IŒ^	1.0	680	D-	D	C-	S-	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ54000•bˆÈãB‚Ü‚½‚Í10125ptˆÈã	è¦“S‰òx10 ’´„«ƒƒ^ƒ‹x1 “º•Ðx20	50
 ƒZƒCƒo[IŒ^R	1.2	670	E	A-	D	B+	C+	ƒZƒCƒo[IŒ^^˜rƒp[ƒc‚ðŠŽ	è¦“S‰òx5 ƒE[ƒcd|x5 ƒƒ^ƒ‚ƒ`ƒbƒvx2	100
 ƒZƒCƒo[IIŒ^	0.9	700	D	D	B-	B	C-	ƒZƒCƒo[IŒ^R^˜rƒp[ƒc‚ðŠŽ	’´„«ƒƒ^ƒ‹x2 •¡‘wd‡‹à‘®x1 ƒ\ƒmƒ`ƒbƒvx2	200
@@ -293,15 +307,16 @@ B.U.Z.|ƒÉ	0.9	630	E+	D+	B	A-	D	B.U.Z.-ƒÁ^˜rƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx5 
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^	1.2	700	D	D	B	C+	C-	—ÝŒvƒoƒgƒ‹ŽžŠÔ104000•TˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA20625ptˆÈãB	è¦“S‰òx20 ƒ`ƒ^ƒ“|x10 ƒƒ^ƒ‚ƒ`ƒbƒvx5	100
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C	1.2	750	D+	B	C+	C	C	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^^˜rƒp[ƒc‚ðŠŽ	‰””Âx20 ’´„«ƒƒ^ƒ‹x1 ƒJƒƒ‰ƒ`ƒbƒvx1	200
 ƒtƒH[ƒ~ƒ…ƒ‰FŒ^	1.1	710	D-	D-	B	B+	C	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C^˜rƒp[ƒc‚ðŠŽ	”’‹â•ŒMx30 •¡‘wd‡‹à‘®x2 ‹â•Ðx10	300
+ƒtƒH[ƒ~ƒ…ƒ‰MST	1.3	730	D+	D	B+	C+	D	ƒtƒH[ƒ~ƒ…ƒ‰FŒ^^˜rƒp[ƒc‚ðŠŽ	‰©‹à•ŒMx3 ƒ`ƒ^ƒ“|x25 ƒ‹ƒ~ƒmƒ`ƒbƒvx2 ‚Ž¥«ƒAƒOƒ~ƒix3	400
 ƒAƒXƒ‰	0.7	640	E	E	A-	B-	E	—ÝŒvƒoƒgƒ‹ŽžŠÔ110000•bˆÈã‚à‚µ‚­‚Í—ÝŒvƒXƒRƒA19500ptˆÈã(3.5AB€‹’)‚ÅŠJ•ú	‰””Âx25 ’´„«ƒƒ^ƒ‹x1 ‰©‹à•Ðx10	150
-ƒAƒXƒ‰E“ó	0.6	620	E	E-	B-	S	E	ƒAƒXƒ‰^˜rƒp[ƒc‚ðŠŽ	è¦“S‰òx15 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	250
+ƒAƒXƒ‰E“ó	0.7	620	E	E-	B-	S	E	ƒAƒXƒ‰^˜rƒp[ƒc‚ðŠŽ	è¦“S‰òx15 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	250
 ƒAƒXƒ‰EŽQ	0.7	670	E	D-	A	C	E	ƒAƒXƒ‰E“ó^˜rƒp[ƒc‚ðŠŽ	ƒvƒ‰ƒ“ƒgƒQƒCƒi[x10 ‰””Âx15 ƒƒ^ƒ‚ƒ`ƒbƒvx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	350
 ŒŽ‰e	1.1	650	D-	E+	B+	B	E+	—ÝŒvƒoƒgƒ‹ŽžŠÔ140000•bˆÈã‚à‚µ‚­‚Í—ÝŒvƒXƒRƒA24000ptˆÈã	ƒE[ƒcd|x5 ’´„«ƒƒ^ƒ‹x1 ‰©‹à•Ðx10	150
 ŒŽ‰eEV	0.6	640	E	E	A	C+	E	ŒŽ‰e^˜rƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhWÏ‘Ìx1 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	200
 ŒŽ‰eE‹Å	1.4	700	D+	D-	B	C+	D+	ŒŽ‰eEV^˜rƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx3 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx3 ”j‘¹‚h‚bx10	300
 ŒŽ‰eE—ó•—	0.5	720	E+	E	S-	D	E	ŒŽ‰eE‹Å^˜rƒp[ƒc‚ðŠŽ	Š®‘SŸ—˜Íx3 •¡‘wd‡‹à‘®x1 ƒƒ^ƒ‚ƒ`ƒbƒvx2 ƒ‚ƒmƒŠƒX‚m‚r‚h x1	400
 ƒKƒ‹ƒ€67	1.6	730	D-	B-	C	B-	C+	?	ƒ`ƒ^ƒ“|x15 ‹â•Ðx15 ƒnƒjƒJƒ€‰ñ˜Hx15	150
-ƒKƒ‹ƒ€68	1.3	710	E+	E+	B+	C-	C+	ƒKƒ‹ƒ€67^˜rƒp[ƒc‚ðŠŽ	è¦“S‰òx20 ^|ƒeƒNƒ^ƒCƒgx1 ‰©‹à•Ð~20	200
+ƒKƒ‹ƒ€68	1.3	710	E+	E+	B+	C-	C+	ƒKƒ‹ƒ€67^˜rƒp[ƒc‚ðŠŽ	è¦“S‰òx20 ^|ƒeƒNƒ^ƒCƒgx1 ‰©‹à•Ðx20	200
 ƒKƒ‹ƒ€67U	0.9	750	D	D+	A	D+	D-	ƒKƒ‹ƒ€68^˜rƒp[ƒc‚ðŠŽ	ƒRƒAƒAƒ^ƒbƒJ[x20 ƒ`ƒ^ƒ“|x30 ƒ\ƒmƒ`ƒbƒvx5 ƒ‹ƒ~ƒmƒ`ƒbƒvx2	300
 
 ¡‹r•”ƒp[ƒc
@@ -346,6 +361,9 @@ E.D.G.|ƒÆ	1.7	930	D+	B	B+	C+	C-	E.D.G.]ƒÂ^‹rƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒhŒQ‘
 ƒUƒIƒŒƒ“EƒKƒC	2.0	1080	C	B+	B	C	C	ƒUƒIƒŒƒ“^‹rƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ƒjƒ…[ƒhŒQ‘Ìx5 “º•Ðx10	200
 ƒUƒIƒŒƒ“EƒŠƒAƒ“	2.5	1100	C+	C+	C	B	B	ƒUƒIƒŒƒ“EƒKƒC^‹rƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹âx1 ƒjƒ…[ƒhWÏ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒnƒjƒJƒ€‰ñ˜Hx10	300
 ƒUƒIƒŒƒ“Eƒ_ƒWƒAƒ“	1.8	1170	C	D+	B+	C	C+	ƒUƒIƒŒƒ“Eƒ_ƒWƒAƒ“^‹rƒp[ƒc‚ðŠŽ	ƒ^[ƒŒƒbƒgƒXƒLƒ‹/‹àx1 ƒjƒ…[ƒh—‘x20 ƒJƒƒ‰ƒ`ƒbƒvx2 —U“dƒwƒŠƒbƒNƒXx2	400
+X|Ie	1.7	890	C+	C-	B	B	C-	?	ƒjƒ…[ƒhãóx20 “º•Ðx30 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx1	150
+X|IIs	1.5	1000	C+	E+	B	E+	C+	X|Ie^‹rƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx10 ƒjƒ…[ƒhŒ‹»‘Ìx1 ƒ\ƒmƒ`ƒbƒvx3	200
+X|IIIcg	1.4	1100	B-	C+	B+	E+	C	X|IIs^‹rƒp[ƒc‚ðŠŽ	í“¬Ÿ—˜Íx5 ƒjƒ…[ƒhãóx30 ƒ‹ƒ~ƒmƒ`ƒbƒvx2 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	300
 ƒwƒ”ƒBƒK[ƒhIŒ^	3.1	1300	A	E+	E+	B-	A+	ƒNƒ‰ƒXD4‚ÅŽx‹‹B	‚È‚µ	0
 ƒwƒ”ƒBƒK[ƒhIIIŒ^	3.2	1330	A+	E	E	A-	S-	ƒwƒ”ƒBƒK[ƒhIŒ^^‹rƒp[ƒc‚ðŠŽ	è¦“S‰òx10 ƒjƒ…[ƒh‘fŽqx5 ‹â•Ðx5	50
 ƒwƒ”ƒBƒK[ƒhIVŒ^	2.6	1320	A	E	D	C+	A+	ƒwƒ”ƒBƒK[ƒhIIIŒ^^‹rƒp[ƒc‚ðŠŽ	’´„«ƒƒ^ƒ‹x2 ƒjƒ…[ƒh—‘x10 “º•Ðx5	150
@@ -371,11 +389,12 @@ E.D.G.|ƒÆ	1.7	930	D+	B	B+	C+	C-	E.D.G.]ƒÂ^‹rƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒhŒQ‘
 ƒW[ƒVƒFƒ“EƒV[	2.5	1250	A-	D	D	C+	A+	ƒW[ƒVƒFƒ“Eƒt[‚ðŠŽ	Ž{Ý”j‰óÍx5 ‰””Âx10 ƒjƒ…[ƒh—Z‘fŽqx2 ‹â•Ðx3	300
 ƒW[ƒVƒFƒ“EƒpƒCƒƒ“	2.3	1370	A	D+	D+	A-	A	ƒW[ƒVƒFƒ“EƒV[‚ðŠŽ	–h‰qÍx10 ƒjƒ…[ƒhŒQ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	400
 ƒXƒyƒNƒ^[IŒ^	2.8	1090	B	C	C-	B-	B+	—ÝŒvƒoƒgƒ‹ŽžŠÔ128000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA21750ptˆÈãB	ƒE[ƒcd|x5 ƒjƒ…[ƒhãóx20 ƒƒ^ƒ‚ƒ`ƒbƒvx1	150
-ƒXƒyƒNƒ^[IŒ^C	2.5	1130	B+	B-	D+	B	A-	ƒXƒyƒNƒ^[IŒ^‚ðŠŽ	’´„«ƒƒ^ƒ‹x1 ƒjƒ…[ƒh—‘x20 ƒJƒƒ‰ƒ`ƒbƒvx1	200
-ƒXƒyƒNƒ^[IIIŒ^	2.5	1170	A-	C-	D	A-	A	ƒXƒyƒNƒ^[IŒ^C‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 è¦“S‰òx5 ƒjƒ…[ƒh—Z‘fŽqx2 ‰©‹à•Ðx5	300
+ƒXƒyƒNƒ^[IŒ^C	2.5	1130	B+	B-	D+	B	A-	ƒXƒyƒNƒ^[IŒ^^‹rƒp[ƒc‚ðŠŽ	’´„«ƒƒ^ƒ‹x1 ƒjƒ…[ƒh—‘x20 ƒJƒƒ‰ƒ`ƒbƒvx1	200
+ƒXƒyƒNƒ^[IIIŒ^	2.5	1170	A-	C-	D	A-	A	ƒXƒyƒNƒ^[IŒ^C^‹rƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹âx10 è¦“S‰òx5 ƒjƒ…[ƒh—Z‘fŽqx2 ‰©‹à•Ðx5	300
+ƒXƒyƒNƒ^[MRG	2.3	1220	B	B	C	C+	B+	ƒXƒyƒNƒ^[IIIŒ^^‹rƒp[ƒc‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx10 ƒjƒ…[ƒhWÏ‘Ìx3 ƒjƒ…[ƒhŒ‹»‘Ìx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx25	400
 ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^	1.9	1240	B+	D-	C-	A-	A-	?	ƒjƒ…[ƒh‘fŽqx10 “º•Ðx10 ”j‘¹‚h‚bx30	150
-ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^	2.1	1270	A-	D-	D+	C-	A	ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^^‹rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx1 ‰©‹à•Ðx20 ƒnƒjƒJƒ€‰ñ˜Hx15 —U“d‚ÖƒŠƒbƒNƒXx1	200
-ƒAƒCƒAƒ“ƒtƒH[ƒgIVŒ^	2.0	1410	A+	E+	D	A	A+	ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^^‹rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx2 ƒjƒ…[ƒhWÏ‘Ìx3 ‚Ž¥«ƒAƒOƒ~ƒix3 —U“d‚ÖƒŠƒbƒNƒXx2	300
+ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^	2.1	1270	A-	D-	D+	C-	A	ƒAƒCƒAƒ“ƒtƒH[ƒgIŒ^^‹rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx1 ‰©‹à•Ðx20 ƒnƒjƒJƒ€‰ñ˜Hx15 —U“dƒwƒŠƒbƒNƒXx1	200
+ƒAƒCƒAƒ“ƒtƒH[ƒgIVŒ^	2.0	1410	A+	E+	D	A	A+	ƒAƒCƒAƒ“ƒtƒH[ƒgIIŒ^^‹rƒp[ƒc‚ðŠŽ	Å—DGí“¬Íx2 ƒjƒ…[ƒhWÏ‘Ìx3 ‚Ž¥«ƒAƒOƒ~ƒix3 —U“dƒwƒŠƒbƒNƒXx2	300
 ƒVƒ…ƒ‰ƒCƒNIŒ^	2.8	750	D-	A-	B+	A-	E	ƒNƒ‰ƒXD4‚ÅŽx‹‹B	‚È‚µ	0
 ƒVƒ…ƒ‰ƒCƒNIIŒ^	2.9	700	E	S-	B+	A-	E	ƒVƒ…ƒ‰ƒCƒNIŒ^^‹rƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x5 ƒjƒ…[ƒhŒQ‘Ìx2 ‹â•Ðx20	50
 ƒVƒ…ƒ‰ƒCƒNVŒ^	1.6	770	D-	B-	A+	B	E	ƒVƒ…ƒ‰ƒCƒNIIŒ^^‹rƒp[ƒc‚ðŠŽ	‰””Âx20 ƒjƒ…[ƒhWÏ‘Ìx1 ƒƒ^ƒ‚ƒ`ƒbƒvx2	150
@@ -383,7 +402,7 @@ E.D.G.|ƒÆ	1.7	930	D+	B	B+	C+	C-	E.D.G.]ƒÂ^‹rƒp[ƒc‚ðŠŽ	ŠïPÍx3 ƒjƒ…[ƒhŒQ‘
 ƒ„ƒNƒVƒƒ	1.1	880	D	C-	A-	B	D	—ÝŒvƒoƒgƒ‹ŽžŠÔ92000•bˆÈãB‚Ü‚½‚Í15000ptˆÈã	ƒE[ƒcd|x3 ƒjƒ…[ƒhŒQ‘Ìx5 “º•Ðx30	150
 ƒ„ƒNƒVƒƒE‰ü	1.2	850	D-	B+	A-	C+	D	ƒ„ƒNƒVƒƒ^‹rƒp[ƒc‚ðŠŽ	’´„«ƒƒ^ƒ‹x2 ƒjƒ…[ƒh‘fŽqx20 ƒƒ^ƒ‚ƒ`ƒbƒvx2	250
 ƒ„ƒNƒVƒƒE“ó	1.0	940	D	D	A	E+	D	ƒ„ƒNƒVƒƒE‰ü^‹rƒp[ƒc‚ðŠŽ	‰p—YÍx2 ƒ`ƒ^ƒ“|x15 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ\ƒmƒ`ƒbƒvx2	350
-ƒ„ƒNƒVƒƒE—ë	0.5	950	D-	D-	A+	E-	D-	ƒ„ƒNƒVƒƒE“ó^‹rƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Í~5 ƒjƒ…[ƒhŒQ‘Ì~3 ƒJƒƒ‰ƒ`ƒbƒv~2 —U“dƒwƒŠƒbƒNƒX~2	400
+ƒ„ƒNƒVƒƒE—ë	0.5	950	D-	D-	A+	E-	D-	ƒ„ƒNƒVƒƒE“ó^‹rƒp[ƒc‚ðŠŽ	˜A‘±Ÿ—˜Íx5 ƒjƒ…[ƒhŒQ‘Ìx3 ƒJƒƒ‰ƒ`ƒbƒvx2 —U“dƒwƒŠƒbƒNƒXx2	400
 ƒZƒCƒo[IŒ^	2.9	770	D	A+	B	A-	D-	—ÝŒvƒoƒgƒ‹ŽžŠÔ54000ptˆÈãB‚Ü‚½‚Í10125ptˆÈã	ƒ`ƒ^ƒ“|x10 ƒjƒ…[ƒh—‘x15 ƒƒ^ƒ‚ƒ`ƒbƒvx1	50
 ƒZƒCƒo[IŒ^R	2.7	800	D+	B	B	B+	D	ƒZƒCƒo[IŒ^^‹rƒp[ƒc‚ðŠŽ	ƒ`ƒ^ƒ“|x5 ƒjƒ…[ƒh—‘x15 ƒ\ƒmƒ`ƒbƒvx5	100
 ƒZƒCƒo[IIŒ^	1.7	900	D	C+	A-	B+	D	ƒZƒCƒo[IŒ^R^‹rƒp[ƒc‚ðŠŽ	è¦“S‰òx5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒƒ^ƒ‚ƒ`ƒbƒvx2	200
@@ -395,6 +414,7 @@ B.U.Z.|ƒÉ	1.8	740	E+	S	A-	C+	E	B.U.Z.-ƒÀ^‹rƒp[ƒc‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹àx5 
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^	1.8	820	D-	B-	A-	B-	D-	—ÝŒvƒoƒgƒ‹ŽžŠÔ104000•bˆÈãB‚Ü‚½‚Í—ÝŒvƒXƒRƒA20625ptˆÈãB	ƒE[ƒcd|x5 ƒjƒ…[ƒh—‘x15 ‰©‹à•Ðx10	100
 ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^C	2.0	850	D-	C-	A-	C-	D	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^^‹rƒp[ƒc‚ðŠŽ	•¡‘wd‡‹à‘®x1 ƒjƒ…[ƒh‘fŽqx10 ƒƒ^ƒ‚ƒ`ƒbƒvx1	200
 ƒtƒH[ƒ~ƒ…ƒ‰FŒ^	1.7	900	D-	C+	A+	D	D-	ƒtƒH[ƒ~ƒ…ƒ‰IIŒ^^‹rƒp[ƒc‚ðŠŽ	”’‹â•ŒMx30 ’´„«ƒƒ^ƒ‹x3 ƒjƒ…[ƒh—Z‘fŽqx1 “º•Ðx10	300
+ƒtƒH[ƒ~ƒ…ƒ‰MST	1.4	1050	D-	D-	S-	D-	D-	ƒtƒH[ƒ~ƒ…ƒ‰FŒ^^‹rƒp[ƒc‚ðŠŽ	‰©‹à•ŒMx3 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒƒ[ƒ“ƒWd‰ñ˜Hx10 —U“dƒwƒŠƒbƒNƒXx2	400
 ƒAƒXƒ‰	1.3	750	E	A-	A+	B-	E	—ÝŒvƒoƒgƒ‹ŽžŠÔ110000•bˆÈã‚à‚µ‚­‚Í—ÝŒvƒXƒRƒA19500ptˆÈã(3.5AB€‹’)‚ÅŠJ•ú	’´„«ƒƒ^ƒ‹x2 ƒjƒ…[ƒhŒQ‘Ìx3 “º•Ðx20	150
 ƒAƒXƒ‰E“ó	1.1	780	E	C+	A+	C-	E+	ƒAƒXƒ‰^‹rƒp[ƒc‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx2 ƒƒ^ƒ‚ƒ`ƒbƒvx3 ”j‘¹‚h‚bx20	250
 ƒAƒXƒ‰EŽQ	0.7	860	E	C+	S-	D	E	ƒAƒXƒ‰E“ó^‹rƒp[ƒc‚ðŠŽ	ƒvƒ‰ƒ“ƒgƒQƒCƒi[x10 ƒjƒ…[ƒh—Z‘fŽqx1 ‹â•Ðx10 ‚Ž¥«ƒAƒOƒ~ƒix3	350
@@ -482,6 +502,7 @@ SSG9|ƒgƒ‹ƒl[ƒh	200	ŽÀ’e	150x5	16x16	600	‘å	2.0	SSG7|ƒKƒXƒg‚ðŠŽ	Œ‚”jÍx15 ƒE
 UK56‘¬ŽË‹@e	310	ŽÀ’e	320	75x12	900	C	2.4	?	ƒ`ƒ^ƒ“|x15 “º•Ðx15 ƒ\ƒmƒ`ƒbƒvx3	50
 UK56‘¬ŽË‹@eE‰ü	290	ŽÀ’e	300	85x11	900	B-	2.0	UK56‘¬ŽË‹@e‚ðŠŽ	è¦“S‰òx15 ‹â•Ðx5 ƒƒ^ƒ‚ƒ`ƒbƒvx5	150
 UK57‘¬ŽË‹@e	320	ŽÀ’e	270	124x9	1080	D+	3.0	UK56‘¬ŽË‹@eE‰ü‚ðŠŽ	ƒ`ƒ^ƒ“|x20 •¡‘wd‡‹à‘®x2 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	250
+UK57‘¬ŽË‹@eE“ó	340	ŽÀ’e	350	70x12	900	D+	2.6	UK57‘¬ŽË‹@e‚ðŠŽ	í“¬Ÿ—˜Íx5 •¡‘wd‡‹à‘®x3 ^|ƒeƒNƒ^ƒCƒgx2 ‰©‹à•Ðx25	350
 
 Ÿ•›•Ší
 œŽèžÖ’eŒn“
@@ -543,7 +564,7 @@ PD|ƒXƒeƒBƒ“ƒK[	440	”š”­(’P”­)	2550x3	1x4	12	-	3.5	?/?	PD|ƒXƒe[ƒN‚ðŠŽ	–h‰q
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	•ú“dˆÐ—Í	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 ƒuƒ‰ƒXƒ^[ƒKƒ“	260	ŽÀ’e50%^ƒjƒ…[ƒh50%	570	16x4	300	5200	3.2	?	ƒjƒ…[ƒh—‘x15 ƒƒ[ƒ“ƒWd‰ñ˜Hx15	250
 ƒuƒ‰ƒXƒ^[ƒKƒ“‰ü	240	ŽÀ’e50%^ƒjƒ…[ƒh50%	500	18x5	360	3300	3.5	ƒuƒ‰ƒXƒ^[ƒKƒ“‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹âx20 ƒjƒ…[ƒhWÏ‘Ìx3 ƒjƒ…[ƒh—Z‘fŽqx1 ‚Ž¥«ƒAƒOƒ~ƒix5	350
-‹­‰»Œ^ƒuƒ‰ƒXƒ^[ƒKƒ“	290	ŽÀ’e50%^ƒjƒ…[ƒh50%	620	12x3	240	7000	3.8	ƒuƒ‰ƒXƒ^[ƒKƒ“‰ü‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹âx40 ƒjƒ…[ƒhWÏ‘Ìx10 ƒ‚ƒmƒŠƒX‚m‚r‚hx2 —U“d‚ÖƒŠƒbƒNƒXx1	500
+‹­‰»Œ^ƒuƒ‰ƒXƒ^[ƒKƒ“	290	ŽÀ’e50%^ƒjƒ…[ƒh50%	620	12x3	240	7000	3.8	ƒuƒ‰ƒXƒ^[ƒKƒ“‰ü‚ðŠŽ	ƒ}ƒ‹ƒ`ƒXƒRƒAƒ‰[/‹âx40 ƒjƒ…[ƒhWÏ‘Ìx10 ƒ‚ƒmƒŠƒX‚m‚r‚hx2 —U“dƒwƒŠƒbƒNƒXx1	500
 
 Ÿ•â•‘•”õ
 œƒ\[ƒhŒn“
@@ -604,6 +625,7 @@ PS|ƒOƒŠƒ€ƒŠ[ƒp[	540	‹ßÚ50%^ƒjƒ…[ƒh50%	ŽaŒ‚Lv2(?x2/?x2/?x2)	Lv3(?/?/?)	’†(?
 ›–¼Ì	d—Ê	‘®«	’ÊíUŒ‚(ˆÐ—Í)	“ÁŽêUŒ‚(ˆÐ—Í)	ðŒ	‘fÞEŒMÍ	GP
 ƒJƒmƒ“ƒuƒŒ[ƒh	450	‹ßÚ	Žh“ËLv1(4500)	Lv2(8000)	?	ƒjƒ…[ƒh—‘x30 “º•Ðx20 ƒ\ƒmƒ`ƒbƒvx10	250
 ƒJƒmƒ“ƒuƒŒ[ƒhII	370	‹ßÚ	Žh“ËLv1(4500)	Lv1(7000)	ƒJƒmƒ“ƒuƒŒ[ƒh‚ðŠŽ	”’‹â•ŒMx20 ƒjƒ…[ƒhãóx20 ƒjƒ…[ƒhWÏ‘Ìx10 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	350
+CB|ƒŒƒ”ƒ@ƒeƒBƒ“	580	‹ßÚ	Žh“ËLv1(????)	Lv3(????)	ƒJƒmƒ“ƒuƒŒ[ƒhII‚ðŠŽ	”’‹â•ŒMx40 ƒjƒ…[ƒh—Z‘fŽqx3 ƒjƒ…[ƒhŒ‹»‘Ìx3 ƒƒ^ƒ‚ƒ`ƒbƒvx5	500
 
 Ÿ“Á•Ê‘•”õ
 œƒAƒTƒ‹ƒgƒ`ƒƒ[ƒWƒƒ[Œn“
@@ -749,7 +771,13 @@ SPL|ƒXƒsƒLƒ…[ƒ‹	590	”š”­(c)	6500x3	1x3	15	(’P”­)	4.5	SPL|ƒvƒƒ~ƒlƒ“ƒX‚ðŠŽ	
 œƒ‰ƒ“ƒT[Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	ŽËoŒûŒa	ƒŠƒ[ƒhŽžŠÔ	˜AŽË‘¬“x	ðŒ	‘fÞEŒMÍ	GP
 PNC|ƒ‰ƒ“ƒT[	510	ƒjƒ…[ƒh	6400	2x4	’†	3.5	90	?	ƒjƒ…[ƒh‘fŽqx10 ƒjƒ…[ƒhŒQ‘Ìx5 ”j‘¹‚h‚bx20	250
-PNC|ƒ‰ƒ“ƒT[C	460	ƒjƒ…[ƒh	5000	3x4	¬	2.5	90	PNC|ƒ‰ƒ“ƒT[‚ðŠŽ	d‰Î—ÍÍx10 ƒjƒ…[ƒh‘fŽqx25 ‚Ž¥«ƒAƒOƒ~ƒix5 —U“d‚ÖƒŠƒbƒNƒXx1	350
+PNC|ƒ‰ƒ“ƒT[C	460	ƒjƒ…[ƒh	5000	3x4	¬	2.5	90	PNC|ƒ‰ƒ“ƒT[‚ðŠŽ	d‰Î—ÍÍx10 ƒjƒ…[ƒh‘fŽqx25 ‚Ž¥«ƒAƒOƒ~ƒix5 —U“dƒwƒŠƒbƒNƒXx1	350
+PNC|ƒuƒŠƒ…[ƒiƒN	540	ƒjƒ…[ƒh	8800	1x6	‘å	3.0	(’P”­)	PNC|ƒ‰ƒ“ƒT[C‚ðŠŽ	d‰Î—ÍÍx25 ƒjƒ…[ƒhWÏ‘Ìx3 ƒjƒ…[ƒhŒ‹»‘Ìx3 ƒ‚ƒmƒŠƒX‚m‚r‚hx3	500
+
+œƒuƒŒƒCƒYƒ‰ƒ“ƒ`ƒƒ[Œn“
+›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	”š”­”¼Œa	Œø‰ÊŽ‘±	ƒŠƒ[ƒhŽžŠÔ	˜AŽË‘¬“x	ðŒ	‘fÞEŒMÍ	GP
+ƒuƒŒƒCƒYƒ‰ƒ“ƒ`ƒƒ[	540	ƒjƒ…[ƒh50%^”š”­50%	3000	2x3	9	1.5	4	90	?	ƒ`ƒ^ƒ“|x10 ƒE[ƒcd|x5 “º•Ðx20	250
+ƒuƒŒƒCƒYƒ‰ƒ“ƒ`ƒƒ[C	560	ƒjƒ…[ƒh50%^”š”­50%	2400	3x4	7	1.2	3	240	ƒuƒŒƒCƒYƒ‰ƒ“ƒ`ƒƒ[	ƒvƒ‰ƒ“ƒgƒK[ƒh/‹âx5 è¦“S‰òx40 ^|ƒeƒNƒ^ƒCƒgx1 ƒƒ^ƒ‚ƒ`ƒbƒvx5	350
 
 Ÿ•â•‘•”õ
 œECMŒn“
@@ -769,7 +797,7 @@ ECMƒOƒŒƒl[ƒh	140	5.0	3	25	1.0	2.5	‰Šú‘•”õ	‚È‚µ	0
 œƒnƒEƒ‹HSGŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	ŠgŽU—¦	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 ƒnƒEƒ‹HSG9	190	ŽÀ’e(ÕŒ‚ŽU’e)	280x8	3x4	90	’†	2.5	?	“º•Ðx30A‰©‹à•Ðx2 ƒnƒjƒJƒ€‰ñ˜Hx20	250
-ƒnƒEƒ‹HSG9R	180	ŽÀ’e(ÕŒ‚ŽU’e)	200x10	4x4	90	¬	3.0	ƒnƒEƒ‹HSG9‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx3 ‹â•Ðx5 ƒJƒƒ‰ƒ`ƒbƒvx3 —U“d‚ÖƒŠƒbƒNƒXx1	350
+ƒnƒEƒ‹HSG9R	180	ŽÀ’e(ÕŒ‚ŽU’e)	200x10	4x4	90	¬	3.0	ƒnƒEƒ‹HSG9‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx3 ‹â•Ðx5 ƒJƒƒ‰ƒ`ƒbƒvx3 —U“dƒwƒŠƒbƒNƒXx1	350
 
 œƒpƒCƒNŒn“
 ›–¼Ì	d—Ê	‘®«	’ÊíUŒ‚(ˆÐ—Í)	“ÁŽêUŒ‚(ˆÐ—Í)	[“UŒø‰Ê	[“UŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
@@ -827,40 +855,40 @@ NeLIS|T1	700	ƒjƒ…[ƒh100%(ÆŽË)	7200x2	4.5	Lv2	40	—ÝŒvƒoƒgƒ‹ŽžŠÔ73000•bˆÈãB	ƒ
 NeLIS|T2	750	ƒjƒ…[ƒh100%(ÆŽË)	4800x2	8.0	Lv1	30	NeLIS|T1‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx10 ƒjƒ…[ƒh—Z‘fŽqx2 ”j‘¹‚h‚bx20	250
 NeLIS|TXP	820	ƒjƒ…[ƒh100%(ÆŽË)	10000x2	2.5	Lv3	25	NeLIS|T2‚ðŠŽ	COMBO/‹âx15 ƒjƒ…[ƒh—‘x30 ƒjƒ…[ƒhWÏ‘Ìx10 ƒ‚ƒmƒŠƒX‚m‚r‚hx1	350
 
-¡‘_Œ‚•º‘•
+¡—VŒ‚•º‘•
 ŸŽå•Ší
 œWƒ}[ƒQƒCŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	˜AŽË¸“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒ}[ƒQƒCM40	200	ŽÀ’e	400~2	14x14	360	B	1.6	‰Šú‘•”õ	‚È‚µ	0
-ƒ}[ƒQƒCEƒJƒXƒ^ƒ€	210	ŽÀ’e	370~2	20~12	360	B+	1.7	ƒ}[ƒQƒCM40‚ðŠŽ	‰””Âx10	10
-ƒ}[ƒQƒCRF	220	ŽÀ’e(3“_ŽË)	290~2	12x20	600	B-	1.4	ƒ}[ƒQƒCEƒJƒXƒ^ƒ€‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ‰©‹à•Ðx3	50
-ƒ}[ƒQƒCEƒXƒgƒ‰ƒCƒt	250	ŽÀ’e	500~2	9x17	360	C+	1.3	ƒ}[ƒQƒCRF‚ðŠŽ	‰””Âx20 ’´„«ƒƒ^ƒ‹x1 ƒ\ƒmƒ`ƒbƒvx3	150
-ƒ}[ƒQƒCEƒoƒŠƒAƒ“ƒX	270	ŽÀ’e(3“_ŽË)	430~2	6x26	480	A	1.0	ƒ}[ƒQƒCEƒXƒgƒ‰ƒCƒt‚ðŠŽ	—VŒ‚Íx7 è¦“S‰òx20 ƒE[ƒcd|x5 ƒJƒƒ‰ƒ`ƒbƒvx1	250
-MGƒJƒXƒ^ƒ€/CV	210	ŽÀ’e	370~2	20~12	360	B+	1.7	BB.NETê—pƒAƒCƒeƒ€	BB.NET WEBƒQ[ƒ€orSƒƒ_ƒ‹x500,000	‚È‚µ
+ƒ}[ƒQƒCM40	200	ŽÀ’e	400x2	14x14	360	B	1.6	‰Šú‘•”õ	‚È‚µ	0
+ƒ}[ƒQƒCEƒJƒXƒ^ƒ€	210	ŽÀ’e	370x2	20x12	360	B+	1.7	ƒ}[ƒQƒCM40‚ðŠŽ	‰””Âx10	10
+ƒ}[ƒQƒCRF	220	ŽÀ’e(3“_ŽË)	290x2	12x20	600	B-	1.4	ƒ}[ƒQƒCEƒJƒXƒ^ƒ€‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ‰©‹à•Ðx3	50
+ƒ}[ƒQƒCEƒXƒgƒ‰ƒCƒt	250	ŽÀ’e	500x2	9x17	360	C+	1.3	ƒ}[ƒQƒCRF‚ðŠŽ	‰””Âx20 ’´„«ƒƒ^ƒ‹x1 ƒ\ƒmƒ`ƒbƒvx3	150
+ƒ}[ƒQƒCEƒoƒŠƒAƒ“ƒX	270	ŽÀ’e(3“_ŽË)	430x2	6x26	480	A	1.0	ƒ}[ƒQƒCEƒXƒgƒ‰ƒCƒt‚ðŠŽ	—VŒ‚Íx7 è¦“S‰òx20 ƒE[ƒcd|x5 ƒJƒƒ‰ƒ`ƒbƒvx1	250
+MGƒJƒXƒ^ƒ€/CV	210	ŽÀ’e	370x2	20x12	360	B+	1.7	BB.NETê—pƒAƒCƒeƒ€	BB.NET WEBƒQ[ƒ€orSƒƒ_ƒ‹x500,000	‚È‚µ
 
 œWƒŒƒ”ƒFƒ‰[Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	˜AŽË¸“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒŒƒ”ƒFƒ‰[MP20	180	ŽÀ’e	310~2	22x14	420	B-	1.5	Žx‹‹‘•”õ ðŒ•s–¾	‚È‚µ	0
-ƒŒƒ”ƒFƒ‰[MP20C	170	ŽÀ’e	250~2	26x15	480	A-	1.3	ƒŒƒ”ƒFƒ‰[MP20‚ðŠŽ	’´„«ƒƒ^ƒ‹x3 ‹â•Ðx15	50
-ƒŒƒ”ƒFƒ‰[R	190	ŽÀ’e	230~2	36x11	540	B-	1.6	ƒŒƒ”ƒFƒ‰[MP20C‚ðŠŽ	ƒE[ƒcd|x5 ‰©‹à•Ðx10 ƒƒ^ƒ‚ƒ`ƒbƒvx3	150
-ƒŒƒ”ƒFƒ‰[Eƒuƒ‹[ƒg	240	ŽÀ’e	420~2	15x16	360	B-	1.7	ƒŒƒ”ƒFƒ‰[R‚ðŠŽ	Œ‚”jÍx‚P0 ƒ`ƒ^ƒ“|x25 “º•Ðx15 ƒ\ƒmƒ`ƒbƒvx10	250
-ƒŒƒ”ƒFƒ‰[RR	230	ŽÀ’e	230~2	24x12	600	C+	1.4	ƒŒƒ”ƒFƒ‰[Eƒuƒ‹[ƒg‚ðŠŽ	Œ‚”jÍx‚Q0 è¦“S‰òx30 •¡‘wd‡‹à‘®x2 ƒƒ^ƒ‚ƒ`ƒbƒvx2	350
+ƒŒƒ”ƒFƒ‰[MP20	180	ŽÀ’e	310x2	22x14	420	B-	1.5	Žx‹‹‘•”õ ðŒ•s–¾	‚È‚µ	0
+ƒŒƒ”ƒFƒ‰[MP20C	170	ŽÀ’e	250x2	26x15	480	A-	1.3	ƒŒƒ”ƒFƒ‰[MP20‚ðŠŽ	’´„«ƒƒ^ƒ‹x3 ‹â•Ðx15	50
+ƒŒƒ”ƒFƒ‰[R	190	ŽÀ’e	230x2	36x11	540	B-	1.6	ƒŒƒ”ƒFƒ‰[MP20C‚ðŠŽ	ƒE[ƒcd|x5 ‰©‹à•Ðx10 ƒƒ^ƒ‚ƒ`ƒbƒvx3	150
+ƒŒƒ”ƒFƒ‰[Eƒuƒ‹[ƒg	240	ŽÀ’e	420x2	15x16	360	B-	1.7	ƒŒƒ”ƒFƒ‰[R‚ðŠŽ	Œ‚”jÍx‚P0 ƒ`ƒ^ƒ“|x25 “º•Ðx15 ƒ\ƒmƒ`ƒbƒvx10	250
+ƒŒƒ”ƒFƒ‰[RR	230	ŽÀ’e	230x2	24x12	600	C+	1.4	ƒŒƒ”ƒFƒ‰[Eƒuƒ‹[ƒg‚ðŠŽ	Œ‚”jÍx‚Q0 è¦“S‰òx30 •¡‘wd‡‹à‘®x2 ƒƒ^ƒ‚ƒ`ƒbƒvx2	350
 
 œƒfƒ…ƒAƒ‹ƒ}ƒVƒ“ƒKƒ“Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	˜AŽË¸“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-D90ƒfƒ…ƒAƒ‹	290	ŽÀ’e	210~2	42x12	600	C+	2.2	—VŒ‚‚ÉˆÚs‚µ‚½‚½‚ßðŒ•s–¾	ƒ`ƒ^ƒ“|x10 ƒE[ƒcd|x3 “º•Ðx25	50
-D90ƒJƒXƒ^ƒ€	270	ŽÀ’e	200~2	50x12	600	B	2.0	D90ƒfƒ…ƒAƒ‹‚ðŠŽ	‰””Âx20 è¦“S‰òx30 ƒƒ^ƒ‚ƒ`ƒbƒvx2	150
-D92ƒWƒFƒCƒiƒX	310	ŽÀ’e	220~2	60x11	600	C+	2.8	D90ƒJƒXƒ^ƒ€‚ðŠŽ	’´„«ƒƒ^ƒ‹x2 ‰©‹à•Ðx10 ƒJƒƒ‰ƒ`ƒbƒvx2	250
-D99ƒIƒ‹ƒgƒƒX	320	ŽÀ’e	260~2	36x12	540	C	1.8	D92ƒWƒFƒCƒiƒX‚ðŠŽ	í“¬Ÿ—˜Íx5 •¡‘wd‡‹à‘®x3 ‹â•Ðx15 ƒ\ƒmƒ`ƒbƒvx10	350
-D102ƒAƒVƒ…ƒ”ƒBƒ“	340	ŽÀ’e	270~2	30x13	540	C+	1.6	D99ƒIƒ‹ƒgƒƒX‚ðŠŽ	í“¬Ÿ—˜Íx10 ƒE[ƒcd|x5 ’´„«ƒƒ^ƒ‹x5 ƒJƒƒ‰ƒ`ƒbƒvx3	500
-ƒKƒ‹ƒhEƒ~ƒ‰	290	ŽÀ’e	210~2	42x12	600	C+	2.2	BB.NETê—pƒAƒCƒeƒ€	‹àƒƒ_ƒ‹x1	0
+D90ƒfƒ…ƒAƒ‹	290	ŽÀ’e	210x2	42x12	600	C+	2.2	—VŒ‚‚ÉˆÚs‚µ‚½‚½‚ßðŒ•s–¾	ƒ`ƒ^ƒ“|x10 ƒE[ƒcd|x3 “º•Ðx25	50
+D90ƒJƒXƒ^ƒ€	270	ŽÀ’e	200x2	50x12	600	B	2.0	D90ƒfƒ…ƒAƒ‹‚ðŠŽ	‰””Âx20 è¦“S‰òx30 ƒƒ^ƒ‚ƒ`ƒbƒvx2	150
+D92ƒWƒFƒCƒiƒX	310	ŽÀ’e	220x2	60x11	600	C+	2.8	D90ƒJƒXƒ^ƒ€‚ðŠŽ	’´„«ƒƒ^ƒ‹x2 ‰©‹à•Ðx10 ƒJƒƒ‰ƒ`ƒbƒvx2	250
+D99ƒIƒ‹ƒgƒƒX	320	ŽÀ’e	260x2	36x12	540	C	1.8	D92ƒWƒFƒCƒiƒX‚ðŠŽ	í“¬Ÿ—˜Íx5 •¡‘wd‡‹à‘®x3 ‹â•Ðx15 ƒ\ƒmƒ`ƒbƒvx10	350
+D102ƒAƒVƒ…ƒ”ƒBƒ“	340	ŽÀ’e	270x2	30x13	540	C+	1.6	D99ƒIƒ‹ƒgƒƒX‚ðŠŽ	í“¬Ÿ—˜Íx10 ƒE[ƒcd|x5 ’´„«ƒƒ^ƒ‹x5 ƒJƒƒ‰ƒ`ƒbƒvx3	500
+ƒKƒ‹ƒhEƒ~ƒ‰	290	ŽÀ’e	210x2	42x12	600	C+	2.2	BB.NETê—pƒAƒCƒeƒ€	‹àƒƒ_ƒ‹x1	0
 
 œWƒƒCƒhƒVƒ‡ƒbƒgŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	ŠgŽU—¦	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒƒCƒhƒVƒ‡ƒbƒg	230	ŽÀ’e	110x3~2	18x11	480	’†	1.4	ƒŒƒ”ƒFƒ‰[MP20C‚ðŠŽ	‰””Âx10 ƒjƒ…[ƒhWÏ‘Ìx2 ‰©‹à•Ðx5	50
-ƒƒCƒhƒVƒ‡ƒbƒgTF	250	ŽÀ’e(3“_ŽË)	60x5~2	18x11	600	‘å	1.5	ƒƒCƒhƒVƒ‡ƒbƒg‚ðŠŽ	è¦“S‰òx5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒ\ƒmƒ`ƒbƒvx5	150
-ƒƒCƒhƒVƒ‡ƒbƒgX	260	ŽÀ’e(’PŽË)	210x5~2	8x10	150	“Á‘å	1.5	ƒƒCƒhƒVƒ‡ƒbƒgTF‚ðŠŽ	•¡‘wd‡‹à‘®x2 ƒjƒ…[ƒhŒQ‘Ìx5 “º•Ðx15	250
-ƒƒCƒhƒVƒ‡ƒbƒgX2	280	ŽÀ’e	130x3~2	14x11	480	¬	1.6	ƒƒCƒhƒVƒ‡ƒbƒgX‚ðŠŽ	ƒx[ƒXƒK[ƒh/‹âx10 ƒE[ƒcd|x5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒJƒƒ‰ƒ`ƒbƒvx2	350
+ƒƒCƒhƒVƒ‡ƒbƒg	230	ŽÀ’e	110x3x2	18x11	480	’†	1.4	ƒŒƒ”ƒFƒ‰[MP20C‚ðŠŽ	‰””Âx10 ƒjƒ…[ƒhWÏ‘Ìx2 ‰©‹à•Ðx5	50
+ƒƒCƒhƒVƒ‡ƒbƒgTF	250	ŽÀ’e(3“_ŽË)	60x5x2	18x11	600	‘å	1.5	ƒƒCƒhƒVƒ‡ƒbƒg‚ðŠŽ	è¦“S‰òx5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒ\ƒmƒ`ƒbƒvx5	150
+ƒƒCƒhƒVƒ‡ƒbƒgX	260	ŽÀ’e(’PŽË)	210x5x2	8x10	150	“Á‘å	1.5	ƒƒCƒhƒVƒ‡ƒbƒgTF‚ðŠŽ	•¡‘wd‡‹à‘®x2 ƒjƒ…[ƒhŒQ‘Ìx5 “º•Ðx15	250
+ƒƒCƒhƒVƒ‡ƒbƒgX2	280	ŽÀ’e	130x3x2	14x11	480	¬	1.6	ƒƒCƒhƒVƒ‡ƒbƒgX‚ðŠŽ	ƒx[ƒXƒK[ƒh/‹âx10 ƒE[ƒcd|x5 ƒjƒ…[ƒh—Z‘fŽqx1 ƒJƒƒ‰ƒ`ƒbƒvx2	350
 
 Ÿ•›•Ší
 œ38Ž®‘_Œ‚eŒn“
@@ -875,15 +903,15 @@ D102ƒAƒVƒ…ƒ”ƒBƒ“	340	ŽÀ’e	270~2	30x13	540	C+	1.6	D99ƒIƒ‹ƒgƒƒX‚ðŠŽ	í“¬Ÿ—˜Í
 
 œƒC[ƒOƒ‹ƒAƒCŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	¸–§Æ€	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒC[ƒOƒ‹ƒAƒCV44	220	ŽÀ’e	2600	7x5	150	2.5”{^5.0”{	4.0	ƒNƒ‰ƒXC5“ž’BB—ÝŒvƒoƒgƒ‹ŽžŠÔ11000•bˆÈãB	è¦“S‰ò~10 “º•Ð~10	10
+ƒC[ƒOƒ‹ƒAƒCV44	220	ŽÀ’e	2600	7x5	150	2.5”{^5.0”{	4.0	ƒNƒ‰ƒXC5“ž’BB—ÝŒvƒoƒgƒ‹ŽžŠÔ11000•bˆÈãB	è¦“S‰òx10 “º•Ðx10	10
 ƒC[ƒOƒ‹ƒAƒCTF	200	ŽÀ’e(3“_ŽË)	1800	6x4	450	3.0”{^6.0”{	3.0	ƒC[ƒOƒ‹ƒAƒCV44‚ðŠŽ	‰””Âx20 ƒE[ƒcd|x5 ƒ\ƒmƒ`ƒbƒvx10	50
 ƒC[ƒOƒ‹ƒAƒCEƒ[ƒ	260	ŽÀ’e	4000	1x9	0	3.5”{^7.0”{	1.2	ƒC[ƒOƒ‹ƒAƒCTF‚ðŠŽ	—VŒ‚Íx5 •¡‘wd‡‹à‘®x1 ‹â•Ðx20 ƒƒ^ƒ‚ƒ`ƒbƒvx5	150
 ƒC[ƒOƒ‹ƒAƒCVX	270	ŽÀ’e	6000	1x7	0	3.5”{^7.0”{	2.4	ƒC[ƒOƒ‹ƒAƒCEƒ[ƒ‚Æ38Ž®‘_Œ‚eEVŽ®‚ðŠŽ	—VŒ‚Íx10 ƒE[ƒcd|x15 •¡‘wd‡‹à‘®x2 “º•Ðx20	250
 ƒC[ƒOƒ‹ƒAƒCV55	290	ŽÀ’e	3400	5x6	150	3.0”{^6.0”{	4.0	ƒC[ƒOƒ‹ƒAƒCVX‚ðŠŽ	—VŒ‚Íx15 ƒ`ƒ^ƒ“|x30 ’´„«ƒƒ^ƒ‹x3 ƒƒ^ƒ‚ƒ`ƒbƒvx5	350
 
-œLZ-‘_Œ‚eŒn“
+œLZ‘_Œ‚eŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	¸–§Æ€	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-LZ|ƒfƒCƒ‰ƒCƒg	280	ƒjƒ…[ƒh	4750	1x10	0	5.0	4.5	—ÝŒvƒoƒgƒ‹ŽžŠÔ37000•bˆÈãB‚Ü‚½‚Í‘_Œ‚•º‘•‚Ì—ÝŒvƒXƒRƒA3000ptˆÈã	è¦“S‰òx10 ƒjƒ…[ƒhãóx20 ƒ\ƒmƒ`ƒbƒvx3	50
+LZ|ƒfƒCƒ‰ƒCƒg	280	ƒjƒ…[ƒh	4750	1x10	0	5.0	4.5	—ÝŒvƒoƒgƒ‹ŽžŠÔ37000•bˆÈãB‚Ü‚½‚Í—VŒ‚•º‘•‚Ì—ÝŒvƒXƒRƒA3000ptˆÈã	è¦“S‰òx10 ƒjƒ…[ƒhãóx20 ƒ\ƒmƒ`ƒbƒvx3	50
 LZ|ƒfƒCƒ‰ƒCƒgS	290	ƒjƒ…[ƒh	5400	1x8	0	7.0	5.0	LZ-ƒfƒCƒ‰ƒCƒg‚ðŠŽ	ƒjƒ…[ƒh—‘x25 ‰©‹à•Ðx10 ƒƒ^ƒ‚ƒ`ƒbƒvx3	150
 LZ|ƒgƒ‰ƒCƒAƒh	310	ƒjƒ…[ƒh(3“_ŽË)	2800	3x9	600	5.0	4.3	LZ-ƒfƒCƒ‰ƒCƒgS‚ðŠŽ	’´„«ƒƒ^ƒ‹x5 ƒjƒ…[ƒh‘fŽqx5 ƒjƒ…[ƒhŒQ‘Ìx10	250
 LZ|ƒ”ƒFƒXƒpƒCƒ“	330	ƒjƒ…[ƒh	7300	1x5	0	5.0	5.5	LZ-ƒgƒ‰ƒCƒAƒh‚ðŠŽ	¸–§ŽËŒ‚Íx5 ƒE[ƒcd|x5 ƒjƒ…[ƒhWÏ‘Ìx10 “º•Ðx20	350
@@ -928,7 +956,7 @@ LBR|ƒGƒNƒŠƒvƒX	340	ƒjƒ…[ƒh(’PŽË)	2250	6x4	200	3.0	4.8	LBR-ƒ€[ƒ“ƒŒƒCR‚ðŠŽ	”j
 ƒoƒgƒ‹ƒ‰ƒCƒtƒ‹CSM	240	ŽÀ’e(ƒtƒ‹ƒI[ƒg)	1570	10x3	240	2.0	3.2	ƒoƒgƒ‹ƒ‰ƒCƒtƒ‹S‚ðŠŽ	Ž{Ý”j‰óÍx5 è¦“S‰òx15 ’´„«ƒƒ^ƒ‹x5 ƒjƒ…[ƒh—Z‘fŽqx1	500
 ƒeƒBƒOƒŠƒhƒ‹	240	ŽÀ’e(3“_ŽË)	650	15x4	800	2.0	3.2	BB.NETê—pƒAƒCƒeƒ€	uwBORDER BREAK UNIONxVSwPSO2xƒRƒ‰ƒ{ƒLƒƒƒ“ƒy[ƒ“v	‚È‚µ
 
-œMLZ-‘_Œ‚eŒn“
+œMLZŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	¸–§Æ€	[“UŽžŠÔ	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 MLZ|ƒVƒOƒjƒY	360	ƒjƒ…[ƒh(ƒ`ƒƒ[ƒW)	1920/2400x3/2880x3	3x4	150	4.0	2.5	3.0	ƒuƒŒƒCƒU[RF‚ðŠŽ	ƒjƒ…[ƒh—‘x20 ƒjƒ…[ƒhŒQ‘Ìx5 ƒjƒ…[ƒhWÏ‘Ìx1	150
 MLZ|ƒVƒOƒjƒYII	380	ƒjƒ…[ƒh(ƒ`ƒƒ[ƒW)	1500/1875x3/2250x3	5x3	150	4.0	1.5	2.0	MLZ-ƒVƒOƒjƒY‚ðŠŽ	ƒvƒ‰ƒCƒ€ƒL[ƒp[x5 ƒjƒ…[ƒh‘fŽqx15 ƒjƒ…[ƒh—Z‘fŽqx2 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	250
@@ -985,9 +1013,14 @@ NDƒfƒBƒeƒNƒ^[	260	8	150	2	B-	?	ƒjƒ…[ƒh—‘x20 ƒnƒjƒJƒ€‰ñ˜Hx15 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx25	
 NDƒfƒBƒeƒNƒ^[H	300	8	100	1.5	A-	NDƒfƒBƒeƒNƒ^[‚ðŠŽ	ƒXƒJƒEƒ^[/‹àx20 ƒjƒ…[ƒh‘fŽqx10 ƒjƒ…[ƒhŒQ‘Ìx20 ‚Ž¥«ƒAƒOƒ~ƒix2	350
 NDƒfƒBƒeƒNƒ^[L	330	8	200	3	C	NDƒfƒBƒeƒNƒ^[H‚ðŠŽ	ƒXƒJƒEƒ^[/‹àx50 ƒjƒ…[ƒhWÏ‘Ìx3 ƒjƒ…[ƒhŒ‹»‘Ìx1 ƒ‚ƒmƒŠƒX‚m‚r‚hx4	500
 
+œƒNƒŠƒAƒŠƒ“ƒOƒ\ƒi[Œn“
+›–¼Ì	d—Ê	õ“GŽžŠÔ	õ“G”ÍˆÍ	ŠŽ”	ƒŠƒ[ƒhŽžŠÔ	‹N”šŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
+ƒNƒŠƒAƒŠƒ“ƒOƒ\ƒi[	310	12	80	5	1.0	1.5	?	“º•Ðx25 ”j‘¹‚h‚bx25 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx5	250
+ƒNƒŠƒAƒŠƒ“ƒOƒ\ƒi[M	280	12	60	6	1.0	0.8	ƒNƒŠƒAƒŠƒ“ƒOƒ\ƒi[‚ðŠŽ	ƒXƒJƒEƒ^[/‹àx20 ‰©‹à•Ðx20 ƒƒ[ƒ“ƒWd‰ñ˜Hx15 —U“dƒwƒŠƒbƒNƒXx1	350
+
 œƒZƒ“ƒgƒŠ[ƒKƒ“Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒZƒ“ƒgƒŠ[ƒKƒ“SMG	380	ŽÀ’e	80	30x‡	800	3.0	‰Šú‘•”õ‚Å‚È‚­‚È‚Á‚½‚½‚ßðŒ•s–¾	ƒjƒ…[ƒh—‘~3 “º•Ð~3	50
+ƒZƒ“ƒgƒŠ[ƒKƒ“SMG	380	ŽÀ’e	80	30x‡	800	3.0	‰Šú‘•”õ‚Å‚È‚­‚È‚Á‚½‚½‚ßðŒ•s–¾	ƒjƒ…[ƒh—‘x3 “º•Ðx3	50
 ƒZƒ“ƒgƒŠ[ƒKƒ“AC	410	ŽÀ’e	520	5x‡	150	4.0	ƒZƒ“ƒgƒŠ[ƒKƒ“SMG‚ðŠŽ	“º•Ðx10 ‰©‹à•Ðx3	150
 ƒZƒ“ƒgƒŠ[ƒKƒ“LZ	420	ƒjƒ…[ƒh	840	3x‡	120	4.2	ƒZƒ“ƒgƒŠ[ƒKƒ“AC‚ðŠŽ	—VŒ‚Íx5 ƒjƒ…[ƒh—‘x20 ƒjƒ…[ƒhŒQ‘Ìx5 ‹â•Ðx10	250
 ƒZƒ“ƒgƒŠ[ƒKƒ“SHG	450	ŽÀ’e	230x8	3x‡	800	3.2	ƒZƒ“ƒgƒŠ[ƒKƒ“LZ‚ðŠŽ	—VŒ‚Íx10 “º•Ðx10 ƒ\ƒmƒ`ƒbƒvx5 ƒJƒƒ‰ƒ`ƒbƒvx2	350
@@ -1002,7 +1035,7 @@ NDƒfƒBƒeƒNƒ^[L	330	8	200	3	C	NDƒfƒBƒeƒNƒ^[H‚ðŠŽ	ƒXƒJƒEƒ^[/‹àx50 ƒjƒ…[ƒhW
 œƒ‚ƒXƒL[ƒgŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	ŠŽ”	‘’e”	˜AŽË‘¬“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 FAS|ƒ‚ƒXƒL[ƒg	490	ƒjƒ…[ƒh	250	5	6x‡	120	1.5	?	‰©‹à•Ðx15 ”j‘¹‚h‚bx20 ƒƒ[ƒ“ƒWd‰ñ˜Hx10	250
-FAS|ƒ‚ƒXƒL[ƒgN	510	ƒjƒ…[ƒh	160	6	10x‡	150	1.0	FAS|ƒ‚ƒXƒL[ƒg‚ðŠŽ	—VŒ‚Íx5 ƒ\ƒmƒ`ƒbƒvx5 ‚Ž¥«ƒAƒOƒ~ƒix10 —U“d‚ÖƒŠƒbƒNƒXx1	250
+FAS|ƒ‚ƒXƒL[ƒgN	510	ƒjƒ…[ƒh	160	6	10x‡	150	1.0	FAS|ƒ‚ƒXƒL[ƒg‚ðŠŽ	—VŒ‚Íx5 ƒ\ƒmƒ`ƒbƒvx5 ‚Ž¥«ƒAƒOƒ~ƒix10 —U“dƒwƒŠƒbƒNƒXx1	250
 
 œ‚U“®ƒuƒŒ[ƒhŒn“
 ›–¼Ì	d—Ê	‘®«	’ÊíUŒ‚(ˆÐ—Í)	“ÁŽêUŒ‚(ˆÐ—Í)	[“UŒø‰Ê	[“UŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
@@ -1013,7 +1046,7 @@ FAS|ƒ‚ƒXƒL[ƒgN	510	ƒjƒ…[ƒh	160	6	10x‡	150	1.0	FAS|ƒ‚ƒXƒL[ƒg‚ðŠŽ	—VŒ‚Íx5
 
 œƒŠƒ‚[ƒgƒVƒ…[ƒ^[Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	ŠŽ”	‘’e”	˜AŽË‘¬“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒŠƒ‚[ƒgƒVƒ…[ƒ^[	500	ƒjƒ…[ƒh	1300	2	8x‡	240	3.5	—ÝŒvƒoƒgƒ‹ŽžŠÔ69000•bˆÈã‚Ü‚½‚Í‘_Œ‚ƒXƒRƒA5000ptˆÈãB	ƒjƒ…[ƒh—‘x25 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10 ‚Ž¥«ƒAƒOƒ~ƒix1	250
+ƒŠƒ‚[ƒgƒVƒ…[ƒ^[	500	ƒjƒ…[ƒh	1300	2	8x‡	240	3.5	—ÝŒvƒoƒgƒ‹ŽžŠÔ69000•bˆÈã‚Ü‚½‚Í—VŒ‚ƒXƒRƒA5000ptˆÈãB	ƒjƒ…[ƒh—‘x25 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10 ‚Ž¥«ƒAƒOƒ~ƒix1	250
 ƒŠƒ‚[ƒgƒVƒ…[ƒ^[S	480	ƒjƒ…[ƒh	500	3	30x‡	600	2.0	ƒŠƒ‚[ƒgƒVƒ…[ƒ^[‚ðŠŽ	ƒgƒŠƒbƒNƒXƒ^[/‹âx3 ƒjƒ…[ƒh—Z‘fŽqx2 ƒnƒjƒJƒ€‰ñ˜Hx10 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx10	350
 ƒŠƒ‚[ƒgƒVƒ…[ƒ^[X	570	ƒjƒ…[ƒh(’PŽË)	2600	1	4x‡	120	4.0	ƒŠƒ‚[ƒgƒVƒ…[ƒ^[S‚ðŠŽ	ƒgƒŠƒbƒNƒXƒ^[/‹âx7 ƒjƒ…[ƒhŒQ‘Ìx15 ƒƒ[ƒ“ƒWd‰ñ˜Hx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx2	500
 
@@ -1021,11 +1054,12 @@ FAS|ƒ‚ƒXƒL[ƒgN	510	ƒjƒ…[ƒh	160	6	10x‡	150	1.0	FAS|ƒ‚ƒXƒL[ƒg‚ðŠŽ	—VŒ‚Íx5
 ›–¼Ì	d—Ê	Œø‰ÊŽ‘±	ŠŽ”	”š”­”¼Œa	ƒŠƒ[ƒhŽžŠÔ	‹N”šŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 ƒXƒ^ƒ“ƒOƒŒƒl[ƒh	210	2.5	3	15	1.0	3.0	?	ƒjƒ…[ƒh—‘x30 “º•Ðx20 ‚Ž¥«ƒAƒOƒ~ƒix1	150
 ƒXƒ^ƒ“ƒOƒŒƒl[ƒh‰ü	200	2.0	3	12	1.0	1.0	ƒXƒ^ƒ“ƒOƒŒƒl[ƒh‚ðŠŽ	”’‹â•ŒMx20 ƒjƒ…[ƒh‘fŽqx15 ƒJƒƒ‰ƒ`ƒbƒvx1 ƒƒ[ƒ“ƒWd‰ñ˜Hx10	250
+VŒ^ƒXƒ^ƒ“ƒOƒŒƒl[ƒh	250	3.0	2	20	1.0	4.5	ƒXƒ^ƒ“ƒOƒŒƒl[ƒh‰ü‚ðŠŽ	”’‹â•ŒMx40 ƒjƒ…[ƒhãóx15 ƒjƒ…[ƒhŒ‹»‘Ìx1 ƒ‚ƒmƒŠƒX‚m‚r‚hx4	350
 
 Ÿ“Á•Ê‘•”õ
 œƒV[ƒ‹ƒhŒn“
 ›–¼Ì	d—Ê	Ž‘±ŽžŠÔ	Œø‰Ê”ÍˆÍ	ƒ`ƒƒ[ƒWŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒV[ƒ‹ƒh”­¶‘•’u	230	120	Lv1	30	‰Šú‘•”õ‚Å‚È‚­‚È‚Á‚½‚½‚ß•s–¾	ƒjƒ…[ƒh—‘~5 “º•Ð~5	50
+ƒV[ƒ‹ƒh”­¶‘•’u	230	120	Lv1	30	‰Šú‘•”õ‚Å‚È‚­‚È‚Á‚½‚½‚ß•s–¾	ƒjƒ…[ƒh—‘x5 “º•Ðx5	50
 ƒV[ƒ‹ƒh”­¶‘•’uE‰ü	290	90	Lv2	25	ƒV[ƒ‹ƒh”­¶‘•’u‚ðŠŽ	ƒjƒ…[ƒh‘fŽqx20 ‰©‹à•Ðx15 ƒƒ^ƒ‚ƒ`ƒbƒvx1	150
 ‚o—ÍƒV[ƒ‹ƒh	330	25	Lv2	20	ƒV[ƒ‹ƒh”­¶‘•’uE‰ü‚ðŠŽ	–h‰qÍx5 ƒjƒ…[ƒhŒQ‘Ìx10 ƒjƒ…[ƒhWÏ‘Ìx3 ƒ\ƒmƒ`ƒbƒvx5	250
 
@@ -1038,14 +1072,14 @@ FAS|ƒ‚ƒXƒL[ƒgN	510	ƒjƒ…[ƒh	160	6	10x‡	150	1.0	FAS|ƒ‚ƒXƒL[ƒg‚ðŠŽ	—VŒ‚Íx5
 
 œƒ}ƒOƒlƒ^ƒCƒU[Œn“
 ›–¼Ì	d—Ê	Ž‘±ŽžŠÔ	Œø‰Ê”ÍˆÍ	ˆÚ“®‘¬“x’á‰ºŒø‰Ê	ƒ`ƒƒ[ƒWŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-ƒ}ƒOƒlƒ^ƒCƒU[	320	60	17	Lv2	30	—ÝŒvƒoƒgƒ‹ŽžŠÔ45000•bˆÈãB‚Ü‚½‚Í‘_Œ‚•º‘•‚Ì—ÝŒvƒXƒRƒA3500ptˆÈãB	ƒjƒ…[ƒh—‘x30 ƒjƒ…[ƒhWÏ‘Ìx2 “º•Ðx30	150
+ƒ}ƒOƒlƒ^ƒCƒU[	320	60	17	Lv2	30	—ÝŒvƒoƒgƒ‹ŽžŠÔ45000•bˆÈãB‚Ü‚½‚Í—VŒ‚•º‘•‚Ì—ÝŒvƒXƒRƒA3500ptˆÈãB	ƒjƒ…[ƒh—‘x30 ƒjƒ…[ƒhWÏ‘Ìx2 “º•Ðx30	150
 ƒ}ƒOƒlƒ^ƒCƒU[ƒÀ	360	40	21	Lv1	25	ƒ}ƒOƒlƒ^ƒCƒU[‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg‹àx3 ƒjƒ…[ƒhãóx30 ‹â•Ðx30 ƒƒ^ƒ‚ƒ`ƒbƒvx3	250
 ƒ}ƒOƒlƒ^ƒCƒU[ƒÁ	380	30	15	Lv3	35	ƒ}ƒOƒlƒ^ƒCƒU[ƒÀ‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx5 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ\ƒmƒ`ƒbƒvx5 ƒJƒƒ‰ƒ`ƒbƒvx1	350
 ƒQƒIƒ‹ƒO13¢	360	30	13	Lv3	35	BB.NETê—pƒAƒCƒeƒ€	BBƒRƒ‰ƒ{ƒ`ƒPƒbƒgx100–‡	0
 
 œEUSŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	ƒŠƒ[ƒh	˜AŽË‘¬“x	ŽË’ö	˜A‘±Žg—p	ŽËŠp	ƒ`ƒƒ[ƒWŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-EUS|T1	310	ŽÀ’e	270	20x‡	3.4	360	60	45	180	30	—ÝŒvƒoƒgƒ‹ŽžŠÔ61000•bˆÈã‚Ü‚½‚Í‘_Œ‚ƒXƒRƒA4500ptˆÈãB	‹â•Ðx30 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx15 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	250
+EUS|T1	310	ŽÀ’e	270	20x‡	3.4	360	60	45	180	30	—ÝŒvƒoƒgƒ‹ŽžŠÔ61000•bˆÈã‚Ü‚½‚Í—VŒ‚ƒXƒRƒA4500ptˆÈãB	‹â•Ðx30 ƒyƒ“ƒ^ƒNƒ‹‰ñ˜Hx15 ƒƒ[ƒ“ƒWd‰ñ˜Hx3	250
 EUS|T2	320	ŽÀ’e	90	45x‡	2.2	900	50	30	360	20	EUS|T1‚ðŠŽ	ƒvƒ‰ƒCƒ€ƒL[ƒp[x5 ƒ\ƒmƒ`ƒbƒvx20 ”j‘¹‚h‚bx15 ‚Ž¥«ƒAƒOƒ~ƒix3	350
 EUS|TLZ	360	ƒjƒ…[ƒh	900	5x‡	3.6	120	70	20	90	35	EUS-T2‚ðŠŽ	ƒvƒ‰ƒCƒ€ƒL[ƒp[x15 “º•Ðx40 ƒJƒƒ‰ƒ`ƒbƒvx3 ƒnƒjƒJƒ€‰ñ˜Hx20	500
 
@@ -1068,7 +1102,7 @@ ASG|ƒXƒB[ƒp[	180	ŽÀ’e	340x8	10x11	100	‘å	2.8	ƒƒCƒhƒXƒ}ƒbƒN‚ðŠŽ	‰””Âx20 ’´
 ASG|ƒXƒB[ƒp[R	230	ŽÀ’e	200x7	17x14	200	’†	2.4	ASG|ƒXƒB[ƒp[‚ðŠŽ	è¦“S‰òx15 ƒE[ƒcd|x8 ƒ\ƒmƒ`ƒbƒvx5	100
 ASG|ƒAƒ”ƒ@ƒ‰ƒ“ƒ`	260	ŽÀ’e	210x10	10x10	150	¬	1.8	ASG|ƒXƒB[ƒp[R‚ðŠŽ	ƒ`ƒ^ƒ“|x10 ’´„«ƒƒ^ƒ‹x2 ƒƒ^ƒ‚ƒ`ƒbƒvx5	150
 ASG|ƒXƒB[ƒp[RX	200	ŽÀ’e	190x8	13x15	240	“Á‘å	2	ASG|ƒAƒ”ƒ@ƒ‰ƒ“ƒ`‚ÆƒNƒCƒbƒNƒXƒ}ƒbƒN‚ðŠŽ	‰””Âx40 •¡‘wd‡‹à‘®x2 ƒ\ƒmƒ`ƒbƒvx5	250
-ASG|ƒfƒŠƒ…[ƒW	330	ŽÀ’e(3“_ŽË)	110x7	18x14	480	¬	1.5	ASG|ƒXƒB[ƒp[RX‚ðŠŽ	Œ‚”jÍx10 ƒE[ƒcd|x10 •¡‘wd‡‹à‘®x1 ƒJƒƒ‰ƒ`ƒbƒvx2	350
+ASG|ƒfƒŠƒ…[ƒW	290	ŽÀ’e(3“_ŽË)	110x7	18x14	480	¬	1.5	ASG|ƒXƒB[ƒp[RX‚ðŠŽ	Œ‚”jÍx10 ƒE[ƒcd|x10 •¡‘wd‡‹à‘®x1 ƒJƒƒ‰ƒ`ƒbƒvx2	350
 
 œLSGŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	˜AŽË‘¬“x	ŠgŽU—¦	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
@@ -1081,7 +1115,7 @@ LSG|ƒ~ƒ‰[ƒW	340	ƒjƒ…[ƒh	770x7	3x12	42	’†	3	LSG|ƒ‰ƒhƒDƒK‚ðŠŽ	Žx‰‡Íx35 ƒE[
 œ‘Î‘•bŽU’eeŒn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	’Ç‰Á‘¹ˆÐ—Í	’Ç‰Á‘¹ŽžŠÔ	‘’e”	ŠgŽU—¦	[“UŽžŠÔ	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 F70‘Î‘•bŽU’ee	330	ŽÀ’e50%^ƒjƒ…[ƒh50%(’PŽË)(ƒ`ƒƒ[ƒW)	500x5/550x5/600x5	1500	0.83	5x15	’†	1.2	1.8	?	ƒjƒ…[ƒh—‘x10 ƒjƒ…[ƒhãóx30 ƒnƒjƒJƒ€‰ñ˜Hx20	150
-F70M‘Î‘•bŽU’ee	300	ŽÀ’e50%^ƒjƒ…[ƒh50%(’PŽË)(ƒ`ƒƒ[ƒW)	300x8/330x8/360x8	2220	1.33	6x12	‘å	1.5	2.2	F70‘Î‘•bŽU’ee‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx10 ”j‘¹‚h‚bx40 —U“d‚ÖƒŠƒbƒNƒXx1	250
+F70M‘Î‘•bŽU’ee	300	ŽÀ’e50%^ƒjƒ…[ƒh50%(’PŽË)(ƒ`ƒƒ[ƒW)	300x8/330x8/360x8	2220	1.33	6x12	‘å	1.5	2.2	F70‘Î‘•bŽU’ee‚ðŠŽ	ƒjƒ…[ƒhŒQ‘Ìx10 ”j‘¹‚h‚bx40 —U“dƒwƒŠƒbƒNƒXx1	250
 F70II‘Î‘•bŽU’ee	350	ŽÀ’e50%^ƒjƒ…[ƒh50%(’PŽË)(ƒ`ƒƒ[ƒW)	750x4/825x4/900x4	1135	0.67	3x20	¬	1.2	1.4	F70M‘Î‘•bŽU’ee‚ðŠŽ	ƒoƒgƒ‹ƒAƒVƒXƒg/‹àx5 ƒjƒ…[ƒhWÏ‘Ìx2 ƒjƒ…[ƒhŒ‹»‘Ìx2 ƒ‚ƒmƒŠƒX‚m‚r‚hx3	350
 
 œCLSŒn“
@@ -1151,13 +1185,13 @@ SLS|ƒfƒBƒUƒXƒ^[	360	ƒjƒ…[ƒh(’PŽË)bƒjƒ…[ƒh	630x6b310x6	6x11	60b200	¬	3.3	
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	”š”­”¼Œa	ŠŠ‘–‘¬“x	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 ƒzƒo[ƒ}ƒCƒ“	190	”š”­	7000	1x5	16	C+	1	ƒŠƒ€ƒyƒbƒgƒ{ƒ€S‚ðŠŽ	ƒE[ƒcd|x5 ƒjƒ…[ƒh—‘x10 ƒ\ƒmƒ`ƒbƒvx3	50
 ƒzƒo[ƒ}ƒCƒ“S	220	”š”­	6200	1x6	14	A-	1	ƒzƒo[ƒ}ƒCƒ“‚ðŠŽ	è¦“S‰òx15 ƒjƒ…[ƒhWÏ‘Ìx3 ‰©‹à•Ðx5	150
-ƒzƒo[ƒ}ƒCƒ“V	240	”š”­	6900	1x3	20	D	1.2	ƒzƒo[ƒ}ƒCƒ“S‚ðŠŽ	ƒAƒ“ƒ`ƒgƒ‰ƒbƒv/‹âx3 ƒE[ƒcd|x3 ƒjƒ…[ƒh—Z‘fŽqx2 “º•Ðx20	250
+ƒzƒo[ƒ}ƒCƒ“V	240	”š”­	9500	1x3	20	D	1.2	ƒzƒo[ƒ}ƒCƒ“S‚ðŠŽ	ƒAƒ“ƒ`ƒgƒ‰ƒbƒv/‹âx3 ƒE[ƒcd|x3 ƒjƒ…[ƒh—Z‘fŽqx2 “º•Ðx20	250
 ƒzƒo[ƒ}ƒCƒ“X	200	”š”­	7600	1x4	22	A-	1.2	ƒzƒo[ƒ}ƒCƒ“V‚ðŠŽ	ƒAƒ“ƒ`ƒgƒ‰ƒbƒv/‹âx7 ‰””Âx15 ƒjƒ…[ƒhŒQ‘Ìx10 ƒJƒƒ‰ƒ`ƒbƒvx3	350
 
 œƒCƒ“ƒpƒNƒgƒ}ƒCƒ“Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	”š”­”¼Œa	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 ƒCƒ“ƒpƒNƒgƒ}ƒCƒ“	170	”š”­	6900	1x4	19	1.0	?	“º•Ðx25 ”j‘¹‚h‚bx25 ƒnƒjƒJƒ€‰ñ˜Hx10	250
-ƒCƒ“ƒpƒNƒgƒ}ƒCƒ“S	190	”š”­	5100	1x5	22	1.0	ƒCƒ“ƒpƒNƒgƒ}ƒCƒ“	ƒvƒ‰ƒ“ƒgƒK[ƒh/‹âx15 ƒƒ^ƒ‚ƒ`ƒbƒvx5 ‚Ž¥«ƒAƒOƒ~ƒix5 —U“d‚ÖƒŠƒbƒNƒXx1	350
+ƒCƒ“ƒpƒNƒgƒ}ƒCƒ“S	190	”š”­	5100	1x5	22	1.0	ƒCƒ“ƒpƒNƒgƒ}ƒCƒ“	ƒvƒ‰ƒ“ƒgƒK[ƒh/‹âx15 ƒƒ^ƒ‚ƒ`ƒbƒvx5 ‚Ž¥«ƒAƒOƒ~ƒix5 —U“dƒwƒŠƒbƒNƒXx1	350
 
 œƒfƒgƒl[ƒ^[Œn“
 ›–¼Ì	d—Ê	‘®«	ˆÐ—Í	‘’e”	”š”­”¼Œa	ƒŠƒ[ƒhŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
@@ -1183,7 +1217,7 @@ N90ƒfƒgƒl[ƒ^[U	340	”š”­(’PŽË)	3500	5x3	18	4	N70ƒfƒgƒl[ƒ^[‚ðŠŽ	Žx‰‡Íx20 ƒj
 ›–¼Ì	d—Ê	õ“GŽžŠÔ	õ“G”ÍˆÍ	ŠŽ”	‘Ï‹v—Í	ðŒ	‘fÞEŒMÍ	GP
 õ“GƒZƒ“ƒT[	310	5	60	2	4000	ƒNƒ‰ƒXC2‚ÅŽx‹‹	‚È‚µ	0
 ¬Œ^õ“GƒZƒ“ƒT[	270	5	45	3	4000	õ“GƒZƒ“ƒT[‚ðŠŽ	ƒjƒ…[ƒhãóx15 ƒjƒ…[ƒhWÏ‘Ìx3 “º•Ðx10	150
-Lˆæõ“GƒZƒ“ƒT[	330	5	95	1	4000	¬Œ^õ“GƒZƒ“ƒT[‚ðŠŽ	í—FÍx7 ƒjƒ…[ƒh—‘x15 ƒjƒ…[ƒhŒQ‘Ìx5 ƒƒ^ƒ‚ƒ`ƒbƒvx3	250
+Lˆæõ“GƒZƒ“ƒT[	330	5	95	1	8000	¬Œ^õ“GƒZƒ“ƒT[‚ðŠŽ	í—FÍx7 ƒjƒ…[ƒh—‘x15 ƒjƒ…[ƒhŒQ‘Ìx5 ƒƒ^ƒ‚ƒ`ƒbƒvx3	250
 Œy—Êõ“GƒZƒ“ƒT[	250	5	55	2	8000	Lˆæõ“GƒZƒ“ƒT[‚ðŠŽ	í—FÍx15 ƒjƒ…[ƒh—‘x30 ‹â•Ðx30 ƒJƒƒ‰ƒ`ƒbƒvx1	500
 
 œ‘Ø‹óõ“G’eŒn“
@@ -1199,9 +1233,10 @@ NDõ“GƒZƒ“ƒT[	340	10	150	2	8000	Lˆæõ“GƒZƒ“ƒT[‚ðŠŽ	ƒjƒ…[ƒhãóx10 ƒ\ƒmƒ`ƒbƒv
 LˆæNDõ“GƒZƒ“ƒT[	370	10	220	1	8000	¬Œ^NDõ“GƒZƒ“ƒT[‚ðŠŽ	í“¬Ÿ—˜Íx10 ƒjƒ…[ƒhWÏ‘Ìx5 ‰©‹à•Ðx20 ƒ‚ƒmƒŠƒX‚m‚r‚hx2	500
 
 œƒZƒ“ƒT[“ŠŽËŠí
-›–¼Ì	d—Ê	õ“G”ÍˆÍ	ŠŽ”	õ“GŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
-VƒZƒ“ƒT[“ŠŽËŠí	380	55	2	5	?	ƒjƒ…[ƒh—‘x30 “º•Ðx10 ‹â•Ðx20	250
-¬Œ^VƒZƒ“ƒT[“ŠŽËŠí	330	40	3	5	VƒZƒ“ƒT[“ŠŽËŠí‚ðŠŽ	í—FÍx10 ‰©‹à•Ðx20 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	350
+›–¼Ì	d—Ê	õ“G”ÍˆÍ	ŠŽ”	õ“GŽžŠÔ	‘Ï‹v—Í	ðŒ	‘fÞEŒMÍ	GP
+VƒZƒ“ƒT[“ŠŽËŠí	380	55	2	5	4000	?	ƒjƒ…[ƒh—‘x30 “º•Ðx10 ‹â•Ðx20	250
+¬Œ^VƒZƒ“ƒT[“ŠŽËŠí	330	40	3	5	4000	VƒZƒ“ƒT[“ŠŽËŠí‚ðŠŽ	í—FÍx10 ‰©‹à•Ðx20 ƒJƒƒ‰ƒ`ƒbƒvx2 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	350
+LˆæVƒZƒ“ƒT[“ŠŽËŠí	400	85	1	5	4000	¬Œ^VƒZƒ“ƒT[“ŠŽËŠí‚ðŠŽ	í—FÍx20 ƒjƒ…[ƒhWÏ‘Ìx10 ƒjƒ…[ƒhŒ‹»‘Ìx3 ƒƒ^ƒ‚ƒ`ƒbƒvx3	500
 
 œƒXƒ^ƒi[Œn“
 ›–¼Ì	d—Ê	ˆÐ—Í	‘®«	Œø‰ÊŽ‘±	UŒ‚”ÍˆÍ	[“UŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
@@ -1258,7 +1293,12 @@ RƒCƒ“ƒWƒFƒNƒ^[ƒÁ	580	35	1000	12000	40	30	RƒCƒ“ƒWƒFƒNƒ^[ƒÀ‚ðŠŽ	Å—DGvŒ£Íx3
 ›–¼Ì	d—Ê	‘®«	Å‘åŽ‘±ŽžŠÔ	C—‘¬“x	—LŒø‹——£	ƒ`ƒƒ[ƒWŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
 RƒƒCƒ„[ƒ†ƒjƒbƒg	540	ƒjƒ…[ƒh	18	1200	60	15	?	ƒjƒ…[ƒhŒQ‘Ìx5 ƒ\ƒmƒ`ƒbƒvx5 ”j‘¹‚h‚bx10	250
 RƒƒCƒ„[ƒ†ƒjƒbƒgƒÀ	550	ƒjƒ…[ƒh	15	1200	80	12	RƒƒCƒ„[ƒ†ƒjƒbƒg‚ðŠŽ	Ä‹NÍx10 ƒjƒ…[ƒh—Z‘fŽqx1 ƒƒ^ƒ‚ƒ`ƒbƒvx5 ƒnƒjƒJƒ€‰ñ˜Hx10	350
-RƒƒCƒ„[ƒ†ƒjƒbƒgƒÁ	590	ƒjƒ…[ƒh	10	?	60	10	RƒƒCƒ„[ƒ†ƒjƒbƒgƒÀ	Ä‹NÍx20 ƒjƒ…[ƒhWÏ‘Ìx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx3 —U“d‚ÖƒŠƒbƒNƒXx1	500
+RƒƒCƒ„[ƒ†ƒjƒbƒgƒÁ	590	ƒjƒ…[ƒh	10	?	60	10	RƒƒCƒ„[ƒ†ƒjƒbƒgƒÀ	Ä‹NÍx20 ƒjƒ…[ƒhWÏ‘Ìx5 ƒ‚ƒmƒŠƒX‚m‚r‚hx3 —U“dƒwƒŠƒbƒNƒXx1	500
+
+œƒI[ƒgƒŠƒyƒAƒVƒXƒeƒ€Œn“
+›–¼Ì	d—Ê	Å‘åŽ‘±ŽžŠÔ	C—‘¬“x	—LŒø‹——£	ƒ`ƒƒ[ƒWŽžŠÔ	ðŒ	‘fÞEŒMÍ	GP
+ƒI[ƒgƒŠƒyƒAƒVƒXƒeƒ€	490	35	B+	60	35	?	ƒjƒ…[ƒhãóx15 ƒjƒ…[ƒhWÏ‘Ìx2 ‹â•Ðx15	250
+ƒI[ƒgƒŠƒyƒAƒÀ	510	30	B+	80	30	ƒI[ƒgƒŠƒyƒAƒVƒXƒeƒ€‚ðŠŽ	ƒŠƒyƒAƒ‰[/‹àx10 ƒjƒ…[ƒh—Z‘fŽqx2 ƒ\ƒmƒ`ƒbƒvx10 ƒ‹ƒ~ƒmƒ`ƒbƒvx1	350
 
 ¡ƒ`ƒbƒv
 Ÿ“ÁŽê‹@”\ƒ`ƒbƒv
@@ -1276,7 +1316,7 @@ RƒƒCƒ„[ƒ†ƒjƒbƒgƒÁ	590	ƒjƒ…[ƒh	10	?	60	10	RƒƒCƒ„[ƒ†ƒjƒbƒgƒÀ	Ä‹NÍx20 ƒjƒ…[
 ƒAƒ“ƒ`ƒuƒŒƒCƒN	1
 ƒAƒ“ƒ`ƒuƒŒƒCƒNII	2
 ƒAƒ“ƒ`ƒuƒŒƒCƒNIII	3
-‘å”j–hŽ~	1
+‘å”j—}§	1
 ƒGƒiƒW[ƒoƒŠƒA	2
 ƒGƒiƒW[ƒoƒŠƒAII	4
 “§‰ßƒƒbƒNƒIƒ“ˆÛŽ	1
@@ -1354,10 +1394,13 @@ DEF‰ñ•œ”ÍˆÍŠg‘åII	2
 ƒŠƒjƒADEF‰ñ•œII	2
 ‘ÎDEF”j‰ó“K«	1
 ‘ÎDEF”j‰ó“K«II	2
+‘ÎDEF”j‰ó“K«III	3
 ƒAƒ“ƒ`ƒXƒ^ƒrƒŠƒeƒB	1
 ƒAƒ“ƒ`ƒXƒ^ƒrƒŠƒeƒBII	2
 ‘Ì¨§Œä“K«	1
 ‘Ì¨§Œä“K«II	2
+DEF˜AŒg‰ñ•œ	1
+DEF˜AŒg‰ñ•œII	2
 
 Ÿ‹@‘Ì‹­‰»ƒ`ƒbƒv
 ›–¼Ì	ƒRƒXƒg	Œø‰Ê
@@ -1371,7 +1414,7 @@ DEF‰ñ•œ”ÍˆÍŠg‘åII	2
 õ“G	1	õ“GF15(m)ã¸
 õ“GII	2	õ“GF45(m)ã¸
 õ“GIII	3	õ“GF75(m)ã¸
-ƒƒbƒNƒIƒ“	1	ƒƒbƒNƒIƒ“F3(m)ã¸
+ƒƒbƒNƒIƒ“	1	ƒƒbƒNƒIƒ“F5(m)ã¸
 ƒƒbƒNƒIƒ“II	2	ƒƒbƒNƒIƒ“F10(m)ã¸
 ƒƒbƒNƒIƒ“III	3	ƒƒbƒNƒIƒ“F15(m)ã¸
 DEF‰ñ•œ	1	DEF‰ñ•œF4(%)ã¸
@@ -1518,6 +1561,7 @@ DEF‘Ï‹vIII	3	DEF‘Ï‹vF250ã¸
 ƒƒ“ƒOƒXƒeƒbƒv	2
 ƒK[ƒhƒXƒeƒbƒv	1
 ƒK[ƒhƒXƒeƒbƒvII	2
+ƒK[ƒhƒXƒeƒbƒvIII	3
 
 ŸƒAƒNƒVƒ‡ƒ“ƒ`ƒbƒv(ƒWƒƒƒ“ƒvƒ{ƒ^ƒ“)
 ›–¼Ì	ƒRƒXƒg
@@ -1531,6 +1575,7 @@ DEF‘Ï‹vIII	3	DEF‘Ï‹vF250ã¸
 ƒAƒtƒ^[ƒtƒ@ƒCƒA[III	3
 DEFƒo[ƒXƒg	1
 DEFƒo[ƒXƒgII	2
+DEFƒo[ƒXƒgIII	3
 
 ¡ŒMÍ
 ŸˆêíŒnŒMÍ
@@ -1707,7 +1752,7 @@ COMBO/‹à	5	1‰ñ‚ÌoŒ‚‚ÅA“G‚ð10‹@Œ‚”j‚·‚é‚Æ—^‚¦‚ç‚ê‚éB
 ƒƒ[ƒ“ƒWd‰ñ˜H	4	WÏ‰ñ˜HŒn
 ‚Ž¥«ƒAƒOƒ~ƒi	5	WÏ‰ñ˜HŒn
 ƒ‚ƒmƒŠƒX‚m‚r‚h	6	WÏ‰ñ˜HŒn
-—U“d‚ÖƒŠƒbƒNƒX	7	WÏ‰ñ˜HŒn
+—U“dƒwƒŠƒbƒNƒX	7	WÏ‰ñ˜HŒn
 
 ¡—v¿•ºŠí
 ›–¼Ì	Œø‰Ê	d—Ê	‘®«	ƒŠƒ`ƒƒ[ƒW	Žg—pŽžŠÔ	Žg—pðŒ

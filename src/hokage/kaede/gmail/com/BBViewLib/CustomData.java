@@ -467,7 +467,7 @@ public class CustomData {
 	//----------------------------------------------------------
 	// 性能値取得系(機体)
 	//----------------------------------------------------------
-
+	
 	/**
 	 * パーツの総重量を取得する。サテライトバンカー/要請兵器が有効な場合はここで重量を加算する。
 	 * @return 総重量
@@ -626,7 +626,23 @@ public class CustomData {
 	//----------------------------------------------------------
 	// 性能取得系(パーツ)
 	//----------------------------------------------------------
-	
+
+	/**
+	 * 指定のキーのポイント値を取得する。
+	 * @param key 性能名
+	 * @return ポイント値
+	 */
+	public String getPoint(String key) {
+		int parts_len = mRecentParts.length;
+		for(int i=0; i<parts_len; i++) {
+			if(mRecentParts[i].existKey(key)) {
+				return mRecentParts[i].get(key);
+			}
+		}
+		
+		return "";
+	}
+
 	/**
 	 * 指定部位のチップ容量を取得する。
 	 * @param parts_type 指定のパーツ種類
@@ -829,7 +845,7 @@ public class CustomData {
 			
 			// チップセットボーナス
 			if(existChip("ロックオン")) {
-				ret = ret + 3;
+				ret = ret + 5;
 			}
 			else if(existChip("ロックオンII")) {
 				ret = ret + 10;
@@ -1084,13 +1100,13 @@ public class CustomData {
 
 			// フルセットボーナス
 			if(isFullSet("ヘヴィガード")) {
-				ret = ret - getFullSetBonus(250);
+				ret = ret + getFullSetBonus(250);
 			}
 			else if(isFullSet("グライフ")) {
-				ret = ret - getFullSetBonus(250);
+				ret = ret + getFullSetBonus(250);
 			}
 			else if(isFullSet("ガルム")) {
-				ret = ret - getFullSetBonus(250);
+				ret = ret + getFullSetBonus(250);
 			}
 			
 			// チップボーナス
@@ -1169,7 +1185,7 @@ public class CustomData {
 	public double getReload() {
 		double ret = 0;
 
-		try {	
+		try {
 			String spec = mRecentParts[ARMS_IDX].get("リロード");
 			ret = Double.valueOf(SpecValues.RELOAD.get(spec));
 
@@ -1184,6 +1200,9 @@ public class CustomData {
 				ret = ret - getFullSetBonus(0.03);
 			}
 			else if(isFullSet("ランドバルク")) {
+				ret = ret - getFullSetBonus(0.03);
+			}
+			else if(isFullSet("X－")) {
 				ret = ret - getFullSetBonus(0.03);
 			}
 
@@ -1219,42 +1238,38 @@ public class CustomData {
 	public double getChangeWeapon() {
 		double ret = 0;
 
-		BBData arms_parts = mRecentParts[ARMS_IDX];
-		String point = arms_parts.get("武器変更");
-		String value = SpecValues.CHANGEWEAPON.get(point);
-		double bonus = 0;
-
-		// フルセットボーナス
-		if(isFullSet("アスラ")) {
-			ret = ret - getFullSetBonus(5);
-		}
-		else if(isFullSet("月影")) {
-			ret = ret - getFullSetBonus(5);
-		}
-		else if(isFullSet("アイアンフォート")) {
-			ret = ret - getFullSetBonus(5);
-		}
-		
-		// チップセットボーナス
-		if(existChip("武器変更")) {
-			bonus = 2;
-		}
-		else if(existChip("武器変更II")) {
-			bonus = 6;
-		}
-		else if(existChip("武器変更III")) {
-			bonus = 10;
-		}
-		
-		if(existChip("腕部パーツ強化")) {
-			bonus = 2;
-		}
-		else if(existChip("腕部パーツ強化II")) {
-			bonus = 4;
-		}
-		
 		try {
-			ret = Double.valueOf(value) + bonus;
+			String spec = mRecentParts[ARMS_IDX].get("武器変更");
+			ret = Double.valueOf(SpecValues.CHANGEWEAPON.get(spec));
+
+			// フルセットボーナス
+			if(isFullSet("アスラ")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			else if(isFullSet("月影")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			else if(isFullSet("アイアンフォート")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			
+			// チップセットボーナス
+			if(existChip("武器変更")) {
+				ret = ret + getFullSetBonus(2);
+			}
+			else if(existChip("武器変更II")) {
+				ret = ret + getFullSetBonus(6);
+			}
+			else if(existChip("武器変更III")) {
+				ret = ret + getFullSetBonus(10);
+			}
+			
+			if(existChip("腕部パーツ強化")) {
+				ret = ret + getFullSetBonus(2);
+			}
+			else if(existChip("腕部パーツ強化II")) {
+				ret = ret + getFullSetBonus(4);
+			}
 			
 		} catch(Exception e) {
 			ret = 0;
@@ -1398,9 +1413,6 @@ public class CustomData {
 		// 巡航補正計算を行う。
 		ret = calcNormalDush(ret, is_start);
 		
-		// ホバー補正計算を行う。
-		ret = calcHover(ret, is_start);
-		
 		// 単位を合わせる
 		if(!mIsKmPerHour) {
 			ret = ret * 1000 / 3600;
@@ -1430,6 +1442,9 @@ public class CustomData {
 				ret = ret + getFullSetBonus(150);
 			}
 			else if(isFullSet("スペクター")) {
+				ret = ret + getFullSetBonus(150);
+			}
+			else if(isFullSet("X－")) {
 				ret = ret + getFullSetBonus(150);
 			}
 
@@ -1530,7 +1545,7 @@ public class CustomData {
 	 * @return 積載猶予
 	 */
 	public int getSpaceWeight(String blust_type) {
-		return getAntiWeight(blust_type) - getPartsWeight() - getWeaponsWeight(blust_type);
+		return getAntiWeight(blust_type) - getWeight(blust_type);
 	}
 
 	/**
@@ -1613,10 +1628,10 @@ public class CustomData {
 	public double getShotBonus(String blust_type) {
 		double ret = getShotBonus();
 		
-		if(existChip("狙撃兵装強化") && blust_type.equals("狙撃兵装")) {
+		if(existChip("遊撃兵装強化") && blust_type.equals("遊撃兵装")) {
 			ret = ret + 0.03;
 		}
-		else if(existChip("狙撃兵装強化II") && blust_type.equals("狙撃兵装")) {  // 暫定対応。値は不明。
+		else if(existChip("遊撃兵装強化II") && blust_type.equals("遊撃兵装")) {  // 暫定対応。値は不明。
 			ret = ret + 0.06;
 		}
 		
@@ -1797,14 +1812,14 @@ public class CustomData {
 	 * @return 歩行速度を返す。
 	 */
 	private double getDashBlust(String blust_type, boolean is_start) {
-		double ret = calcDash();
+		double ret = calcDash(is_start);
 
 		// 兵装強化チップの効果を反映する
 		if(existChip("強襲兵装強化") && blust_type.equals("強襲兵装")) {
-			ret = ret + 1.08;
+			ret = ret + calcHover(1.08, is_start);
 		}
 		else if(existChip("強襲兵装強化II") && blust_type.equals("強襲兵装")) {  // 暫定対応。値は不明。
-			ret = ret + 2.16;
+			ret = ret + calcHover(2.16, is_start);
 		}
 
 		// 超過を考慮した速度計算を行う
@@ -1813,9 +1828,6 @@ public class CustomData {
 		// 巡航補正計算を行う。
 		ret = calcNormalDush(ret, is_start);
 		
-		// ホバー補正計算を行う。
-		ret = calcHover(ret, is_start);
-		
 		// 単位を合わせる
 		if(!mIsKmPerHour) {
 			ret = ret * 1000 / 3600;
@@ -1823,13 +1835,21 @@ public class CustomData {
 
 		return ret;
 	}
+	
+	/**
+	 * ダッシュ速度(初速)を取得する。
+	 * @return
+	 */
+	public double calcDash() {
+		return calcDash(true);
+	}
 
 	/**
 	 * ダッシュ速度を取得する。
 	 * @param is_start 初速かどうか。
 	 * @return ダッシュ速度。
 	 */
-	public double calcDash() {
+	public double calcDash(boolean is_start) {
 		double ret = 0.0;
 	
 		String spec = mRecentParts[LEGS_IDX].get("ダッシュ");
@@ -1855,12 +1875,15 @@ public class CustomData {
 			else if(existChip("脚部パーツ強化II")) {
 				ret = ret + 2.16; // 0.60 [m/s]
 			}
+
+			// ホバー補正計算を行う。
+			ret = calcHover(ret, is_start);
 			
 			// フルセットボーナス
 			if(isFullSet("ヤクシャ")) {
 				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
 			}
-			else if(isFullSet("フォーミュラ")) {    // ホバー補正込み
+			else if(isFullSet("フォーミュラ")) {
 				ret = ret + getFullSetBonus(0.72 * 3600 / 1000);
 			}
 			else if(isFullSet("ヤーデ")) {

@@ -126,6 +126,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		if(req_arm != null) {
 			mFilter.setOtherType(req_arm);
+			mFilter.setNotHavingShow(true);
 			shown_save_key = req_arm;
 			//mSortKeys = BBDataManager.getCmpTarget("");
 		}

@@ -78,8 +78,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		bottom_layout.addView(heavy_button);
 		
 		ToggleButton sniper_button = new ToggleButton(this);
-		sniper_button.setTextOn("狙撃兵装");
-		sniper_button.setTextOff("狙撃兵装");
+		sniper_button.setTextOn("遊撃兵装");
+		sniper_button.setTextOff("遊撃兵装");
 		sniper_button.setChecked(false);
 		sniper_button.setId(TOGGLE_BUTTON_SNIPER_ID);
 		sniper_button.setLayoutParams(new LayoutParams(WC, WC, 1));

@@ -60,7 +60,7 @@ public class BBAdapterShownKeysManager implements OnClickListener, OnMultiChoice
 		mFlagsBefore = mFlags;    /* 選択状態を一時保存 */
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-		builder.setTitle("表示項目選択");
+		builder.setTitle("表示項目設定");
 		builder.setIcon(android.R.drawable.ic_menu_more);
 		builder.setMultiChoiceItems(mKeys, mFlags, this);
 		builder.setPositiveButton("OK", this);

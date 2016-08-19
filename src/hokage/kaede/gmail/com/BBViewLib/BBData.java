@@ -705,15 +705,13 @@ public class BBData extends KVCStore {
 			power_strs = power_str.split("x");
 			
 			try {
-				if(power_strs.length == 2) {
-					int power_num1 = Integer.valueOf(power_strs[0]);
-					int power_num2 = Integer.valueOf(power_strs[1]);
-					ret = power_num1 * power_num2;
+				ret = Integer.valueOf(power_strs[0]);
+				
+				for(int i=1; i<power_strs.length; i++) {
+					int power_num = Integer.valueOf(power_strs[i]);
+					ret = ret * power_num;
 				}
-				else {
-					ret = Integer.valueOf(power_strs[0]);
-				}
-
+				
 			} catch(NumberFormatException e) {
 				ret = 0;
 			}

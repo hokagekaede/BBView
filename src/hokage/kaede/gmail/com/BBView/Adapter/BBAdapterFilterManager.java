@@ -74,7 +74,7 @@ public class BBAdapterFilterManager implements OnClickListener, OnMultiChoiceCli
 		System.arraycopy(mFlags, 0, mSelectFlags, 0, mFlags.length);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-		builder.setTitle("絞込み選択");
+		builder.setTitle("フィルタ設定");
 		builder.setIcon(android.R.drawable.ic_menu_more);
 		builder.setMultiChoiceItems(FILTER_ITEMS, mSelectFlags, this);
 		builder.setPositiveButton("OK", this);

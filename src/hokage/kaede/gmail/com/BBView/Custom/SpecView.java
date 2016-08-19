@@ -134,12 +134,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		// パーツスペックを画面に表示する
 		TextView parts_spec_view = ViewBuilder.createTextView(mContext, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(parts_spec_view);
-		if(BBViewSettingManager.IS_SHOW_REALSPEC) {
-			layout_table.addView(createCustomBlustPartsViews(custom_data));
-		}
-		else {
-			layout_table.addView(createCustomBlustPartsNormalViews(custom_data));
-		}
+		layout_table.addView(createCustomBlustPartsViews(custom_data));
 		
 		// リロードスペックを画面に表示する
 		TextView weapon_spec_view = ViewBuilder.createTextView(mContext, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
@@ -153,6 +148,21 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		
 		return layout_table;
 	}
+
+	/**
+	 * パーツスペックテーブルに表示する項目一覧
+	 */
+	private static final String[] sTargetKeys = {
+		"射撃補正", "索敵", "ロックオン", "DEF回復",
+		"ブースター", "SP供給率", "エリア移動", "DEF耐久",
+		"反動吸収", "リロード", "武器変更", "予備弾数",
+		"歩行", "ダッシュ", "重量耐性", "加速"
+	};
+	
+	/**
+	 * パーツスペックテーブルに表示する項目数
+	 */
+	private static final int sTargetKeyCount = sTargetKeys.length;
 	
 	/**
 	 * パーツスペックテーブルを生成する。
@@ -162,32 +172,26 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	private TableLayout createCustomBlustPartsViews(CustomData custom_data) {
 		TableLayout table = new TableLayout(mContext);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		
-		table.addView(createCustomPartsRows(custom_data, "射撃補正"));
-		table.addView(createCustomPartsRows(custom_data, "索敵"));
-		table.addView(createCustomPartsRows(custom_data, "ロックオン"));
-		table.addView(createCustomPartsRows(custom_data, "DEF回復"));
-		table.addView(createCustomPartsRows(custom_data, "ブースター"));
-		table.addView(createCustomPartsRows(custom_data, "SP供給率"));
-		table.addView(createCustomPartsRows(custom_data, "エリア移動"));
-		table.addView(createCustomPartsRows(custom_data, "DEF耐久"));
-		table.addView(createCustomPartsRows(custom_data, "反動吸収"));
-		table.addView(createCustomPartsRows(custom_data, "リロード"));
-		table.addView(createCustomPartsRows(custom_data, "武器変更"));
-		table.addView(createCustomPartsRows(custom_data, "予備弾数"));
-		table.addView(createCustomPartsRows(custom_data, "歩行"));
-		table.addView(createCustomPartsRows(custom_data, "ダッシュ"));
-		table.addView(createCustomPartsRows(custom_data, "重量耐性"));
-		table.addView(createCustomPartsRows(custom_data, "加速"));		
+
+		if(BBViewSettingManager.IS_SHOW_REALSPEC) {
+			for(int i=0; i<sTargetKeyCount; i++) {
+				table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
+			}
+		}
+		else {
+			for(int i=0; i<sTargetKeyCount; i++) {
+				table.addView(createCustomPartsNormalRows(custom_data, sTargetKeys[i]));
+			}
+		}
 		
 		return table;
 	}
 	
 	/**
 	 * パーツスペックテーブルの行を生成する。
-	 * @param data アセンデータ
-	 * @param parts_type パーツの種類
-	 * @return 指定のパーツ種類に対応する行
+	 * @param custom_data アセンデータ
+	 * @param target_key 性能名
+	 * @return 指定の性能に対応する行
 	 */
 	private TableRow createCustomPartsRows(CustomData custom_data, String target_key) {
 		double target_value = custom_data.getSpecValue(target_key);
@@ -227,18 +231,18 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 				data_str = data_str + " (重火力兵装時：" + blust_point + " (" + blust_str + "))";
 			}
 		}
-		if(custom_data.existChip("狙撃兵装強化") || custom_data.existChip("狙撃兵装強化II")) {
+		if(custom_data.existChip("遊撃兵装強化") || custom_data.existChip("遊撃兵装強化II")) {
 			if(target_key.equals("射撃補正")) {
-				double blust_value = custom_data.getShotBonus("狙撃兵装");
+				double blust_value = custom_data.getShotBonus("遊撃兵装");
 				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
 				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (狙撃兵装時：" + blust_point + " (" + blust_str + "))";
+				data_str = data_str + " (遊撃兵装時：" + blust_point + " (" + blust_str + "))";
 			}
 			else if(target_key.equals("リロード")) {
-				double blust_value = custom_data.getReload("狙撃兵装");
+				double blust_value = custom_data.getReload("遊撃兵装");
 				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
 				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (狙撃兵装時：" + blust_point + " (" + blust_str + "))";
+				data_str = data_str + " (遊撃兵装時：" + blust_point + " (" + blust_str + "))";
 			}
 		}
 		if(custom_data.existChip("支援兵装強化") || custom_data.existChip("支援兵装強化II")) {
@@ -260,97 +264,20 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	}
 
 	/**
-	 * パーツスペックテーブルを生成する。
-	 * @param data_list データ一覧
-	 * @return パーツスペックのテーブル
-	 */
-	private TableLayout createCustomBlustPartsNormalViews(CustomData custom_data) {
-		TableLayout table = new TableLayout(mContext);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		ArrayList<TableRow> rows;
-
-		int data_len = BBDataManager.BLUST_PARTS_LIST.length;
-		
-		for(int i=0; i<data_len; i++) {
-			rows = createCustomPartsNormalRows(custom_data, BBDataManager.BLUST_PARTS_LIST[i]);
-			
-			int size = rows.size();
-			for(int j=0; j<size; j++) {
-				table.addView(rows.get(j));
-			}
-		}
-		
-		return table;
-	}
-	
-	/**
 	 * パーツスペックテーブルの行を生成する。
-	 * @param data アセンデータ
-	 * @param parts_type パーツの種類
-	 * @return 指定のパーツ種類に対応する行
+	 * @param custom_data アセンデータ
+	 * @param target_key 性能名
+	 * @return 指定の性能に対応する行
 	 */
-	private ArrayList<TableRow> createCustomPartsNormalRows(CustomData custom_data, String parts_type) {
-		ArrayList<TableRow> rows = new ArrayList<TableRow>();
-		
-		BBData parts_data = custom_data.getParts(parts_type);
-		String[] cmp_target = getCmpTarget(parts_data);
-		int size = cmp_target.length;
-		
-		for(int i=0; i<size; i++) {
-			String target_key = cmp_target[i];
-			String point = parts_data.get(target_key);
-			// double target_value = custom_data.getSpecValue(target_key);
-			// String data_str = SpecValues.getSpecUnit(target_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-			String data_str = SpecValues.getSpecUnit(point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+	private TableRow createCustomPartsNormalRows(CustomData custom_data, String target_key) {
+		String point = custom_data.getPoint(target_key);
+		String data_str = SpecValues.getSpecUnit(point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 
-			if(BBDataComparator.isPointKey(target_key)) {
-				data_str = point + " (" + data_str + ")"; 
-			}
-			
-			rows.add(ViewBuilder.createTableRow(mContext, Color.WHITE, target_key, data_str));
-		}
-
-		return rows;
-	}
-
-	private static final String[] CMP_HEAD_TARGET = {
-		"射撃補正", "索敵", "ロックオン"
-	};
-	
-	private static final String[] CMP_BODY_TARGET = {
-		"ブースター", "SP供給率", "エリア移動"
-	};
-	
-	private static final String[] CMP_ARMS_TARGET = {
-		"反動吸収", "リロード", "武器変更"
-	};
-	
-	private static final String[] CMP_LEGS_TARGET = {
-		"歩行", "ダッシュ", "重量耐性"
-	};
-
-	/**
-	 * パーツまたは武器の種類に応じた比較用のリストを取得する。
-	 * @param item パーツまたは武器データ
-	 * @return 比較用のリスト。パーツでない場合は武器用のリストを返す。
-	 */
-	public static String[] getCmpTarget(BBData item) {
-		String[] ret = {};
-		
-		if(item.existCategory("頭部パーツ")) {
-			ret = CMP_HEAD_TARGET;
-		}
-		else if(item.existCategory("胴部パーツ")) {
-			ret = CMP_BODY_TARGET;
-		}
-		else if(item.existCategory("腕部パーツ")) {
-			ret = CMP_ARMS_TARGET;
-		}
-		else if(item.existCategory("脚部パーツ")) {
-			ret = CMP_LEGS_TARGET;
+		if(BBDataComparator.isPointKey(target_key)) {
+			data_str = point + " (" + data_str + ")"; 
 		}
 		
-		return ret;
+		return ViewBuilder.createTableRow(mContext, Color.WHITE, target_key, data_str);
 	}
 	
 	/**

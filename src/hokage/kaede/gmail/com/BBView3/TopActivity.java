@@ -230,7 +230,6 @@ public class TopActivity extends BaseActivity {
 	 * アセンデータの初期化を行う。
 	 */
 	private void initCustomData() {
-		
 		BBDataManager data_mng = BBDataManager.getInstance();
 		
 		try {

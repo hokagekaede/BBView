@@ -187,10 +187,18 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 	}
 	
 	/**
-	 * 画面に制御が戻った際に、設定を読み込む
+	 * 画面に制御が戻った際に、設定を読み込む。
 	 */
 	protected void onResume() {
 		super.onResume();
+		BBViewSettingManager.loadSettings(this);
+	}
+	
+	/**
+	 * 画面から制御が離れた際に、設定を読み込む。
+	 */
+	protected void onPause() {
+		super.onPause();
 		BBViewSettingManager.loadSettings(this);
 	}
 	

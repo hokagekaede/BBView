@@ -101,7 +101,7 @@ public class BBAdapterSortKeyManager implements OnClickListener, OnCheckedChange
 	 */
 	public void showDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-		builder.setTitle("ソート選択");
+		builder.setTitle("ソート設定");
 		builder.setIcon(android.R.drawable.ic_menu_more);
 		builder.setSingleChoiceItems(mTargetKeys, getSortKeyIdx(), this);
 		

@@ -159,9 +159,9 @@ public class BBNetPageParser {
 		buf_url_str = getUrlFromNextPage(my_items_url_str, "機体");
 		getWeaponList(buf_url_str, database.getWeapons(), "重火力(");
 
-		sProgressMessage = card_name + "の狙撃兵装の武器データ取得";
+		sProgressMessage = card_name + "の遊撃兵装の武器データ取得";
 		buf_url_str = getUrlFromNextPage(my_items_url_str, "機体");
-		getWeaponList(buf_url_str, database.getWeapons(), "狙撃(");
+		getWeaponList(buf_url_str, database.getWeapons(), "遊撃(");
 
 		sProgressMessage = card_name + "の支援兵装の武器データ取得";
 		buf_url_str = getUrlFromNextPage(my_items_url_str, "機体");
@@ -397,7 +397,7 @@ public class BBNetPageParser {
 
 			String name = link_data.substring(0, num_head_idx);
 			String value = link_data.substring(num_head_idx + 1, num_tail_idx);
-			
+
 			if(manager.isMaterial(name)) {
 				output.set(name, value);
 			}

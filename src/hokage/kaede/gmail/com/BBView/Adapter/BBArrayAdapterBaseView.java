@@ -146,6 +146,9 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			else if(shown_key.equals(BBData.ARMOR_KB_KEY)) {
 				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY, value);
 			}
+			else if(shown_key.equals(BBData.BULLET_SUM_KEY)) {
+				value_str = mTargetData.get("総弾数") + "=" + SpecValues.getShowValue(mTargetData, shown_key, mIsKmPerHour);
+			}
 			else {
 				value_str = SpecValues.getShowValue(mTargetData, shown_key, mIsKmPerHour);
 			}
