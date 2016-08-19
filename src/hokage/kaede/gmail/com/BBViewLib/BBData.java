@@ -21,6 +21,9 @@ public class BBData extends KVCStore {
 	
 	// スイッチ武器の表示タイプ設定
 	private static int sRecentSwitchIdx = 0;
+	
+	// スイッチ武器のタイプBのデータ
+	private BBData mTypeB_data = null;
 
 	public int id;
 	
@@ -29,6 +32,23 @@ public class BBData extends KVCStore {
 	 */
 	public BBData() {
 		this.id = ID_ITEM_NOTHING;
+	}
+	
+	/**
+	 * スイッチ武器のタイプBデータを返す。
+	 * @return
+	 */
+	public BBData getTypeB() {
+		return mTypeB_data;
+	}
+	
+	/**
+	 * スイッチ武器のタイプBデータを設定する。
+	 * @param data
+	 * @return
+	 */
+	public void setTypeB(BBData data) {
+		mTypeB_data = data;
 	}
 	
 	/**

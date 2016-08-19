@@ -44,6 +44,8 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	public static final String[] WEAPON_TYPE_LIST  = { WEAPON_TYPE_MAIN, WEAPON_TYPE_SUB, WEAPON_TYPE_SUPPORT, WEAPON_TYPE_SPECIAL };
 	public static final String[] CHIP_TYPE_LIST    = { SKILL_CHIP_STR, POWERUP_CHIP_STR, ACTION_CHIP_STR };
 	
+	public static final int ERROR = -1;
+	
 	/**
 	 * 性能評価文字
 	 */
@@ -475,7 +477,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	//----------------------------------------------------------
 	// データ判定関連の関数
 	//----------------------------------------------------------
-
+	
 	/**
 	 * 指定の２つのデータが同じデータであるか判別する。
 	 * 判別はアイテムIDで行う。

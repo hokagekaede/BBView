@@ -2,8 +2,6 @@ package hokage.kaede.gmail.com.BBViewLib.Android;
 
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -11,8 +9,6 @@ import android.widget.TextView;
  * 基本的なビューを生成するクラス
  */
 public class ViewBuilder {
-	private final static int WC = TableLayout.LayoutParams.WRAP_CONTENT;
-	private final static int FP = TableLayout.LayoutParams.FILL_PARENT;
 	
 	/**
 	 * テーブルビューの行を生成する
@@ -35,7 +31,7 @@ public class ViewBuilder {
 		
 		return row;
 	}
-	
+
 	/**
 	 * テーブルビューの行を生成する。文字列の配列数と色番号の配列数を合わせること。
 	 * @param context 現在表示中の画面
@@ -58,7 +54,7 @@ public class ViewBuilder {
 		
 		return row;
 	}
-	
+
 	/**
 	 * テキストビューを生成する。
 	 * @param context 現在表示中の画面
@@ -72,7 +68,6 @@ public class ViewBuilder {
 		TextView text_view = new TextView(context);
 		text_view.setText(text);
 		text_view.setTextSize(BBViewSettingManager.getTextSize(context, flag));
-		text_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		text_view.setTextColor(color);
 		text_view.setBackgroundColor(bg_color);
 		
@@ -91,7 +86,6 @@ public class ViewBuilder {
 		TextView text_view = new TextView(context);
 		text_view.setText(text);
 		text_view.setTextSize(BBViewSettingManager.getTextSize(context, flag));
-		text_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		text_view.setTextColor(color);
 		
 		return text_view;

@@ -13,14 +13,20 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
 public class InfoActivity extends BaseActivity {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
-
-	public static BBData sTargetData;
+	
+	// スペック表示画面のID
+	private int sSpecLayoutId = 1000;
+	
+	private boolean isShowingTypeB = false;
 	
 	/**
 	 * アプリ起動時の処理を行う。
@@ -40,17 +46,42 @@ public class InfoActivity extends BaseActivity {
 
 		createView(data);
 	}
-
+	
 	/**
-	 * 画面の生成処理を行う。
-	 * @param data 表示するアイテム
+	 * 画面全体の生成処理を行う。
+	 * @param data
 	 */
 	private void createView(BBData data) {
-		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setGravity(Gravity.LEFT | Gravity.TOP);
 
+		LinearLayout layout_spec = new LinearLayout(this);
+		layout_spec.setOrientation(LinearLayout.VERTICAL);
+		layout_spec.setGravity(Gravity.LEFT | Gravity.TOP);
+		layout_spec.setId(sSpecLayoutId);
+		
+		setSpecView(layout_spec, data);
+		
+		layout_all.addView(layout_spec);
+
+		// スイッチ武器の場合は切り替えボタンを追加する。
+		if(data.getTypeB() != null) {
+			Button button = new Button(this);
+			button.setText("切り替え");
+			button.setOnClickListener(new OnTypeChangeListener());
+			layout_all.addView(button);
+		}
+		
+		// 全体レイアウトの画面表示
+		setContentView(layout_all);
+	} 
+
+	/**
+	 * データ表示部分の画面生成処理を行う。
+	 * @param data 表示するアイテム
+	 */
+	private void setSpecView(LinearLayout layout, BBData data) {
 		String title = data.get("名称");
 		
 		String category_str = "";
@@ -64,18 +95,16 @@ public class InfoActivity extends BaseActivity {
 		}
 
 		// タイトルとアイテム詳細情報を表示する
-		layout_all.addView(ViewBuilder.createTextView(this, title, BBViewSettingManager.FLAG_TEXTSIZE_LARGE));
-		layout_all.addView(ViewBuilder.createTextView(this, category_str, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
-		layout_all.addView(createItemInfoTable(data));
-		
-		// 全体レイアウトの画面表示
-		setContentView(layout_all);
+		layout.addView(ViewBuilder.createTextView(this, title, BBViewSettingManager.FLAG_TEXTSIZE_LARGE));
+		layout.addView(ViewBuilder.createTextView(this, category_str, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		layout.addView(createItemInfoTable(data));
 	}
 	
 	private static final String[] CALC_KEYS = {
 		BBData.FULL_POWER_KEY,
 		BBData.MAGAZINE_POWER_KEY,
 		BBData.SEC_POWER_KEY,
+		BBData.BATTLE_POWER_KEY,
 		BBData.BULLET_SUM_KEY,
 		BBData.CARRY_KEY,
 		BBData.FLAIGHT_TIME_KEY,
@@ -136,6 +165,33 @@ public class InfoActivity extends BaseActivity {
 		}
 		
 		return layout_table;
+	}
+	
+	/**
+	 * 切り替えボタン押下時の処理を行うリスナー。
+	 * タイプA/タイプBの切り替えを行う。
+	 */
+	private class OnTypeChangeListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			View view = InfoActivity.this.findViewById(sSpecLayoutId);
+			LinearLayout layout_spec = (LinearLayout)view;
+			layout_spec.removeAllViews();
+			
+			BBData data = IntentManager.getSelectedData(getIntent());
+			
+			if(isShowingTypeB) {
+				isShowingTypeB = false;
+			}
+			else {
+				isShowingTypeB = true;
+				data = data.getTypeB();   // スイッチ武器のみボタンを表示するので、nullチェックはしない
+			}
+			
+			setSpecView(layout_spec, data);
+		}
+		
 	}
 	
 }
