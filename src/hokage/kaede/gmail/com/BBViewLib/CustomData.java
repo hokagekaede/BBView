@@ -2,8 +2,6 @@ package hokage.kaede.gmail.com.BBViewLib;
 
 import java.util.ArrayList;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
-
 /**
  * アセンの詳細情報を管理するクラス。
  */
@@ -686,21 +684,11 @@ public class CustomData {
 		}
 
 		// フルセットボーナス
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			if(isFullSet("ヘヴィガード")) {
-				ret = ret + getFullSetBonus(3);
-			}
-			else if(isFullSet("ロージー")) {
-				ret = ret + getFullSetBonus(4.5);
-			}
+		if(isFullSet("ヘヴィガード")) {
+			ret = ret + getFullSetBonus(3);
 		}
-		else {
-			if(isFullSet("ヘヴィガード")) {
-				ret = ret + getFullSetBonus(3);
-			}
-			else if(isFullSet("ロージー")) {
-				ret = ret + getFullSetBonus(3);
-			}
+		else if(isFullSet("ロージー")) {
+			ret = ret + getFullSetBonus(4.5);
 		}
 		
 		// チップ上乗せ分を反映する
@@ -735,21 +723,14 @@ public class CustomData {
 			ret = Double.valueOf(value);
 			
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("ネレイド")) {
-					ret = ret + getFullSetBonus(0.04);
-				}
-				else if(isFullSet("クーガー")) {
-					ret = ret + getFullSetBonus(0.04);
-				}
-				else if(isFullSet("アスラ")) {
-					ret = ret + getFullSetBonus(0.04);
-				}
+			if(isFullSet("ネレイド")) {
+				ret = ret + getFullSetBonus(0.05);
 			}
-			else {
-				if(isFullSet("ネレイド")) {
-					ret = ret + getFullSetBonus(0.04);
-				}	
+			else if(isFullSet("クーガー")) {
+				ret = ret + getFullSetBonus(0.05);
+			}
+			else if(isFullSet("アスラ")) {
+				ret = ret + getFullSetBonus(0.05);
 			}
 			
 			// チップセットボーナス
@@ -836,21 +817,14 @@ public class CustomData {
 			ret = Integer.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("迅牙")) {
-					ret = ret + getFullSetBonus(5);
-				}
-				else if(isFullSet("ヤクシャ")) {
-					ret = ret + getFullSetBonus(5);
-				}
-				else if(isFullSet("ヤーデ")) {
-					ret = ret + getFullSetBonus(5);
-				}
+			if(isFullSet("迅牙")) {
+				ret = ret + getFullSetBonus(5);
 			}
-			else {
-				if(isFullSet("迅牙")) {
-					ret = ret + getFullSetBonus(5);
-				}
+			else if(isFullSet("ヤクシャ")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			else if(isFullSet("ヤーデ")) {
+				ret = ret + getFullSetBonus(5);
 			}
 			
 			// チップセットボーナス
@@ -893,20 +867,14 @@ public class CustomData {
 			ret = Double.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("グライフ")) {
-					ret = ret + getFullSetBonus(7);
-				}
-				if(isFullSet("B.U.Z.")) {
-					ret = ret + getFullSetBonus(7);
-				}
+			if(isFullSet("グライフ")) {
+				ret = ret + getFullSetBonus(10);
 			}
-			else {
-				if(isFullSet("グライフ")) {
-					ret = ret + getFullSetBonus(7);
-				}
+			if(isFullSet("B.U.Z.")) {
+				ret = ret + getFullSetBonus(10);
 			}
 			
+			// チップボーナス
 			if(existChip("DEF回復")) {
 				ret = ret + 4.0;
 			}
@@ -943,8 +911,8 @@ public class CustomData {
 	 * ブースター容量の値を取得する。
 	 * @return ブースター容量の値。
 	 */
-	public int getBoost() {
-		int ret = 0;
+	public double getBoost() {
+		double ret = 0;
 
 		BBData body_parts = mRecentParts[BODY_IDX];
 		String point = body_parts.get("ブースター");
@@ -954,21 +922,17 @@ public class CustomData {
 			ret = Integer.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("エンフォーサー")) {
-					ret = ret + getFullSetBonus(7);    // 2016/5/29暫定値
-				}
-				else if(isFullSet("雷花")) {
-					ret = ret + getFullSetBonus(3);
-				}
-				else if(isFullSet("スペクター")) {
-					ret = ret + getFullSetBonus(3);
-				}
+			if(isFullSet("エンフォーサー")) {
+				ret = ret + getFullSetBonus(7.5);
 			}
-			else {
-				if(isFullSet("エンフォーサー")) {
-					ret = ret + getFullSetBonus(3);
-				}
+			else if(isFullSet("雷花")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			else if(isFullSet("スペクター")) {
+				ret = ret + getFullSetBonus(5);
+			}
+			else if(isFullSet("シュライク")) {
+				ret = ret + getFullSetBonus(5);
 			}
 
 			// チップセットボーナス
@@ -1011,27 +975,17 @@ public class CustomData {
 			ret = Double.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("ディスカス")) {
-					ret = ret + getFullSetBonus(0.10);
-				}
-				else if(isFullSet("ザオレン")) {
-					ret = ret + getFullSetBonus(0.05);
-				}
-				else if(isFullSet("セイバー")) {
-					ret = ret + getFullSetBonus(0.05);
-				}
-				else if(isFullSet("迅牙")) {
-					ret = ret + getFullSetBonus(0.05);
-				}
+			if(isFullSet("ディスカス")) {
+				ret = ret + getFullSetBonus(0.075);
 			}
-			else {
-				if(isFullSet("ディスカス")) {
-					ret = ret + getFullSetBonus(0.05);
-				}
-				else if(isFullSet("ザオレン")) {
-					ret = ret + getFullSetBonus(0.05);
-				}
+			else if(isFullSet("ザオレン")) {
+				ret = ret + getFullSetBonus(0.050);
+			}
+			else if(isFullSet("セイバー")) {
+				ret = ret + getFullSetBonus(0.05);
+			}
+			else if(isFullSet("迅牙")) {
+				ret = ret + getFullSetBonus(0.05);
 			}
 
 			// チップセットボーナス
@@ -1074,24 +1028,14 @@ public class CustomData {
 			ret = Double.valueOf(value);
 			
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("セイバー")) {
-					ret = ret - getFullSetBonus(0.5);
-				}
-				else if(isFullSet("ジーシェン")) {
-					ret = ret - getFullSetBonus(0.5);
-				}
-				else if(isFullSet("雷花")) {
-					ret = ret - getFullSetBonus(0.5);
-				}
+			if(isFullSet("セイバー")) {
+				ret = ret - getFullSetBonus(0.5);
 			}
-			else {
-				if(isFullSet("セイバー")) {
-					ret = ret - getFullSetBonus(0.5);
-				}
-				else if(isFullSet("ジーシェン")) {
-					ret = ret - getFullSetBonus(0.5);
-				}
+			else if(isFullSet("ジーシェン")) {
+				ret = ret - getFullSetBonus(0.5);
+			}
+			else if(isFullSet("雷花")) {
+				ret = ret - getFullSetBonus(0.5);
 			}
 			
 			// チップセットボーナス
@@ -1139,15 +1083,17 @@ public class CustomData {
 			ret = Double.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("ヘヴィガード")) {
-					ret = ret - getFullSetBonus(175);  // 2016/05/29暫定
-				}
-				else if(isFullSet("グライフ")) {
-					ret = ret - getFullSetBonus(175);  // 2016/05/29暫定
-				}
+			if(isFullSet("ヘヴィガード")) {
+				ret = ret - getFullSetBonus(250);
+			}
+			else if(isFullSet("グライフ")) {
+				ret = ret - getFullSetBonus(250);
+			}
+			else if(isFullSet("ガルム")) {
+				ret = ret - getFullSetBonus(250);
 			}
 			
+			// チップボーナス
 			if(existChip("DEF耐久")) {
 				ret = ret + 100;
 			}
@@ -1228,27 +1174,17 @@ public class CustomData {
 			ret = Double.valueOf(SpecValues.RELOAD.get(spec));
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("E.D.G.")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
-				else if(isFullSet("月影")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
-				else if(isFullSet("ツェーブラ")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
-				else if(isFullSet("ランドバルク")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
+			if(isFullSet("E.D.G.")) {
+				ret = ret - getFullSetBonus(0.045);
 			}
-			else {
-				if(isFullSet("E.D.G.")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
-				else if(isFullSet("月影")) {
-					ret = ret - getFullSetBonus(0.03);
-				}
+			else if(isFullSet("月影")) {
+				ret = ret - getFullSetBonus(0.03);
+			}
+			else if(isFullSet("ツェーブラ")) {
+				ret = ret - getFullSetBonus(0.03);
+			}
+			else if(isFullSet("ランドバルク")) {
+				ret = ret - getFullSetBonus(0.03);
 			}
 
 			// チップセットボーナス
@@ -1289,16 +1225,14 @@ public class CustomData {
 		double bonus = 0;
 
 		// フルセットボーナス
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			if(isFullSet("アスラ")) {
-				ret = ret - getFullSetBonus(6);    // 2016/5/29暫定値
-			}
-			else if(isFullSet("月影")) {
-				ret = ret - getFullSetBonus(6);    // 2016/5/29暫定値
-			}
-			else if(isFullSet("アイアンフォート")) {
-				ret = ret - getFullSetBonus(6);    // 2016/5/29暫定値
-			}
+		if(isFullSet("アスラ")) {
+			ret = ret - getFullSetBonus(5);
+		}
+		else if(isFullSet("月影")) {
+			ret = ret - getFullSetBonus(5);
+		}
+		else if(isFullSet("アイアンフォート")) {
+			ret = ret - getFullSetBonus(5);
 		}
 		
 		// チップセットボーナス
@@ -1344,18 +1278,11 @@ public class CustomData {
 			ret = Double.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("アイアンフォート")) {
-					ret = ret + getFullSetBonus(3);
-				}
-				else if(isFullSet("ザオレン")) {
-					ret = ret + getFullSetBonus(3);
-				}
+			if(isFullSet("アイアンフォート")) {
+				ret = ret + getFullSetBonus(3);
 			}
-			else {
-				if(isFullSet("アイアンフォート")) {
-					ret = ret + getFullSetBonus(3);
-				}
+			else if(isFullSet("ザオレン")) {
+				ret = ret + getFullSetBonus(3);
 			}
 			
 			// チップボーナス
@@ -1423,13 +1350,13 @@ public class CustomData {
 			
 			// フルセットボーナス
 			if(isFullSet("シュライク")) {
-				ret = ret + getFullSetBonus(1.62);
+				ret = ret + getFullSetBonus(1.62);    // +0.45[m/s]
 			}
 			else if(isFullSet("B.U.Z.")) {
 				ret = ret + getFullSetBonus(2.16);
 			}
 			else if(isFullSet("ケーファー")) {
-				ret = ret + getFullSetBonus(1.62);
+				ret = ret + getFullSetBonus(1.62);    // +0.45[m/s]
 			}
 			
 			// 上限値によるガードを行う (ホバー：14.70[m/s], 二脚：11.02[m/s])
@@ -1496,27 +1423,14 @@ public class CustomData {
 			ret = Integer.valueOf(value);
 			
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("クーガー")) {
-					ret = ret + getFullSetBonus(150);
-				}
-				else if(isFullSet("ランドバルク")) {
-					ret = ret + getFullSetBonus(150);
-				}
-				else if(isFullSet("スペクター")) {
-					ret = ret + getFullSetBonus(150);
-				}
+			if(isFullSet("クーガー")) {
+				ret = ret + getFullSetBonus(150);
 			}
-			else {
-				if(isFullSet("クーガー")) {
-					ret = ret + getFullSetBonus(100);
-				}
-				else if(isFullSet("ランドバルク")) {
-					ret = ret + getFullSetBonus(150);
-				}
-				else if(isFullSet("スペクター")) {
-					ret = ret + getFullSetBonus(150);
-				}
+			else if(isFullSet("ランドバルク")) {
+				ret = ret + getFullSetBonus(150);
+			}
+			else if(isFullSet("スペクター")) {
+				ret = ret + getFullSetBonus(150);
 			}
 
 			// チップセットボーナス
@@ -1559,24 +1473,17 @@ public class CustomData {
 			ret = Double.valueOf(value);
 
 			// フルセットボーナス
-			if(BBViewSettingManager.IS_VER_X_ON) {
-				if(isFullSet("ガルム")) {
-					ret = ret - getFullSetBonus(0.54);
-				}
-				else if(isFullSet("ジーシェン")) {
-					ret = ret - getFullSetBonus(0.54);
-				}
-				else if(isFullSet("ネレイド")) {
-					ret = ret - getFullSetBonus(0.54);
-				}
-				else if(isFullSet("フォーミュラ")) {
-					ret = ret - getFullSetBonus(0.54);
-				}
+			if(isFullSet("ガルム")) {
+				ret = ret - getFullSetBonus(0.54);
 			}
-			else {
-				if(isFullSet("ガルム")) {
-					ret = ret - getFullSetBonus(0.54);
-				}
+			else if(isFullSet("ジーシェン")) {
+				ret = ret - getFullSetBonus(0.54);
+			}
+			else if(isFullSet("ネレイド")) {
+				ret = ret - getFullSetBonus(0.54);
+			}
+			else if(isFullSet("フォーミュラ")) {
+				ret = ret - getFullSetBonus(0.54);
 			}
 
 			// チップボーナス
@@ -1748,8 +1655,8 @@ public class CustomData {
 	 * @param blust_type 兵装の種類
 	 * @return ブースター容量の値。
 	 */
-	public int getBoost(String blust_type) {
-		int ret = getBoost();
+	public double getBoost(String blust_type) {
+		double ret = getBoost();
 
 		if(existChip("強襲兵装強化") && blust_type.equals("強襲兵装")) {
 			ret = ret + 3;
@@ -1828,21 +1735,11 @@ public class CustomData {
 	public double getReload(String blust_type) {
 		double ret = getReload();
 
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			if(existChip("遊撃兵装強化") && blust_type.equals("遊撃兵装")) {
-				ret = ret - 0.02;
-			}
-			else if(existChip("遊撃兵装強化II") && blust_type.equals("遊撃兵装")) {  // 暫定対応。値は不明。
-				ret = ret - 0.04;
-			}
+		if(existChip("遊撃兵装強化") && blust_type.equals("遊撃兵装")) {
+			ret = ret - 0.02;
 		}
-		else {
-			if(existChip("狙撃兵装強化") && blust_type.equals("狙撃兵装")) {
-				ret = ret - 0.02;
-			}
-			else if(existChip("狙撃兵装強化II") && blust_type.equals("狙撃兵装")) {  // 暫定対応。値は不明。
-				ret = ret - 0.04;
-			}
+		else if(existChip("遊撃兵装強化II") && blust_type.equals("遊撃兵装")) {  // 暫定対応。値は不明。
+			ret = ret - 0.04;
 		}
 		
 		return ret;
@@ -2600,36 +2497,20 @@ public class CustomData {
 	public boolean isBreak(double attack_value) {
 		boolean ret = false;
 		
-
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			if(existChip("大破抑制")) {
-				if(attack_value - SpecValues.BLUST_BREAK_GUARD_VAL >= SpecValues.getBlustBreakDamage()) {
-					ret = true;
-				}
-				else {
-					ret = false;
-				}
+		if(existChip("大破抑制")) {
+			if(attack_value - SpecValues.BLUST_BREAK_GUARD_VAL >= SpecValues.getBlustBreakDamage()) {
+				ret = true;
 			}
 			else {
-				if(attack_value >= SpecValues.getBlustBreakDamage()) {
-					ret = true;
-				}
-				else {
-					ret = false;
-				}
+				ret = false;
 			}
 		}
 		else {
-			if(existChip("大破防止")) {
-				ret = false;
+			if(attack_value >= SpecValues.getBlustBreakDamage()) {
+				ret = true;
 			}
 			else {
-				if(attack_value >= SpecValues.getBlustBreakDamage()) {
-					ret = true;
-				}
-				else {
-					ret = false;
-				}
+				ret = false;
 			}
 		}
 		
