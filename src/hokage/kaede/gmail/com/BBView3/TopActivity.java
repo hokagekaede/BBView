@@ -239,10 +239,11 @@ public class TopActivity extends BaseActivity {
 			// デフォルトデータを読み込む
 			InputStream is_defaultset = res.openRawResource(R.raw.defaultset);  // Resources.NotFoundException
 			FileKeyValueStore default_data = new FileKeyValueStore(filedir);
+			default_data.setEncode(FileIO.ENCODE_UTF8);
 			default_data.load(is_defaultset);
 			CustomDataManager.setDefaultData(default_data);
 
-			// カスタムデータの読み込み
+			// カスタムデータの読み込み (ユーザ環境のファイルであるため、S-JISで入出力すること)
 			FileKeyValueStore file_data = new FileKeyValueStore(filedir);
 			file_data.load();
 			CustomData custom_data = CustomDataReader.read(file_data, default_data, data_mng);
@@ -282,7 +283,7 @@ public class TopActivity extends BaseActivity {
 		try {
 			Resources res = this.getResources();
 			InputStream update_info = res.openRawResource(R.raw.update_info);  // Resources.NotFoundException
-			update_info_str = FileIO.readInputStream(update_info, FileIO.ENCODE_SJIS);
+			update_info_str = FileIO.readInputStream(update_info, FileIO.ENCODE_UTF8);
 
 		} catch(Resources.NotFoundException res_e) {
 			update_info_str = "更新情報を読み込めませんでした";

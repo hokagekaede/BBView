@@ -33,7 +33,7 @@ public class BBDataReader {
 	public static final void read(InputStream is) {
 		BBDataManager data_mng = BBDataManager.getInstance();
 		
-		String bb_data_str = FileIO.readInputStream(is, FileIO.ENCODE_SJIS);
+		String bb_data_str = FileIO.readInputStream(is, FileIO.ENCODE_UTF8);
 		String[] bb_data_list = bb_data_str.split(NEWLINE);
 
 		int size = bb_data_list.length;
