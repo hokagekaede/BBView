@@ -136,7 +136,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		layout_table.addView(parts_spec_view);
 		layout_table.addView(createCustomBlustPartsViews(custom_data));
 		
-		// リロードスペックを画面に表示する
+		// 武器スペックを画面に表示する
 		TextView weapon_spec_view = ViewBuilder.createTextView(mContext, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(weapon_spec_view);
 		layout_table.addView(createWeaponRows(custom_data));
@@ -172,16 +172,11 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	private TableLayout createCustomBlustPartsViews(CustomData custom_data) {
 		TableLayout table = new TableLayout(mContext);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+		
+		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_YELLOW), "", "補正前", "補正後"));
 
-		if(BBViewSettingManager.IS_SHOW_REALSPEC) {
-			for(int i=0; i<sTargetKeyCount; i++) {
-				table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
-			}
-		}
-		else {
-			for(int i=0; i<sTargetKeyCount; i++) {
-				table.addView(createCustomPartsNormalRows(custom_data, sTargetKeys[i]));
-			}
+		for(int i=0; i<sTargetKeyCount; i++) {
+			table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
 		}
 		
 		return table;
@@ -194,92 +189,49 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 指定の性能に対応する行
 	 */
 	private TableRow createCustomPartsRows(CustomData custom_data, String target_key) {
-		double target_value = custom_data.getSpecValue(target_key);
-		String point = SpecValues.getPoint(target_key, target_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		String data_str = SpecValues.getSpecUnit(target_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		String normal_point = custom_data.getPoint(target_key);
+		double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		
+		double real_value = custom_data.getSpecValue(target_key);
+		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 
+		// スペックと内部値を結合する
 		if(BBDataComparator.isPointKey(target_key)) {
-			data_str = point + " (" + data_str + ")"; 
+			normal_value_str = normal_point + " (" + normal_value_str + ")";
+			real_value_str = real_point + " (" + real_value_str + ")"; 
 		}
 		
 		// DEF回復の場合、隣に回復時間を併記する
 		if(target_key.equals("DEF回復")) {
-			data_str = String.format("%s (%s)", data_str,
+			real_value_str = String.format("%s (%s)", real_value_str,
 					SpecValues.getSpecUnit(custom_data.getDefRecoverTime(), "DEF回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
 		}
+		
+		BBDataComparator cmp = new BBDataComparator(target_key, true, BBViewSettingManager.IS_KB_PER_HOUR);
+		int ret_cmp = cmp.compareValue(normal_value, real_value);
+		int[] colors = new int[3];
 
-		// 兵装強化チップを反映
-		if(custom_data.existChip("強襲兵装強化") || custom_data.existChip("強襲兵装強化II")) {
-			if(target_key.equals("ブースター")) {
-				double blust_value = custom_data.getBoost("強襲兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (強襲兵装時：" + blust_point + " (" + blust_str + "))";
-			}
-			else if(target_key.equals("ダッシュ")) {
-				double blust_value = custom_data.getStartDush("強襲兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (強襲兵装時：" + blust_point + " (" + blust_str + "))";
-			}
+		if(ret_cmp > 0) {
+			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			colors[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
+			colors[2] = SettingManager.getColor(SettingManager.COLOR_RED);
 		}
-		if(custom_data.existChip("重火力兵装強化") || custom_data.existChip("重火力兵装強化II")) {
-			if(target_key.equals("重量耐性")) {
-				double blust_value = custom_data.getAntiWeight("重火力兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (重火力兵装時：" + blust_point + " (" + blust_str + "))";
-			}
+		else if(ret_cmp < 0) {
+			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			colors[1] = SettingManager.getColor(SettingManager.COLOR_RED);
+			colors[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
 		}
-		if(custom_data.existChip("遊撃兵装強化") || custom_data.existChip("遊撃兵装強化II")) {
-			if(target_key.equals("射撃補正")) {
-				double blust_value = custom_data.getShotBonus("遊撃兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (遊撃兵装時：" + blust_point + " (" + blust_str + "))";
-			}
-			else if(target_key.equals("リロード")) {
-				double blust_value = custom_data.getReload("遊撃兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (遊撃兵装時：" + blust_point + " (" + blust_str + "))";
-			}
-		}
-		if(custom_data.existChip("支援兵装強化") || custom_data.existChip("支援兵装強化II")) {
-			if(target_key.equals("SP供給率")) {
-				double blust_value = custom_data.getSP("支援兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (支援兵装時：" + blust_point + " (" + blust_str + "))";
-			}
-			else if(target_key.equals("エリア移動")) {
-				double blust_value = custom_data.getAreaMove("支援兵装");
-				String blust_point = SpecValues.getPoint(target_key, blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-				String blust_str = SpecValues.getSpecUnit(blust_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-				data_str = data_str + " (支援兵装時：" + blust_point + " (" + blust_str + "))";
-			}
-		}
-
-		return ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_BASE), target_key, data_str);
-	}
-
-	/**
-	 * パーツスペックテーブルの行を生成する。
-	 * @param custom_data アセンデータ
-	 * @param target_key 性能名
-	 * @return 指定の性能に対応する行
-	 */
-	private TableRow createCustomPartsNormalRows(CustomData custom_data, String target_key) {
-		String point = custom_data.getPoint(target_key);
-		String data_str = SpecValues.getSpecUnit(point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-
-		if(BBDataComparator.isPointKey(target_key)) {
-			data_str = point + " (" + data_str + ")"; 
+		else {
+			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			colors[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			colors[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
 		}
 		
-		return ViewBuilder.createTableRow(mContext, Color.WHITE, target_key, data_str);
+		return ViewBuilder.createTableRow(mContext, colors, target_key, normal_value_str, real_value_str);
 	}
-	
+
 	/**
 	 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
 	 * @param custom_data 表示するカスタムデータ

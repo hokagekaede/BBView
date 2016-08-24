@@ -15,6 +15,10 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	private ArrayList<String> mShownKeys;
 	private boolean mIsKmPerHour;
 
+	private boolean mIsShowSwitch = false;
+	private boolean mIsShowTypeB = false;
+
+	// 表示対象のデータ
 	private BBData mTargetData;
 	
 	// テキストビューに設定するタグ
@@ -32,11 +36,28 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		super(context);
 		mShownKeys = keys;
 		mIsKmPerHour = is_km_per_hour;
+		mIsShowTypeB = false;
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL );
 		this.setPadding(10, 10, 10, 10);
 		this.setWeightSum((float)1.0);
+	}
+
+	/**
+	 * スイッチ武器の情報を表示するかどうかの設定を行う。
+	 * @param is_show_switch スイッチ武器の表示をする場合はtrueを設定する。
+	 */
+	public void setShowSwitch(boolean is_show_switch) {
+		mIsShowSwitch = is_show_switch;
+	}
+	
+	/**
+	 * タイプBの情報を表示するかどうかの設定を行う。
+	 * @param is_show_typeb
+	 */
+	public void setShowTypeB(boolean is_show_typeb) {
+		mIsShowTypeB = is_show_typeb;
 	}
 	
 	public void setShownKeys(ArrayList<String> keys) {
@@ -89,6 +110,16 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
         	item_name = data_name;
         }
         
+        // スイッチ武器の場合はタイプ情報を追加表示する
+        if(mIsShowSwitch && mTargetData.getTypeB() != null) {
+        	if(mIsShowTypeB) {
+        		item_name = item_name + " (タイプB)";
+        	}
+        	else {
+        		item_name = item_name + " (タイプA)";
+        	}
+        }
+        
         return item_name;
 	}
 	
@@ -104,18 +135,33 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			return ret;
 		}
 		
+		// 対象のデータを決定 (スイッチ武器)
+		BBData from_item = base_item;
+		BBData to_item = mTargetData;
+		
+		if(mIsShowSwitch && mIsShowTypeB) {
+			if(from_item.getTypeB() != null) {
+				from_item = from_item.getTypeB();
+			}
+			
+			if(to_item.getTypeB() != null) {
+				to_item = to_item.getTypeB();
+			}
+		}
+		
+		// 表示文字列生成
 		int len = mShownKeys.size();
 		for(int i=0; i<len; i++) {
 			String shown_key = mShownKeys.get(i);
-			String value = mTargetData.get(shown_key);
+			String value = to_item.get(shown_key);
 			
 			// 現在選択中のパーツとの性能比較を行い、表示色を決定する。
 			String color_stag = "";
 			String color_etag = "";
 			String cmp_str = "";
-			if(base_item != null) {
+			if(from_item != null) {
 				BBDataComparator cmp_data = new BBDataComparator(shown_key, true, mIsKmPerHour);
-				cmp_data.compare(mTargetData, base_item);
+				cmp_data.compare(to_item, from_item);
 				double cmp = cmp_data.getCmpValue();
 				if(cmp_data.isCmpOK()) {
 					if(cmp > 0) {
@@ -134,7 +180,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			// 表示する値の文字列を取得する
 			String value_str = "";
 			if(BBDataComparator.isPointKey(shown_key)) {
-				value_str = value + " (" + SpecValues.getSpecUnit(mTargetData, shown_key, mIsKmPerHour) + ")";
+				value_str = value + " (" + SpecValues.getSpecUnit(to_item, shown_key, mIsKmPerHour) + ")";
 
 			}
 			else if(shown_key.equals(BBData.ARMOR_BREAK_KEY)) {
@@ -147,10 +193,10 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY, value);
 			}
 			else if(shown_key.equals(BBData.BULLET_SUM_KEY)) {
-				value_str = mTargetData.get("総弾数") + "=" + SpecValues.getShowValue(mTargetData, shown_key, mIsKmPerHour);
+				value_str = to_item.get("総弾数") + "=" + SpecValues.getShowValue(to_item, shown_key, mIsKmPerHour);
 			}
 			else {
-				value_str = SpecValues.getShowValue(mTargetData, shown_key, mIsKmPerHour);
+				value_str = SpecValues.getShowValue(to_item, shown_key, mIsKmPerHour);
 			}
 			
 			// 文字を結合する

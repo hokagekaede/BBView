@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -68,11 +69,15 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	private static final int MENU_ITEM0 = 0;
 	private static final int MENU_ITEM1 = 1;
 	private static final int MENU_ITEM2 = 2;
+	private static final int MENU_ITEM3 = 3;
 	
 	// リスト制御ダイアログ
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
 	private static final String DIALOG_LIST_ITEM_CMP  = "比較する";
 	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP };
+	
+	// ソート時のタイプB設定
+	private boolean mIsSortTypeB = false;
 	
 	/**
 	 * 画面生成時の処理を行う。
@@ -172,7 +177,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		
 		// アダプタの生成
-		mAdapter = new BBArrayAdapter(this, mDataManager.getList(mFilter));
+		mAdapter = new BBArrayAdapter(this, mDataManager.getList(mFilter, mIsSortTypeB));
+		mAdapter.setShowSwitch(true);
 		mAdapter.setBaseItem(recent_data);
 
 		if(mAdapter.getCount() == 0) {
@@ -240,6 +246,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		
 		Intent intent = getIntent();
 		String parts_type  = intent.getStringExtra(INTENTKEY_PARTSTYPE);
+		String weapon_type = intent.getStringExtra(INTENTKEY_WEAPONTYPE);
 		
 		menu.add(0, MENU_ITEM0, 0, "ソート設定").setIcon(android.R.drawable.ic_menu_sort_alphabetically);
 		menu.add(0, MENU_ITEM2, 0, "表示項目設定").setIcon(android.R.drawable.ic_menu_add);
@@ -247,8 +254,36 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		if(parts_type != null) {
 			menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
 		}
+
+		if(weapon_type != null) {
+			MenuItem item = menu.add(0, MENU_ITEM3, 0, "タイプB表示").setIcon(android.R.drawable.ic_menu_add);
+			item.setCheckable(true);
+			item.setOnMenuItemClickListener(new ClickTypebMenuListener());
+		}
 		
 		return true;
+	}
+	
+	/**
+	 * タイプB表示ボタンを選択した際の処理を行うリスナー。
+	 */
+	private class ClickTypebMenuListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			boolean is_checked = !item.isChecked();
+
+			mIsSortTypeB = is_checked;
+			item.setChecked(is_checked);
+
+			ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
+			mAdapter.setShowTypeB(is_checked);
+			mAdapter.setList(datalist);
+			mAdapter.notifyDataSetChanged();
+			
+			return false;
+		}
+		
 	}
 	
 	/**
@@ -372,7 +407,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			mShownKeysDialog.updateSetting();
 		}
 		
-		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
+		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
 		mAdapter.setList(datalist);
 		mAdapter.setShownKeys(new_key_list);
 		mAdapter.notifyDataSetChanged();
@@ -414,7 +449,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mFilterManager.updateSetting();
 		mFilter = mFilterManager.getFilter();
 		
-		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
+		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
 		mAdapter.setList(datalist);
 		mAdapter.notifyDataSetChanged();
 		

@@ -15,3 +15,11 @@ res/values/enc.xml
 .project
 proguard-project.txt
 project.properties
+.hg/cache/branch2-served
+.hg/undo.dirstate
+.hg/undo.desc
+.hg/undo.branch
+.hg/undo.bookmarks
+.hg/store/undo.phaseroots
+.hg/store/undo
+.hg/store/phaseroots

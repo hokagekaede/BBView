@@ -9,6 +9,7 @@ public class BBDataComparator implements Comparator<BBData> {
 	private String mTargetKey;
 	private boolean mIsAsc;
 	private boolean mIsKmPerHour;
+	private boolean mIsSortTypeB;
 	
 	private double mCmpLastValue;
 	private double mMinValue = -10000;
@@ -55,11 +56,34 @@ public class BBDataComparator implements Comparator<BBData> {
 	 * @param is_km_per_hour 速度比較時の単位。
 	 */
 	public BBDataComparator(String target_key, boolean is_asc, boolean is_km_per_hour) {
+		init(target_key, is_asc, is_km_per_hour, false);
+	}
+	
+	/**
+	 * 初期化処理を行う。
+	 * @param target_key 比較するキー。
+	 * @param is_asc 昇順の場合はtrueを設定し、降順の場合はfalseを設定する。
+	 * @param is_km_per_hour 速度比較時の単位。
+	 * @param is_sort_type_b タイプBの性能値でソートするかどうか。
+	 */
+	public BBDataComparator(String target_key, boolean is_asc, boolean is_km_per_hour, boolean is_sort_type_b) {
+		init(target_key, is_asc, is_km_per_hour, is_sort_type_b);
+	}
+	
+	/**
+	 * 初期化処理を行う。
+	 * @param target_key 比較するキー。
+	 * @param is_asc 昇順の場合はtrueを設定し、降順の場合はfalseを設定する。
+	 * @param is_km_per_hour 速度比較時の単位。
+	 * @param is_sort_type_b タイプBの性能値でソートするかどうか。
+	 */
+	private void init(String target_key, boolean is_asc, boolean is_km_per_hour, boolean is_sort_type_b) {
 		this.mTargetKey = target_key;
 		this.mIsAsc = is_asc;
 		this.mCmpLastValue = 0;
 		this.mIsKmPerHour = is_km_per_hour;
 		this.mIsCmpOk = false;
+		this.mIsSortTypeB = is_sort_type_b;
 		
 		if(target_key != null) {
 			int len = SORT_REVERSE_TARGET.length;
@@ -80,44 +104,59 @@ public class BBDataComparator implements Comparator<BBData> {
 		int ret = 0;
 		mCmpLastValue = 0;
 		
+		BBData from_item = arg0;
+		BBData to_item = arg1;
+		
+		// スイッチ武器の判定対象判別処理
+		if(mIsSortTypeB) {
+			if(arg0.getTypeB() != null) {
+				from_item = arg0.getTypeB();
+			}
+			
+			if(to_item.getTypeB() != null) {
+				to_item = to_item.getTypeB();
+			}
+		}
+		
+		// 比較処理
 		if(mTargetKey == null) {
 			return 0;
 		}
 		else if(mTargetKey.equals("威力")) {
 			if(mIsAsc) {
-				mCmpLastValue = arg0.getOneShotPower() - arg1.getOneShotPower();
+				mCmpLastValue = from_item.getOneShotPower() - to_item.getOneShotPower();
 			}
 			else {
-				mCmpLastValue = arg1.getOneShotPower() - arg0.getOneShotPower();
+				mCmpLastValue = to_item.getOneShotPower() - from_item.getOneShotPower();
 			}
 			ret = (int)(mCmpLastValue * CMP_DOUBLE_SIZE);
 			mIsCmpOk = true;
 		}
 		else if(mTargetKey.equals("耐久力")) {
-			boolean is_arg0_plane = arg0.existCategory("偵察機系統");
-			boolean is_arg1_plane = arg1.existCategory("偵察機系統");
+			boolean is_from_item_plane = from_item.existCategory("偵察機系統");
+			boolean is_to_item_plane = to_item.existCategory("偵察機系統");
 			
-			if(is_arg0_plane && is_arg1_plane) {
+			if(is_from_item_plane && is_to_item_plane) {
 				ret = 0;
 				mIsCmpOk = false;
 			}
-			else if(is_arg0_plane) {
+			else if(is_from_item_plane) {
 				ret = 1;
 				mIsCmpOk = false;
 			}
-			else if(is_arg1_plane) {
+			else if(is_to_item_plane) {
 				ret = -1;
 				mIsCmpOk = false;
 			}
 			else {
-				ret = compareString(arg0.get(mTargetKey), arg1.get(mTargetKey));
+				ret = compareString(from_item.get(mTargetKey), to_item.get(mTargetKey));
 				mIsCmpOk = true;
 			}
 
 			return ret;
 		}
 		else {
-			ret = compareString(arg0.get(mTargetKey), arg1.get(mTargetKey));
+			ret = compareString(from_item.get(mTargetKey), to_item.get(mTargetKey));
 		}
 		
 		return ret;
@@ -183,11 +222,22 @@ public class BBDataComparator implements Comparator<BBData> {
 			mIsCmpOk = true;
 		}
 		
+		return compareValue(value0, value1);
+	}
+	
+	/**
+	 * 比較処理を行う。
+	 * @param from_value 比較対象の数値１
+	 * @param to_value 比較対象の数値２
+	 * @return
+	 */
+	public int compareValue(double from_value, double to_value) {
+
 		if(mIsAsc) {
-			mCmpLastValue = value0 - value1;
+			mCmpLastValue = from_value - to_value;
 		}
 		else {
-			mCmpLastValue = value1 - value0;
+			mCmpLastValue = to_value - from_value;
 		}
 
 		return (int)(mCmpLastValue * CMP_DOUBLE_SIZE);

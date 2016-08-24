@@ -171,18 +171,6 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		btn_memory_filter.setChecked(BBViewSettingManager.IS_MEMORY_FILTER);
 		screen.addPreference(btn_memory_filter);
 
-		// 性能画面
-		PreferenceCategory spec_category = new PreferenceCategory(this);
-		spec_category.setTitle("性能画面");
-		screen.addPreference(spec_category);
-
-		CheckBoxPreference show_realspec = new CheckBoxPreference(this);
-		show_realspec.setTitle("パーツスペックの表示");
-		show_realspec.setSummary("チップ、ホバーなどの補正後の値を表示する");
-		show_realspec.setKey(BBViewSettingManager.SETTING_SHOW_REALSPEC);
-		show_realspec.setChecked(BBViewSettingManager.IS_SHOW_REALSPEC);
-		screen.addPreference(show_realspec);
-		
 		setPreferenceScreen(screen);
 	}
 	

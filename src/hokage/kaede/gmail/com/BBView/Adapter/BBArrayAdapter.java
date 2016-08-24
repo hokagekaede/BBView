@@ -24,6 +24,9 @@ public class BBArrayAdapter extends BaseAdapter {
 	
 	private BBAdapterCmdManager mCmdManager;
 	
+	private boolean mIsShowSwitch = false;
+	private boolean mIsShowTypeB = false;
+	
 	private static final int BUTTON_LAYOUT_INDEX = 0;
 
 	/**
@@ -43,6 +46,22 @@ public class BBArrayAdapter extends BaseAdapter {
 	}
 	
 	/**
+	 * スイッチ武器の情報を表示するかどうかの設定を行う。
+	 * @param is_show_switch スイッチ武器の表示をする場合はtrueを設定する。
+	 */
+	public void setShowSwitch(boolean is_show_switch) {
+		mIsShowSwitch = is_show_switch;
+	}
+	
+	/**
+	 * タイプBの性能を表示するかどうかの設定を行う。
+	 * @param is_show_typeb タイプBを表示する場合はtrueを設定する。
+	 */
+	public void setShowTypeB(boolean is_show_typeb) {
+		mIsShowTypeB = is_show_typeb;
+	}
+	
+	/**
 	 * リストのビューを取得する。
 	 */
 	@Override
@@ -52,6 +71,8 @@ public class BBArrayAdapter extends BaseAdapter {
 
 		if(convertView == null) {
 			view = new BBArrayAdapterTextView(mContext, mShownKeys, mIsKmPerHour);
+			view.setShowSwitch(mIsShowSwitch);
+			view.setShowTypeB(mIsShowTypeB);
 			view.createView();
 			
 			// ボタン設定ONの場合、ボタンのビューを追加する
@@ -61,6 +82,7 @@ public class BBArrayAdapter extends BaseAdapter {
 		}
 		else {
 			view = (BBArrayAdapterTextView)(convertView);
+			view.setShowTypeB(mIsShowTypeB);
 			view.setShownKeys(mShownKeys);
 
 			if(mCmdManager != null) {

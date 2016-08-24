@@ -73,10 +73,9 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
         
         this.addView(mMainLayout);
 	}
-
+	
 	/**
 	 * ビューの更新する。
-	 * @param item 表示するデータ
 	 * @param base_item 比較対象のデータ
 	 */
 	public void updateView(BBData base_item) {

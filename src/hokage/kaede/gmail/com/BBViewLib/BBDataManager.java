@@ -225,7 +225,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	public ArrayList<BBData> getList() {
 		return getList(null);
 	}
-	
+
 	/**
 	 * リストを取得する。
 	 * フィルタを設定している場合、フィルタに応じたリストを生成する。
@@ -233,6 +233,17 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	 * @return リスト
 	 */
 	public ArrayList<BBData> getList(BBDataFilter filter) {
+		return getList(filter, false);
+	}
+	
+	/**
+	 * リストを取得する。
+	 * フィルタを設定している場合、フィルタに応じたリストを生成する。
+	 * @param filter フィルタ
+	 * @param is_sort_type_b タイプBの性能値でソートするかどうか
+	 * @return リスト
+	 */
+	public ArrayList<BBData> getList(BBDataFilter filter, boolean is_sort_type_b) {
 		ArrayList<BBData> ret_list = super.getList();
 		ret_list.clear();
 		
@@ -249,7 +260,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 			}
 		}
 		
-		Collections.sort(ret_list, new BBDataComparator(super.getSortKey(), super.getASC(), true));
+		Collections.sort(ret_list, new BBDataComparator(super.getSortKey(), super.getASC(), true, is_sort_type_b));
 		super.updateSortKeyList();
 
 		return ret_list;

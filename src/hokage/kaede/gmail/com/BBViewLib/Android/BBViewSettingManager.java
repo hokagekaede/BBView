@@ -29,7 +29,6 @@ public class BBViewSettingManager extends SettingManager {
 		IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
 		IS_MEMORY_SORT = isMemorySort(context);
 		IS_MEMORY_FILTER = isMemoryFilter(context);
-		IS_SHOW_REALSPEC = isShowRealSpec(context);
 		
 		sThemeID = loadThemeID(context);
 	}
@@ -136,15 +135,5 @@ public class BBViewSettingManager extends SettingManager {
 	
 	private static boolean isMemoryFilter(Context context) {
 		return PreferenceIO.read(context, SETTING_MEMORY_FILTER, false);
-	}
-
-	/**
-	 * スペック表示設定。Trueで各補正後の実際の値、Falseでパーツ・武器固有の値。
-	 */
-	public static boolean IS_SHOW_REALSPEC = false;
-	public static final String SETTING_SHOW_REALSPEC = "SETTING_MEMORY_SORT";
-	
-	private static boolean isShowRealSpec(Context context) {
-		return PreferenceIO.read(context, SETTING_SHOW_REALSPEC, false);
 	}
 }
