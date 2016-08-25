@@ -1,8 +1,5 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
-import hokage.kaede.gmail.com.BBView.Custom.ChipView.OnChipSelectOKClickListener;
-import hokage.kaede.gmail.com.BBView.Custom.ChipView.OnShowSelectedChipsListener;
-import hokage.kaede.gmail.com.BBView.Custom.ChipView.SelectedChipManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
@@ -22,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CustomMainActivity extends BaseActivity implements OnClickListener, OnShowSelectedChipsListener, OnChipSelectOKClickListener {
+public class CustomMainActivity extends BaseActivity {
 
 	private String mViewMode;
 	private static final String VIEWMODE_STR_CUSTOM = "アセン";
@@ -36,9 +33,6 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 	// メイン画面のレイアウト
 	private LinearLayout mLayout;
 	
-	// チップのレイアウト
-	private ChipView mChipView;
-
 	/**
 	 * 画面生成時の処理を行う。
 	 */
@@ -89,9 +83,7 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 			mLayout.addView(new CustomView(this, custom_data));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
-			mChipView = new ChipView(this);
-			mChipView.setOnShowSelectedChipsListener(this);
-			mLayout.addView(mChipView);
+			mLayout.addView(new ChipView(this));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
 			mLayout.addView(new SpecView(this));
@@ -127,7 +119,7 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		custom_text_view.setGravity(Gravity.CENTER);
 		custom_text_view.setText(VIEWMODE_STR_CUSTOM);
 		custom_text_view.setTextSize(text_size);
-		custom_text_view.setOnClickListener(this);
+		custom_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_CUSTOM));
 		layout.addView(custom_text_view);
 
 		TextView chip_text_view = new TextView(this);
@@ -137,7 +129,7 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		chip_text_view.setGravity(Gravity.CENTER);
 		chip_text_view.setText(VIEWMODE_STR_CHIP);
 		chip_text_view.setTextSize(text_size);
-		chip_text_view.setOnClickListener(this);
+		chip_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_CHIP));
 		layout.addView(chip_text_view);
 
 		TextView spec_text_view = new TextView(this);
@@ -147,7 +139,7 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		spec_text_view.setGravity(Gravity.CENTER);
 		spec_text_view.setText(VIEWMODE_STR_SPEC);
 		spec_text_view.setTextSize(text_size);
-		spec_text_view.setOnClickListener(this);
+		spec_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_SPEC));
 		layout.addView(spec_text_view);
 
 		TextView resist_text_view = new TextView(this);
@@ -157,7 +149,7 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		resist_text_view.setGravity(Gravity.CENTER);
 		resist_text_view.setText(VIEWMODE_STR_RESIST);
 		resist_text_view.setTextSize(text_size);
-		resist_text_view.setOnClickListener(this);
+		resist_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_RESIST));
 		layout.addView(resist_text_view);
 
 		TextView file_text_view = new TextView(this);
@@ -167,26 +159,29 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		file_text_view.setGravity(Gravity.CENTER);
 		file_text_view.setText(VIEWMODE_STR_FILE);
 		file_text_view.setTextSize(text_size);
-		file_text_view.setOnClickListener(this);
+		file_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_FILE));
 		layout.addView(file_text_view);
 		
 		return layout;
 	}
 	
-	@Override
-	public void onClick(View v) {
-		if(v instanceof TextView) {
-			TextView text_view = (TextView)v;
-			
-			if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
-				mChipView.reset();
-			}
-			
-			mViewMode = text_view.getText().toString();
+	/**
+	 * トップメニューを押下した際の処理を行うリスナー。
+	 */
+	private class OnClickTopMenuListener implements OnClickListener {
+		private String mMenuName;
+		
+		public OnClickTopMenuListener(String menu_name) {
+			mMenuName = menu_name;
+		}
+ 
+		@Override
+		public void onClick(View arg0) {
+			mViewMode = mMenuName;
 			updateView();
 		}
 	}
-
+	
 	/**
 	 * オプションメニュー生成時の処理を行う。
 	 */
@@ -219,10 +214,13 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		return true;
 	}
 	
+	/**
+	 * Backキーを押下した際の処理を行う。
+	 * アセン画面の場合はトップ画面に遷移し、アセン画面以外の場合はアセン画面に遷移する。
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
-		// アセン画面以外でbackキーを押下した場合、アセン画面に戻す
 		if(keyCode == KeyEvent.KEYCODE_BACK) {
 			if(mViewMode != VIEWMODE_STR_CUSTOM) {
 				mViewMode = VIEWMODE_STR_CUSTOM;
@@ -232,27 +230,5 @@ public class CustomMainActivity extends BaseActivity implements OnClickListener,
 		}
 		
 		return super.onKeyDown(keyCode, event);
-	}
-
-	/**
-	 * 選択中のチップをダイアログ表示する。
-	 * アクティビティインスタンスをChipViewクラスで保持したくないため、リスナー経由で本関数をコールする。
-	 */
-	@Override
-	public void OnShowSelectedChips() {
-		CustomData data = CustomDataManager.getCustomData();
-		SelectedChipManager manager = new SelectedChipManager(this, data);
-		manager.setOnChipSelectOKClickListener(this);
-		manager.showDialog();
-	}
-
-	/**
-	 * 選択中のチップダイアログでOKを押下したときの処理を行う。
-	 * チップ選択画面の表示をリセットする。
-	 */
-	@Override
-	public void OnChipSelectOKClick() {
-		mChipView.redraw();
-		mChipView.setChanged();
 	}
 }

@@ -13,16 +13,15 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
@@ -34,28 +33,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class ChipView extends LinearLayout implements OnClickListener {
+/**
+ * チップ画面のレイアウト
+ */
+public class ChipView extends LinearLayout {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
+	
+	private static final int WEIGHT_TEXT_VIEW_ID = 5321;
 
 	private BBDataManager mDataManager;
 	private CustomData mCustomData;
 	private BBDataFilter mFilter;
 	
 	private ChipListAdapter mChipListAdapter;
-	private ExpandableListView mChipListView;
-	private TextView mWeightTextView;
-	private Button mOkButton;
-	private Button mClearButton;
-	private Button mViewButton;
 
 	private ArrayList<BBData> mBeforeChipList;
 	
 	private boolean mIsChanged;
 	private Context mContext;
-	
-	private OnShowSelectedChipsListener mDialogListener = null;
 	
 	// チップ登録エラーメッセージ
 	private String mErrorMessage;
@@ -96,13 +93,15 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		
 		// アダプタを設定する
 		mChipListAdapter = new ChipListAdapter(mContext, mDataManager.getList(mFilter));
-		mChipListView = new ExpandableListView(mContext);
-		mChipListView.setAdapter(mChipListAdapter);
-		mChipListView.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		
+		ExpandableListView chip_list_view = new ExpandableListView(mContext);
+		chip_list_view.setAdapter(mChipListAdapter);
+		chip_list_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		
 		// 容量と現在の使用状況を表示するテキストビューを生成する
-		mWeightTextView = new TextView(mContext);
-		mWeightTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		TextView weight_text_view = new TextView(mContext);
+		weight_text_view.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		weight_text_view.setId(WEIGHT_TEXT_VIEW_ID);
 
 		LinearLayout layout_btm = new LinearLayout(mContext);
 		layout_btm.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
@@ -110,29 +109,29 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		layout_btm.setGravity(Gravity.TOP);
 		
 		// 決定ボタンを生成する
-		mOkButton = new Button(mContext);
-		mOkButton.setText("決定");
-		mOkButton.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
-		mOkButton.setOnClickListener(this);
+		Button ok_button = new Button(mContext);
+		ok_button.setText("決定");
+		ok_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
+		ok_button.setOnClickListener(new OnClickOKButtonListener());
 		
 		// クリアボタンを生成する
-		mClearButton = new Button(mContext);
-		mClearButton.setText("クリア");
-		mClearButton.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
-		mClearButton.setOnClickListener(this);
+		Button clear_button = new Button(mContext);
+		clear_button.setText("クリア");
+		clear_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
+		clear_button.setOnClickListener(new OnClickClearButtonListener());
 
 		// 選択中表示ボタンを生成する
-		mViewButton = new Button(mContext);
-		mViewButton.setText("選択中表示");
-		mViewButton.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
-		mViewButton.setOnClickListener(this);
+		Button view_button = new Button(mContext);
+		view_button.setText("選択中表示");
+		view_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
+		view_button.setOnClickListener(new OnClickViewButtonListener());
 		
-		layout_btm.addView(mOkButton);
-		layout_btm.addView(mClearButton);
-		layout_btm.addView(mViewButton);
+		layout_btm.addView(ok_button);
+		layout_btm.addView(clear_button);
+		layout_btm.addView(view_button);
 		
-		addView(mChipListView);
-		addView(mWeightTextView);
+		addView(chip_list_view);
+		addView(weight_text_view);
 		addView(layout_btm);
 	}
 	
@@ -152,46 +151,116 @@ public class ChipView extends LinearLayout implements OnClickListener {
 	 * 容量のテキスト情報を更新する
 	 */
 	private void updateWeightText() {
-		// チップの現在値、最大値を取得する
-		int chip_weight = mCustomData.getChipWeight();
-		int chip_capacity = SpecValues.castInteger(mCustomData.getChipCapacity());
-		
-		String now_value = String.valueOf(chip_weight);
-		String max_value = String.valueOf(chip_capacity);
-		
-		mWeightTextView.setText("容量：" + now_value + "/" + max_value + " " + mErrorMessage);
-		
-		// 登録内容に問題がある場合は容量テキストを赤文字にする。
-		if(mErrorMessage.equals("")) {
-			mWeightTextView.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
-		}
-		else {
-			mWeightTextView.setTextColor(Color.RED);
+		View tmp_view = this.findViewById(WEIGHT_TEXT_VIEW_ID);
+
+		if(tmp_view instanceof TextView) {
+			TextView weight_text_view = (TextView)tmp_view;
+
+			// チップの現在値、最大値を取得する
+			int chip_weight = mCustomData.getChipWeight();
+			int chip_capacity = SpecValues.castInteger(mCustomData.getChipCapacity());
+			
+			String now_value = String.valueOf(chip_weight);
+			String max_value = String.valueOf(chip_capacity);
+			
+			weight_text_view.setText("容量：" + now_value + "/" + max_value + " " + mErrorMessage);
+			
+			// 登録内容に問題がある場合は容量テキストを赤文字にする。
+			if(mErrorMessage.equals("")) {
+				weight_text_view.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
+			}
+			else {
+				weight_text_view.setTextColor(Color.RED);
+			}
 		}
 	}
-
+	
 	/**
-	 * ボタンをタップした場合の処理を行う。
-	 * 決定ボタンをタップした場合は、データチェック後保存処理をする。
-	 * クリアボタンをタップした場合は、選択中のデータをクリアする。
+	 * 決定ボタンを押下した際の処理を行うリスナー。
+	 * データチェック後保存、処理をする。
 	 */
-	@Override
-	public void onClick(View v) {
-		if(v.equals(mOkButton)) {
+	private class OnClickOKButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
 			saveCustomData();
 			Toast.makeText(mContext, "チップを登録しました。", Toast.LENGTH_SHORT).show();
 		}
-		else if(v.equals(mClearButton)) {
+	}
+	
+	/**
+	 * クリアボタンを押下した際の処理を行うリスナー。
+	 * 選択中のデータをクリアする。
+	 */
+	private class OnClickClearButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
 			mCustomData.clearChips();
 			mChipListAdapter.clearFlag();
 			mChipListAdapter.notifyDataSetChanged();
 			mErrorMessage = "";
 			updateWeightText();
-		}
-		else if(v.equals(mViewButton)) {
-			if(mDialogListener!=null) {
-				mDialogListener.OnShowSelectedChips();
+		}	
+	}
+	
+	/**
+	 * 選択中表示ボタンを押下した際の処理を行うリスナー。
+	 * 現在選択しているチップを表示するためのダイアログを表示する。
+	 */
+	private class OnClickViewButtonListener implements OnClickListener, android.content.DialogInterface.OnClickListener, OnMultiChoiceClickListener {
+
+		private ArrayList<BBData> mChipList;
+		private boolean[] mChecks;
+		
+		@Override
+		public void onClick(View v) {
+			mChipList = mCustomData.getChips();
+			int size = mChipList.size();
+			
+			if(size==0) {
+				Toast.makeText(mContext, "チップが選択されていません", Toast.LENGTH_SHORT).show();
+				return;
 			}
+
+			String[] selected_chips = new String[size];
+			mChecks = new boolean[size];
+			
+			for(int i=0;i<size;i++) {
+				BBData chip = mChipList.get(i);
+				selected_chips[i] = chip.get("名称") + " [" + chip.get("コスト") + "]";
+				mChecks[i] = true;
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			builder.setTitle("選択中のチップ一覧");
+			builder.setIcon(android.R.drawable.ic_menu_more);
+			builder.setMultiChoiceItems(selected_chips, mChecks, this);
+			builder.setPositiveButton("OK", this);
+			builder.setNegativeButton("Cancel", null);
+			
+			Dialog dialog = builder.create();
+			dialog.show();
+		}
+
+		@Override
+		public void onClick(DialogInterface arg0, int which) {
+			
+			int size = mChecks.length;
+			for(int i=0; i<size; i++) {
+				if(!mChecks[i]) {
+					mCustomData.removeChip(mChipList.get(i));
+				}
+			}
+			
+			redraw();
+			setChanged();
+		}
+
+		@Override
+		public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 	
@@ -245,17 +314,16 @@ public class ChipView extends LinearLayout implements OnClickListener {
 	 * チップリストを管理するアダプタ
 	 */
 	private class ChipListAdapter extends BaseExpandableListAdapter implements OnCheckedChangeListener {
-		private Context context;
 
-		private ArrayList<String> group_list;
+		private ArrayList<String> mGroupList;
 		
-		private ArrayList<BBData> skill_chip_list;
-		private ArrayList<BBData> powerup_chip_list;
-		private ArrayList<BBData> action_chip_list;
+		private ArrayList<BBData> mSkillChipList;
+		private ArrayList<BBData> mPowerupChipList;
+		private ArrayList<BBData> mActionChipList;
 		
-		private ArrayList<Boolean> skill_chip_check_list;
-		private ArrayList<Boolean> powerup_chip_check_list;
-		private ArrayList<Boolean> action_chip_check_list;
+		private ArrayList<Boolean> mSkillChipCheckList;
+		private ArrayList<Boolean> mPowerupChipCheckList;
+		private ArrayList<Boolean> mActionChipCheckList;
 		
 		/**
 		 * 初期化処理を行う。
@@ -263,37 +331,36 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 * @param chip_list チップリスト
 		 */
 		public ChipListAdapter(Context context, ArrayList<BBData> chip_list) {
-			this.context = context;
 			
-			this.group_list = new ArrayList<String>();
+			mGroupList = new ArrayList<String>();
 			
-			this.skill_chip_list = new ArrayList<BBData>();
-			this.powerup_chip_list = new ArrayList<BBData>();
-			this.action_chip_list = new ArrayList<BBData>();
+			mSkillChipList = new ArrayList<BBData>();
+			mPowerupChipList = new ArrayList<BBData>();
+			mActionChipList = new ArrayList<BBData>();
 			
-			this.skill_chip_check_list = new ArrayList<Boolean>();
-			this.powerup_chip_check_list = new ArrayList<Boolean>();
-			this.action_chip_check_list = new ArrayList<Boolean>();
+			mSkillChipCheckList = new ArrayList<Boolean>();
+			mPowerupChipCheckList = new ArrayList<Boolean>();
+			mActionChipCheckList = new ArrayList<Boolean>();
 			
-			this.group_list.add(BBDataManager.SKILL_CHIP_STR);
-			this.group_list.add(BBDataManager.POWERUP_CHIP_STR);
-			this.group_list.add(BBDataManager.ACTION_CHIP_STR);
+			mGroupList.add(BBDataManager.SKILL_CHIP_STR);
+			mGroupList.add(BBDataManager.POWERUP_CHIP_STR);
+			mGroupList.add(BBDataManager.ACTION_CHIP_STR);
 
 			int size = chip_list.size();
 			for(int i=0; i<size; i++) {
 				BBData buf_chip = chip_list.get(i);
 				
 				if(buf_chip.existCategory(BBDataManager.SKILL_CHIP_STR)) {
-					skill_chip_list.add(buf_chip);
-					skill_chip_check_list.add(false);
+					mSkillChipList.add(buf_chip);
+					mSkillChipCheckList.add(false);
 				}
 				else if(buf_chip.existCategory(BBDataManager.POWERUP_CHIP_STR)) {
-					powerup_chip_list.add(buf_chip);
-					powerup_chip_check_list.add(false);
+					mPowerupChipList.add(buf_chip);
+					mPowerupChipCheckList.add(false);
 				}
 				else if(isActionChip(buf_chip)) {
-					action_chip_list.add(buf_chip);
-					action_chip_check_list.add(false);
+					mActionChipList.add(buf_chip);
+					mActionChipCheckList.add(false);
 				}
 			}
 		}
@@ -340,11 +407,11 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 */
 		@Override
 		public BBData getChild(int groupPosition, int childPosition) {
-			if(groupPosition < 0 || groupPosition >= group_list.size()) {
+			if(groupPosition < 0 || groupPosition >= mGroupList.size()) {
 				return null;
 			}
 			
-			String type = group_list.get(groupPosition);
+			String type = mGroupList.get(groupPosition);
 			ArrayList<BBData> list = getChipList(type);
 			
 			if(list == null) {
@@ -363,11 +430,11 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 * @param flag 設定するフラグ値
 		 */
 		public void setFlag(int groupPosition, int childPosition, boolean flag) {
-			if(groupPosition < 0 || groupPosition >= group_list.size()) {
+			if(groupPosition < 0 || groupPosition >= mGroupList.size()) {
 				return;
 			}
 			
-			String type = group_list.get(groupPosition);
+			String type = mGroupList.get(groupPosition);
 			ArrayList<Boolean> list = getCheckList(type);
 			
 			if(childPosition < 0 || childPosition >= list.size()) {
@@ -410,13 +477,13 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			ArrayList<BBData> ret = null;
 
 			if(chip.existCategory(BBDataManager.SKILL_CHIP_STR)) {
-				ret = skill_chip_list;
+				ret = mSkillChipList;
 			}
 			else if(chip.existCategory(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = powerup_chip_list;
+				ret = mPowerupChipList;
 			}
 			else if(isActionChip(chip)) {
-				ret = action_chip_list;
+				ret = mActionChipList;
 			}
 			
 			return ret;
@@ -431,13 +498,13 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			ArrayList<BBData> ret = null;
 
 			if(type.equals(BBDataManager.SKILL_CHIP_STR)) {
-				ret = skill_chip_list;
+				ret = mSkillChipList;
 			}
 			else if(type.equals(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = powerup_chip_list;
+				ret = mPowerupChipList;
 			}
 			else if(isActionChip(type)) {
-				ret = action_chip_list;
+				ret = mActionChipList;
 			}
 			
 			return ret;
@@ -452,13 +519,13 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			ArrayList<Boolean> ret = null;
 
 			if(chip.existCategory(BBDataManager.SKILL_CHIP_STR)) {
-				ret = skill_chip_check_list;
+				ret = mSkillChipCheckList;
 			}
 			else if(chip.existCategory(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = powerup_chip_check_list;
+				ret = mPowerupChipCheckList;
 			}
 			else if(isActionChip(chip)) {
-				ret = action_chip_check_list;
+				ret = mActionChipCheckList;
 			}
 			
 			return ret;
@@ -472,13 +539,13 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			ArrayList<Boolean> ret = null;
 
 			if(type.equals(BBDataManager.SKILL_CHIP_STR)) {
-				ret = skill_chip_check_list;
+				ret = mSkillChipCheckList;
 			}
 			else if(type.equals(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = powerup_chip_check_list;
+				ret = mPowerupChipCheckList;
 			}
 			else if(isActionChip(type)) {
-				ret = action_chip_check_list;
+				ret = mActionChipCheckList;
 			}
 			
 			return ret;
@@ -501,8 +568,8 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		@Override
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
 		{
-			ArrayList<BBData> chip_list = getChipList(group_list.get(groupPosition));
-			ArrayList<Boolean> check_list = getCheckList(group_list.get(groupPosition));
+			ArrayList<BBData> chip_list = getChipList(mGroupList.get(groupPosition));
+			ArrayList<Boolean> check_list = getCheckList(mGroupList.get(groupPosition));
 			
 			BBData chipdata = chip_list.get(childPosition);
 
@@ -558,11 +625,11 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 */
 		@Override
 		public int getChildrenCount(int groupPosition) {
-			if(groupPosition < 0 || groupPosition >= group_list.size()) {
+			if(groupPosition < 0 || groupPosition >= mGroupList.size()) {
 				return -1;
 			}
 			
-			String type = group_list.get(groupPosition);
+			String type = mGroupList.get(groupPosition);
 			ArrayList<BBData> list = getChipList(type);
 			
 			if(list == null) {
@@ -577,12 +644,12 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 */
 		@Override
 		public String getGroup(int groupPosition) {
-			if(groupPosition < 0 || groupPosition >= group_list.size())
+			if(groupPosition < 0 || groupPosition >= mGroupList.size())
 			{
 				return null;
 			}
 			
-			return group_list.get(groupPosition);
+			return mGroupList.get(groupPosition);
 		}
 
 		/**
@@ -590,7 +657,7 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 */
 		@Override
 		public int getGroupCount() {
-			return group_list.size();
+			return mGroupList.size();
 		}
 
 		/**
@@ -611,12 +678,12 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			TextView text_view = (TextView)convertView;
 			
 			if(text_view == null) {
-				text_view = new TextView(context);
+				text_view = new TextView(mContext);
 			}
 			
-			text_view.setText(group_list.get(groupPosition));
+			text_view.setText(mGroupList.get(groupPosition));
 			text_view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-			text_view.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+			text_view.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 			text_view.setPadding(0, 15, 0, 15);
 			text_view.setTextColor(Color.rgb(255, 255, 255));
 			text_view.setBackgroundColor(Color.rgb(60, 60, 180));
@@ -675,17 +742,17 @@ public class ChipView extends LinearLayout implements OnClickListener {
 			
 			if(chip_weight > chip_capacity) {
 				mErrorMessage = "[チップ容量超過]";
-				Toast.makeText(context, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else if(!mCustomData.judgeActionChip()) {
 				mErrorMessage = "[アクションチップ重複]";
-				Toast.makeText(context, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else if(!mCustomData.judgePowerupChip()) {
 				mErrorMessage = "[機体強化チップ重複]";
-				Toast.makeText(context, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else {
@@ -699,137 +766,19 @@ public class ChipView extends LinearLayout implements OnClickListener {
 		 * フラグを全てクリアする
 		 */
 		public void clearFlag() {
-			int size = skill_chip_check_list.size();
+			int size = mSkillChipCheckList.size();
 			for(int i=0; i<size; i++) {
-				skill_chip_check_list.set(i, false);
+				mSkillChipCheckList.set(i, false);
 			}
 
-			size = powerup_chip_check_list.size();
+			size = mPowerupChipCheckList.size();
 			for(int i=0; i<size; i++) {
-				powerup_chip_check_list.set(i, false);
+				mPowerupChipCheckList.set(i, false);
 			}
 			
-			size = action_chip_check_list.size();
+			size = mActionChipCheckList.size();
 			for(int i=0; i<size; i++) {
-				action_chip_check_list.set(i, false);
-			}
-		}
-	}
-	
-	/**
-	 * 表示ボタンを押下したことを通知するリスナーを設定する。
-	 * @param listener
-	 */
-	public void setOnShowSelectedChipsListener(OnShowSelectedChipsListener listener) {
-		mDialogListener = listener;
-	}
-	
-	/**
-	 * 表示ボタンを押下したことを通知するリスナー
-	 */
-	public interface OnShowSelectedChipsListener {
-		public void OnShowSelectedChips();
-	}
-	
-	/**
-	 * 選択中のチップ一覧ダイアログでOKボタンを押下したことを通知するリスナー
-	 */
-	public interface OnChipSelectOKClickListener {
-		public void OnChipSelectOKClick();
-	}
-	
-	/**
-	 * 選択中のチップ一覧をダイアログ表示するクラス
-	 */
-	public static class SelectedChipManager implements OnMultiChoiceClickListener, android.content.DialogInterface.OnClickListener {
-
-		private Activity mActivity;
-		private CustomData mCustomData;
-		private ArrayList<BBData> mChipList;
-		private String[] mSelectedChips;
-		private boolean[] mChecks;
-		
-		private OnChipSelectOKClickListener mListener;
-		
-		/**
-		 * 初期化を行う。
-		 * @param activity
-		 */
-		public SelectedChipManager(Activity activity, CustomData custom_data) {
-			mActivity = activity;
-			mCustomData = custom_data;
-		}
-		
-		/**
-		 * OKボタンを押下したことを通知するリスナーを設定する。
-		 * @param listener
-		 */
-		public void setOnChipSelectOKClickListener(OnChipSelectOKClickListener listener) {
-			mListener = listener;
-		}
-		
-		/**
-		 * ダイアログを表示する。
-		 * チップが選択されていない場合は、通知トーストを表示する。
-		 * @param list 選択中のチップ一覧
-		 */
-		public void showDialog() {
-			
-			mChipList = mCustomData.getChips();
-			int size = mChipList.size();
-			if(size==0) {
-				Toast.makeText(mActivity, "チップが選択されていません", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			else {
-				mSelectedChips = new String[size];
-				mChecks = new boolean[size];
-			}
-			
-			for(int i=0;i<size;i++) {
-				BBData chip = mChipList.get(i);
-				mSelectedChips[i] = chip.get("名称") + " [" + chip.get("コスト") + "]";
-				mChecks[i] = true;
-			}
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-			builder.setTitle("選択中のチップ一覧");
-			builder.setIcon(android.R.drawable.ic_menu_more);
-			builder.setMultiChoiceItems(mSelectedChips, mChecks, this);
-			builder.setPositiveButton("OK", this);
-			builder.setNegativeButton("Cancel", this);
-			
-			Dialog dialog = builder.create();
-			dialog.setOwnerActivity(mActivity);
-			dialog.show();
-		}
-
-		/**
-		 * チェックボックスが押下された時の処理を行う。(ここでは何もしない)
-		 */
-		@Override
-		public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-			
-		}
-
-		/**
-		 * OK/Cancelボタンが押下された時の処理を行う。
-		 * OKの場合は選択状態を反映する。
-		 * Cancelの場合は何もしない。
-		 */
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			if(which==DialogInterface.BUTTON1) {
-				int size = mChecks.length;
-				for(int i=0; i<size; i++) {
-					if(!mChecks[i]) {
-						mCustomData.removeChip(mChipList.get(i));
-					}
-				}
-				
-				if(mListener!=null) {
-					mListener.OnChipSelectOKClick();
-				}
+				mActionChipCheckList.set(i, false);
 			}
 		}
 	}
