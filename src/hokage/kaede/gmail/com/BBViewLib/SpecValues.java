@@ -259,23 +259,23 @@ public class SpecValues {
 	 */
 	private static void initAcceleration() {
 		ACCELERATION = new KeyValueStore();
-		ACCELERATION.set("S",  "1.01");  // 3.5該当パーツなし (2015/10/22)
-		ACCELERATION.set("S-", "1.34");  // 3.5該当パーツなし (2015/10/31)
-		ACCELERATION.set("A+", "1.67");  // 3.5該当パーツなし (2015/10/22)
-		ACCELERATION.set("A",  "2.01");
-		ACCELERATION.set("A-", "2.34");
-		ACCELERATION.set("B+", "2.67");
-		ACCELERATION.set("B",  "3.00");
-		ACCELERATION.set("B-", "3.33");
-		ACCELERATION.set("C+", "3.66");
-		ACCELERATION.set("C",  "3.99");
-		ACCELERATION.set("C-", "4.32");
-		ACCELERATION.set("D+", "4.65");
-		ACCELERATION.set("D",  "4.98"); 
-		ACCELERATION.set("D-", "5.31");
-		ACCELERATION.set("E+", "5.64");
-		ACCELERATION.set("E",  "5.97");
-		ACCELERATION.set("E-", "6.30");   // 2016/3/27 暫定 (ヤクシャ・零)
+		ACCELERATION.set("S",  "0.84");   // 5.0該当パーツなし (2016/8/27)
+		ACCELERATION.set("S-", "1.11");   // 5.0該当パーツなし (2016/8/27)
+		ACCELERATION.set("A+", "1.38");   // 5.0該当パーツなし (2016/8/27)
+		ACCELERATION.set("A",  "1.65");   // ツェーブラ38
+		ACCELERATION.set("A-", "1.92");   // ヘヴィガードIII型
+		ACCELERATION.set("B+", "2.19");   // クーガーII型
+		ACCELERATION.set("B",  "2.46");   // シュライクV型
+		ACCELERATION.set("B-", "2.73");   // ヘヴィガードI型
+		ACCELERATION.set("C+", "3.00");   // ヘヴィガードIV型
+		ACCELERATION.set("C",  "3.27");   // クーガーI型
+		ACCELERATION.set("C-", "3.54");   // アスラ・弐
+		ACCELERATION.set("D+", "3.81");   // ヘヴィガードG型
+		ACCELERATION.set("D",  "4.08");   // ランドバルクIV型 
+		ACCELERATION.set("D-", "4.35");   // セイバーZX
+		ACCELERATION.set("E+", "4.62");   // エンフォーサーX型
+		ACCELERATION.set("E",  "4.89");   // ヤーデVMT
+		ACCELERATION.set("E-", "5.16");   // ヤクシャ・零
 	}
 	
 	/**

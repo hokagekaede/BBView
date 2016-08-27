@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -259,8 +258,7 @@ public class ChipView extends LinearLayout {
 
 		@Override
 		public void onClick(DialogInterface arg0, int arg1, boolean arg2) {
-			// TODO Auto-generated method stub
-			
+			// 何も処理を行わないが、チェック状態を保持するために本メソッドの定義が必要
 		}
 	}
 	
