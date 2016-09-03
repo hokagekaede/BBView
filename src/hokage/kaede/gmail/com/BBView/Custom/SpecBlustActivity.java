@@ -352,6 +352,9 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			if(weapon.existKey("リロード時間")) {
 				addReloadWeaponRow(table, data, weapon_type, weapon);
 			}
+			else if(weapon.existKey("通常攻撃(威力)")) {
+				addSlashRow(table, data, weapon);
+			}
 			else if(weapon.existCategory("アサルトチャージャー系統")) {
 				addACRow(table, data, weapon_type, weapon);
 			}
@@ -407,6 +410,29 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		};
 
 		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), WEAPON_MAIN_ROW));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), cols));
+	}
+
+	private static final String[] WEAPON_SLASH_ROW = { "", "通常攻撃(総威力)", "特殊攻撃(総威力)" };
+	
+	/**
+	 * 近接武器の情報を記載した列を追加する。
+	 * @param table 追加先のテーブル
+	 * @param data 対象のアセンデータ
+	 * @param weapon 対象の武器データ
+	 */
+	private void addSlashRow(TableLayout table, CustomData data, BBData weapon) {
+		double normal_slash = data.getSlashPower(weapon, false);
+		double dash_slash = data.getSlashPower(weapon, true);
+		
+		String[] cols = {
+				weapon.get("名称"),
+				// 速度の単位を取得するため、初速のキーを用いる。APIの見直しが必要。
+				SpecValues.getSpecUnit(normal_slash, "通常攻撃(総威力)", BBViewSettingManager.IS_KB_PER_HOUR),
+				SpecValues.getSpecUnit(dash_slash, "特殊攻撃(総威力)", BBViewSettingManager.IS_KB_PER_HOUR),		
+		};
+
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), WEAPON_SLASH_ROW));
 		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), cols));
 	}
 

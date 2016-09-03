@@ -404,7 +404,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	};
 
 	private static final String[] CMP_SUPPORT_ASSALT = {
-		"重量", BBData.SLASH_DAMAGE_NL_KEY, BBData.SLASH_DAMAGE_EX_KEY
+		"重量", "通常攻撃(威力)", "特殊攻撃(威力)", BBData.SLASH_DAMAGE_NL_KEY, BBData.SLASH_DAMAGE_EX_KEY
 	};
 
 	private static final String[] CMP_SUPPORT_HEAVY = {

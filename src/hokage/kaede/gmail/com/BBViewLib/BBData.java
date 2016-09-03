@@ -962,7 +962,14 @@ public class BBData extends KVCStore {
 	 * @return 近接武器のダメージ。
 	 */
 	public int getSlashDamage(boolean is_dash) {
-		return getSlashDamage(is_dash, 0);
+		String damage_str = selectSlashString(is_dash);
+		
+		// チャージ武器の場合、最大チャージ時の威力の文字列を取得する
+		if(isChargeWeapon()) {
+			damage_str = getChargeString(damage_str, getChargeMaxCount(damage_str) - 1);
+		}
+		
+		return getSlashSumPower(damage_str);
 	}
 	
 	/**
@@ -971,7 +978,22 @@ public class BBData extends KVCStore {
 	 * @return 近接武器のダメージ。
 	 */
 	public int getSlashDamage(boolean is_dash, int charge_level) {
-		int ret = 0;
+		String damage_str = selectSlashString(is_dash);
+		
+		// チャージ武器の場合、チャージレベルに応じた威力の文字列を取得する
+		if(isChargeWeapon()) {
+			damage_str = getChargeString(damage_str, charge_level);
+		}
+		
+		return getSlashSumPower(damage_str);
+	}
+	
+	/**
+	 * 近接武器の威力の文字列を取得する
+	 * @param is_dash
+	 * @return
+	 */
+	private String selectSlashString(boolean is_dash) {
 		String damage_str = "";
 		
 		if(is_dash) {
@@ -989,13 +1011,20 @@ public class BBData extends KVCStore {
 			damage_str = damage_str.substring(start_idx + 1, end_idx);
 		}
 		
-		// チャージ武器の場合、チャージレベルに応じた威力の文字列を取得する
-		if(isChargeWeapon()) {
-			damage_str = getChargeString(damage_str, charge_level);
-		}
-		
+		return damage_str;
+	}
+	
+	/**
+	 * 近接武器の威力の文字列から合計ダメージ値を取得する.
+	 * 合計ダメージは"="以降の数値とする。
+	 * @param damege_str 武器の文字列データ
+	 * @return 合計ダメージ値
+	 */
+	private int getSlashSumPower(String damage_str) {
+		int ret = 0;
+
 		// イコール以降の文字列を取得する
-		start_idx = damage_str.indexOf("=");
+		int start_idx = damage_str.indexOf("=");
 		if(start_idx >= 0) {
 			damage_str = damage_str.substring(start_idx + 1);
 		}

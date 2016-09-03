@@ -2240,47 +2240,66 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	private double getOneShotPower(BBData data, int charge_level) {
-		double ret = 0;
-		double newd_chip_bonus = 1.0;
+		return data.getOneShotPower(charge_level) * getNewdChipBonus(data.getNewdAbsPer());
+	}
+
+	/**
+	 * 近接武器の威力を算出する。
+	 * 近接武器強化チップとニュード威力上昇チップの効果を反映する。
+	 * @param data 武器データ
+	 * @param is_dash 通常攻撃の時はfalseを設定し、特殊攻撃の時はtrueを設定する。
+	 * @return 威力の値
+	 */
+	public double getSlashPower(BBData data, boolean is_dash) {
+		double power = data.getSlashDamage(is_dash);
+		double slash_rate = getSlashChipBonus(data.getSlashAbsPer());
+		double newd_rate = getNewdChipBonus(data.getNewdAbsPer());
+
+		return power * slash_rate * newd_rate;
+	}
+
+	/**
+	 * ニュード威力上昇チップの効果による上昇倍率を取得する。
+	 * @param newd_percent 武器のニュード属性倍率
+	 * @return 上昇率の値
+	 */
+	private double getNewdChipBonus(double newd_percent) {
+		double newd_chip_bonus = 0;
 
 		// チップの補正値を取得
 		if(existChip("ニュード威力上昇")) {
-			newd_chip_bonus = 1.0 + (0.025 * data.getNewdAbsPer() / 100);
+			newd_chip_bonus = 0.025;
 		}
 		else if(existChip("ニュード威力上昇II")) {
-			newd_chip_bonus = 1.0 + (0.07 * data.getNewdAbsPer() / 100);
+			newd_chip_bonus = 0.07;
 		}
 		else if(existChip("ニュード威力上昇III")) {
-			newd_chip_bonus = 1.0 + (0.1 * data.getNewdAbsPer() / 100);
+			newd_chip_bonus = 0.1;
 		}
 		
-		ret = data.getOneShotPower(charge_level) * newd_chip_bonus;
-		
-		return ret;
+		return 1.0 + (newd_chip_bonus * (newd_percent / 100));
 	}
-	
-	/**
-	 * 射撃武器に被弾した際のダメージを計算する。
-	 * @param data 武器データ
-	 * @param parts_type パーツの種類
-	 * @return ダメージ値
-	 */
-	public double getShotDamage(BBData data, String parts_type, int charge_level) {
-		double damage;
-		double armor = getArmor(parts_type);
-		int attack_value = data.getOneShotPower(charge_level);
-		
-		damage = getBulletDamage(data, attack_value, armor)
-		    + getExplosionDamage(data, attack_value, armor)
-			+ getNewdDamage(data, attack_value, armor)
-			+ getSlashDamage(data, attack_value, armor);
 
-		// 頭部パーツの場合はダメージを2.5倍する。
-		if(parts_type.equals(BBDataManager.BLUST_PARTS_HEAD)) {
-			damage = damage * 2.5;
+	/**
+	 * 近接攻撃強化チップの効果による上昇倍率を取得する。
+	 * @param newd_percent 武器の近接属性倍率
+	 * @return 上昇率の値
+	 */
+	private double getSlashChipBonus(double slash_percent) {
+		double slash_chip_bonus = 0;
+
+		// チップの補正値を取得
+		if(existChip("近接攻撃強化")) {
+			slash_chip_bonus = 0.00005;
+		}
+		else if(existChip("近接攻撃強化II")) {
+			slash_chip_bonus = 0.00012;
+		}
+		else if(existChip("近接攻撃強化III")) {
+			slash_chip_bonus = 0.00020;
 		}
 		
-		return damage;
+		return 1.0 + ((getPartsWeight() - 2000) * slash_chip_bonus) * (slash_percent / 100);
 	}
 	
 	/**
@@ -2382,6 +2401,30 @@ public class CustomData {
 	// 性能取得系(耐性関連)
 	//----------------------------------------------------------
 
+	/**
+	 * 射撃武器に被弾した際のダメージを計算する。
+	 * @param data 武器データ
+	 * @param parts_type パーツの種類
+	 * @return ダメージ値
+	 */
+	public double getShotDamage(BBData data, String parts_type, int charge_level) {
+		double damage;
+		double armor = getArmor(parts_type);
+		int attack_value = data.getOneShotPower(charge_level);
+		
+		damage = getBulletDamage(data, attack_value, armor)
+		    + getExplosionDamage(data, attack_value, armor)
+			+ getNewdDamage(data, attack_value, armor)
+			+ getSlashDamage(data, attack_value, armor);
+
+		// 頭部パーツの場合はダメージを2.5倍する。
+		if(parts_type.equals(BBDataManager.BLUST_PARTS_HEAD)) {
+			damage = damage * 2.5;
+		}
+		
+		return damage;
+	}
+	
 	/**
 	 * 爆発武器に被弾した際のダメージを計算する。
 	 * @param data 武器データ
