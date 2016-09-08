@@ -246,14 +246,6 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		String armor_str = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KB_PER_HOUR);
 		armor_str = armor_point + " (" + armor_str + ")"; 
 		
-		// 兵装強化チップを反映
-		if(custom_data.existChip("重火力兵装強化") || custom_data.existChip("重火力兵装強化II")) {
-			double blust_value = custom_data.getArmorAve("重火力兵装");
-			String blust_point = SpecValues.getPoint("装甲", blust_value, BBViewSettingManager.IS_KB_PER_HOUR);
-			String blust_str = SpecValues.getSpecUnit(blust_value, "装甲平均値", BBViewSettingManager.IS_KB_PER_HOUR);
-			armor_str = armor_str + " (重火力兵装時：" + blust_point + " (" + blust_str + "))";
-		}
-
 		String[][] speclist = {
 			{ "セットボーナス", custom_data.getSetBonus() },
 			{ "チップ容量", String.format("%.1f", custom_data.getChipCapacity()) },
@@ -350,7 +342,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 				}
 				
 				double magazine_power = data.getMagazinePower(weapon);
-				double sec01_power = data.get1SecPower(weapon);
+				double sec01_power = data.getSecPower(weapon);
 				//double sec10_power = data.get10SecPower(weapon);
 				double battle_power = data.getBattlePower(weapon);
 				double reload_time = data.getReloadTime(weapon);

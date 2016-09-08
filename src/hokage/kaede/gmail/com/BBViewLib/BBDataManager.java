@@ -414,6 +414,11 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 		BBData.ARMOR_KB_KEY
 	};
 	
+	private static final String[] CMP_SUPPORT_SNIPER = {
+		"重量", "威力", BBData.MAGAZINE_POWER_KEY, BBData.SEC_POWER_KEY, BBData.BATTLE_POWER_KEY,
+		"索敵時間", "索敵範囲", "滞空時間"
+	};
+	
 	private static final String[] CMP_SUPPORT_SUPPORT = {
 		"重量", "耐久力", "索敵範囲", "索敵面積", "初動索敵面積", "総索敵面積", "戦術索敵面積", "索敵時間"
 	};
@@ -465,6 +470,9 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 			}
 			else if(item.existCategory(BLUST_TYPE_HEAVY)) {
 				ret = CMP_SUPPORT_HEAVY;
+			}
+			else if(item.existCategory(BLUST_TYPE_SNIPER)) {
+				ret = CMP_SUPPORT_SNIPER;
 			}
 			else if(item.existCategory(BLUST_TYPE_SUPPORT)) {
 				ret = CMP_SUPPORT_SUPPORT;

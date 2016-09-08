@@ -136,8 +136,12 @@ public class SpecValues {
 	 * ブラスト(ホバー)がノックバックするダメージ値
 	 */
 	public static final int HOVER_KB_DAMAGE = 2800;
-	
 
+	/**
+	 * CS時のダメージ倍率
+	 */
+	public static final double CS_SHOT_RATE = 2.5;
+	
 	// 4.5対応
 	/**
 	 * DEF回復のデータ一覧
@@ -1008,7 +1012,7 @@ public class SpecValues {
 			ret = String.format("%.1f(倍)", value);
 		}
 		else if(key.equals("爆発半径")) {
-			ret = String.format("%.0f(m)", value);
+			ret = String.format("%.1f(m)", value);
 		}
 		else if(key.equals("弾速(初速)")) {
 			ret = String.format("%.0f(m/s)", value);
@@ -1079,6 +1083,14 @@ public class SpecValues {
 		}
 		else if(key.contains("面積")) {
 			ret = String.format("%.0f(m^2)", value);
+		}
+		else if(key.equals("AC速度")) {
+			ret = String.format("%.3f", value);
+			is_speed = true;
+		}
+		else if(key.equals("AC戦術速度")) {
+			ret = String.format("%.3f", value);
+			is_speed = true;
 		}
 		else {
 			ret = String.format("%.0f", value);

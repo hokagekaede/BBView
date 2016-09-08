@@ -19,9 +19,6 @@ public class BBData extends KVCStore {
 	private static final String SHOT_ABS_EXPLOSION = "爆発";
 	private static final String SHOT_ABS_SLASH     = "近接";
 	
-	// スイッチ武器の表示タイプ設定
-	private static int sRecentSwitchIdx = 0;
-	
 	// スイッチ武器のタイプBのデータ
 	private BBData mTypeB_data = null;
 
@@ -210,6 +207,23 @@ public class BBData extends KVCStore {
 	//--------------------------------------------------
 	// 索敵面積関連
 	//--------------------------------------------------
+	
+	/**
+	 * 索敵装備の索敵時間を算出する。
+	 * @return
+	 */
+	public int getSearchTime() {
+		int ret = 0;
+		
+		try {
+			ret = Integer.valueOf(super.get("索敵時間"));
+			
+		} catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
 	
 	/**
 	 * 偵察機の飛翔時間を算出する。
@@ -646,7 +660,7 @@ public class BBData extends KVCStore {
 	 */
 	public int getChargeMaxCount() {
 		if(isChargeWeapon()) {
-			return getChargeMaxCount(getSwitchValue(super.get("威力")));
+			return getChargeMaxCount(super.get("威力"));
 		}
 		
 		return -1;
@@ -668,7 +682,7 @@ public class BBData extends KVCStore {
 	 * @return 1ショットの威力を返す。
 	 */
 	public int getOneShotPower(int charge_level) {
-		String power_str = getSwitchValue(super.get("威力"));
+		String power_str = super.get("威力");
 		
 		// チャージ武器の場合、チャージレベルに応じた武器の威力を取得する。
 		if(isChargeWeapon()) {
@@ -685,7 +699,7 @@ public class BBData extends KVCStore {
 	 * @return 1ショットの威力を返す。
 	 */
 	public int getOneShotPower() {
-		String power_str = getSwitchValue(super.get("威力"));
+		String power_str = super.get("威力");
 
 		// チャージ武器の場合、最大レベル時の武器の威力を取得する。
 		if(isChargeWeapon()) {
@@ -738,6 +752,23 @@ public class BBData extends KVCStore {
 		}
 
 		return ret;
+	}
+	
+	/**
+	 * CS時の威力を取得する。
+	 * @return CS時の威力
+	 */
+	public double getCsShotPower() {
+		return getOneShotPower() * SpecValues.CS_SHOT_RATE;
+	}
+
+	/**
+	 * CS時の威力を取得する。
+	 * @param charge_level チャージレベル
+	 * @return CS時の威力
+	 */
+	public double getCsShotPower(int charge_level) {
+		return getOneShotPower(charge_level) * SpecValues.CS_SHOT_RATE;
 	}
 	
 	/**
@@ -800,7 +831,7 @@ public class BBData extends KVCStore {
 		int speed_index = super.indexOf("連射速度");
 		
 		if(speed_index >= 0) {
-			String speed_str = getSwitchValue(super.get(speed_index));
+			String speed_str = super.get(speed_index);
 			
 			try {
 				ret = Integer.valueOf(speed_str);
@@ -901,7 +932,7 @@ public class BBData extends KVCStore {
 		double ret = 0;
 		
 		try {
-			String oh_str = getSwitchValue(super.get("OH耐性"));
+			String oh_str = super.get("OH耐性");
 			ret = Double.valueOf(oh_str);
 			
 		} catch(Exception e) {
@@ -919,7 +950,7 @@ public class BBData extends KVCStore {
 		double ret = 0;
 		
 		try {
-			String oh_repair_str = getSwitchValue(super.get("OH復帰時間"));
+			String oh_repair_str = super.get("OH復帰時間");
 			ret = Double.valueOf(oh_repair_str);
 			
 		} catch(Exception e) {
@@ -955,7 +986,25 @@ public class BBData extends KVCStore {
 		
 		return ret;
 	}
+	
 
+	/**
+	 * 爆発範囲を取得する。
+	 * @return 爆発範囲。設定されていない場合、0を返す。
+	 */
+	public int getExplosionRange() {
+		int ret = 0;
+		
+		try {
+			ret = Integer.valueOf(super.get("爆発半径"));
+		}
+		catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
 	/**
 	 * 近接武器のダメージを取得する。
 	 * @param is_dash ダッシュの場合はtrueを設定し、そうでない場合はfalseを設定する。
@@ -1039,7 +1088,24 @@ public class BBData extends KVCStore {
 		
 		return ret;
 	}
-	
+
+	/**
+	 * 特別装備のチャージ時間を算出する。
+	 * @return チャージ時間の値が無い場合は0を返す。
+	 */
+	public double getSpChargeTime() {
+		double ret = 0;
+		
+		try {
+			ret = Double.valueOf(super.get("チャージ時間"));
+			
+		} catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+
 	private static final String[] SWITCH_WEAPONS = {
 		"スイッチアサルト系統",
 		"S90アイビス系統",
@@ -1069,21 +1135,6 @@ public class BBData extends KVCStore {
 		}
 		
 		return ret;
-	}
-	
-	/**
-	 * スイッチ武器の性能を返す。
-	 * @param target_str 性能の文字列
-	 * @return タイプに応じた性能の文字列を返す
-	 */
-	private String getSwitchValue(String target_str) {
-		if(isSwitchWeapon()) {
-			String[] values = target_str.split("｜");
-			return values[sRecentSwitchIdx];
-		}
-		else {
-			return target_str;
-		}
 	}
 	
 	/**

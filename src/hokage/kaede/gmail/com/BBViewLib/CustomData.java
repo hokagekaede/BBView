@@ -2058,29 +2058,69 @@ public class CustomData {
 	 * @return マガジン火力
 	 */
 	public double getMagazinePower(BBData data) {
+		double ret = 0;
+
+		if(data.existCategory("フレアグレネード系統")) {
+			ret = getMagazinePowerFlare(data);
+		}
+		else {
+			ret = getMagazinePowerDefault(data);
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 主武器などの基本的な武器のマガジン火力を取得する。
+	 * @param data 武器データ(総弾数を持つ武器限定)
+	 * @return マガジン火力
+	 */
+	private double getMagazinePowerDefault(BBData data) {
 		double one_power = getOneShotPower(data, 0);
 		int bullet = data.getMagazine();
 
-		if(data.existCategory("フレアグレネード系統")) {
+		return one_power * bullet;
+	}
+	
+	/**
+	 * フレアグレネード系統のマガジン火力を取得する。
+	 * @param data 武器データ(フレアグレネード系統限定)
+	 * @return マガジン火力。1個分の爆発にフルタイムヒットした場合の威力。
+	 */
+	private double getMagazinePowerFlare(BBData data) {
+		double one_power = getOneShotPower(data, 0);
+		double time = 0;
+		
+		try {
+			time = Double.valueOf(data.get("効果持続"));
+			one_power = (int)(one_power * time);
 			
-			try {
-				double time = Double.valueOf(data.get("効果持続"));
-				one_power = (int)(one_power * time);
-				
-			} catch(NumberFormatException e) {
-				e.printStackTrace();
-			}
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
 		}
 		
-		return one_power * bullet;
+		return one_power * time;
 	}
 	
 	/**
 	 * 秒間火力を取得する。(チップの効果を反映する)
 	 * @param data 指定の武器
-	 * @return 秒間火力(1sec)
+	 * @return 秒間火力
 	 */
-	public double get1SecPower(BBData data) {
+	public double getSecPower(BBData data) {
+		double ret = 0;
+
+		ret = get1SecPowerDefault(data);
+		
+		return ret;
+	}
+	
+	/**
+	 * 主武器などの基本的な秒間火力を取得する。
+	 * @param data 武器データ(連射速度をデータとして持つ武器限定)
+	 * @return 秒間火力
+	 */
+	private double get1SecPowerDefault(BBData data) {
 		double ret = 0;
 		double one_power = getOneShotPower(data, 0);
 		double shot_speed = getShotSpeed(data);
@@ -2103,10 +2143,23 @@ public class CustomData {
 	
 	/**
 	 * 戦術火力を取得する。(チップの効果を反映する)
-	 * @param data
-	 * @return
+	 * @param data 武器データ
+	 * @return 戦術間力
 	 */
 	public double getBattlePower(BBData data) {
+		double ret = 0;
+
+		ret = getBattlePowerDefault(data);
+		
+		return ret;
+	}
+	
+	/**
+	 * 主武器などの基本的な戦術火力を取得する。
+	 * @param data 武器データ(リロードと連射速度をデータとして持つ武器限定)
+	 * @return 戦術火力
+	 */
+	private double getBattlePowerDefault(BBData data) {
 		double ret = 0;
 		double magazine_power = getMagazinePower(data);
 		double all_shot_time = 0;
@@ -2229,7 +2282,7 @@ public class CustomData {
 	 * @param data 武器データ
 	 * @return 威力の値
 	 */
-	private double getOneShotPower(BBData data) {
+	public double getOneShotPower(BBData data) {
 		return getOneShotPower(data, data.getChargeMaxCount());
 	}
 	
@@ -2242,7 +2295,31 @@ public class CustomData {
 	private double getOneShotPower(BBData data, int charge_level) {
 		return data.getOneShotPower(charge_level) * getNewdChipBonus(data.getNewdAbsPer());
 	}
+	
+	/**
+	 * CS時の威力を算出する。
+	 * プリサイスショットチップにより倍率が変化するため、BBDataクラスの関数は参照しないこと。
+	 * @param data 武器データ
+	 * @return 威力の値
+	 */
+	public double getCsShotPower(BBData data) {
+		double power = getOneShotPower(data);
+		double cs_rate = SpecValues.CS_SHOT_RATE;
 
+		// チップの補正値を取得
+		if(existChip("プリサイスショット")) {
+			cs_rate = cs_rate + 0.1;
+		}
+		else if(existChip("プリサイスショットII")) {
+			cs_rate = cs_rate + 0.3;
+		}
+		else if(existChip("プリサイスショットIII")) {
+			cs_rate = cs_rate + 0.5;
+		}
+		
+		return power * cs_rate;
+	}
+	
 	/**
 	 * 近接武器の威力を算出する。
 	 * 近接武器強化チップとニュード威力上昇チップの効果を反映する。
@@ -2301,29 +2378,71 @@ public class CustomData {
 		
 		return 1.0 + ((getPartsWeight() - 2000) * slash_chip_bonus) * (slash_percent / 100);
 	}
+
+	/**
+	 * 爆発範囲を取得する。爆発範囲拡大チップの効果を反映する。
+	 * @param data 対象の武器
+	 * @return 爆発範囲
+	 */
+	public double getExplosionRange(BBData data) {
+		int range = data.getExplosionRange();
+		int chip_bonus = 0;
+
+		// チップの補正値を取得
+		if(existChip("爆発範囲拡大")) {
+			chip_bonus = 1;
+		}
+		else if(existChip("爆発範囲拡大II")) {
+			chip_bonus = 2;
+		}
+		else if(existChip("爆発範囲拡大III")) {
+			chip_bonus = 3;
+		}
+		
+		return range + (chip_bonus * (data.getExplosionAbsPer() / 100));
+	}
 	
 	/**
-	 * 特別兵装のチャージ時間を算出する。
-	 * @param data 対象の特別兵装の武器。
+	 * 索敵装備の索敵時間を取得する。索敵継続延長チップの効果を反映する。
+	 * @param data 対象の武器
+	 * @return 索敵時間
+	 */
+	public int getSearchTime(BBData data) {
+		int ret = data.getSearchTime();
+		int chip_bonus = 0;
+
+		// チップの補正値を取得
+		if(existChip("索敵継続延長")) {
+			chip_bonus = 2;
+		}
+		else if(existChip("索敵継続延長II")) {
+			chip_bonus = 5;
+		}
+		
+		return ret + chip_bonus;
+	}
+	
+	/**
+	 * 特別装備のチャージ時間を算出する。
+	 * @param data 対象の特別装備の武器。
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
-	public double getChargeTime(BBData data) {
+	public double getSpChargeTime(BBData data) {
 		double ret = 0;
 		
 		try {
-			double base_time = Double.valueOf(data.get("チャージ時間"));
-			ret = base_time / getSP();
+			ret = data.getSpChargeTime() / getSP();
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			ret = 0;
 		}
 		
 		return ret;
 	}
 
 	/**
-	 * 特別兵装のチャージ時間を算出する。
-	 * @param data 対象の特別兵装の武器。
+	 * 特別装備のチャージ時間を算出する。
+	 * @param data 対象の特別装備の武器。
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
 	public double getChargeTime(String blust_type, BBData data) {
@@ -2377,7 +2496,7 @@ public class CustomData {
 		
 		try {
 			double ac_on_time = Double.valueOf(data.get("連続使用"));
-			double ac_off_time = getChargeTime(data);
+			double ac_off_time = getSpChargeTime(data);
 			ret = ((getACSpeed(data) * ac_on_time) + (getDashBlust("強襲兵装", true) * ac_off_time)) / (ac_on_time + ac_off_time);
 
 		} catch(Exception e) {

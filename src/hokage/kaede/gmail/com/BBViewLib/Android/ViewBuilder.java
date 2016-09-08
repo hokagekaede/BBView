@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib.Android;
 
+import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray.SpecCol;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.widget.TableRow;
@@ -9,6 +10,16 @@ import android.widget.TextView;
  * 基本的なビューを生成するクラス
  */
 public class ViewBuilder {
+	
+	/**
+	 * テーブルビューの行を生成する
+	 * @param context 生成する画面
+	 * @param col データ行
+	 * @return テーブルビューの行
+	 */
+	public static TableRow createTableRow(Context context, SpecCol col) {
+		return createTableRow(context, col.getColors(), col.getValues());
+	}
 	
 	/**
 	 * テーブルビューの行を生成する
