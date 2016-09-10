@@ -67,6 +67,13 @@ public class SpecArray {
 		
 		return new SpecCol("単発火力(CS時)", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
 	}
+
+	public static SpecCol getChargeTimeArray(CustomData data, BBData weapon) {
+		double normal_value = weapon.getChargeTime();
+		double real_value = data.getChargeTime(weapon);
+		
+		return new SpecCol("充填時間", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+	}
 	
 	//----------------------------------------------------------
 	// 主武器のスペック
@@ -98,6 +105,43 @@ public class SpecArray {
 		double real_value = data.getReloadTime(weapon);
 
 		return new SpecCol("リロード時間", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+	}
+	
+	/**
+	 * OH耐性の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecCol getOverheatTimeArray(CustomData data, BBData weapon) {
+		double normal_value = weapon.getOverheatTime();
+		double real_value = normal_value;
+
+		return new SpecCol("OH耐性", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+	}
+
+	/**
+	 * OH復帰時間の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecCol getOverheatRepairTimeArray(CustomData data, BBData weapon) {
+		double normal_value_notoh = weapon.getOverheatRepairTime(false);
+		double real_value_notoh = data.getOverheatRepairTime(weapon, false);
+		
+		double normal_value_oh = weapon.getOverheatRepairTime(true);
+		double real_value_oh = data.getOverheatRepairTime(weapon, true);
+		
+		String normal_str = SpecValues.getSpecUnit(normal_value_oh, "OH復帰時間", BBViewSettingManager.IS_KB_PER_HOUR) + " ("
+				          + SpecValues.getSpecUnit(normal_value_notoh, "OH復帰時間", BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+
+		String real_str = SpecValues.getSpecUnit(real_value_oh, "OH復帰時間", BBViewSettingManager.IS_KB_PER_HOUR) + " ("
+				        + SpecValues.getSpecUnit(real_value_notoh, "OH復帰時間", BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		
+		SpecCol col = new SpecCol("OH復帰時間", normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KB_PER_HOUR);
+		col.setValues(normal_str, real_str);
+		return col;
 	}
 
 	/**
@@ -170,9 +214,17 @@ public class SpecArray {
 	// 特別装備のスペック
 	//----------------------------------------------------------
 
-	public static SpecCol getSpChargeTimeArray(CustomData data, BBData weapon) {
+	/**
+	 * 特別装備のチャージ時間の配列を生成する。
+	 * 支援兵装強化チップでSP供給が上昇するため、引数に兵装名が必要。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @param blust_type 兵装名
+	 * @return 配列
+	 */
+	public static SpecCol getSpChargeTimeArray(CustomData data, BBData weapon, String blust_type) {
 		double normal_value = weapon.getSpChargeTime();
-		double real_value = data.getSpChargeTime(weapon);
+		double real_value = data.getSpChargeTime(blust_type, weapon);
 
 		return new SpecCol("チャージ時間", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
 	}
@@ -205,6 +257,25 @@ public class SpecArray {
 		return new SpecCol("AC戦術速度", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
 	}
 
+	/**
+	 * バリア装備の秒間耐久回復量の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecCol getBattleBarrierGuardArray(CustomData data, BBData weapon) {
+		double normal_value = weapon.getBattleBarrierGuard();
+		double real_value = data.getBattleBarrierGuard(weapon);
+
+		return new SpecCol("秒間耐久回復量", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+	}
+
+	/**
+	 * リペア装備の回復量の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
 	public static SpecCol getMaxRepairArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getMaxRepair();
 		double real_value = data.getMaxRepair(weapon);

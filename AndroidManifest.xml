@@ -2,8 +2,8 @@
 <!DOCTYPE manifest>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hokage.kaede.gmail.com.BBView3"
-    android:versionCode="5014"
-    android:versionName="5.0.14" >
+    android:versionCode="5015"
+    android:versionName="5.0.15" >
     
     <uses-permission android:name="android.hardware.touchscreen" />
     <uses-permission android:name="android.permission.INTERNET"/>

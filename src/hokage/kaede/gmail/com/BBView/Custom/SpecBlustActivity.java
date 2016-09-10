@@ -383,7 +383,12 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 					}
 				}
 				else if(weapon.existCategory("特別装備")) {
-					addCannonRow(table, data, weapon);
+					if(weapon.existCategory("バリアユニット系統")) {
+						addBarrierRow(table, data, weapon);
+					}
+					else {
+						addCannonRow(table, data, weapon);
+					}
 				}
 			}
 			else if(mBlustType.equals("遊撃兵装")) {
@@ -405,6 +410,9 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 				else if(weapon.existCategory("特別装備")) {
 					if(weapon.existCategory("EUS系統")) {
 						addEUSRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("シールド系統")) {
+						addBarrierRow(table, data, weapon);
 					}
 					else {
 						addExtraRow(table, data, weapon);
@@ -445,7 +453,19 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSecPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getBattlePowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getReloadTimeArray(data, weapon)));
+
+		if(weapon.existKey("OH耐性")) {
+			table.addView(ViewBuilder.createTableRow(this, SpecArray.getOverheatTimeArray(data, weapon)));
+		}
+		if(weapon.existKey("OH復帰時間")) {
+			table.addView(ViewBuilder.createTableRow(this, SpecArray.getOverheatRepairTimeArray(data, weapon)));
+		}
+		
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMagazineCount(data, weapon)));
+		
+		if(weapon.isChargeWeapon()) {
+			table.addView(ViewBuilder.createTableRow(this, SpecArray.getChargeTimeArray(data, weapon)));
+		}
 	}
 
 	/**
@@ -461,6 +481,10 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getExplosionRangeArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getReloadTimeArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMagazineCount(data, weapon)));
+
+		if(weapon.isChargeWeapon()) {
+			table.addView(ViewBuilder.createTableRow(this, SpecArray.getChargeTimeArray(data, weapon)));
+		}
 	}
 
 	/**
@@ -512,7 +536,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getAcSpeedArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getAcBattleSpeedArray(data, weapon)));
-		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon)));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
 
 	/**
@@ -526,9 +550,22 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getOneShotPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getExplosionRangeArray(data, weapon)));
-		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon)));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
 
+	/**
+	 * バリア装備の情報を記載した列を追加する。
+	 * @param table 追加先のテーブル
+	 * @param data 対象のアセンデータ
+	 * @param weapon 対象の武器データ
+	 */
+	private void addBarrierRow(TableLayout table, CustomData data, BBData weapon) {
+		String[] title = { weapon.get("名称"), "補正前", "補正後" };
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getBattleBarrierGuardArray(data, weapon)));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
+	}
+	
 	/**
 	 * EUS系統の情報を記載した列を追加する。
 	 * @param table 追加先のテーブル
@@ -542,20 +579,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSecPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getBattlePowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getReloadTimeArray(data, weapon)));
-		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon)));
-	}
-	private static final String[] WEAPON_EXTRA_ROW = { "", "チャージ時間" };
-	
-	private void addExtraRow(TableLayout table, CustomData data, BBData weapon) {
-		double sp_charge_time = data.getChargeTime(mBlustType, weapon);
-		
-		String[] cols = {
-				weapon.get("名称"),
-				SpecValues.getSpecUnit(sp_charge_time, "チャージ時間", BBViewSettingManager.IS_KB_PER_HOUR),
-		};
-
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), WEAPON_EXTRA_ROW));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), cols));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
 
 	/**
@@ -568,7 +592,18 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
 		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMaxRepairArray(data, weapon)));
-		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon)));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
 
+	/**
+	 * 特別装備の基本情報を記載した列を追加する。
+	 * @param table 追加先のテーブル
+	 * @param data 対象のアセンデータ
+	 * @param weapon 対象の武器データ
+	 */
+	private void addExtraRow(TableLayout table, CustomData data, BBData weapon) {
+		String[] title = { weapon.get("名称"), "補正前", "補正後" };
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
+	}
 }

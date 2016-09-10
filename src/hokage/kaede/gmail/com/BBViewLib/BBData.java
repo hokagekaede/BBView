@@ -97,6 +97,8 @@ public class BBData extends KVCStore {
 	public static String SLASH_DAMAGE_NL_KEY    = "通常攻撃(総威力)";
 	public static String SLASH_DAMAGE_EX_KEY    = "特殊攻撃(総威力)";
 	
+	public static String BARRIER_BATTLE_GRD_KEY = "秒間耐久回復量";
+	
 	/**
 	 * 算出値データを取得する
 	 * @param key 取得する算出値データのキー。(CALC_KEY)
@@ -171,7 +173,9 @@ public class BBData extends KVCStore {
 		else if(key.equals(SLASH_DAMAGE_EX_KEY)) {
 			ret = getSlashDamage(true);
 		}
-		
+		else if(key.equals(BARRIER_BATTLE_GRD_KEY)) {
+			ret = getBattleBarrierGuard();
+		}
 		
 		return ret;
 	}
@@ -635,6 +639,23 @@ public class BBData extends KVCStore {
 	}
 	
 	/**
+	 * チャージ武器の充填時間を取得する。
+	 * @return 充填時間
+	 */
+	public double getChargeTime() {
+		double ret = 0;
+		
+		try {
+			ret = Double.valueOf(super.get("充填時間"));
+		}
+		catch(Exception e) {
+			ret = 0;
+		}
+		
+		return ret;
+	}
+	
+	/**
 	 * チャージレベルに応じた威力の文字列を取得する。
 	 * @param power_str 威力
 	 * @param charge_level チャージレベル
@@ -944,14 +965,28 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * OH復帰時間を返す。
-	 * @return
+	 * @return OH復帰時間
 	 */
 	public double getOverheatRepairTime() {
+		return getOverheatRepairTime(true);
+	}
+	
+	/**
+	 * OH復帰時間を返す。
+	 * OH状態がtrueの場合は等倍のOH復帰時間を返し、falseの場合は0.8倍のOH復帰時間を返す。
+	 * @param is_overheat オーバーヒート状態
+	 * @return OH復帰時間
+	 */
+	public double getOverheatRepairTime(boolean is_overheat) {
 		double ret = 0;
 		
 		try {
 			String oh_repair_str = super.get("OH復帰時間");
 			ret = Double.valueOf(oh_repair_str);
+			
+			if(!is_overheat) {
+				ret = ret * 0.8;
+			}
 			
 		} catch(Exception e) {
 			ret = 0;
@@ -1105,33 +1140,33 @@ public class BBData extends KVCStore {
 		
 		return ret;
 	}
-
-	private static final String[] SWITCH_WEAPONS = {
-		"スイッチアサルト系統",
-		"S90アイビス系統",
-		"サーバル可変機関銃系統",
-		"可変狙撃銃系統",
-		"BSR系統",
-		"SBR系統",
-		"トグルショット系統",
-		"SLS系統",
-		"SLG系統",
-		"マシンカノン系統"
-	};
 	
+	/**
+	 * バリア装備の秒間耐久回復量を表示する。
+	 * @return 秒間耐久回復量
+	 */
+	public double getBattleBarrierGuard() {
+		int guard = 0;
+		
+		try {
+			guard = Integer.valueOf(super.get("耐久力"));
+			
+		} catch(Exception e) {
+			guard = 0;
+		}
+		
+		return guard / getSpChargeTime();
+	}
+
 	/**
 	 * スイッチ武器かどうか
 	 * @return スイッチ武器の場合はtrueを返し、そうでない場合はfalseを返す。
 	 */
 	public boolean isSwitchWeapon() {
 		boolean ret = false;
-		
-		int size = SWITCH_WEAPONS.length;
-		for(int i=0; i<size; i++) {
-			if(super.existCategory(SWITCH_WEAPONS[i])) {
-				ret = true;
-				break;
-			}
+
+		if(mTypeB_data != null) {
+			ret = true;
 		}
 		
 		return ret;

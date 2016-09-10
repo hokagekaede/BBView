@@ -2093,10 +2093,9 @@ public class CustomData {
 		
 		try {
 			time = Double.valueOf(data.get("効果持続"));
-			one_power = (int)(one_power * time);
 			
 		} catch(NumberFormatException e) {
-			e.printStackTrace();
+			time = 0;
 		}
 		
 		return one_power * time;
@@ -2172,7 +2171,7 @@ public class CustomData {
 		
 			// OH武器はOHの条件で判定する
 			all_shot_time = data.getOverheatTime();
-			reload_time = getOverheatRepairTime(data);
+			reload_time = getOverheatRepairTime(data, false);
 			power = getOneShotPower(data) * (shot_speed / 60) * all_shot_time;
 			
 			// OH武器以外は撃ち切り時間とリロード時間で判定する
@@ -2260,7 +2259,17 @@ public class CustomData {
 	 * @param data 指定の武器
 	 * @return OH復帰時間
 	 */
-	private double getOverheatRepairTime(BBData data) {
+	public double getOverheatRepairTime(BBData data) {
+		return getOverheatRepairTime(data, true);
+	}
+
+	/**
+	 * OH復帰時間を算出する。(高速冷却の効果を反映する)
+	 * @param data 指定の武器
+	 * @param is_overheat OH状態
+	 * @return OH復帰時間
+	 */
+	public double getOverheatRepairTime(BBData data, boolean is_overheat) {
 		double ret = 0;
 		double chip_bonus = 1.0;
 
@@ -2272,7 +2281,7 @@ public class CustomData {
 			chip_bonus = 0.5;
 		}
 		
-		ret = data.getOverheatRepairTime() * chip_bonus;
+		ret = data.getOverheatRepairTime(is_overheat) * chip_bonus;
 		
 		return ret;
 	}
@@ -2283,7 +2292,7 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	public double getOneShotPower(BBData data) {
-		return getOneShotPower(data, data.getChargeMaxCount());
+		return data.getOneShotPower() * getNewdChipBonus(data.getNewdAbsPer());
 	}
 	
 	/**
@@ -2428,35 +2437,17 @@ public class CustomData {
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
 	public double getSpChargeTime(BBData data) {
-		double ret = 0;
-		
-		try {
-			ret = data.getSpChargeTime() / getSP();
-			
-		} catch(Exception e) {
-			ret = 0;
-		}
-		
-		return ret;
+		return data.getSpChargeTime() / getSP();
 	}
 
 	/**
-	 * 特別装備のチャージ時間を算出する。
+	 * 特別装備のチャージ時間を算出する。兵装強化チップの効果も反映する。
+	 * @param blust_type 兵装名
 	 * @param data 対象の特別装備の武器。
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
-	public double getChargeTime(String blust_type, BBData data) {
-		double ret = 0;
-		
-		try {
-			double base_time = Double.valueOf(data.get("チャージ時間"));
-			ret = base_time / getSP(blust_type);
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
+	public double getSpChargeTime(String blust_type, BBData data) {
+		return  data.getSpChargeTime() / getSP(blust_type);
 	}
 	
 	/**
@@ -2487,6 +2478,7 @@ public class CustomData {
 	
 	/**
 	 * AC使用時の戦術速度を算出する。
+	 * 強襲兵装限定のため、強襲兵装強化チップのダッシュ上昇効果も反映する。
 	 * @param data 使用するAC
 	 * @return AC使用時の戦術速度。AC以外を引数とした倍は0を返す。
 	 * AC使用時の戦術速度＝（（AC使用時速度×使用時間）＋（初速×チャージ時間））÷（使用時間＋チャージ時間）
@@ -2500,10 +2492,30 @@ public class CustomData {
 			ret = ((getACSpeed(data) * ac_on_time) + (getDashBlust("強襲兵装", true) * ac_off_time)) / (ac_on_time + ac_off_time);
 
 		} catch(Exception e) {
-			e.printStackTrace();
+			ret = 0;
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * バリア装備の秒間耐久回復量を算出する。
+	 * 重火力兵装限定で支援兵装強化チップのSP供給率の上昇を考慮しなくてよいため、兵装名は不要。
+	 * 基本的なチップの効果を受けるSP供給率で除算するため、BBDataクラスの関数は参照できない。
+	 * @param data 対象のバリア装備
+	 * @return 秒間耐久回復量
+	 */
+	public double getBattleBarrierGuard(BBData data) {
+		int guard = 0;
+		
+		try {
+			guard = Integer.valueOf(data.get("耐久力"));
+			
+		} catch(Exception e) {
+			guard = 0;
+		}
+		
+		return guard / getSpChargeTime(data);
 	}
 	
 	/**
@@ -2515,7 +2527,25 @@ public class CustomData {
 		return data.getMaxRepair();
 	}
 	
+	/**
+	 * チャージ武器の充填時間を算出する。
+	 * @param data 対象の武器
+	 * @return 充填時間
+	 */
+	public double getChargeTime(BBData data) {
+		double ret = data.getChargeTime();
 
+		// チップの補正値を取得
+		if(existChip("高速充填")) {
+			ret = ret * (2.0 / 3.0);
+		}
+		else if(existChip("高速充填II")) {
+			ret = ret * (1.0 / 2.0);
+		}
+		
+		return ret;
+	}
+	
 	//----------------------------------------------------------
 	// 性能取得系(耐性関連)
 	//----------------------------------------------------------

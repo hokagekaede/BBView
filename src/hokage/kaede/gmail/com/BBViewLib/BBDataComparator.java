@@ -46,7 +46,9 @@ public class BBDataComparator implements Comparator<BBData> {
 		"総重量",
 		"DEF回復時間",
 		"加速",
-		"チャージ時間"
+		"チャージ時間",
+		"OH復帰時間",
+		"充填時間"
 	};
 
 	/**
