@@ -376,7 +376,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 						addSlashRow(table, data, weapon);
 					}
 					else if(weapon.existCategory("ハウルHSG系統")) {
-						addSubWeaponRow(table, data, weapon);
+						addReloadWeaponRow(table, data, weapon);
 					}
 					else {
 						addSupportBombRow(table, data, weapon);

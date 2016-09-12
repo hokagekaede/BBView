@@ -730,6 +730,62 @@ public class BBData extends KVCStore {
 		
 		return getOneShotPowerMain(power_str);
 	}
+
+	/**
+	 * CS時の威力を取得する。
+	 * @return CS時の威力
+	 */
+	public double getCsShotPower() {
+		return getOneShotPower() * SpecValues.CS_SHOT_RATE;
+	}
+
+	/**
+	 * CS時の威力を取得する。
+	 * @param charge_level チャージレベル
+	 * @return CS時の威力
+	 */
+	public double getCsShotPower(int charge_level) {
+		return getOneShotPower(charge_level) * SpecValues.CS_SHOT_RATE;
+	}
+
+	/**
+	 * 転倒関連の威力値を取得する。
+	 * @param charge_level チャージレベル
+	 * @return 転倒関連の威力。
+	 */
+	public double getShotAntiStability(int charge_level) {
+		double ret = getOneShotPower(charge_level);
+
+		// ハウルHSGのダウン値は4倍
+		if(existCategory("ハウルHSG系統")) {
+			ret = ret * 4.0;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 転倒関連の威力値を取得する。
+	 * @param is_critical クリティカルかどうか。
+	 * @return 転倒関連の威力。
+	 */
+	private double getShotAntiStability(boolean is_critical) {
+		double ret;
+		
+		if(is_critical) {
+			ret = getCsShotPower();
+		}
+		else {
+			ret = getOneShotPower();
+		}
+
+		// ハウルHSGのダウン値は4倍
+		if(existCategory("ハウルHSG系統")) {
+			ret = ret * 4.0;
+		}
+		
+		return ret;
+	}
 	
 	/**
 	 * 1ショットの威力を返す。チャージ関連の算出を終わらせた後の文字列に対して処理を行う。
@@ -773,23 +829,6 @@ public class BBData extends KVCStore {
 		}
 
 		return ret;
-	}
-	
-	/**
-	 * CS時の威力を取得する。
-	 * @return CS時の威力
-	 */
-	public double getCsShotPower() {
-		return getOneShotPower() * SpecValues.CS_SHOT_RATE;
-	}
-
-	/**
-	 * CS時の威力を取得する。
-	 * @param charge_level チャージレベル
-	 * @return CS時の威力
-	 */
-	public double getCsShotPower(int charge_level) {
-		return getOneShotPower(charge_level) * SpecValues.CS_SHOT_RATE;
 	}
 	
 	/**
@@ -1125,14 +1164,27 @@ public class BBData extends KVCStore {
 	}
 
 	/**
-	 * 特別装備のチャージ時間を算出する。
-	 * @return チャージ時間の値が無い場合は0を返す。
+	 * 特別装備のチャージ時間を算出する。(非SP枯渇時)
+	 * @return チャージ時間。値が無い場合は0を返す。
 	 */
 	public double getSpChargeTime() {
+		return getSpChargeTime(false);
+	}
+	
+	/**
+	 * 特別装備のチャージ時間を算出する。
+	 * @param is_overheat SPが枯渇しているかどうか。枯渇している場合は時間が1.2倍となる。
+	 * @return チャージ時間。値が無い場合は0を返す。
+	 */
+	public double getSpChargeTime(boolean is_overheat) {
 		double ret = 0;
 		
 		try {
 			ret = Double.valueOf(super.get("チャージ時間"));
+			
+			if(is_overheat) {
+				ret = ret * 1.2;
+			}
 			
 		} catch(Exception e) {
 			ret = 0;
@@ -1199,17 +1251,7 @@ public class BBData extends KVCStore {
 	 * @return
 	 */
 	public double getArmorBreakJdg(boolean is_critical) {
-		double power = getOneShotPower();
-
-		// ハウルHSGのダウン値は4倍
-		if(existCategory("ハウルHSG系統")) {
-			power = power * 4.0;
-		}
-		
-		if(is_critical) {
-			power = power * 2.5;
-		}
-		
+		double power = getShotAntiStability(is_critical);
 		return (2 - (SpecValues.getBlustBreakDamage() / power)) * 100;
 	}
 	
@@ -1219,17 +1261,7 @@ public class BBData extends KVCStore {
 	 * @return
 	 */
 	public double getArmorDownJdg(boolean is_critical) {
-		double power = getOneShotPower();
-
-		// ハウルHSGのダウン値は4倍
-		if(existCategory("ハウルHSG系統")) {
-			power = power * 4.0;
-		}
-		
-		if(is_critical) {
-			power = power * 2.5;
-		}
-		
+		double power = getShotAntiStability(is_critical);
 		return (2 - (SpecValues.BLUST_DOWN_DAMAGE / power)) * 100;
 	}
 	
@@ -1239,17 +1271,7 @@ public class BBData extends KVCStore {
 	 * @return
 	 */
 	public double getArmorKBJdg(boolean is_critical) {
-		double power = getOneShotPower();
-
-		// ハウルHSGのダウン値は4倍
-		if(existCategory("ハウルHSG系統")) {
-			power = power * 4.0;
-		}
-		
-		if(is_critical) {
-			power = power * 2.5;
-		}
-		
+		double power = getShotAntiStability(is_critical);
 		return (2 - (SpecValues.BLUST_KB_DAMAGE / power)) * 100;
 	}
 }

@@ -257,6 +257,27 @@ public class CustomData {
 	}
 	
 	/**
+	 * 特定のチップ系統がセットされているかどうかを判別する。
+	 * @param name  チップの名前
+	 * @return 指定されたチップの系統がセットされている場合はtrueを返し、セットされていない場合はfalseを返す。
+	 */
+	public boolean existChipGroup(String name) {
+		boolean ret = false;
+		int size = mRecentChips.size();
+		
+		for(int i=0; i<size; i++) {
+			BBData item = mRecentChips.get(i);
+			String item_name = item.get("名称");
+			if(item_name.startsWith(name)) {
+				ret = true;
+				break;
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
 	 * アクションチップの判定をする
 	 * @return アクションチップのボタンに重複があればfalseを返す。それ以外はtrueを返す。
 	 */
@@ -2026,30 +2047,134 @@ public class CustomData {
 	}
 
 	/**
-	 * リロード時間を計算する。
-	 * @param data リロード時間を計算する武器
-	 * @return リロード時間。単位は秒。
+	 * 1射の威力を算出する。(ニュード威力上昇の効果を反映する)
+	 * @param data 武器データ
+	 * @return 威力の値
 	 */
-	public double getReloadTime(BBData data) {
-		double ret = 0;
-		double reload_time_value = 0;
-		double reload_spec_value = 0;
+	public double getOneShotPower(BBData data) {
+		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, false, false, false);
+	}
+	
+	/**
+	 * 1射の威力を算出する。(ニュード威力上昇の効果を反映する)
+	 * @param data 武器データ
+	 * @param charge_level 武器のチャージレベル
+	 * @return 威力の値
+	 */
+	private double getOneShotPower(BBData data, int charge_level) {
+		return getOneShotPowerMain(data, charge_level, false, false, false);
+	}
+	
+	/**
+	 * CS時の威力を算出する。
+	 * プリサイスショットチップによりCS倍率が変化するため、BBDataクラスの関数は参照しないこと。
+	 * @param data 武器データ
+	 * @return 威力の値
+	 */
+	public double getCsShotPower(BBData data) {
+		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, true, false, false);
+	}
 
-		try {
-			// 武器のリロード時間を読み込む
-			reload_time_value = data.getReloadTime();
-			
-			// リロード倍率の読み込み
-			reload_spec_value = getReload();
+	/**
+	 * 転倒関連の威力値を取得する。
+	 * @param is_critical クリティカルかどうか。
+	 * @return 転倒関連の威力。
+	 */
+	public double getShotAntiStability(BBData data, boolean is_critical) {
+		return getOneShotPowerMain(data, 0, is_critical, true, false);
+	}
 
-			// リロード時間の計算
-			ret = reload_time_value * reload_spec_value;
+	/**
+	 * 施設攻撃時の威力を算出する。
+	 * @param data 武器データ
+	 * @return 威力の値
+	 */
+	public double getObjectShotPower(BBData data) {
+		return getOneShotPowerMain(data, 0, false, false, true);
+	}
 
-		} catch (Exception e) {
-			ret = SpecValues.ERROR_VALUE;
+	/**
+	 * 単発威力を取得する。
+	 * @param data 武器のデータ
+	 * @param charge_level チャージレベル
+	 * @param is_critical クリティカルかどうか。
+	 * @param is_stn 転倒ダメージ値かどうか。
+	 * @param is_obj 対施設攻撃かどうか。
+	 * @return
+	 */
+	private double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn, boolean is_obj) {
+		double power = 0;
+		
+		// 武器の単発火力(または転倒ダメージ値)を取得する。
+		if(is_stn) {
+			power = data.getShotAntiStability(charge_level);
+		}
+		else {
+			power = data.getOneShotPower(charge_level);
 		}
 		
-		return ret;
+		// ニュード威力上昇チップの効果を反映する
+		power = power * getNewdChipBonus(data.getNewdAbsPer());
+
+		// CSによる補正を行う
+		if(is_critical) {
+			double cs_rate = SpecValues.CS_SHOT_RATE;
+
+			if(existChip("プリサイスショット")) {
+				cs_rate = cs_rate + 0.1;
+			}
+			else if(existChip("プリサイスショットII")) {
+				cs_rate = cs_rate + 0.3;
+			}
+			else if(existChip("プリサイスショットIII")) {
+				cs_rate = cs_rate + 0.5;
+			}
+			
+			power = power * cs_rate;
+		}
+		
+		// 転倒ダメージ値の場合はアンチスタビリティチップの効果を反映する
+		if(is_stn) {
+			double rate = 0;
+
+			// チップの補正値を取得
+			if(existChip("アンチスタビリティ")) {
+				rate = 0.03;
+			}
+			else if(existChip("アンチスタビリティII")) {
+				rate = 0.07;
+			}
+			else if(existChip("アンチスタビリティIII")) {
+				rate = 0.10;
+			}
+			
+			power = power * (1.0 + rate);
+		}
+		
+		// 対施設による補正を行う
+		if(is_obj) {
+			double rate = 0;
+			double base_power = power;
+			
+			power =  base_power * (0.9 * data.getBulletAbsPer() / 100);
+			power += base_power * (1.0 * data.getExplosionAbsPer() / 100);
+			power += base_power * (1.2 * data.getNewdAbsPer() / 100);
+			power += base_power * (1.0 * data.getSlashAbsPer() / 100);
+
+			if(existChip("対物破壊適性")) {
+				rate = 0.07;
+			}
+			else if(existChip("対物破壊適性II")) {
+				rate = 0.12;
+			}
+			else if(existChip("対物破壊適性III")) {
+				rate = 0.15;
+			}
+			
+			power = power * (1 + rate);
+		}
+		
+		return power;
 	}
 	
 	/**
@@ -2100,6 +2225,31 @@ public class CustomData {
 		
 		return one_power * time;
 	}
+
+	/**
+	 * 連射速度を算出する。(実弾速射の効果を反映する)
+	 * @param data 指定の武器
+	 * @return 連射速度
+	 */
+	private double getShotSpeed(BBData data) {
+		double ret = 0;
+		double shot_chip_bonus = 1.0;
+
+		// チップの補正値を取得
+		if(existChip("実弾速射")) {
+			shot_chip_bonus = 1.03;
+		}
+		else if(existChip("実弾速射II")) {
+			shot_chip_bonus = 1.08;
+		}
+		else if(existChip("実弾速射III")) {
+			shot_chip_bonus = 1.12;
+		}
+		
+		ret = data.getShotSpeed() * shot_chip_bonus;
+		
+		return ret;
+	}
 	
 	/**
 	 * 秒間火力を取得する。(チップの効果を反映する)
@@ -2139,16 +2289,100 @@ public class CustomData {
 		
 		return ret;
 	}
+
+	/**
+	 * リロード時間を計算する。(クイックリロードチップの効果は反映しない)
+	 * @param data リロード時間を計算する武器
+	 * @return リロード時間。単位は秒。
+	 */
+	public double getReloadTime(BBData data) {
+		return getReloadTime(data, false);
+	}
+
+	/**
+	 * リロード時間を計算する。
+	 * @param data リロード時間を計算する武器
+	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
+	 * @return リロード時間。単位は秒。
+	 */
+	public double getReloadTime(BBData data, boolean is_quickreload) {
+		double ret = 0;
+		double reload_time_value = 0;
+		double reload_spec_value = 0;
+
+		// 武器のリロード時間を読み込む
+		reload_time_value = data.getReloadTime();
+		
+		// リロード倍率の読み込み
+		reload_spec_value = getReload();
+
+		// リロード時間の計算
+		ret = reload_time_value * reload_spec_value;
+
+		// チップの補正値を取得
+		if(is_quickreload) {
+			if(existChip("クイックリロード")) {
+				ret = ret * (5.0 / 6.0);
+			}
+			else if(existChip("クイックリロードII")) {
+				ret = ret * (5.0 / 8.0);
+			}
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * OH復帰時間を算出する。(高速冷却の効果を反映する)
+	 * @param data 指定の武器
+	 * @return OH復帰時間
+	 */
+	public double getOverheatRepairTime(BBData data) {
+		return getOverheatRepairTime(data, true);
+	}
+
+	/**
+	 * OH復帰時間を算出する。(高速冷却の効果を反映する)
+	 * @param data 指定の武器
+	 * @param is_overheat OH状態
+	 * @return OH復帰時間
+	 */
+	public double getOverheatRepairTime(BBData data, boolean is_overheat) {
+		double ret = 0;
+		double chip_bonus = 1.0;
+
+		// チップの補正値を取得
+		if(existChip("高速冷却")) {
+			chip_bonus = 0.8;
+		}
+		else if(existChip("高速冷却II")) {
+			chip_bonus = 0.5;
+		}
+		
+		ret = data.getOverheatRepairTime(is_overheat) * chip_bonus;
+		
+		return ret;
+	}
 	
 	/**
-	 * 戦術火力を取得する。(チップの効果を反映する)
+	 * 戦術火力を取得する。クイックリロード以外のチップの効果を反映する。
 	 * @param data 武器データ
-	 * @return 戦術間力
+	 * @return 戦術火力
 	 */
 	public double getBattlePower(BBData data) {
+		return getBattlePower(data, false);
+	}
+	
+	/**
+	 * 戦術火力を取得する。チップの効果を反映する。
+	 * @param data 武器データ
+	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
+	 * @return 戦術火力
+	 */
+	public double getBattlePower(BBData data,  boolean is_quickreload) {
 		double ret = 0;
 
-		ret = getBattlePowerDefault(data);
+		ret = getBattlePowerDefault(data, is_quickreload);
 		
 		return ret;
 	}
@@ -2156,9 +2390,10 @@ public class CustomData {
 	/**
 	 * 主武器などの基本的な戦術火力を取得する。
 	 * @param data 武器データ(リロードと連射速度をデータとして持つ武器限定)
+	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
 	 * @return 戦術火力
 	 */
-	private double getBattlePowerDefault(BBData data) {
+	private double getBattlePowerDefault(BBData data, boolean is_quickreload) {
 		double ret = 0;
 		double magazine_power = getMagazinePower(data);
 		double all_shot_time = 0;
@@ -2176,7 +2411,7 @@ public class CustomData {
 			
 			// OH武器以外は撃ち切り時間とリロード時間で判定する
 			if(reload_time == 0) {
-				reload_time = getReloadTime(data);
+				reload_time = getReloadTime(data, is_quickreload);
 				all_shot_time = magazine / shot_speed * 60;
 				power = magazine_power;
 			}
@@ -2228,106 +2463,6 @@ public class CustomData {
 	//-------------------------------------------------------------
 	// ここまで
 	//-------------------------------------------------------------
-	
-	/**
-	 * 連射速度を算出する。(実弾速射の効果を反映する)
-	 * @param data 指定の武器
-	 * @return 連射速度
-	 */
-	private double getShotSpeed(BBData data) {
-		double ret = 0;
-		double shot_chip_bonus = 1.0;
-
-		// チップの補正値を取得
-		if(existChip("実弾速射")) {
-			shot_chip_bonus = 1.03;
-		}
-		else if(existChip("実弾速射II")) {
-			shot_chip_bonus = 1.08;
-		}
-		else if(existChip("実弾速射III")) {
-			shot_chip_bonus = 1.12;
-		}
-		
-		ret = data.getShotSpeed() * shot_chip_bonus;
-		
-		return ret;
-	}
-	
-	/**
-	 * OH復帰時間を算出する。(高速冷却の効果を反映する)
-	 * @param data 指定の武器
-	 * @return OH復帰時間
-	 */
-	public double getOverheatRepairTime(BBData data) {
-		return getOverheatRepairTime(data, true);
-	}
-
-	/**
-	 * OH復帰時間を算出する。(高速冷却の効果を反映する)
-	 * @param data 指定の武器
-	 * @param is_overheat OH状態
-	 * @return OH復帰時間
-	 */
-	public double getOverheatRepairTime(BBData data, boolean is_overheat) {
-		double ret = 0;
-		double chip_bonus = 1.0;
-
-		// チップの補正値を取得
-		if(existChip("高速冷却")) {
-			chip_bonus = 0.8;
-		}
-		else if(existChip("高速冷却II")) {
-			chip_bonus = 0.5;
-		}
-		
-		ret = data.getOverheatRepairTime(is_overheat) * chip_bonus;
-		
-		return ret;
-	}
-	
-	/**
-	 * 1射の威力を算出する。(ニュード威力上昇の効果を反映する)
-	 * @param data 武器データ
-	 * @return 威力の値
-	 */
-	public double getOneShotPower(BBData data) {
-		return data.getOneShotPower() * getNewdChipBonus(data.getNewdAbsPer());
-	}
-	
-	/**
-	 * 1射の威力を算出する。(ニュード威力上昇の効果を反映する)
-	 * @param data 武器データ
-	 * @param charge_level 武器のチャージレベル
-	 * @return 威力の値
-	 */
-	private double getOneShotPower(BBData data, int charge_level) {
-		return data.getOneShotPower(charge_level) * getNewdChipBonus(data.getNewdAbsPer());
-	}
-	
-	/**
-	 * CS時の威力を算出する。
-	 * プリサイスショットチップにより倍率が変化するため、BBDataクラスの関数は参照しないこと。
-	 * @param data 武器データ
-	 * @return 威力の値
-	 */
-	public double getCsShotPower(BBData data) {
-		double power = getOneShotPower(data);
-		double cs_rate = SpecValues.CS_SHOT_RATE;
-
-		// チップの補正値を取得
-		if(existChip("プリサイスショット")) {
-			cs_rate = cs_rate + 0.1;
-		}
-		else if(existChip("プリサイスショットII")) {
-			cs_rate = cs_rate + 0.3;
-		}
-		else if(existChip("プリサイスショットIII")) {
-			cs_rate = cs_rate + 0.5;
-		}
-		
-		return power * cs_rate;
-	}
 	
 	/**
 	 * 近接武器の威力を算出する。
@@ -2430,24 +2565,57 @@ public class CustomData {
 		
 		return ret + chip_bonus;
 	}
-	
+
 	/**
-	 * 特別装備のチャージ時間を算出する。
+	 * 特別装備のチャージ時間を算出する。(非SP枯渇時)
 	 * @param data 対象の特別装備の武器。
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
 	public double getSpChargeTime(BBData data) {
-		return data.getSpChargeTime() / getSP();
+		return getSpChargeTime(data, false);
+	}
+	
+	/**
+	 * 特別装備のチャージ時間を算出する。
+	 * @param data 対象の特別装備の武器。
+	 * @param is_overheat SPが枯渇しているかどうか。枯渇している場合は時間が1.2倍となる。
+	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
+	 */
+	public double getSpChargeTime(BBData data, boolean is_overheat) {
+		double ret = data.getSpChargeTime() / getSP();
+		
+		if(is_overheat) {
+			ret = ret * 1.2;
+		}
+		
+		return ret;
 	}
 
 	/**
-	 * 特別装備のチャージ時間を算出する。兵装強化チップの効果も反映する。
+	 * 特別装備のチャージ時間を算出する。(非SP枯渇時)
 	 * @param blust_type 兵装名
 	 * @param data 対象の特別装備の武器。
 	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
 	 */
 	public double getSpChargeTime(String blust_type, BBData data) {
-		return  data.getSpChargeTime() / getSP(blust_type);
+		return getSpChargeTime(blust_type, data, false);
+	}
+	
+	/**
+	 * 特別装備のチャージ時間を算出する。兵装強化チップの効果も反映する。
+	 * @param blust_type 兵装名
+	 * @param data 対象の特別装備の武器。
+	 * @param is_overheat SPが枯渇しているかどうか。枯渇している場合は時間が1.2倍となる。
+	 * @return SP供給率を反映したチャージ時間。チャージ時間の値が無い場合は0を返す。
+	 */
+	public double getSpChargeTime(String blust_type, BBData data, boolean is_overheat) {
+		double ret = data.getSpChargeTime() / getSP(blust_type);
+		
+		if(is_overheat) {
+			ret = ret * 1.2;
+		}
+		
+		return ret;
 	}
 	
 	/**
