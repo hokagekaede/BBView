@@ -119,6 +119,51 @@ public class SettingManager {
 		return THEME_HOLO_PATTERN[color_id];
 	}
 	
+	/**
+	 * 白の色の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorWhite() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.WHITE;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.BLACK;
+		}
+		
+		return Color.WHITE;
+	}
+	
+	/**
+	 * 黒の色の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorBlack() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.BLACK;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.WHITE;
+		}
+		
+		return Color.BLACK;
+	}
+	
+	/**
+	 * 青の色の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorBlue() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.CYAN;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.BLUE;
+		}
+		
+		return Color.CYAN;
+	}
+	
 	//----------------------------------------------------------
 	// バージョン情報管理
 	//----------------------------------------------------------
@@ -186,5 +231,4 @@ public class SettingManager {
 		
 		return ret;
 	}
-
 }

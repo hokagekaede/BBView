@@ -10,15 +10,25 @@ import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemWeapon;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
+import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.Lib.Java.FileIO;
+
+import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 public class CustomView extends LinearLayout implements android.widget.AdapterView.OnItemClickListener {
 
@@ -28,11 +38,15 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 	private static int sLastPosition = -1;
 	private static int sLastListTop = -1;
 	
-	public CustomView(Context context, CustomData custom_data) {
+	private boolean mShowChips = false;
+	
+	public CustomView(Context context, CustomData custom_data, boolean is_show_chips) {
 		super(context);
 
 		this.setOrientation(LinearLayout.VERTICAL);
 		this.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		
+		mShowChips = is_show_chips;
 		
 		if(BBViewSettingManager.IS_SHOW_COLUMN2) {
 			createViewColTwo(context, custom_data);
@@ -203,8 +217,41 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 		
 		grid_adapter.addItem(createItem(context, custom_data, BBDataManager.BLUST_TYPE_HEAVY, BBDataManager.WEAPON_TYPE_SPECIAL));
 		grid_adapter.addItem(createItem(context, custom_data, BBDataManager.BLUST_TYPE_SUPPORT, BBDataManager.WEAPON_TYPE_SPECIAL));
+		
+		//----------------------------------------------------------
+		// チップ情報表示関連処理
+		//----------------------------------------------------------
+		FrameLayout top_layout = new FrameLayout(context);
+		//top_layout.setForegroundGravity(Gravity.RIGHT | Gravity.TOP);
+		top_layout.setLayoutParams(new FrameLayout.LayoutParams(FP, WC, 1));
+		top_layout.addView(list_view);
+		
+		if(mShowChips) {
+			ArrayList<BBData> chiplist = custom_data.getChips();
+			String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KB_PER_HOUR);
+			String chip_weight_str = String.valueOf(custom_data.getChipWeight());
+			String chip_text_str = "■チップ情報 [" + chip_weight_str + "/" + chip_cap_str + "]" + FileIO.NEWLINE;
+			int size = chiplist.size();
+			for(int i=0; i<size; i++) {
+				chip_text_str = chip_text_str + chiplist.get(i).get("名称") + FileIO.NEWLINE;
+			}
+			
+			TextView chip_text_view = ViewBuilder.createTextView(context, chip_text_str, BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
+			chip_text_view.setLayoutParams(new LayoutParams(WC, WC));
+			//chip_text_view.setTextColor(SettingManager.getColorBlue());
+			//chip_text_view.setBackgroundColor(SettingManager.getColorBlack());
+			chip_text_view.setTextColor(SettingManager.getColorWhite());
+			chip_text_view.setBackgroundColor(Color.rgb(60, 60, 60));
+			
+			LinearLayout buf_layout = new LinearLayout(context);
+			buf_layout.setLayoutParams(new LayoutParams(FP, WC));
+			buf_layout.setGravity(Gravity.RIGHT);
+			buf_layout.addView(chip_text_view);
+	
+			top_layout.addView(buf_layout);
+		}
 
-		this.addView(list_view);
+		this.addView(top_layout);
 		this.addView(grid_view);
 	}
 	

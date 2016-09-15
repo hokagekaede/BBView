@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -28,7 +29,10 @@ public class CustomMainActivity extends BaseActivity {
 	private static final String VIEWMODE_STR_RESIST = "耐性";
 	private static final String VIEWMODE_STR_FILE   = "データ";
 
-	private final static String MENU_SHARE           = "アセン共有";
+	private static final String MENU_SHOW_CHIPS      = "チップを表示する";
+	private static final String MENU_SHARE           = "アセン共有";
+	
+	private boolean mIsShowChips = false;
 	
 	// メイン画面のレイアウト
 	private LinearLayout mLayout;
@@ -80,7 +84,7 @@ public class CustomMainActivity extends BaseActivity {
 		mLayout.addView(createTopLayout());
 
 		if(mViewMode.equals(VIEWMODE_STR_CUSTOM)) {
-			mLayout.addView(new CustomView(this, custom_data));
+			mLayout.addView(new CustomView(this, custom_data, mIsShowChips));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
 			mLayout.addView(new ChipView(this));
@@ -189,9 +193,36 @@ public class CustomMainActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
+		MenuItem item = menu.add(MENU_SHOW_CHIPS);
+		item.setCheckable(true);
+		item.setChecked(mIsShowChips);
+		item.setOnMenuItemClickListener(new OnMenuShowChipListener());
+		
 		menu.add(MENU_SHARE);
 		
 		return true;
+	}
+	
+	/**
+	 * チップを表示するのメニュー選択時の処理を行う。
+	 */
+	private class OnMenuShowChipListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			if(item.isChecked()) {
+				mIsShowChips = false;
+				item.setChecked(false);
+				updateView();
+			}
+			else {
+				mIsShowChips = true;
+				item.setChecked(true);
+				updateView();
+			}
+			
+			return false;
+		}
 	}
 	
 	/**
