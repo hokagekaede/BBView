@@ -95,32 +95,8 @@ public class SettingManager {
 		return ret;
 	}
 	
-	public static int COLOR_BASE = 0;
-	public static int COLOR_YELLOW = 1;
-	public static int COLOR_RED = 2;
-	public static int COLOR_BLUE = 3;
-	
-	private static int[] THEME_HOLO_PATTERN = {Color.WHITE, Color.YELLOW, Color.MAGENTA, Color.CYAN};
-	private static int[] THEME_HOLO_LIGHT_PATTERN = {Color.BLACK, Color.rgb(0xFF, 0xA5, 0x00), Color.RED, Color.BLUE};
-	
-	
 	/**
-	 * 指定の文字色について、背景色に応じた色を返す。
-	 * @return 文字色
-	 */
-	public static int getColor(int color_id) {
-		if(sThemeID == android.R.style.Theme_Holo) {
-			return THEME_HOLO_PATTERN[color_id];
-		}
-		else if(sThemeID == android.R.style.Theme_Holo_Light) {
-			return THEME_HOLO_LIGHT_PATTERN[color_id];
-		}
-		
-		return THEME_HOLO_PATTERN[color_id];
-	}
-	
-	/**
-	 * 白の色の設定値を取得する。
+	 * 白色(ホワイト)の設定値を取得する。
 	 * @return 文字色
 	 */
 	public static int getColorWhite() {
@@ -135,7 +111,22 @@ public class SettingManager {
 	}
 	
 	/**
-	 * 黒の色の設定値を取得する。
+	 * 灰色の色の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorGray() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.rgb(60, 60, 60);
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.rgb(190, 190, 190);
+		}
+		
+		return Color.rgb(60, 60, 60);
+	}
+	
+	/**
+	 * 黒色(ブラック)の設定値を取得する。
 	 * @return 文字色
 	 */
 	public static int getColorBlack() {
@@ -150,10 +141,25 @@ public class SettingManager {
 	}
 	
 	/**
-	 * 青の色の設定値を取得する。
+	 * 赤色(マゼンタ)の設定値を取得する。
+	 * @return
+	 */
+	public static int getColorMazenta() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.MAGENTA;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.RED;
+		}
+
+		return Color.MAGENTA;
+	}
+	
+	/**
+	 * 青色(シアン)の設定値を取得する。
 	 * @return 文字色
 	 */
-	public static int getColorBlue() {
+	public static int getColorCyan() {
 		if(sThemeID == android.R.style.Theme_Holo) {
 			return Color.CYAN;
 		}
@@ -163,6 +169,37 @@ public class SettingManager {
 		
 		return Color.CYAN;
 	}
+
+	/**
+	 * 青色(ブルー)の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorBlue() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.BLUE;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.CYAN;
+		}
+
+		return Color.BLUE;
+	}
+	
+	/**
+	 * 黄色(イエロー)の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorYellow() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.YELLOW;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.rgb(0xFF, 0xA5, 0x00);
+		}
+
+		return Color.YELLOW;
+	}
+
 	
 	//----------------------------------------------------------
 	// バージョン情報管理

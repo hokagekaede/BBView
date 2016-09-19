@@ -1,7 +1,6 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
@@ -74,11 +73,11 @@ public class CmpPartsTableBuilder {
 		String[] cmp_target = BBDataManager.getCmpTarget(from_data);
 		int size = cmp_target.length;
 		
-		rows.add(ViewBuilder.createTableRow(mActivity, SettingManager.getColor(SettingManager.COLOR_YELLOW), "名称", from_data.get("名称"), to_data.get("名称")));
+		rows.add(ViewBuilder.createTableRow(mActivity, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
 		
 		for(int i=0; i<size; i++) {
 			String target_key = cmp_target[i];
-			int[] colors = getColors(from_data, to_data, target_key);
+			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
 			
 			String from_point = from_data.get(target_key);
 			String to_point = to_data.get(target_key);
@@ -99,30 +98,5 @@ public class CmpPartsTableBuilder {
 		}
 		
 		return rows;
-	}
-
-	private int[] getColors(BBData from_data, BBData to_data, String target_key) {
-		int[] ret = new int[3];
-		
-		BBDataComparator cmp_data = new BBDataComparator(target_key, true, true);
-		int cmp = cmp_data.compare(from_data, to_data);
-		
-		if(cmp > 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_RED);
-		}
-		else if(cmp < 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_RED);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-		}
-		else {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
-		}
-		
-		return ret;
 	}
 }

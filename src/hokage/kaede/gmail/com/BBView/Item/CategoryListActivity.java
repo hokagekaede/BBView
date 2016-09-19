@@ -6,6 +6,7 @@ import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Android.UidManager;
 import hokage.kaede.gmail.com.Lib.Android.UidManager.OnInputPassListener;
 import android.content.Intent;
@@ -61,6 +62,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		// パーツボタンを生成
 		TextView parts_text = new TextView(this);
 		parts_text.setText("機体パーツ");
+		parts_text.setTextColor(SettingManager.getColorWhite());
 		parts_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(parts_text);
 
@@ -88,6 +90,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		for(int i=0; i<blust_size; i++) {
 			TextView weapon_text = new TextView(this);
 			weapon_text.setText(BBDataManager.BLUST_TYPE_LIST[i]);
+			weapon_text.setTextColor(SettingManager.getColorWhite());
 			weapon_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 			layout.addView(weapon_text);
 			
@@ -113,6 +116,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		// その他ボタンを生成
 		TextView others_text = new TextView(this);
 		others_text.setText("その他");
+		others_text.setTextColor(SettingManager.getColorWhite());
 		others_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(others_text);
 
@@ -150,6 +154,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		// BBNETボタンを生成
 		TextView bbnet_text = new TextView(this);
 		bbnet_text.setText("BB.NET");
+		bbnet_text.setTextColor(SettingManager.getColorWhite());
 		bbnet_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(bbnet_text);
 

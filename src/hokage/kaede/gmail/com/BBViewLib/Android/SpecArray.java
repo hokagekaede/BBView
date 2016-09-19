@@ -20,8 +20,8 @@ public class SpecArray {
 		public SpecCol(String key, double normal_value, double real_value, boolean is_km_per_hour) {
 			init(key, normal_value, real_value, is_km_per_hour);
 			
-			mValues[3] = "";
-			mColors[3] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			mValues[KEY_MEMO] = "";
+			mColors[KEY_MEMO] = SettingManager.getColorWhite();
 		}
 
 		public SpecCol(String key, double normal_value, double real_value, double memo_value, boolean is_km_per_hour) {
@@ -31,39 +31,22 @@ public class SpecArray {
 			int ret_cmp = cmp.compareValue(normal_value, memo_value);
 
 			if(ret_cmp > 0) {
-				mColors[3] = SettingManager.getColor(SettingManager.COLOR_RED);
+				mColors[KEY_MEMO] = SettingManager.getColorMazenta();
 			}
 			else if(ret_cmp < 0) {
-				mColors[3] = SettingManager.getColor(SettingManager.COLOR_BLUE);
+				mColors[KEY_MEMO] = SettingManager.getColorCyan();
 			}
 			else {
-				mColors[3] = SettingManager.getColor(SettingManager.COLOR_BASE);
+				mColors[KEY_MEMO] = SettingManager.getColorWhite();
 			}
 		}
 		
 		private void init(String key, double normal_value, double real_value, boolean is_km_per_hour) {
 			mValues[KEY_INDEX] = key;
-			mValues[1] = SpecValues.getSpecUnit(normal_value, key, is_km_per_hour);
-			mValues[2] = SpecValues.getSpecUnit(real_value, key, is_km_per_hour);
+			mValues[KEY_NORMAL] = SpecValues.getSpecUnit(normal_value, key, is_km_per_hour);
+			mValues[KEY_REAL] = SpecValues.getSpecUnit(real_value, key, is_km_per_hour);
 			
-			BBDataComparator cmp = new BBDataComparator(key, true, BBViewSettingManager.IS_KB_PER_HOUR);
-			int ret_cmp = cmp.compareValue(normal_value, real_value);
-
-			if(ret_cmp > 0) {
-				mColors[KEY_INDEX] = SettingManager.getColor(SettingManager.COLOR_BASE);
-				mColors[KEY_NORMAL] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-				mColors[KEY_REAL] = SettingManager.getColor(SettingManager.COLOR_RED);
-			}
-			else if(ret_cmp < 0) {
-				mColors[KEY_INDEX] = SettingManager.getColor(SettingManager.COLOR_BASE);
-				mColors[KEY_NORMAL] = SettingManager.getColor(SettingManager.COLOR_RED);
-				mColors[KEY_REAL] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			}
-			else {
-				mColors[KEY_INDEX] = SettingManager.getColor(SettingManager.COLOR_BASE);
-				mColors[KEY_NORMAL] = SettingManager.getColor(SettingManager.COLOR_BASE);
-				mColors[KEY_REAL] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			}
+			mColors = ViewBuilder.getColors(mColors, normal_value, real_value, key);
 		}
 
 		public void setValues(String normal_str, String real_str) {

@@ -125,7 +125,7 @@ public class InfoActivity extends BaseActivity {
 		layout_table.setColumnShrinkable(1, true);    // 右端は表を折り返す
 
 		// 表のタイトルを記載する
-		layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), "項目", "説明"));
+		layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), "項目", "説明"));
 
 		ArrayList<String> keys = data.getKeys();
 		int size = keys.size();
@@ -145,10 +145,10 @@ public class InfoActivity extends BaseActivity {
 			String data_str = SpecValues.getSpecUnit(data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 			
 			if(BBDataComparator.isPointKey(target_key)) {
-				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), target_key, point + " (" + data_str + ")"));
+				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), target_key, point + " (" + data_str + ")"));
 			}
 			else {
-				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), target_key, data_str));
+				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), target_key, data_str));
 			}
 		}
 		
@@ -160,7 +160,7 @@ public class InfoActivity extends BaseActivity {
 			String value_str = SpecValues.getSpecUnit(num, key, BBViewSettingManager.IS_KB_PER_HOUR);
 			
 			if(num > 0) {
-				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BLUE), key, value_str));
+				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), key, value_str));
 			}
 		}
 		

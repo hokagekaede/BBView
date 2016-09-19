@@ -18,7 +18,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,10 +165,10 @@ public class ChipView extends LinearLayout {
 			
 			// 登録内容に問題がある場合は容量テキストを赤文字にする。
 			if(mErrorMessage.equals("")) {
-				weight_text_view.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
+				weight_text_view.setTextColor(SettingManager.getColorWhite());
 			}
 			else {
-				weight_text_view.setTextColor(Color.RED);
+				weight_text_view.setTextColor(SettingManager.getColorMazenta());
 			}
 		}
 	}
@@ -683,8 +682,8 @@ public class ChipView extends LinearLayout {
 			text_view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 			text_view.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 			text_view.setPadding(0, 15, 0, 15);
-			text_view.setTextColor(Color.rgb(255, 255, 255));
-			text_view.setBackgroundColor(Color.rgb(60, 60, 180));
+			text_view.setTextColor(SettingManager.getColorWhite());
+			text_view.setBackgroundColor(SettingManager.getColorBlue());
 			text_view.setLayoutParams(lp);
 						
 			return text_view;

@@ -20,12 +20,12 @@ import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.ListConverter;
 
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -217,7 +217,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		title_text.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		title_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_LARGE));
 		title_text.setGravity(Gravity.CENTER);
-		title_text.setBackgroundColor(Color.rgb(0, 0, 60));
+		title_text.setTextColor(SettingManager.getColorWhite());
+		title_text.setBackgroundColor(SettingManager.getColorBlue());
 		title_text.setText(title);
 		
 		// リスト設定

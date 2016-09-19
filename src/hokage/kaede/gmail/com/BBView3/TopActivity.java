@@ -104,9 +104,9 @@ public class TopActivity extends BaseActivity {
 		// アプリ更新情報のタイトルテキスト
 		TextView title_view = new TextView(this);
 		title_view.setText("アプリ更新情報");
+		title_view.setTextColor(SettingManager.getColorWhite());
 		title_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		title_view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-		title_view.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
 		title_layout.addView(title_view);
 		
 		layout.addView(title_layout);
@@ -119,8 +119,8 @@ public class TopActivity extends BaseActivity {
 		// アプリ更新情報のビュー
 		TextView appupd_text_view = new TextView(this);
 		appupd_text_view.setText(loadUpdateText());
+		appupd_text_view.setTextColor(SettingManager.getColorWhite());
 		appupd_text_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-		appupd_text_view.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
 		appupd_text_view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		sv.addView(appupd_text_view);
 		

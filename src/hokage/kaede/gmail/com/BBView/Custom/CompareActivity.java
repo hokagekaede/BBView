@@ -3,7 +3,6 @@ package hokage.kaede.gmail.com.BBView.Custom;
 import java.util.ArrayList;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
@@ -74,15 +73,15 @@ public class CompareActivity extends BaseActivity {
 		layout_table.setOrientation(LinearLayout.VERTICAL);
 
 		// 兵装スペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "兵装スペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColor(SettingManager.COLOR_YELLOW)));
+		layout_table.addView(ViewBuilder.createTextView(this, "兵装スペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
 		layout_table.addView(createCmpBlustSpeedViews(mCmpFmData, mCmpToData));
 
 		// 総合スペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "総合スペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColor(SettingManager.COLOR_YELLOW)));
+		layout_table.addView(ViewBuilder.createTextView(this, "総合スペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
 		layout_table.addView(createCmpBlustSpecView(mCmpFmData, mCmpToData));
 		
 		// パーツスペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "パーツスペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColor(SettingManager.COLOR_YELLOW)));
+		layout_table.addView(ViewBuilder.createTextView(this, "パーツスペック", BBViewSettingManager.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
 		BBData[] parts_fm_list = mCmpFmData.getPartsList();
 		BBData[] parts_to_list = mCmpToData.getPartsList();
 		layout_table.addView(createCmpItemViews(parts_fm_list, parts_to_list, true));
@@ -192,7 +191,7 @@ public class CompareActivity extends BaseActivity {
 		ArrayList<TableRow> rows = new ArrayList<TableRow>();
 		
 		// タイトル行を生成
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), blust_name, "比較元", "比較先"));
+		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), blust_name, "比較元", "比較先"));
 		
 		String[] blust_spec_list = BLUST_SPEC_LIST;
 		int len = blust_spec_list.length;
@@ -205,7 +204,8 @@ public class CompareActivity extends BaseActivity {
 			double to_value = cmp_to_data.getSpecValue(key, blust_name);
 			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
 			
-			int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
+			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
+			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);
 			rows.add(ViewBuilder.createTableRow(this, colors, key, fm_str, to_str));
 		}
 		
@@ -257,11 +257,11 @@ public class CompareActivity extends BaseActivity {
 		String[] cmp_target = BBDataManager.getCmpTarget(from_data);
 		int size = cmp_target.length;
 		
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), "名称", from_data.get("名称"), to_data.get("名称")));
+		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
 		
 		for(int i=0; i<size; i++) {
 			String target_key = cmp_target[i];
-			int[] colors = getColors(from_data, to_data, target_key);
+			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
 			
 			String from_point = from_data.get(target_key);
 			String to_point = to_data.get(target_key);
@@ -296,14 +296,14 @@ public class CompareActivity extends BaseActivity {
 		String[] cmp_target = BBDataManager.getCmpTarget(from_data);
 		int size = cmp_target.length;
 		
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), "名称", from_data.get("名称"), to_data.get("名称")));
+		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
 		
 		for(int i=0; i<size; i++) {
 			String target_key = cmp_target[i];
 			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 		
-			int[] colors = getColors(from_data, to_data, target_key);
+			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
 
 			if(from_str != null && to_str != null) {
 				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_str, to_str));
@@ -322,7 +322,7 @@ public class CompareActivity extends BaseActivity {
 	public TableLayout createCmpBlustSpecView(CustomData cmp_fm_data, CustomData cmp_to_data) {
 		TableLayout table = new TableLayout(this);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), "セットボーナス", cmp_fm_data.getSetBonus(), cmp_to_data.getSetBonus()));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), "セットボーナス", cmp_fm_data.getSetBonus(), cmp_to_data.getSetBonus()));
 		
 		String[] spec_key = { "チップ容量", "装甲平均値" };
 		
@@ -336,39 +336,16 @@ public class CompareActivity extends BaseActivity {
 			double to_value = cmp_to_data.getSpecValue(key);
 			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
 			
-			int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
+			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
+			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);
 			
 			table.addView(ViewBuilder.createTableRow(this, colors, key, fm_str, to_str));
 		}
 		
 		return table;
 	}
-
-	private int[] getColors(BBData from_data, BBData to_data, String target_key) {
-		int[] ret = new int[3];
-		
-		BBDataComparator cmp_data = new BBDataComparator(target_key, true, true);
-		int cmp = cmp_data.compare(from_data, to_data);
-		
-		if(cmp > 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_RED);
-		}
-		else if(cmp < 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_RED);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-		}
-		else {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
-		}
-		
-		return ret;
-	}
 	
+	/*
 	private int[] getColors(String from_str, String to_str, String target_key) {
 		int[] ret = new int[3];
 		
@@ -393,4 +370,5 @@ public class CompareActivity extends BaseActivity {
 		
 		return ret;
 	}
+	*/
 }

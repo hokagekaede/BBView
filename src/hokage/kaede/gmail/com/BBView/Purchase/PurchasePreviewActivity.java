@@ -103,7 +103,7 @@ public class PurchasePreviewActivity extends BaseActivity {
 		layout_material_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		
 		String[] title_row_str = { "勲章/素材", "必要数", "所持数" };
-		layout_material_table.addView(CreateTableRow(title_row_str, SettingManager.getColor(SettingManager.COLOR_YELLOW)));
+		layout_material_table.addView(CreateTableRow(title_row_str, SettingManager.getColorYellow()));
 		
 		int medal_max = purchase_data.getMedalCount();		
 		for(int i=0; i<medal_max; i++) {
@@ -146,7 +146,7 @@ public class PurchasePreviewActivity extends BaseActivity {
 		gp_text.setText("合計：" + String.valueOf(purchase_data.getSumGP()) + " GP");
 		gp_text.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		gp_text.setTextSize(20);
-		gp_text.setTextColor(SettingManager.getColor(SettingManager.COLOR_BLUE));
+		gp_text.setTextColor(SettingManager.getColorCyan());
 		
 		layout_all.addView(layout_material_table);
 		layout_all.addView(gp_text);
@@ -197,7 +197,7 @@ public class PurchasePreviewActivity extends BaseActivity {
 	 * @return
 	 */
 	private int getRowColor(int from_value, String to_value) {
-		int ret = SettingManager.getColor(SettingManager.COLOR_BASE);
+		int ret = SettingManager.getColorCyan();
 		int to_value_num = -1;
 		
 		try {
@@ -210,10 +210,10 @@ public class PurchasePreviewActivity extends BaseActivity {
 		
 		if(to_value_num >= 0) {
 			if(to_value_num >= from_value) {
-				ret = SettingManager.getColor(SettingManager.COLOR_BASE);
+				ret = SettingManager.getColorWhite();
 			}
 			else {
-				ret = SettingManager.getColor(SettingManager.COLOR_RED);
+				ret = SettingManager.getColorMazenta();
 			}
 		}
 		

@@ -12,7 +12,6 @@ import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -113,8 +112,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		// スペック管理クラスのロード
 		CustomData custom_data = CustomDataManager.getCustomData();
 
-		int color = Color.rgb(255, 255, 255);
-		int bg_color = Color.rgb(60, 60, 180);
+		int color = SettingManager.getColorWhite();
+		int bg_color = SettingManager.getColorBlue();
 
 		LinearLayout layout_table = new LinearLayout(this);
 		layout_table.setOrientation(LinearLayout.VERTICAL);
@@ -222,10 +221,10 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private TableRow createPartsRow(CustomData custom_data, String parts_key, String weapon_key) {
 		int[] colors = { 
-				SettingManager.getColor(SettingManager.COLOR_YELLOW),
-				SettingManager.getColor(SettingManager.COLOR_BASE),
-				SettingManager.getColor(SettingManager.COLOR_YELLOW),
-				SettingManager.getColor(SettingManager.COLOR_BASE)
+				SettingManager.getColorYellow(),
+				SettingManager.getColorWhite(),
+				SettingManager.getColorYellow(),
+				SettingManager.getColorWhite()
 		};
 		BBData parts = custom_data.getParts(parts_key);
 		BBData weapon = custom_data.getWeapon(mBlustType, weapon_key);
@@ -260,7 +259,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		
 		TextView chip_text_view = ViewBuilder.createTextView(this, chip_names, SettingManager.FLAG_TEXTSIZE_SMALL);
 		
-		layout_chip.addView(ViewBuilder.createTextView(this, "チップ", SettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColor(SettingManager.COLOR_YELLOW)));
+		layout_chip.addView(ViewBuilder.createTextView(this, "チップ", SettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow()));
 		layout_chip.addView(chip_text_view);
 		
 		return layout_chip;
@@ -284,8 +283,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KB_PER_HOUR)
 		};
 		
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), BASE_COL_STR));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), base_value_col_str));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), BASE_COL_STR));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), base_value_col_str));
 		
 		String[] head_value_col_str = {
 			getSpecString("射撃補正", custom_data.getShotBonus(mBlustType)),
@@ -294,8 +293,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			getSpecString("DEF回復", custom_data.getDefRecover(mBlustType))
 		};
 
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), HEAD_COL_STR));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), head_value_col_str));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), HEAD_COL_STR));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), head_value_col_str));
 
 		String[] body_value_col_str = {
 			getSpecString("ブースター", custom_data.getBoost(mBlustType)),
@@ -304,8 +303,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			getSpecString("DEF耐久", custom_data.getDefGuard(mBlustType))
 		};
 
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), BODY_COL_STR));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), body_value_col_str));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), BODY_COL_STR));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), body_value_col_str));
 
 		String[] arms_value_col_str = {
 			getSpecString("反動吸収", custom_data.getRecoil(mBlustType)),
@@ -314,8 +313,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			getSpecString("予備弾数", custom_data.getSpareBullet(mBlustType))
 		};
 
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), ARMS_COL_STR));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), arms_value_col_str));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), ARMS_COL_STR));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), arms_value_col_str));
 
 		String[] legs_value_col_str = {
 			getSpecString("歩行", custom_data.getWalk(mBlustType)),
@@ -324,8 +323,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 			getSpecString("加速", custom_data.getAcceleration(mBlustType))
 		};
 
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), LEGS_COL_STR));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_BASE), legs_value_col_str));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), LEGS_COL_STR));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), legs_value_col_str));
 		
 		return table;
 	}
@@ -446,7 +445,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addReloadWeaponRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getOneShotPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getCsShotPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMagazinePowerArray(data, weapon)));
@@ -476,7 +475,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addSubWeaponRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getOneShotPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getExplosionRangeArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getReloadTimeArray(data, weapon)));
@@ -495,7 +494,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addSlashRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getNormalSlashArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getDashSlashArray(data, weapon)));
 	}
@@ -508,7 +507,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addSupportBombRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getExplosionRangeArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getReloadTimeArray(data, weapon)));
 	}
@@ -521,7 +520,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addSearchRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSearchTimeArray(data, weapon)));
 	}
 
@@ -533,7 +532,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addACRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getAcSpeedArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getAcBattleSpeedArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
@@ -547,7 +546,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addCannonRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getOneShotPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getExplosionRangeArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
@@ -561,7 +560,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addBarrierRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getBattleBarrierGuardArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
@@ -574,7 +573,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addEUSRow(TableLayout table, CustomData data,  BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMagazinePowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSecPowerArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getBattlePowerArray(data, weapon)));
@@ -590,7 +589,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addReapirRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getMaxRepairArray(data, weapon)));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
@@ -603,7 +602,7 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 	 */
 	private void addExtraRow(TableLayout table, CustomData data, BBData weapon) {
 		String[] title = { weapon.get("名称"), "補正前", "補正後" };
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColor(SettingManager.COLOR_YELLOW), title));
+		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), title));
 		table.addView(ViewBuilder.createTableRow(this, SpecArray.getSpChargeTimeArray(data, weapon, mBlustType)));
 	}
 }

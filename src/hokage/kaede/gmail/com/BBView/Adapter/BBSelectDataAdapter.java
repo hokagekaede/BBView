@@ -1,11 +1,11 @@
 package hokage.kaede.gmail.com.BBView.Adapter;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,13 +54,13 @@ public class BBSelectDataAdapter extends BBArrayAdapter {
 		BBArrayAdapterTextView view = (BBArrayAdapterTextView)super.getView(position, convertView, parent);
 		BBData target_data = super.getItem(position);
 		
-		view.setBackgroundColor(Color.argb(0, 0, 0, 0));
+		view.setBackgroundColor(SettingManager.getColorBlack());
 		
 		int size = mSelectedItemList.size();
 		for(int i=0; i<size; i++) {
 			BBData data = mSelectedItemList.get(i);
 			if(data.id == target_data.id) {
-				view.setBackgroundColor(Color.argb(128, 64, 64, 64));
+				view.setBackgroundColor(SettingManager.getColorGray());
 				break;
 			}
 		}

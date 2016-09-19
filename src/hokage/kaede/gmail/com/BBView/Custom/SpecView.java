@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,14 +58,16 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		this.addView(data_view);
 
 		LayoutParams layout_param = new LayoutParams(WC, WC, 1);
-		layout_param.setMargins(0, 0, 0, 0);  // 余白を消す
+		//layout_param.setMargins(0, 0, 0, 0);  // 余白を消す
 		
 		// 画面下部のレイアウト
 		LinearLayout bottom_layout = new LinearLayout(context);
 		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
 		
 		ToggleButton sb_button = new ToggleButton(context);
-		sb_button.setText("SB");
+		sb_button.setTextOn("SB");
+		sb_button.setTextOff("SB");
+		sb_button.setChecked(false);
 		sb_button.setId(TOGGLE_BUTTON_SB_ID);
 		sb_button.setLayoutParams(layout_param);
 		sb_button.setOnClickListener(this);
@@ -74,7 +75,9 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		bottom_layout.addView(sb_button);
 		
 		ToggleButton sbr_button = new ToggleButton(context);
-		sbr_button.setText("SBR");
+		sbr_button.setTextOn("SBR");
+		sbr_button.setTextOff("SBR");
+		sbr_button.setChecked(false);
 		sbr_button.setId(TOGGLE_BUTTON_SBR_ID);
 		sbr_button.setLayoutParams(layout_param);
 		sbr_button.setOnClickListener(this);
@@ -82,7 +85,9 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		bottom_layout.addView(sbr_button);
 		
 		ToggleButton reqarm_button = new ToggleButton(context);
-		reqarm_button.setText("要請兵器");
+		reqarm_button.setTextOn("要請兵器");
+		reqarm_button.setTextOff("要請兵器");
+		reqarm_button.setChecked(false);
 		reqarm_button.setId(TOGGLE_BUTTON_REQARM_ID);
 		reqarm_button.setLayoutParams(layout_param);
 		reqarm_button.setOnClickListener(this);
@@ -113,8 +118,8 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 生成したビュー
 	 */
 	private View createSpecTable(CustomData custom_data) {
-		int color = Color.rgb(255, 255, 255);
-		int bg_color = Color.rgb(60, 60, 180);
+		int color = SettingManager.getColorWhite();
+		int bg_color = SettingManager.getColorBlue();
 		
 		LinearLayout layout_table = new LinearLayout(mContext);
 		layout_table.setOrientation(LinearLayout.VERTICAL);
@@ -173,7 +178,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		TableLayout table = new TableLayout(mContext);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 		
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_YELLOW), "", "補正前", "補正後"));
+		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), "", "補正前", "補正後"));
 
 		for(int i=0; i<sTargetKeyCount; i++) {
 			table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
@@ -209,26 +214,8 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 					SpecValues.getSpecUnit(custom_data.getDefRecoverTime(), "DEF回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
 		}
 		
-		BBDataComparator cmp = new BBDataComparator(target_key, true, BBViewSettingManager.IS_KB_PER_HOUR);
-		int ret_cmp = cmp.compareValue(normal_value, real_value);
-		int[] colors = new int[3];
+		int[] colors = ViewBuilder.getColors(normal_value, real_value, target_key);
 
-		if(ret_cmp > 0) {
-			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			colors[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			colors[2] = SettingManager.getColor(SettingManager.COLOR_RED);
-		}
-		else if(ret_cmp < 0) {
-			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			colors[1] = SettingManager.getColor(SettingManager.COLOR_RED);
-			colors[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-		}
-		else {
-			colors[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			colors[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			colors[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
-		}
-		
 		return ViewBuilder.createTableRow(mContext, colors, target_key, normal_value_str, real_value_str);
 	}
 
@@ -255,7 +242,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		
 		int size = speclist.length;
 		for(int i=0; i<size; i++) {
-			table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_BASE), speclist[i][0], speclist[i][1]));
+			table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
 		}
 		
 		return table;
@@ -278,7 +265,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		int blust_list_len = blust_list.length;
 
 		// タイトル行を生成
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_YELLOW), TOTAL_SPEC_LIST));
+		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), TOTAL_SPEC_LIST));
 		
 		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
 			String blust_name = blust_list[blust_idx];
@@ -296,10 +283,10 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 */
 	private TableRow createBlustSpeedRow(CustomData data, String blust_name) {
 		double rate = data.getSpeedDownRate(blust_name);
-		int color = SettingManager.getColor(SettingManager.COLOR_BASE);
+		int color = SettingManager.getColorWhite();
 
 		if(rate < 0) {
-			color = Color.RED;
+			color = SettingManager.getColorMazenta();
 		}
 
 		String[] cols = {
@@ -327,7 +314,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
 		int blust_list_len = blust_list.length;
 		
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_YELLOW), WEAPON_TITLE_ROW));
+		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), WEAPON_TITLE_ROW));
 		
 		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
 			String blust_type = blust_list[blust_idx];
@@ -370,7 +357,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 						String.format("%.1f(秒)", reload_time),
 						bullet_str
 				};
-				table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColor(SettingManager.COLOR_BASE), cols));
+				table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorWhite(), cols));
 			}
 		}
 		
@@ -442,15 +429,12 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	private void updateButton(boolean sb, boolean sbr, boolean reqarm) {
 		ToggleButton sb_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_SB_ID);
 		sb_button.setChecked(sb);
-		sb_button.setText("SB");
 		
 		ToggleButton sbr_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_SBR_ID);
 		sbr_button.setChecked(sbr);
-		sbr_button.setText("SBR");
 		
 		ToggleButton reqarm_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_REQARM_ID);
 		reqarm_button.setChecked(reqarm);
-		reqarm_button.setText("要請兵器");
 	}
 
 	/**

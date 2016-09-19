@@ -4,9 +4,8 @@ import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
-
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -108,12 +107,12 @@ public class CustomMainActivity extends BaseActivity {
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.HORIZONTAL);
 		layout.setGravity(Gravity.CENTER);
-		layout.setBackgroundColor(Color.rgb(60, 60, 60));
+		layout.setBackgroundColor(SettingManager.getColorGray());
 		
 		LinearLayout.LayoutParams layout_prm = 
 			new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,	1);
 		
-		int text_color = Color.rgb(255, 255, 255);
+		int text_color = SettingManager.getColorWhite();
 		float text_size = (float)15.0;
 		
 		TextView custom_text_view = new TextView(this);

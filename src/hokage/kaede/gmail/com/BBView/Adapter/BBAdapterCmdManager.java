@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 /**
  * リストの左側ボタン生成と長タップ時のダイアログ表示を管理するクラス
@@ -193,7 +193,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			setFocusable(false);
 			
 			setPadding(10, 10, 10, 10);
-			setBackgroundColor(Color.GRAY);
+			setBackgroundColor(SettingManager.getColorGray());
 			
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(WC, WC);
 			lp.setMargins(10, 10, 10, 10);

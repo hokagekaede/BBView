@@ -81,7 +81,7 @@ public class CmpWeaponTableBuilder {
 		table.setId(TABLE_ID);
 		
 		// タイトル行を設定
-		table.addView(ViewBuilder.createTableRow(mActivity, SettingManager.getColor(SettingManager.COLOR_YELLOW), "名称", from_data.get("名称"), to_data.get("名称")));
+		table.addView(ViewBuilder.createTableRow(mActivity, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
 		
 		// スイッチ武器行を設定
 		BBData from_data_typeB = from_data.getTypeB();
@@ -99,7 +99,7 @@ public class CmpWeaponTableBuilder {
 				text.setId(FROM_DATA_TYPE_ID);
 				typename_row.addView(text);
 				
-				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColor(SettingManager.COLOR_YELLOW));
+				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
 				btn.setOnClickListener(new TypeChangeListener(FROM_DATA_TYPE_ID));
 				btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 				btn.setClickable(true);
@@ -118,7 +118,7 @@ public class CmpWeaponTableBuilder {
 				text.setId(TO_DATA_TYPE_ID);
 				typename_row.addView(text);
 				
-				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColor(SettingManager.COLOR_YELLOW));
+				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
 				btn.setOnClickListener(new TypeChangeListener(TO_DATA_TYPE_ID));
 				btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 				btn.setClickable(true);
@@ -167,19 +167,19 @@ public class CmpWeaponTableBuilder {
 		int cmp = cmp_data.compare(from_data, to_data);
 		
 		if(cmp > 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_RED);
+			ret[0] = SettingManager.getColorWhite();
+			ret[1] = SettingManager.getColorCyan();
+			ret[2] = SettingManager.getColorMazenta();
 		}
 		else if(cmp < 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_RED);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
+			ret[0] = SettingManager.getColorWhite();
+			ret[1] = SettingManager.getColorMazenta();
+			ret[2] = SettingManager.getColorCyan();
 		}
 		else {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
+			ret[0] = SettingManager.getColorWhite();
+			ret[1] = SettingManager.getColorWhite();
+			ret[2] = SettingManager.getColorWhite();
 		}
 		
 		return ret;

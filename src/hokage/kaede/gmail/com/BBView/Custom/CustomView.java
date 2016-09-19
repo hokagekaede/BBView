@@ -1,6 +1,5 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
-
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter;
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemCategory;
@@ -19,7 +18,6 @@ import hokage.kaede.gmail.com.Lib.Java.FileIO;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +28,7 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-public class CustomView extends LinearLayout implements android.widget.AdapterView.OnItemClickListener {
+public class CustomView extends FrameLayout implements android.widget.AdapterView.OnItemClickListener {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
@@ -43,8 +41,7 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 	public CustomView(Context context, CustomData custom_data, boolean is_show_chips) {
 		super(context);
 
-		this.setOrientation(LinearLayout.VERTICAL);
-		this.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		this.setLayoutParams(new FrameLayout.LayoutParams(FP, FP));
 		
 		mShowChips = is_show_chips;
 		
@@ -53,6 +50,11 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 		}
 		else {
 			createViewColOne(context, custom_data);
+		}
+		
+		// チップ装着情報を表示するかどうか
+		if(mShowChips) {
+			createChipView(context, custom_data);
 		}
 	}
 
@@ -140,6 +142,10 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 	 */
 	private void createViewColTwo(Context context, CustomData custom_data) {
 
+		LinearLayout base_layout = new LinearLayout(context);
+		base_layout.setOrientation(LinearLayout.VERTICAL);
+		base_layout.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
+		
 		ListView list_view = new ListView(context);
 		CustomAdapter adapter = new CustomAdapter(context);
 		
@@ -218,41 +224,10 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 		grid_adapter.addItem(createItem(context, custom_data, BBDataManager.BLUST_TYPE_HEAVY, BBDataManager.WEAPON_TYPE_SPECIAL));
 		grid_adapter.addItem(createItem(context, custom_data, BBDataManager.BLUST_TYPE_SUPPORT, BBDataManager.WEAPON_TYPE_SPECIAL));
 		
-		//----------------------------------------------------------
-		// チップ情報表示関連処理
-		//----------------------------------------------------------
-		FrameLayout top_layout = new FrameLayout(context);
-		//top_layout.setForegroundGravity(Gravity.RIGHT | Gravity.TOP);
-		top_layout.setLayoutParams(new FrameLayout.LayoutParams(FP, WC, 1));
-		top_layout.addView(list_view);
+		base_layout.addView(list_view);
+		base_layout.addView(grid_view);
 		
-		if(mShowChips) {
-			ArrayList<BBData> chiplist = custom_data.getChips();
-			String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KB_PER_HOUR);
-			String chip_weight_str = String.valueOf(custom_data.getChipWeight());
-			String chip_text_str = "■チップ情報 [" + chip_weight_str + "/" + chip_cap_str + "]" + FileIO.NEWLINE;
-			int size = chiplist.size();
-			for(int i=0; i<size; i++) {
-				chip_text_str = chip_text_str + chiplist.get(i).get("名称") + FileIO.NEWLINE;
-			}
-			
-			TextView chip_text_view = ViewBuilder.createTextView(context, chip_text_str, BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
-			chip_text_view.setLayoutParams(new LayoutParams(WC, WC));
-			//chip_text_view.setTextColor(SettingManager.getColorBlue());
-			//chip_text_view.setBackgroundColor(SettingManager.getColorBlack());
-			chip_text_view.setTextColor(SettingManager.getColorWhite());
-			chip_text_view.setBackgroundColor(Color.rgb(60, 60, 60));
-			
-			LinearLayout buf_layout = new LinearLayout(context);
-			buf_layout.setLayoutParams(new LayoutParams(FP, WC));
-			buf_layout.setGravity(Gravity.RIGHT);
-			buf_layout.addView(chip_text_view);
-	
-			top_layout.addView(buf_layout);
-		}
-
-		this.addView(top_layout);
-		this.addView(grid_view);
+		this.addView(base_layout);
 	}
 	
 	private static CustomAdapterBaseItem createItem(Context context, CustomData custom_data, String type) {
@@ -313,5 +288,33 @@ public class CustomView extends LinearLayout implements android.widget.AdapterVi
 		CustomAdapter adapter = (CustomAdapter)arg0.getAdapter();
 		CustomAdapterBaseItem base_item = adapter.getItem(position);
 		base_item.click();
+	}
+	
+	/**
+	 * 装着中のチップ情報を表示するビューを設定する。
+	 * @param context 対象の画面
+	 * @param custom_data アセンデータ
+	 */
+	private void createChipView(Context context, CustomData custom_data) {
+		ArrayList<BBData> chiplist = custom_data.getChips();
+		String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KB_PER_HOUR);
+		String chip_weight_str = String.valueOf(custom_data.getChipWeight());
+		String chip_text_str = "■チップ情報 [" + chip_weight_str + "/" + chip_cap_str + "]" + FileIO.NEWLINE;
+		int size = chiplist.size();
+		for(int i=0; i<size; i++) {
+			chip_text_str = chip_text_str + chiplist.get(i).get("名称") + FileIO.NEWLINE;
+		}
+		
+		TextView chip_text_view = ViewBuilder.createTextView(context, chip_text_str, BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
+		chip_text_view.setLayoutParams(new LayoutParams(WC, WC));
+		chip_text_view.setTextColor(SettingManager.getColorWhite());
+		chip_text_view.setBackgroundColor(SettingManager.getColorGray());
+		
+		LinearLayout buf_layout = new LinearLayout(context);
+		buf_layout.setLayoutParams(new LayoutParams(FP, WC));
+		buf_layout.setGravity(Gravity.RIGHT);
+		buf_layout.addView(chip_text_view);
+		
+		this.addView(buf_layout);
 	}
 }

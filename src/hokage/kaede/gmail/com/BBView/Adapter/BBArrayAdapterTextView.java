@@ -7,7 +7,6 @@ import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
@@ -48,7 +47,6 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
         
     	mSubTextView = new TextView(mContext);
         mSubTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-        mSubTextView.setTextColor(Color.LTGRAY);
 
     	mExistTextView = new TextView(mContext);
         mExistTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
@@ -95,10 +93,10 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
         // 選択中のアイテムの場合は文字色を黄色に変更する
         BBData target_item = getItem();
         if(base_item != null && BBDataManager.equalData(target_item, base_item)) {
-        	mNameTextView.setTextColor(SettingManager.getColor(SettingManager.COLOR_YELLOW));
+        	mNameTextView.setTextColor(SettingManager.getColorYellow());
         }
         else {
-        	mNameTextView.setTextColor(SettingManager.getColor(SettingManager.COLOR_BASE));
+        	mNameTextView.setTextColor(SettingManager.getColorWhite());
         }
 	}
 	
