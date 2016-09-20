@@ -149,7 +149,7 @@ public class TopActivity extends BaseActivity {
 		blog_btn.setText(BTN_TEXT_BLOG);
 		blog_btn.setOnClickListener(new OnMoveBlogListener());
 		layout.addView(blog_btn);
-		
+
 		/* 次回のバージョンアップ用(データ切り替え) */
 		/*
 		ToggleButton ver_btn = new ToggleButton(this);

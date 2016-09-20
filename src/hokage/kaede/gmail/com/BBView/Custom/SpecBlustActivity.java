@@ -49,11 +49,18 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		mBlustType = BBDataManager.BLUST_TYPE_ASSALT;
 		
 		// アプリ画面の生成
-		createView();
+		LinearLayout layout_all = new LinearLayout(this);
+		layout_all.setOrientation(LinearLayout.VERTICAL);
+		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		layout_all.setId(TABLELAYOUT_ID);
+		layout_all.addView(createSpecView());
+		layout_all.addView(createBottomView());
+		
+		// 全体レイアウトの画面表示
+		setContentView(layout_all);
 	}
 	
-	public void createView() {
-		// 画面下部のレイアウト
+	public LinearLayout createBottomView() {
 		LinearLayout bottom_layout = new LinearLayout(this);
 		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -97,15 +104,8 @@ public class SpecBlustActivity extends BaseActivity implements OnClickListener, 
 		support_button.setOnCheckedChangeListener(this);
 		bottom_layout.addView(support_button);
 		
-		LinearLayout layout_all = new LinearLayout(this);
-		layout_all.setOrientation(LinearLayout.VERTICAL);
-		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
-		layout_all.setId(TABLELAYOUT_ID);
-		layout_all.addView(createSpecView());
-		layout_all.addView(bottom_layout);
+		return bottom_layout;
 		
-		// 全体レイアウトの画面表示
-		setContentView(layout_all);
 	}
 	
 	private View createSpecView() {

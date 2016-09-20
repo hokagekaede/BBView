@@ -17,6 +17,14 @@ public class CustomAdapter extends BaseAdapter {
 		mContext = context;
 	}
 	
+	/**
+	 * 対象のContextデータを取得する。
+	 * @return Contextデータ
+	 */
+	public Context getContext() {
+		return mContext;
+	}
+	
 	@Override
 	public int getCount() {
 		return mList.size();

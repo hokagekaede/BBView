@@ -7,6 +7,7 @@ import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -22,8 +23,6 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	private BBData mTargetData;
 	
 	// テキストビューに設定するタグ
-	private static final String COLOR_TAG_RED    = "<font color=\"Red\">";
-	private static final String COLOR_TAG_AQUA   = "<font color=\"Aqua\">";
 	private static final String COLOR_TAG_END    = "</font>";
 	private static final String TAG_BR = "<BR>";
 	
@@ -165,12 +164,12 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 				double cmp = cmp_data.getCmpValue();
 				if(cmp_data.isCmpOK()) {
 					if(cmp > 0) {
-						color_stag = COLOR_TAG_AQUA;
+						color_stag = SettingManager.getCodeCyan();
 						color_etag = COLOR_TAG_END;
 						cmp_str = " (" + SpecValues.getSpecUnit(Math.abs(cmp), shown_key, mIsKmPerHour) + "↑)";
 					}
 					else if(cmp < 0) {
-						color_stag = COLOR_TAG_RED;
+						color_stag = SettingManager.getCodeMagenta();
 						color_etag = COLOR_TAG_END;
 						cmp_str = " (" + SpecValues.getSpecUnit(Math.abs(cmp), shown_key, mIsKmPerHour) + "↓)";
 					}

@@ -344,31 +344,4 @@ public class CompareActivity extends BaseActivity {
 		
 		return table;
 	}
-	
-	/*
-	private int[] getColors(String from_str, String to_str, String target_key) {
-		int[] ret = new int[3];
-		
-		BBDataComparator cmp_data = new BBDataComparator(target_key, true, true);
-		int cmp = cmp_data.compareString(from_str, to_str);
-		
-		if(cmp > 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_RED);
-		}
-		else if(cmp < 0) {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_RED);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BLUE);
-		}
-		else {
-			ret[0] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[1] = SettingManager.getColor(SettingManager.COLOR_BASE);
-			ret[2] = SettingManager.getColor(SettingManager.COLOR_BASE);
-		}
-		
-		return ret;
-	}
-	*/
 }

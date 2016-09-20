@@ -13,13 +13,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 	
-	private Context mContext;
 	private CheckBox mCheckBox;
 	private TextView mExistTextView;
 	
 	public BBArrayAdapterChipView(Context context, ArrayList<String> keys, boolean is_km_per_hour) {
 		super(context, keys, is_km_per_hour);
-		mContext = context;
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -29,13 +27,14 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 
 	@Override
 	public void createView() {
-		mCheckBox = new CheckBox(mContext);
-    	mExistTextView = new TextView(mContext);
+		Context context = getContext();
+		mCheckBox = new CheckBox(context);
+    	mExistTextView = new TextView(context);
     	
-		mCheckBox.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		mCheckBox.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		mCheckBox.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 
-        mExistTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+        mExistTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
         mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
         mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 

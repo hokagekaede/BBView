@@ -160,7 +160,7 @@ public class InfoActivity extends BaseActivity {
 			String value_str = SpecValues.getSpecUnit(num, key, BBViewSettingManager.IS_KB_PER_HOUR);
 			
 			if(num > 0) {
-				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), key, value_str));
+				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorCyan(), key, value_str));
 			}
 		}
 		

@@ -38,11 +38,8 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	
 	private static final int TABLELAYOUT_ID = 4000;
 	
-	private Context mContext;
-	
 	public SpecView(Context context) {
 		super(context);
-		mContext = context;
 
 		// スペック管理クラスのロード
 		CustomData custom_data = CustomDataManager.getCustomData();
@@ -50,19 +47,20 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		this.setOrientation(LinearLayout.VERTICAL);
 		this.setGravity(Gravity.LEFT | Gravity.TOP);
 		this.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		this.addView(createSpecTable(context, custom_data));		
+		this.addView(createBottomView(context));
+	}
 
-		ScrollView data_view = new ScrollView(mContext);
-		data_view.addView(createSpecTable(custom_data));
-		data_view.setLayoutParams(new LayoutParams(FP, WC, 1));
-		
-		this.addView(data_view);
-
-		LayoutParams layout_param = new LayoutParams(WC, WC, 1);
-		//layout_param.setMargins(0, 0, 0, 0);  // 余白を消す
-		
-		// 画面下部のレイアウト
+	/**
+	 * 画面下部のレイアウトを生成する。
+	 * @param context 対象の画面
+	 * @return レイアウト
+	 */
+	public LinearLayout createBottomView(Context context) {
 		LinearLayout bottom_layout = new LinearLayout(context);
 		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+		LayoutParams layout_param = new LayoutParams(WC, WC, 1);
 		
 		ToggleButton sb_button = new ToggleButton(context);
 		sb_button.setTextOn("SB");
@@ -103,55 +101,60 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(mContext, SpecBlustActivity.class);
-				mContext.startActivity(intent);
+				Context context = SpecView.this.getContext();
+				Intent intent = new Intent(context, SpecBlustActivity.class);
+				context.startActivity(intent);
 			}
 			
 		});
 		bottom_layout.addView(type_show_button);
 		
-		this.addView(bottom_layout);
+		return bottom_layout;
 	}
 	
 	/**
 	 * 性能テーブルを生成する。
 	 * @return 生成したビュー
 	 */
-	private View createSpecTable(CustomData custom_data) {
+	private View createSpecTable(Context context, CustomData custom_data) {
 		int color = SettingManager.getColorWhite();
 		int bg_color = SettingManager.getColorBlue();
 		
-		LinearLayout layout_table = new LinearLayout(mContext);
+		LinearLayout layout_table = new LinearLayout(context);
 		layout_table.setOrientation(LinearLayout.VERTICAL);
 		layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		layout_table.setId(TABLELAYOUT_ID);
 
 		// 兵装スペックを画面に表示する
-		TextView blust_spec_view = ViewBuilder.createTextView(mContext, "兵装スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+		TextView blust_spec_view = ViewBuilder.createTextView(context, "兵装スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(blust_spec_view);
 		layout_table.addView(createBlustSpeedViews(custom_data));
 
 		// 総合スペックを画面に表示する
-		TextView common_spec_view = ViewBuilder.createTextView(mContext, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+		TextView common_spec_view = ViewBuilder.createTextView(context, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(common_spec_view);
 		layout_table.addView(createBlustSpecView(custom_data));
 		
 		// パーツスペックを画面に表示する
-		TextView parts_spec_view = ViewBuilder.createTextView(mContext, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+		TextView parts_spec_view = ViewBuilder.createTextView(context, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(parts_spec_view);
 		layout_table.addView(createCustomBlustPartsViews(custom_data));
 		
 		// 武器スペックを画面に表示する
-		TextView weapon_spec_view = ViewBuilder.createTextView(mContext, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+		TextView weapon_spec_view = ViewBuilder.createTextView(context, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(weapon_spec_view);
 		layout_table.addView(createWeaponRows(custom_data));
 		
 		// チップ一覧を画面に表示する
-		TextView chip_spec_view = ViewBuilder.createTextView(mContext, "現在装着中のチップ", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+		TextView chip_spec_view = ViewBuilder.createTextView(context, "現在装着中のチップ", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 		layout_table.addView(chip_spec_view);
 		layout_table.addView(createChipTable(custom_data));
 		
-		return layout_table;
+		ScrollView data_view = new ScrollView(context);
+		data_view.addView(layout_table);
+		data_view.setLayoutParams(new LayoutParams(FP, WC, 1));
+		
+		return data_view;
 	}
 
 	/**
@@ -175,10 +178,12 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return パーツスペックのテーブル
 	 */
 	private TableLayout createCustomBlustPartsViews(CustomData custom_data) {
-		TableLayout table = new TableLayout(mContext);
+		Context context = getContext();
+		
+		TableLayout table = new TableLayout(context);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 		
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), "", "補正前", "補正後"));
+		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "補正前", "補正後"));
 
 		for(int i=0; i<sTargetKeyCount; i++) {
 			table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
@@ -194,6 +199,8 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 指定の性能に対応する行
 	 */
 	private TableRow createCustomPartsRows(CustomData custom_data, String target_key) {
+		Context context = getContext();
+		
 		String normal_point = custom_data.getPoint(target_key);
 		double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
 		String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
@@ -216,7 +223,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		
 		int[] colors = ViewBuilder.getColors(normal_value, real_value, target_key);
 
-		return ViewBuilder.createTableRow(mContext, colors, target_key, normal_value_str, real_value_str);
+		return ViewBuilder.createTableRow(context, colors, target_key, normal_value_str, real_value_str);
 	}
 
 	/**
@@ -225,7 +232,9 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 総合スペックテーブル
 	 */
 	public TableLayout createBlustSpecView(CustomData custom_data) {
-		TableLayout table = new TableLayout(mContext);
+		Context context = getContext();
+		
+		TableLayout table = new TableLayout(context);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 		
 		double armor_value = custom_data.getArmorAve();
@@ -242,7 +251,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		
 		int size = speclist.length;
 		for(int i=0; i<size; i++) {
-			table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
 		}
 		
 		return table;
@@ -258,14 +267,16 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 兵装スペックテーブル
 	 */
 	private TableLayout createBlustSpeedViews(CustomData data) {
-		TableLayout table = new TableLayout(mContext);
+		Context context = getContext();
+		
+		TableLayout table = new TableLayout(context);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 
 		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
 		int blust_list_len = blust_list.length;
 
 		// タイトル行を生成
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), TOTAL_SPEC_LIST));
+		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), TOTAL_SPEC_LIST));
 		
 		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
 			String blust_name = blust_list[blust_idx];
@@ -282,6 +293,8 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 生成した行
 	 */
 	private TableRow createBlustSpeedRow(CustomData data, String blust_name) {
+		Context context = getContext();
+		
 		double rate = data.getSpeedDownRate(blust_name);
 		int color = SettingManager.getColorWhite();
 
@@ -297,7 +310,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 				SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KB_PER_HOUR),
 			};
 		
-		return ViewBuilder.createTableRow(mContext, color, cols);
+		return ViewBuilder.createTableRow(context, color, cols);
 	}
 	
 	private static final String[] WEAPON_TITLE_ROW = { "武器名", "マガジン火力", "瞬間火力", "戦術火力", "リロード時間", "総弾数" };
@@ -308,13 +321,15 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return 武器スペックテーブル
 	 */
 	private TableLayout createWeaponRows(CustomData data) {
-		TableLayout table = new TableLayout(mContext);
+		Context context = getContext();
+		
+		TableLayout table = new TableLayout(context);
 		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 
 		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
 		int blust_list_len = blust_list.length;
 		
-		table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorYellow(), WEAPON_TITLE_ROW));
+		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), WEAPON_TITLE_ROW));
 		
 		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
 			String blust_type = blust_list[blust_idx];
@@ -357,7 +372,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 						String.format("%.1f(秒)", reload_time),
 						bullet_str
 				};
-				table.addView(ViewBuilder.createTableRow(mContext, SettingManager.getColorWhite(), cols));
+				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), cols));
 			}
 		}
 		
@@ -370,7 +385,9 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 	 * @return チップデータのテーブル
 	 */
 	private LinearLayout createChipTable(CustomData custom_data) {
-		LinearLayout layout_chip= new LinearLayout(mContext);
+		Context context = getContext();
+		
+		LinearLayout layout_chip= new LinearLayout(context);
 		layout_chip.setLayoutParams(new LinearLayout.LayoutParams(WC, WC));
 		layout_chip.setOrientation(LinearLayout.VERTICAL);
 		layout_chip.setGravity(Gravity.LEFT | Gravity.TOP);
@@ -379,7 +396,7 @@ public class SpecView extends LinearLayout implements OnClickListener, OnChecked
 		int size = chip_list.size();
 		
 		for(int i=0; i<size; i++) {
-			layout_chip.addView(ViewBuilder.createTextView(mContext, chip_list.get(i).get("名称"), BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+			layout_chip.addView(ViewBuilder.createTextView(context, chip_list.get(i).get("名称"), BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
 		}
 		
 		return layout_chip;

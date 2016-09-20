@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 
-	private Context mContext;
 	private LinearLayout mMainLayout;
 	private TextView mNameTextView;
 	private TextView mSubTextView;
@@ -28,7 +27,6 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 	 */
 	public BBArrayAdapterTextView(Context context, ArrayList<String> keys, boolean is_km_per_hour) {
 		super(context, keys, is_km_per_hour);
-		mContext = context;
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -42,23 +40,25 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 	 * @param position リストの位置
 	 */
 	public void createView() {
-        mNameTextView = new TextView(mContext);
-        mNameTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		Context context = getContext();
+		
+        mNameTextView = new TextView(context);
+        mNameTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
         
-    	mSubTextView = new TextView(mContext);
-        mSubTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+    	mSubTextView = new TextView(context);
+        mSubTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
 
-    	mExistTextView = new TextView(mContext);
-        mExistTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+    	mExistTextView = new TextView(context);
+        mExistTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
         mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
         mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 
-        mMainLayout = new LinearLayout(mContext);
+        mMainLayout = new LinearLayout(context);
         mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
         mMainLayout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
         mMainLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-        LinearLayout sub_layout = new LinearLayout(mContext);
+        LinearLayout sub_layout = new LinearLayout(context);
         sub_layout.setOrientation(LinearLayout.VERTICAL);
         sub_layout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
         sub_layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));

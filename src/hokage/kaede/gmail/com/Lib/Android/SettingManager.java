@@ -179,7 +179,7 @@ public class SettingManager {
 			return Color.BLUE;
 		}
 		else if(sThemeID == android.R.style.Theme_Holo_Light) {
-			return Color.CYAN;
+			return Color.rgb(0, 0xCC, 0xFF);
 		}
 
 		return Color.BLUE;
@@ -194,12 +194,47 @@ public class SettingManager {
 			return Color.YELLOW;
 		}
 		else if(sThemeID == android.R.style.Theme_Holo_Light) {
-			return Color.rgb(0xFF, 0xA5, 0x00);
+			return Color.rgb(0xFF, 0x99, 0);
 		}
 
 		return Color.YELLOW;
 	}
 
+	private static final String COLOR_TAG_MAGENTA_DARK  = "<font color=\"Magenta\">";
+	private static final String COLOR_TAG_MAGENTA_LIGHT = "<font color=\"Red\">";
+	private static final String COLOR_TAG_CYAN_DARK     = "<font color=\"Cyan\">";
+	private static final String COLOR_TAG_CYAN_LIGHT    = "<font color=\"Blue\">";
+	
+	/**
+	 * Html.fromHtml()関数向けの赤色文字色のHTMLコードを取得する。
+	 * @return 
+	 */
+	public static String getCodeMagenta() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return COLOR_TAG_MAGENTA_DARK;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return COLOR_TAG_MAGENTA_LIGHT;
+		}
+
+		return COLOR_TAG_MAGENTA_DARK;
+	}
+
+	/**
+	 * Html.fromHtml()関数向けの青色文字色のHTMLコードを取得する。
+	 * @return 
+	 */
+	public static String getCodeCyan() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return COLOR_TAG_CYAN_DARK;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return COLOR_TAG_CYAN_LIGHT;
+		}
+
+		return COLOR_TAG_CYAN_DARK;
+	}
+	
 	
 	//----------------------------------------------------------
 	// バージョン情報管理
