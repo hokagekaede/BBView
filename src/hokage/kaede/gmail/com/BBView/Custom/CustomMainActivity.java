@@ -5,6 +5,7 @@ import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -230,7 +231,7 @@ public class CustomMainActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		String menu_title = item.getTitle().toString();
-		
+
 		if(menu_title.equals(MENU_SHARE)) {
 			Toast.makeText(this, "Twitterアプリを選択してください。", Toast.LENGTH_LONG).show();
 			
@@ -241,6 +242,7 @@ public class CustomMainActivity extends BaseActivity {
 			intent.putExtra(Intent.EXTRA_TEXT, custom_data.getCustomDataID(BBViewSettingManager.getVersionCode(this)));
 			startActivity(intent);
 		}
+		
 		return true;
 	}
 	
