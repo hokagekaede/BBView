@@ -279,6 +279,31 @@ public class SpecArray {
 	}
 
 	/**
+	 * OH武器の戦術火力の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getBattlePowerOverheatArray(CustomData data, BBData weapon) {
+		String key = "戦術火力";
+		double normal_value_notoh = weapon.getBattlePowerOverHeat(false);
+		double real_value_notoh = data.getBattlePowerOverHeat(weapon, false);
+		
+		double normal_value_oh = weapon.getBattlePowerOverHeat(true);
+		double real_value_oh = data.getBattlePowerOverHeat(weapon, true);
+		
+		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
+				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+
+		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
+				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		
+		SpecRow col = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KB_PER_HOUR);
+		col.setValues(normal_str, real_str);
+		return col;
+	}
+
+	/**
 	 * リロード時間の配列を生成する。
 	 * @param data アセンデータ
 	 * @param weapon 武器データ
@@ -322,13 +347,13 @@ public class SpecArray {
 	 * @return 配列
 	 */
 	public static SpecRow getOverheatRepairTimeArray(CustomData data, BBData weapon) {
+		String key = "OH復帰時間";
 		double normal_value_notoh = weapon.getOverheatRepairTime(false);
 		double real_value_notoh = data.getOverheatRepairTime(weapon, false);
 		
 		double normal_value_oh = weapon.getOverheatRepairTime(true);
 		double real_value_oh = data.getOverheatRepairTime(weapon, true);
 		
-		String key = "OH復帰時間";
 		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
 				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
 

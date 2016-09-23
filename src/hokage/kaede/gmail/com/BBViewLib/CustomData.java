@@ -2384,16 +2384,20 @@ public class CustomData {
 	
 	/**
 	 * 主武器などの基本的な秒間火力を取得する。
+	 * 連射速度が設定されていない場合、単発の威力を返す。(チャージ武器の場合はフルチャージ時の単発火力)
+	 * 1秒間に1マガジンを撃ち切る場合、マガジン火力を返す。
+	 * 
 	 * @param data 武器データ(連射速度をデータとして持つ武器限定)
 	 * @return 秒間火力
 	 */
 	private double get1SecPowerDefault(BBData data) {
 		double ret = 0;
-		double one_power = getOneShotPower(data, 0);
 		double shot_speed = getShotSpeed(data);
-		double magazine_power = getMagazinePower(data);
 
 		if(shot_speed > 0) {
+			double one_power = getOneShotPower(data, 0);
+			double magazine_power = getMagazinePower(data);
+			
 			ret = one_power * shot_speed / 60;
 			
 			// 1秒間以内に1マガジンを撃ち切る場合、マガジン火力に変更する。
@@ -2500,44 +2504,74 @@ public class CustomData {
 	public double getBattlePower(BBData data,  boolean is_quickreload) {
 		double ret = 0;
 
-		ret = getBattlePowerDefault(data, is_quickreload);
+		if(data.existKey("OH復帰時間")) {
+			ret = getBattlePowerOverHeat(data, false);  // OH前の戦術火力を取得する
+		}
+		else {
+			ret = getBattlePowerDefault(data, is_quickreload);
+		}
 		
 		return ret;
 	}
 	
 	/**
-	 * 主武器などの基本的な戦術火力を取得する。
+	 * リロードに依存した基本的な戦術火力を取得する。
+	 * 
+	 * 戦術火力＝マガジン火力÷（撃ち切り時間＋リロード時間）
+	 * なお、連射速度の情報がない場合は単発火力とする。
+	 * 
 	 * @param data 武器データ(リロードと連射速度をデータとして持つ武器限定)
 	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
 	 * @return 戦術火力
 	 */
-	private double getBattlePowerDefault(BBData data, boolean is_quickreload) {
+	public double getBattlePowerDefault(BBData data, boolean is_quickreload) {
 		double ret = 0;
-		double magazine_power = getMagazinePower(data);
-		double all_shot_time = 0;
 		double shot_speed = getShotSpeed(data);
-		double reload_time = 0;
-		double power = 0;
-		int magazine = data.getMagazine();
 		
 		if(shot_speed > 0) {
-		
-			// OH武器はOHの条件で判定する
-			all_shot_time = data.getOverheatTime();
-			reload_time = getOverheatRepairTime(data, false);
-			power = getOneShotPower(data) * (shot_speed / 60) * all_shot_time;
+			double magazine_power = getMagazinePower(data);
+			double reload_time = getReloadTime(data, is_quickreload);
+			int magazine = data.getMagazine();
 			
-			// OH武器以外は撃ち切り時間とリロード時間で判定する
-			if(reload_time == 0) {
-				reload_time = getReloadTime(data, is_quickreload);
-				all_shot_time = magazine / shot_speed * 60;
-				power = magazine_power;
-			}
-			
-			ret = power / (all_shot_time + reload_time);
+			double all_shot_time = magazine / shot_speed * 60;
+			ret = magazine_power / (all_shot_time + reload_time);
 		}
 		else {
 			ret = getOneShotPower(data);
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * OH武器の戦術火力を取得する。(OH中)
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerOverHeat(BBData data) {
+		return getBattlePowerOverHeat(data, true);
+	}
+	
+	/**
+	 * OH武器の戦術火力を取得する。
+	 * 
+	 * 戦術火力＝OH火力÷（OH耐性時間＋OH復帰時間）
+	 * @param is_overheat OH中かどうか。
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerOverHeat(BBData data, boolean is_overheat) {
+		double ret = 0;
+		double shot_speed = getShotSpeed(data);
+		double oneshot_power = getOneShotPower(data);
+		
+		if(shot_speed > 0) {
+			double oh_guard_time = data.getOverheatTime();
+			double oh_repair_time = getOverheatRepairTime(data, is_overheat);
+			double oh_power = oneshot_power * (shot_speed / 60) * oh_guard_time;
+	
+			ret = oh_power / (oh_guard_time + oh_repair_time);
+		}
+		else {
+			ret = oneshot_power;
 		}
 		
 		return ret;

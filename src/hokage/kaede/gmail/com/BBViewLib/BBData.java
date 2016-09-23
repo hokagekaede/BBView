@@ -927,25 +927,27 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * 瞬間火力を返す。
-	 * @return 秒間火力を返す。威力、総弾数が設定されていない場合、0を返す。
-	 * 連射速度が設定されていない場合は単発の威力を返す。
+	 * 連射速度が設定されていない場合、単発の威力を返す。(チャージ武器の場合はフルチャージ時の単発火力)
+	 * 1秒間に1マガジンを撃ち切る場合、マガジン火力を返す。
+	 * 
+	 * @return 秒間火力
 	 */
-	public int getSecPower() {
-		int ret = 0;
-		int speed_num = getShotSpeed();
-		int power_num = getOneShotPower(0);
+	public double getSecPower() {
+		double ret = 0;
+		double shot_speed = getShotSpeed();
 
-		if(speed_num > 0) {
-			int magazine_power = getMagazinePower();
+		if(shot_speed > 0) {
+			double one_power = getOneShotPower(0);
+			double magazine_power = getMagazinePower();
 			
-			ret = (int)(power_num * speed_num / 60);
+			ret = one_power * shot_speed / 60;
 			
 			if(ret > magazine_power) {
 				ret = magazine_power;
 			}
 		}
 		else {
-			ret = power_num;
+			ret = getOneShotPower();
 		}
 
 		return ret;
@@ -971,35 +973,76 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * 戦術火力を取得する。
-	 * @return
+	 * @return 戦術火力
 	 */
 	public double getBattlePower() {
 		double ret = 0;
-		double magazine_power = getMagazinePower();
-		double all_shot_time = 0;
+
+		if(super.existKey("OH復帰時間")) {
+			ret = getBattlePowerOverHeat(false);  // OH前の戦術火力を取得する
+		}
+		else {
+			ret = getBattlePowerDefault();
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * リロードに依存した基本的な戦術火力を取得する。
+	 * 
+	 * 戦術火力＝マガジン火力÷（撃ち切り時間＋リロード時間）
+	 * なお、連射速度の情報がない場合は単発火力とする。
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerDefault() {
+		double ret = 0;
 		double shot_speed = getShotSpeed();
-		double reload_time = 0;
-		double power = 0;
-		int magazine = getMagazine();
 		
 		if(shot_speed > 0) {
-		
-			// OH武器はOHの条件で判定する
-			all_shot_time = getOverheatTime();
-			reload_time = getOverheatRepairTime();
-			power = getOneShotPower() * (shot_speed / 60) * all_shot_time;
+			double magazine_power = getMagazinePower();
+			double reload_time = getReloadTime();
+			int magazine = getMagazine();
 			
-			// OH武器以外は撃ち切り時間とリロード時間で判定する
-			if(reload_time == 0) {
-				reload_time = getReloadTime();
-				all_shot_time = magazine / shot_speed * 60;
-				power = magazine_power;
-			}
-			
-			ret = power / (all_shot_time + reload_time);
+			double all_shot_time = magazine / shot_speed * 60;
+			ret = magazine_power / (all_shot_time + reload_time);
 		}
 		else {
 			ret = getOneShotPower();
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * OH武器の戦術火力を取得する。(OH中)
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerOverHeat() {
+		return getBattlePowerOverHeat(true);
+	}
+	
+	/**
+	 * OH武器の戦術火力を取得する。
+	 * 
+	 * 戦術火力＝OH火力÷（OH耐性時間＋OH復帰時間）
+	 * @param is_overheat OH中かどうか。
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerOverHeat(boolean is_overheat) {
+		double ret = 0;
+		double shot_speed = getShotSpeed();
+		double oneshot_power = getOneShotPower();
+		
+		if(shot_speed > 0) {
+			double oh_guard_time = getOverheatTime();
+			double oh_repair_time = getOverheatRepairTime(is_overheat);
+			double oh_power = oneshot_power * (shot_speed / 60) * oh_guard_time;
+	
+			ret = oh_power / (oh_guard_time + oh_repair_time);
+		}
+		else {
+			ret = oneshot_power;
 		}
 		
 		return ret;

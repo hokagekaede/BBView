@@ -761,16 +761,16 @@ public class SpecView extends FrameLayout {
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCsShotPowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazinePowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSecPowerArray(data, weapon)));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerArray(data, weapon)));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
-
+			
 			if(weapon.existKey("OH耐性")) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerOverheatArray(data, weapon)));
 				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatTimeArray(data, weapon)));
-			}
-			if(weapon.existKey("OH復帰時間")) {
 				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatRepairTimeArray(data, weapon)));
 			}
-			
+			else {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerArray(data, weapon)));
+			}
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazineCount(data, weapon)));
 			
 			if(weapon.isChargeWeapon()) {
