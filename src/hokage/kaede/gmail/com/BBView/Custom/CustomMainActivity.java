@@ -34,8 +34,8 @@ public class CustomMainActivity extends BaseActivity {
 	
 	private boolean mIsShowChips = false;
 	
-	// メイン画面のレイアウト
-	private LinearLayout mLayout;
+	// メイン画面のレイアウトID
+	private int MAIN_LAYOUT_ID = 1000;
 	
 	/**
 	 * 画面生成時の処理を行う。
@@ -49,54 +49,67 @@ public class CustomMainActivity extends BaseActivity {
 		mViewMode = VIEWMODE_STR_CUSTOM;
 
 		// メインの画面
-		mLayout = new LinearLayout(this);
-		mLayout.setOrientation(LinearLayout.VERTICAL);
-		mLayout.setGravity(Gravity.TOP | Gravity.LEFT);
+		LinearLayout main_layout = new LinearLayout(this);
+		main_layout.setOrientation(LinearLayout.VERTICAL);
+		main_layout.setGravity(Gravity.TOP | Gravity.LEFT);
+		main_layout.setId(MAIN_LAYOUT_ID);
 		
-		setContentView(mLayout);
+		updateView(main_layout);
+		
+		setContentView(main_layout);
 	}
 	
 	/**
 	 * 画面再表示時の処理を行う。
-	 * 画面の各数値を更新する。
+	 * アセン画面からパーツ/武器を選択し、戻ってきた際に画面を更新する。
 	 */
 	@Override
-	protected void onResume() {
-		super.onResume();
-		updateView();
+	protected void onRestart() {
+		super.onRestart();
+
+		LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+		updateView(main_layout);
 	}
 	
 	/**
 	 * 画面非表示字の処理を行う。
 	 * SBや要請兵器の所持状況をリセットする。
+	 * 
+	 * onResume()時は所持状況ボタンON/OFF状態を含めて画面表示が保持されているため、
+	 * 画面を再構築する必要はない。
 	 */
 	protected void onPause() {
 		super.onPause();
 		CustomData custom_data = CustomDataManager.getCustomData();
-		custom_data.setHavingExtraItem(CustomData.HAVING_NOTHING);
+		custom_data.setMode(CustomData.MODE_NORMAL);
 	}
 	
-	private void updateView() {
+	/**
+	 * 画面を更新する。
+	 * 現状、全てのビューを削除し、新たに生成した画面を追加する方法で実装している。
+	 * @param main_layout ビューを載せる対象のレイアウト
+	 */
+	private void updateView(LinearLayout main_layout) {
 		CustomData custom_data = CustomDataManager.getCustomData();
-		custom_data.setHavingExtraItem(CustomData.HAVING_NOTHING);
+		custom_data.setMode(CustomData.MODE_NORMAL);
 		
-		mLayout.removeAllViews();
-		mLayout.addView(createTopLayout());
+		main_layout.removeAllViews();
+		main_layout.addView(createTopLayout());
 
 		if(mViewMode.equals(VIEWMODE_STR_CUSTOM)) {
-			mLayout.addView(new CustomView(this, custom_data, mIsShowChips));
+			main_layout.addView(new CustomView(this, custom_data, mIsShowChips));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
-			mLayout.addView(new ChipView(this));
+			main_layout.addView(new ChipView(this));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
-			mLayout.addView(new SpecView(this));
+			main_layout.addView(new SpecView(this));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
-			mLayout.addView(new ResistView(this));
+			main_layout.addView(new ResistView(this));
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_FILE)) {
-			mLayout.addView(new FileListView(this));
+			main_layout.addView(new FileListView(this));
 		}
 	}
 	
@@ -105,16 +118,11 @@ public class CustomMainActivity extends BaseActivity {
 	 * @return
 	 */
 	private LinearLayout createTopLayout() {
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.HORIZONTAL);
-		layout.setGravity(Gravity.CENTER);
-		layout.setBackgroundColor(SettingManager.getColorGray());
-		
 		LinearLayout.LayoutParams layout_prm = 
 			new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,	1);
 		
 		int text_color = SettingManager.getColorWhite();
-		float text_size = (float)15.0;
+		float text_size = SettingManager.getTextSize(this);
 		
 		TextView custom_text_view = new TextView(this);
 		custom_text_view.setTextColor(text_color);
@@ -124,7 +132,6 @@ public class CustomMainActivity extends BaseActivity {
 		custom_text_view.setText(VIEWMODE_STR_CUSTOM);
 		custom_text_view.setTextSize(text_size);
 		custom_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_CUSTOM));
-		layout.addView(custom_text_view);
 
 		TextView chip_text_view = new TextView(this);
 		chip_text_view.setTextColor(text_color);
@@ -134,7 +141,6 @@ public class CustomMainActivity extends BaseActivity {
 		chip_text_view.setText(VIEWMODE_STR_CHIP);
 		chip_text_view.setTextSize(text_size);
 		chip_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_CHIP));
-		layout.addView(chip_text_view);
 
 		TextView spec_text_view = new TextView(this);
 		spec_text_view.setTextColor(text_color);
@@ -144,7 +150,6 @@ public class CustomMainActivity extends BaseActivity {
 		spec_text_view.setText(VIEWMODE_STR_SPEC);
 		spec_text_view.setTextSize(text_size);
 		spec_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_SPEC));
-		layout.addView(spec_text_view);
 
 		TextView resist_text_view = new TextView(this);
 		resist_text_view.setTextColor(text_color);
@@ -154,7 +159,6 @@ public class CustomMainActivity extends BaseActivity {
 		resist_text_view.setText(VIEWMODE_STR_RESIST);
 		resist_text_view.setTextSize(text_size);
 		resist_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_RESIST));
-		layout.addView(resist_text_view);
 
 		TextView file_text_view = new TextView(this);
 		file_text_view.setTextColor(text_color);
@@ -164,6 +168,38 @@ public class CustomMainActivity extends BaseActivity {
 		file_text_view.setText(VIEWMODE_STR_FILE);
 		file_text_view.setTextSize(text_size);
 		file_text_view.setOnClickListener(new OnClickTopMenuListener(VIEWMODE_STR_FILE));
+		
+		// 選択中の場合、文字色と背景色を変更して見た目を強調する
+		if(mViewMode.equals(VIEWMODE_STR_CUSTOM)) {
+			custom_text_view.setTextColor(SettingManager.getColorCyan());
+			custom_text_view.setBackgroundColor(SettingManager.getColorBlack());
+		}
+		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
+			chip_text_view.setTextColor(SettingManager.getColorCyan());
+			chip_text_view.setBackgroundColor(SettingManager.getColorBlack());
+		}
+		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
+			spec_text_view.setTextColor(SettingManager.getColorCyan());
+			spec_text_view.setBackgroundColor(SettingManager.getColorBlack());
+		}
+		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
+			resist_text_view.setTextColor(SettingManager.getColorCyan());
+			resist_text_view.setBackgroundColor(SettingManager.getColorBlack());
+		}
+		else if(mViewMode.equals(VIEWMODE_STR_FILE)) {
+			file_text_view.setTextColor(SettingManager.getColorCyan());
+			file_text_view.setBackgroundColor(SettingManager.getColorBlack());
+		}
+
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.HORIZONTAL);
+		layout.setGravity(Gravity.CENTER);
+		layout.setBackgroundColor(SettingManager.getColorGray());
+		
+		layout.addView(custom_text_view);
+		layout.addView(chip_text_view);
+		layout.addView(spec_text_view);
+		layout.addView(resist_text_view);
 		layout.addView(file_text_view);
 		
 		return layout;
@@ -182,7 +218,8 @@ public class CustomMainActivity extends BaseActivity {
 		@Override
 		public void onClick(View arg0) {
 			mViewMode = mMenuName;
-			updateView();
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			updateView(main_layout);
 		}
 	}
 	
@@ -210,15 +247,17 @@ public class CustomMainActivity extends BaseActivity {
 
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			
 			if(item.isChecked()) {
 				mIsShowChips = false;
 				item.setChecked(false);
-				updateView();
+				updateView(main_layout);
 			}
 			else {
 				mIsShowChips = true;
 				item.setChecked(true);
-				updateView();
+				updateView(main_layout);
 			}
 			
 			return false;
@@ -255,8 +294,10 @@ public class CustomMainActivity extends BaseActivity {
 		
 		if(keyCode == KeyEvent.KEYCODE_BACK) {
 			if(mViewMode != VIEWMODE_STR_CUSTOM) {
+				LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+				
 				mViewMode = VIEWMODE_STR_CUSTOM;
-				updateView();
+				updateView(main_layout);
 				return false;
 			}
 		}

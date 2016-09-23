@@ -74,7 +74,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	// リスト制御ダイアログ
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
 	private static final String DIALOG_LIST_ITEM_CMP  = "比較する";
-	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP };
+	private static final String DIALOG_LIST_ITEM_FULL = "フルセットを設定する";
+	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP, DIALOG_LIST_ITEM_FULL };
 	
 	// ソート時のタイプB設定
 	private boolean mIsSortTypeB = false;
@@ -319,14 +320,41 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	}
 
 	/**
-	 * カスタム画面に戻る処理を行う。
-	 * @param data
+	 * 指定位置のパーツを設定し、前画面に戻る。
+	 * @param data パーツデータ
 	 */
 	private void backCustomView(BBData data) {
 		
 		// カスタムデータに反映する
 		CustomData custom_data = CustomDataManager.getCustomData();
 		custom_data.setData(data);
+		
+		// カスタムデータをキャッシュファイルに書き込む。
+		CustomDataWriter.write(custom_data, getFilesDir().toString());
+		
+		// データ変更状態を設定する
+		CustomDataManager.setChanged(true);
+
+		finish();
+	}
+
+	/**
+	 * 指定の位置のパーツでフルセットを設定し、前画面に戻る。
+	 * @param data パーツデータ
+	 */
+	private void backCustomViewFullSet(BBData target_data) {
+		
+		// 選択したパーツ名を取得し、全部位のパーツをカスタムデータに反映する。
+		String name = target_data.get("名称");
+
+		BBDataManager manager = BBDataManager.getInstance();
+		CustomData custom_data = CustomDataManager.getCustomData();
+		
+		int size = BBDataManager.BLUST_PARTS_LIST.length;
+		for(int i=0; i<size; i++) {
+			BBData data = manager.getPartsData(name, BBDataManager.BLUST_PARTS_LIST[i]);
+			custom_data.setData(data);
+		}
 		
 		// カスタムデータをキャッシュファイルに書き込む。
 		CustomDataWriter.write(custom_data, getFilesDir().toString());
@@ -439,6 +467,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		else if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_CMP)) {
 			showCmpView(data);
+		}
+		else if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_FULL)) {
+			backCustomViewFullSet(data);
 		}
 	}
 	

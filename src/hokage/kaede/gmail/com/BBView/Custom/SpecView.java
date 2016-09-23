@@ -1,464 +1,940 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
 
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class SpecView extends LinearLayout implements OnClickListener, OnCheckedChangeListener {
+/**
+ * 性能画面を生成するクラス
+ */
+public class SpecView extends FrameLayout {
 	
+	// レイアウトパラメータ定義
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
+
+	// レイアウトID
+	private static final int TOGGLE_BUTTON_ASSALT_ID  = 1000;
+	private static final int TOGGLE_BUTTON_HEAVY_ID   = 2000;
+	private static final int TOGGLE_BUTTON_SNIPER_ID  = 3000;
+	private static final int TOGGLE_BUTTON_SUPPORT_ID = 4000;
 	
-	private static final int TOGGLE_BUTTON_SB_ID     = 1000;
-	private static final int TOGGLE_BUTTON_SBR_ID    = 2000;
-	private static final int TOGGLE_BUTTON_REQARM_ID = 3000;
+	private static final int TABLELAYOUT_ID = 100;
+
+	// モード設定値
+	private int mMode = MODE_BASE;
+	private static final int MODE_BASE    = 0;
+	private static final int MODE_ASSALT  = 1;
+	private static final int MODE_HEAVY   = 2;
+	private static final int MODE_SNIPER  = 3;
+	private static final int MODE_SUPPORT = 4;
 	
-	private static final int TABLELAYOUT_ID = 4000;
+	// モード設定値に対する選択中の兵装名
+	private String mBlustType = "";
 	
+	/**
+	 * 初期化を行う。画面を生成する。
+	 * @param context 対象の画面
+	 */
 	public SpecView(Context context) {
 		super(context);
 
-		// スペック管理クラスのロード
-		CustomData custom_data = CustomDataManager.getCustomData();
+		LinearLayout main_layout = new LinearLayout(context);
+		main_layout.setOrientation(LinearLayout.VERTICAL);
+		main_layout.setGravity(Gravity.LEFT | Gravity.TOP);
+		main_layout.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
+		main_layout.addView(createSpecTable(context));		
+		main_layout.addView(createBottomView(context));
 
-		this.setOrientation(LinearLayout.VERTICAL);
-		this.setGravity(Gravity.LEFT | Gravity.TOP);
-		this.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
-		this.addView(createSpecTable(context, custom_data));		
-		this.addView(createBottomView(context));
+		this.setLayoutParams(new FrameLayout.LayoutParams(FP, FP));
+		this.addView(main_layout);
+		this.addView(createStatusView(context));
 	}
 
 	/**
-	 * 画面下部のレイアウトを生成する。
-	 * @param context 対象の画面
-	 * @return レイアウト
+	 * 各種性能のビューを表示するためのビューを生成する。
+	 * @return ビュー
 	 */
-	public LinearLayout createBottomView(Context context) {
-		LinearLayout bottom_layout = new LinearLayout(context);
-		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
-
-		LayoutParams layout_param = new LayoutParams(WC, WC, 1);
-		
-		ToggleButton sb_button = new ToggleButton(context);
-		sb_button.setTextOn("SB");
-		sb_button.setTextOff("SB");
-		sb_button.setChecked(false);
-		sb_button.setId(TOGGLE_BUTTON_SB_ID);
-		sb_button.setLayoutParams(layout_param);
-		sb_button.setOnClickListener(this);
-		sb_button.setOnCheckedChangeListener(this);
-		bottom_layout.addView(sb_button);
-		
-		ToggleButton sbr_button = new ToggleButton(context);
-		sbr_button.setTextOn("SBR");
-		sbr_button.setTextOff("SBR");
-		sbr_button.setChecked(false);
-		sbr_button.setId(TOGGLE_BUTTON_SBR_ID);
-		sbr_button.setLayoutParams(layout_param);
-		sbr_button.setOnClickListener(this);
-		sbr_button.setOnCheckedChangeListener(this);
-		bottom_layout.addView(sbr_button);
-		
-		ToggleButton reqarm_button = new ToggleButton(context);
-		reqarm_button.setTextOn("要請兵器");
-		reqarm_button.setTextOff("要請兵器");
-		reqarm_button.setChecked(false);
-		reqarm_button.setId(TOGGLE_BUTTON_REQARM_ID);
-		reqarm_button.setLayoutParams(layout_param);
-		reqarm_button.setOnClickListener(this);
-		reqarm_button.setOnCheckedChangeListener(this);
-		bottom_layout.addView(reqarm_button);
-		
-		// 各兵装スペック詳細画面表示ボタン
-		Button type_show_button = new Button(context);
-		type_show_button.setText("兵装詳細");
-		type_show_button.setLayoutParams(layout_param);
-		type_show_button.setGravity(Gravity.CENTER);
-		type_show_button.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Context context = SpecView.this.getContext();
-				Intent intent = new Intent(context, SpecBlustActivity.class);
-				context.startActivity(intent);
-			}
-			
-		});
-		bottom_layout.addView(type_show_button);
-		
-		return bottom_layout;
-	}
-	
-	/**
-	 * 性能テーブルを生成する。
-	 * @return 生成したビュー
-	 */
-	private View createSpecTable(Context context, CustomData custom_data) {
-		int color = SettingManager.getColorWhite();
-		int bg_color = SettingManager.getColorBlue();
-		
+	private View createSpecTable(Context context) {
 		LinearLayout layout_table = new LinearLayout(context);
 		layout_table.setOrientation(LinearLayout.VERTICAL);
 		layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		layout_table.setId(TABLELAYOUT_ID);
+		
+		createSpecTableMain(context, layout_table);
 
-		// 兵装スペックを画面に表示する
-		TextView blust_spec_view = ViewBuilder.createTextView(context, "兵装スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
-		layout_table.addView(blust_spec_view);
-		layout_table.addView(createBlustSpeedViews(custom_data));
-
-		// 総合スペックを画面に表示する
-		TextView common_spec_view = ViewBuilder.createTextView(context, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
-		layout_table.addView(common_spec_view);
-		layout_table.addView(createBlustSpecView(custom_data));
-		
-		// パーツスペックを画面に表示する
-		TextView parts_spec_view = ViewBuilder.createTextView(context, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
-		layout_table.addView(parts_spec_view);
-		layout_table.addView(createCustomBlustPartsViews(custom_data));
-		
-		// 武器スペックを画面に表示する
-		TextView weapon_spec_view = ViewBuilder.createTextView(context, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
-		layout_table.addView(weapon_spec_view);
-		layout_table.addView(createWeaponRows(custom_data));
-		
-		// チップ一覧を画面に表示する
-		TextView chip_spec_view = ViewBuilder.createTextView(context, "現在装着中のチップ", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
-		layout_table.addView(chip_spec_view);
-		layout_table.addView(createChipTable(custom_data));
-		
 		ScrollView data_view = new ScrollView(context);
 		data_view.addView(layout_table);
-		data_view.setLayoutParams(new LayoutParams(FP, WC, 1));
+		data_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		
 		return data_view;
 	}
 
 	/**
-	 * パーツスペックテーブルに表示する項目一覧
+	 * 各種性能のビューを表示するためのビューを更新する。
 	 */
-	private static final String[] sTargetKeys = {
-		"射撃補正", "索敵", "ロックオン", "DEF回復",
-		"ブースター", "SP供給率", "エリア移動", "DEF耐久",
-		"反動吸収", "リロード", "武器変更", "予備弾数",
-		"歩行", "ダッシュ", "重量耐性", "加速"
-	};
-	
-	/**
-	 * パーツスペックテーブルに表示する項目数
-	 */
-	private static final int sTargetKeyCount = sTargetKeys.length;
-	
-	/**
-	 * パーツスペックテーブルを生成する。
-	 * @param data_list データ一覧
-	 * @return パーツスペックのテーブル
-	 */
-	private TableLayout createCustomBlustPartsViews(CustomData custom_data) {
-		Context context = getContext();
+	private void updateSpecTable(Context context) {
+		LinearLayout layout = (LinearLayout)this.findViewById(TABLELAYOUT_ID);
+		layout.removeAllViews();
 		
-		TableLayout table = new TableLayout(context);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		
-		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "補正前", "補正後"));
-
-		for(int i=0; i<sTargetKeyCount; i++) {
-			table.addView(createCustomPartsRows(custom_data, sTargetKeys[i]));
-		}
-		
-		return table;
-	}
-	
-	/**
-	 * パーツスペックテーブルの行を生成する。
-	 * @param custom_data アセンデータ
-	 * @param target_key 性能名
-	 * @return 指定の性能に対応する行
-	 */
-	private TableRow createCustomPartsRows(CustomData custom_data, String target_key) {
-		Context context = getContext();
-		
-		String normal_point = custom_data.getPoint(target_key);
-		double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-		String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-		
-		double real_value = custom_data.getSpecValue(target_key);
-		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-
-		// スペックと内部値を結合する
-		if(BBDataComparator.isPointKey(target_key)) {
-			normal_value_str = normal_point + " (" + normal_value_str + ")";
-			real_value_str = real_point + " (" + real_value_str + ")"; 
-		}
-		
-		// DEF回復の場合、隣に回復時間を併記する
-		if(target_key.equals("DEF回復")) {
-			real_value_str = String.format("%s (%s)", real_value_str,
-					SpecValues.getSpecUnit(custom_data.getDefRecoverTime(), "DEF回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
-		}
-		
-		int[] colors = ViewBuilder.getColors(normal_value, real_value, target_key);
-
-		return ViewBuilder.createTableRow(context, colors, target_key, normal_value_str, real_value_str);
+		createSpecTableMain(context, layout);
 	}
 
 	/**
-	 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
-	 * @param custom_data 表示するカスタムデータ
-	 * @return 総合スペックテーブル
+	 * 各種性能のビューを表示するためのビューに対して、その中身を作る。
+	 * 生成メソッドと構築メソッドが共通で使用する。
 	 */
-	public TableLayout createBlustSpecView(CustomData custom_data) {
-		Context context = getContext();
-		
-		TableLayout table = new TableLayout(context);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		
-		double armor_value = custom_data.getArmorAve();
-		String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		String armor_str = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KB_PER_HOUR);
-		armor_str = armor_point + " (" + armor_str + ")"; 
-		
-		String[][] speclist = {
-			{ "セットボーナス", custom_data.getSetBonus() },
-			{ "チップ容量", String.format("%.1f", custom_data.getChipCapacity()) },
-			{ "装甲平均値", armor_str },
-			{ "総重量(猶予)", String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()) },
-		};
-		
-		int size = speclist.length;
-		for(int i=0; i<size; i++) {
-			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
+	private void createSpecTableMain(Context context, LinearLayout layout_table) {
+
+		if(mMode == MODE_BASE) {
+			layout_table.addView(AssembleViewBuilder.create(context, ""));
+			layout_table.addView(BlustSpeedViewBuilder.create(context));
+			layout_table.addView(CommonSpecViewBuilder.create(context));
+			layout_table.addView(PartsSpecViewBuilder.create(context, ""));
+
 		}
-		
-		return table;
-	}
-
-	private static final String[] TOTAL_SPEC_LIST = {
-		"兵装", "重量(猶予)", "初速(巡航)", "歩速", "低下率"
-	};
-	
-	/**
-	 * 兵装スペックテーブルを生成する。(全兵装におけるアセンの重量と速度を表示)
-	 * @param data データ
-	 * @return 兵装スペックテーブル
-	 */
-	private TableLayout createBlustSpeedViews(CustomData data) {
-		Context context = getContext();
-		
-		TableLayout table = new TableLayout(context);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-
-		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
-		int blust_list_len = blust_list.length;
-
-		// タイトル行を生成
-		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), TOTAL_SPEC_LIST));
-		
-		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
-			String blust_name = blust_list[blust_idx];
-			table.addView(createBlustSpeedRow(data, blust_name));
+		else {
+			layout_table.addView(AssembleViewBuilder.create(context, mBlustType));
+			layout_table.addView(PartsSpecViewBuilder.create(context, mBlustType));
+			layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType));
 		}
-		
-		return table;
-	}
-
-	/**
-	 * 兵装スペックテーブルの行を生成する。(指定の兵装におけるアセンの重量と速度)
-	 * @param data データ
-	 * @param blust_name 兵装名
-	 * @return 生成した行
-	 */
-	private TableRow createBlustSpeedRow(CustomData data, String blust_name) {
-		Context context = getContext();
-		
-		double rate = data.getSpeedDownRate(blust_name);
-		int color = SettingManager.getColorWhite();
-
-		if(rate < 0) {
-			color = SettingManager.getColorMazenta();
-		}
-
-		String[] cols = {
-				blust_name.substring(0, 2),
-				String.format("%d", data.getWeight(blust_name)) + "(" + String.format("%d", data.getSpaceWeight(blust_name)) + ")",
-				String.format("%.2f", data.getStartDush(blust_name)) + "(" + String.format("%.2f", data.getNormalDush(blust_name)) + ")",
-				SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSettingManager.IS_KB_PER_HOUR),
-				SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KB_PER_HOUR),
-			};
-		
-		return ViewBuilder.createTableRow(context, color, cols);
 	}
 	
-	private static final String[] WEAPON_TITLE_ROW = { "武器名", "マガジン火力", "瞬間火力", "戦術火力", "リロード時間", "総弾数" };
+	//----------------------------------------------------------
+	// 兵装選択トグルボタン関連の処理
+	//----------------------------------------------------------
 
 	/**
-	 * 武器スペックテーブルを生成する。(マガジン火力、瞬間火力、戦術火力、リロード時間)
-	 * @param data データ
-	 * @return 武器スペックテーブル
+	 * 画面下部のボタンビューを生成する。
+	 * @param context 対象の画面
+	 * @return ビュー
 	 */
-	private TableLayout createWeaponRows(CustomData data) {
-		Context context = getContext();
+	private LinearLayout createBottomView(Context context) {
+		LinearLayout bottom_layout = new LinearLayout(context);
+		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
 		
-		TableLayout table = new TableLayout(context);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+		ChangeNothingListener nothing_listener = new ChangeNothingListener();
 
-		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
-		int blust_list_len = blust_list.length;
+		ToggleButton assalt_button = new ToggleButton(context);
+		assalt_button.setTextOn("強襲");
+		assalt_button.setTextOff("強襲");
+		assalt_button.setChecked(false);
+		assalt_button.setId(TOGGLE_BUTTON_ASSALT_ID);
+		assalt_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		assalt_button.setOnClickListener(new ChangeBlustTypeListener(MODE_ASSALT, BBDataManager.BLUST_TYPE_ASSALT));
+		assalt_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(assalt_button);
 		
-		table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), WEAPON_TITLE_ROW));
+		ToggleButton heavy_button = new ToggleButton(context);
+		heavy_button.setTextOn("重火力");
+		heavy_button.setTextOff("重火力");
+		heavy_button.setChecked(false);
+		heavy_button.setId(TOGGLE_BUTTON_HEAVY_ID);
+		heavy_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		heavy_button.setOnClickListener(new ChangeBlustTypeListener(MODE_HEAVY, BBDataManager.BLUST_TYPE_HEAVY));
+		heavy_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(heavy_button);
 		
-		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
-			String blust_type = blust_list[blust_idx];
+		ToggleButton sniper_button = new ToggleButton(context);
+		sniper_button.setTextOn("遊撃");
+		sniper_button.setTextOff("遊撃");
+		sniper_button.setChecked(false);
+		sniper_button.setId(TOGGLE_BUTTON_SNIPER_ID);
+		sniper_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		sniper_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SNIPER, BBDataManager.BLUST_TYPE_SNIPER));
+		sniper_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(sniper_button);
 
-			int weapon_list_len = BBDataManager.WEAPON_TYPE_LIST.length;
-			for(int weapon_idx=0; weapon_idx<weapon_list_len; weapon_idx++) {
-				BBData weapon = data.getWeapon(blust_type, BBDataManager.WEAPON_TYPE_LIST[weapon_idx]);
-				
-				/* 補助装備、特別装備の場合は表示しない */
-				if(weapon.existCategory(BBDataManager.WEAPON_TYPE_SUPPORT) || weapon.existCategory(BBDataManager.WEAPON_TYPE_SPECIAL)) {
-					continue;
-				}
-				
-				double magazine_power = data.getMagazinePower(weapon);
-				double sec01_power = data.getSecPower(weapon);
-				//double sec10_power = data.get10SecPower(weapon);
-				double battle_power = data.getBattlePower(weapon);
-				double reload_time = data.getReloadTime(weapon);
-				
-				/* 総弾数の文字列を生成する */
-				double sum_bullet = data.getBulletSum(weapon);
-				double magazine_bullet = weapon.getMagazine();
-				double over_bullet = sum_bullet % magazine_bullet;
-				double magazine_count = Math.floor(sum_bullet / magazine_bullet);
-				
-				String bullet_str = "";
-				if(magazine_bullet == 1) {
-					bullet_str = String.format("1x%.0f", sum_bullet);
+		ToggleButton support_button = new ToggleButton(context);
+		support_button.setTextOn("支援");
+		support_button.setTextOff("支援");
+		support_button.setChecked(false);
+		support_button.setId(TOGGLE_BUTTON_SUPPORT_ID);
+		support_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		support_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SUPPORT, BBDataManager.BLUST_TYPE_SUPPORT));
+		support_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(support_button);
+		
+		return bottom_layout;
+	}
+	
+	/**
+	 * トグルボタン押下時の処理を行うリスナー。
+	 */
+	private class ChangeBlustTypeListener implements OnClickListener {
+		
+		private int mTargetMode;
+		private String mTargetBlustType;
+		
+		public ChangeBlustTypeListener(int mode, String blust_type) {
+			mTargetMode = mode;
+			mTargetBlustType = blust_type;
+		}
+
+		/**
+		 * トグルボタン押下時の処理を行う。
+		 * 兵装の選択状態を切り替える。
+		 * 
+		 * ■実装メモ
+		 * 押下されたボタンの状態を保持した後、全てのトグルボタンをOFFにする。
+		 * その後、保持値を反転させて押下されたボタンに設定する。
+		 */
+		@Override
+		public void onClick(View view) {
+			
+			try {
+				ToggleButton btn = (ToggleButton)view;
+				boolean is_checked = btn.isChecked();
+
+				if(is_checked) {
+					mMode = mTargetMode;
+					mBlustType = mTargetBlustType;
 				}
 				else {
-					bullet_str = String.format("%.0fx%.0f +%.0f", magazine_bullet, magazine_count, over_bullet);
+					mMode = MODE_BASE;
+					mBlustType = "";
 				}
 				
-				String[] cols = { 
-						weapon.get("名称"),
-						String.format("%.0f", magazine_power), 
-						String.format("%.0f", sec01_power), 
-						String.format("%.0f", battle_power),
-						//String.format("%.0f", sec10_power), 
-						String.format("%.1f(秒)", reload_time),
-						bullet_str
-				};
-				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), cols));
-			}
-		}
-		
-		return table;
-	}
-	
-	/**
-	 * チップテーブルを生成する
-	 * @param data データ
-	 * @return チップデータのテーブル
-	 */
-	private LinearLayout createChipTable(CustomData custom_data) {
-		Context context = getContext();
-		
-		LinearLayout layout_chip= new LinearLayout(context);
-		layout_chip.setLayoutParams(new LinearLayout.LayoutParams(WC, WC));
-		layout_chip.setOrientation(LinearLayout.VERTICAL);
-		layout_chip.setGravity(Gravity.LEFT | Gravity.TOP);
+				ToggleButton assalt_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_ASSALT_ID);
+				ToggleButton heavy_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_HEAVY_ID);
+				ToggleButton sniper_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_SNIPER_ID);
+				ToggleButton support_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_SUPPORT_ID);
+				
+				assalt_button.setChecked(false);
+				heavy_button.setChecked(false);
+				sniper_button.setChecked(false);
+				support_button.setChecked(false);
+				
+				btn.setChecked(is_checked);
 
-		ArrayList<BBData> chip_list = custom_data.getChips();
-		int size = chip_list.size();
-		
-		for(int i=0; i<size; i++) {
-			layout_chip.addView(ViewBuilder.createTextView(context, chip_list.get(i).get("名称"), BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-		}
-		
-		return layout_chip;
-	}
+			} catch(Exception e) {
+				e.printStackTrace();
 
-	/**
-	 * トグルボタン押下時の処理を行う。
-	 */
-	@Override
-	public void onClick(View v) {
-		CustomData custom_data = CustomDataManager.getCustomData();
-		
-		if(v instanceof ToggleButton) {
-			int id = v.getId();
-			ToggleButton btn = (ToggleButton)v;
-			boolean is_checked = !btn.isChecked();
-			
-			if(is_checked) {
-				updateButton(false, false, false);
-				custom_data.setHavingExtraItem(CustomData.HAVING_NOTHING);
-			}
-			else if(id == TOGGLE_BUTTON_SB_ID) {
-				updateButton(true, false, false);
-				custom_data.setHavingExtraItem(CustomData.HAVING_SB);
-			}
-			else if(id == TOGGLE_BUTTON_SBR_ID) {
-				updateButton(false, true, false);
-				custom_data.setHavingExtraItem(CustomData.HAVING_SBR);
-			}
-			else if(id == TOGGLE_BUTTON_REQARM_ID) {
-				updateButton(false, false, true);
-				custom_data.setHavingExtraItem(CustomData.HAVING_REQARM);
+				mMode = MODE_BASE;
+				mBlustType = "";
 			}
 			
-			LinearLayout layout = (LinearLayout)this.findViewById(TABLELAYOUT_ID);
-			layout.removeViews(1, 1);
-			layout.addView(createBlustSpeedViews(custom_data), 1);
+			// 画面を更新する
+			updateSpecTable(view.getContext());
 		}
 	}
 	
 	/**
-	 * トグルボタンの表示を更新する。
-	 * @param sb 
-	 * @param sbr
-	 * @param reqarm
+	 * トグルボタンのチェックが変更された場合の処理を行うリスナー
 	 */
-	private void updateButton(boolean sb, boolean sbr, boolean reqarm) {
-		ToggleButton sb_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_SB_ID);
-		sb_button.setChecked(sb);
-		
-		ToggleButton sbr_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_SBR_ID);
-		sbr_button.setChecked(sbr);
-		
-		ToggleButton reqarm_button = (ToggleButton)this.findViewById(TOGGLE_BUTTON_REQARM_ID);
-		reqarm_button.setChecked(reqarm);
+	private class ChangeNothingListener implements OnCheckedChangeListener {
+
+		/**
+		 * トグルボタンのチェックが変更された場合の処理。
+	     * 既存の処理の実行を防ぐため、本関数では何も処理を行わない。
+		 */
+		@Override
+		public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+			// Do Nothing
+		}
 	}
+	
+	//----------------------------------------------------------
+	// 状態選択ビュー関連の処理
+	//----------------------------------------------------------
 
 	/**
-	 * トグルボタンのチェックが変更された場合の処理。既存の処理の実行を防ぐため、本関数では何も処理を行わない。
+	 * 画面右上の状態選択ビューを生成する。
+	 * @param context 対象の画面
+	 * @return ビュー
 	 */
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		// Do Nothing
+	private LinearLayout createStatusView(Context context) {
+		StringAdapter adapter = new StringAdapter(context, CustomData.CUSTOM_MODES);
+		adapter.setMode(StringAdapter.MODE_SPINNER);
+		
+		Spinner sts_spinner = new Spinner(context);
+		sts_spinner.setAdapter(adapter);
+		sts_spinner.setOnItemSelectedListener(new OnStatusSelectedListener());
+
+		LinearLayout buf_layout = new LinearLayout(context);
+		buf_layout.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		buf_layout.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
+		buf_layout.addView(sts_spinner);
+		
+		return buf_layout;
+	}
+
+	private class OnStatusSelectedListener implements OnItemSelectedListener {
+
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+			custom_data.setMode(pos);
+			updateSpecTable(parent.getContext());
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> parent) {
+			// 処理なし
+		}
+	}
+	
+	//----------------------------------------------------------
+	// 各画面のビューを生成するクラス群
+	//----------------------------------------------------------
+	
+	/**
+	 * 「アセン」のビューを生成するクラス
+	 */
+	private static class AssembleViewBuilder {
+		
+		private static View create(Context context, String blust_type) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+			
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView assemble_view = ViewBuilder.createTextView(context, "アセン", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(assemble_view);
+			layout_table.addView(createAssembleView(context, custom_data, blust_type));
+			layout_table.addView(createChipTable(context, custom_data));
+			
+			return layout_table;
+		}
+
+		/**
+		 * 「アセン」のビューを生成する。
+		 * @param context
+		 * @param custom_data
+		 * @return
+		 */
+		private static TableLayout createAssembleView(Context context, CustomData custom_data, String blust_type) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			if(blust_type.equals("")) {
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_HEAD));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_BODY));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_ARMS));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_LEGS));
+			}
+			else {
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_HEAD, BBDataManager.WEAPON_TYPE_MAIN));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_BODY, BBDataManager.WEAPON_TYPE_SUB));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_ARMS, BBDataManager.WEAPON_TYPE_SUPPORT));
+				table.addView(createPartsRow(context, custom_data, blust_type, BBDataManager.BLUST_PARTS_LEGS, BBDataManager.WEAPON_TYPE_SPECIAL));
+			}
+			
+			return table;
+		}
+
+		/**
+		 * パーツスペックテーブルの行を生成する。
+		 * @param data アセンデータ
+		 * @param parts_type パーツの種類
+		 * @return 指定のパーツ種類に対応する行
+		 */
+		private static TableRow createPartsRow(Context context, CustomData custom_data, String blust_type, String parts_key, String weapon_key) {
+			int[] colors = { 
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite(),
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite()
+			};
+			BBData parts = custom_data.getParts(parts_key);
+			BBData weapon = custom_data.getWeapon(blust_type, weapon_key);
+			return ViewBuilder.createTableRow(context, colors, parts_key, parts.get("名称"), weapon_key, weapon.get("名称"));
+		}
+
+		/**
+		 * パーツスペックテーブルの行を生成する。
+		 * @param data アセンデータ
+		 * @param parts_type パーツの種類
+		 * @return 指定のパーツ種類に対応する行
+		 */
+		private static TableRow createPartsRow(Context context, CustomData custom_data, String blust_type, String parts_key) {
+			int[] colors = { 
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite()
+			};
+			BBData parts = custom_data.getParts(parts_key);
+			return ViewBuilder.createTableRow(context, colors, parts_key, parts.get("名称"));
+		}
+
+		/**
+		 * チップテーブルを生成する
+		 * @param data データ
+		 * @return チップデータのテーブル
+		 */
+		private static LinearLayout createChipTable(Context context, CustomData custom_data) {
+			LinearLayout layout_chip = new LinearLayout(context);
+			layout_chip.setLayoutParams(new LinearLayout.LayoutParams(WC, WC));
+			layout_chip.setOrientation(LinearLayout.HORIZONTAL);
+			layout_chip.setGravity(Gravity.LEFT | Gravity.TOP);
+
+			ArrayList<BBData> chip_list = custom_data.getChips();
+			int size = chip_list.size();
+			
+			String chip_names = "";
+			for(int i=0; i<size; i++) {
+				chip_names = chip_names + chip_list.get(i).get("名称");
+				if(i<size-1) {
+					chip_names = chip_names + ", ";
+				}
+			}
+			
+			if(size==0) {
+				chip_names = "<チップ未設定>";
+			}
+			
+			TextView chip_text_view = ViewBuilder.createTextView(context, chip_names, SettingManager.FLAG_TEXTSIZE_SMALL);
+			
+			layout_chip.addView(ViewBuilder.createTextView(context, "チップ", SettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow()));
+			layout_chip.addView(chip_text_view);
+			
+			return layout_chip;
+		}
+	}
+	
+	/**
+	 * 「兵装スペック」のビューを生成するクラス
+	 */
+	private static class BlustSpeedViewBuilder {
+
+		private static View create(Context context) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			// 兵装スペックを画面に表示する
+			TextView blust_spec_view = ViewBuilder.createTextView(context, "兵装スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(blust_spec_view);
+			layout_table.addView(createBlustSpeedViews(context, custom_data));
+			
+			return layout_table;
+		}
+		
+		private static final String[] TOTAL_SPEC_LIST = {
+			"兵装", "重量(猶予)", "初速(巡航)", "歩速", "低下率"
+		};
+		
+		/**
+		 * 兵装スペックテーブルを生成する。(全兵装におけるアセンの重量と速度を表示)
+		 * @param data データ
+		 * @return 兵装スペックテーブル
+		 */
+		private static TableLayout createBlustSpeedViews(Context context, CustomData data) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+
+			String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
+			int blust_list_len = blust_list.length;
+
+			// タイトル行を生成
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), TOTAL_SPEC_LIST));
+			
+			for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
+				String blust_name = blust_list[blust_idx];
+
+				double rate = data.getSpeedDownRate(blust_name);
+				int color = SettingManager.getColorWhite();
+
+				if(rate < 0) {
+					color = SettingManager.getColorMazenta();
+				}
+
+				String[] cols = {
+						blust_name.substring(0, 2),
+						String.format("%d", data.getWeight(blust_name)) + "(" + String.format("%d", data.getSpaceWeight(blust_name)) + ")",
+						String.format("%.2f", data.getStartDush(blust_name)) + "(" + String.format("%.2f", data.getNormalDush(blust_name)) + ")",
+						SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSettingManager.IS_KB_PER_HOUR),
+						SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KB_PER_HOUR),
+					};
+				
+				table.addView(ViewBuilder.createTableRow(context, color, cols));
+			}
+			
+			return table;
+		}
+	}
+	
+	/**
+	 * 「総合スペック」のビューを生成するクラス
+	 */
+	private static class CommonSpecViewBuilder {
+
+		/**
+		 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
+		 * @param custom_data 表示するカスタムデータ
+		 * @return 総合スペックテーブル
+		 */
+		private static View create(Context context) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+			
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			double armor_value = custom_data.getArmorAve();
+			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KB_PER_HOUR);
+			String armor_str = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KB_PER_HOUR);
+			armor_str = armor_point + " (" + armor_str + ")"; 
+			
+			String[][] speclist = {
+				{ "セットボーナス", custom_data.getSetBonus() },
+				{ "チップ容量", String.format("%.1f", custom_data.getChipCapacity()) },
+				{ "装甲平均値", armor_str },
+				{ "総重量(猶予)", String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()) },
+			};
+			
+			int size = speclist.length;
+			for(int i=0; i<size; i++) {
+				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
+			}
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+			
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView common_spec_view = ViewBuilder.createTextView(context, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(common_spec_view);
+			layout_table.addView(table);
+			
+			return layout_table;
+		}
+	}
+	
+	/**
+	 * 「パーツスペック」のビューを生成するクラス
+	 */
+	private static class PartsSpecViewBuilder {
+
+		/**
+		 * パーツスペックテーブルを生成する。
+		 * @param data_list データ一覧
+		 * @return パーツスペックのテーブル
+		 */
+		private static View create(Context context, String blust_type) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+			
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "補正前", "補正後"));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "射撃補正")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "索敵")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "ロックオン")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "DEF回復")));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "ブースター")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "SP供給率")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "エリア移動")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "DEF耐久")));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "反動吸収")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "リロード")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "武器変更")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "予備弾数")));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "歩行")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "ダッシュ")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "重量耐性")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "加速")));
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView parts_spec_view = ViewBuilder.createTextView(context, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(parts_spec_view);
+			layout_table.addView(table);
+			
+			return layout_table;
+		}
+		
+		/**
+		 * パーツスペックテーブルの行を生成する。
+		 * @param custom_data アセンデータ
+		 * @param target_key 性能名
+		 * @return 指定の性能に対応する行
+		 */
+		/*
+		private static TableRow createCustomPartsRows(Context context, CustomData custom_data, String target_key) {
+			String normal_point = custom_data.getPoint(target_key);
+			double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			
+			double real_value = custom_data.getSpecValue(target_key);
+			String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+			String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+
+			// スペックと内部値を結合する
+			if(BBDataComparator.isPointKey(target_key)) {
+				normal_value_str = normal_point + " (" + normal_value_str + ")";
+				real_value_str = real_point + " (" + real_value_str + ")"; 
+			}
+			
+			// DEF回復の場合、隣に回復時間を併記する
+			if(target_key.equals("DEF回復")) {
+				real_value_str = String.format("%s (%s)", real_value_str,
+						SpecValues.getSpecUnit(custom_data.getDefRecoverTime(), "DEF回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
+			}
+			
+			int[] colors = ViewBuilder.getColors(normal_value, real_value, target_key);
+
+			return ViewBuilder.createTableRow(context, colors, target_key, normal_value_str, real_value_str);
+		}
+		*/
+	}
+	
+	/**
+	 * 「武器スペック」のビューを生成するクラス
+	 */
+	private static class WeaponSpecViewBuilder {
+		
+		private static View create(Context context, String blust_type) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView weapon_spec_view = ViewBuilder.createTextView(context, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(weapon_spec_view);
+			layout_table.addView(createWeaponView(context, custom_data, blust_type));
+
+			return layout_table;
+		}
+
+		/**
+		 * 武器スペックテーブルを生成する。(マガジン火力、瞬間火力、戦術火力、リロード時間)
+		 * @param data データ
+		 * @return 武器スペックテーブル
+		 */
+		private static TableLayout createWeaponView(Context context, CustomData data, String blust_type) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			int weapon_list_len = BBDataManager.WEAPON_TYPE_LIST.length;
+			for(int weapon_idx=0; weapon_idx<weapon_list_len; weapon_idx++) {
+				String weapon_type = BBDataManager.WEAPON_TYPE_LIST[weapon_idx];
+				BBData weapon = data.getWeapon(blust_type, weapon_type);
+
+				if(blust_type.equals("強襲兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						addSlashRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("特別装備")) {
+						addACRow(table, data, weapon);
+					}
+				}
+				else if(blust_type.equals("重火力兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						if(weapon.existCategory("パイク系統") || weapon.existCategory("チェーンソー系統")) {
+							addSlashRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("ハウルHSG系統")) {
+							addMainWeaponRow(table, data, weapon);
+						}
+						else {
+							addSupportBombRow(table, data, weapon);
+						}
+					}
+					else if(weapon.existCategory("特別装備")) {
+						if(weapon.existCategory("バリアユニット系統")) {
+							addBarrierRow(table, data, weapon);
+						}
+						else {
+							addCannonRow(table, data, weapon);
+						}
+					}
+				}
+				else if(blust_type.equals("遊撃兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						if(weapon.existCategory("偵察機系統") || weapon.existCategory("レーダーユニット系統") ||
+						   weapon.existCategory("NDディテクター系統") || weapon.existCategory("クリアリングソナー系統")) {
+							addSearchRow(table, data, weapon);
+						}
+						else {
+							addMainWeaponRow(table, data, weapon);
+						}
+					}
+					else if(weapon.existCategory("特別装備")) {
+						if(weapon.existCategory("EUS系統")) {
+							addEUSRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("シールド系統")) {
+							addBarrierRow(table, data, weapon);
+						}
+						else {
+							addExtraRow(table, data, blust_type, weapon);
+						}
+					}
+				}
+				else if(blust_type.equals("支援兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						addSearchRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("特別装備")) {
+						addReapirRow(table, data, weapon);
+					}
+				}
+			}
+			
+			return table;
+		}
+
+		/**
+		 * 主武器の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addMainWeaponRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCsShotPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazinePowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSecPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
+
+			if(weapon.existKey("OH耐性")) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatTimeArray(data, weapon)));
+			}
+			if(weapon.existKey("OH復帰時間")) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatRepairTimeArray(data, weapon)));
+			}
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazineCount(data, weapon)));
+			
+			if(weapon.isChargeWeapon()) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getChargeTimeArray(data, weapon)));
+			}
+		}
+
+		/**
+		 * 副武器の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addSubWeaponRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazineCount(data, weapon)));
+
+			if(weapon.isChargeWeapon()) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getChargeTimeArray(data, weapon)));
+			}
+		}
+
+		/**
+		 * 近接武器の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addSlashRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getNormalSlashArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getDashSlashArray(data, weapon)));
+		}
+
+		/**
+		 * 補助装備ボムの情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addSupportBombRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
+		}
+
+		/**
+		 * 索敵装備の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addSearchRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSearchTimeArray(data, weapon)));
+		}
+
+		/**
+		 * ACの情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addACRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getAcSpeedArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getAcBattleSpeedArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_ASSALT)));
+		}
+
+		/**
+		 * 砲撃装備の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addCannonRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_HEAVY)));
+		}
+
+		/**
+		 * バリア装備の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addBarrierRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattleBarrierGuardArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_HEAVY)));
+		}
+		
+		/**
+		 * EUS系統の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addEUSRow(TableLayout table, CustomData data,  BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazinePowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSecPowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_SNIPER)));
+		}
+
+		/**
+		 * リペア装備の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addReapirRow(TableLayout table, CustomData data, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMaxRepairArray(data, weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_SUPPORT)));
+		}
+
+		/**
+		 * 特別装備の基本情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addExtraRow(TableLayout table, CustomData data, String blust_type, BBData weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, blust_type)));
+		}
 	}
 }

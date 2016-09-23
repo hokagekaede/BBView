@@ -14,15 +14,44 @@ import android.widget.TextView;
 public class StringAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private ArrayList<String> mFileList;
+	private ArrayList<String> mList;
+	private int mTextSize;
+	private int mMode;
+	
+	public static final int MODE_DEFAULT = 0;
+	public static final int MODE_SPINNER = 1;
 	
 	/**
 	 * 初期化処理を行う。空リストを生成する。
 	 * @param context リストを表示する画面
 	 */
 	public StringAdapter(Context context) {
-		this.mContext = context;
-		this.mFileList = new ArrayList<String>();
+		init(context);
+	}
+	
+	/**
+	 * 初期化処理を行う。引数の配列でリストを生成する。
+	 * @param context リストを表示する画面
+	 * @param values リストの中身になる配列データ
+	 */
+	public StringAdapter(Context context, String[] values) {
+		init(context);
+		
+		int size = values.length;
+		for(int i=0; i<size; i++) {
+			mList.add(values[i]);
+		}
+	}
+	
+	/**
+	 * 初期化処理を行う。
+	 * @param context リストを表示する画面
+	 */
+	private void init(Context context) {
+		mContext = context;
+		mList = new ArrayList<String>();
+		mTextSize = SettingManager.FLAG_TEXTSIZE_NORMAL;
+		mMode = MODE_DEFAULT;
 	}
 
 	/**
@@ -31,7 +60,7 @@ public class StringAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return mFileList.size();
+		return mList.size();
 	}
 
 	/**
@@ -41,11 +70,11 @@ public class StringAdapter extends BaseAdapter {
 	 */
 	@Override
 	public String getItem(int position) {
-		if(position < 0 || position >= mFileList.size()) {
+		if(position < 0 || position >= mList.size()) {
 			return null;
 		}
 		
-		return mFileList.get(position);
+		return mList.get(position);
 	}
 	
 	/**
@@ -53,10 +82,10 @@ public class StringAdapter extends BaseAdapter {
 	 * @param value 削除するデータ
 	 */
 	public void removeItem(String value) {
-		int idx = mFileList.indexOf(value);
+		int idx = mList.indexOf(value);
 		
 		if(idx >= 0) {
-			mFileList.remove(idx);
+			mList.remove(idx);
 		}
 	}
 	
@@ -66,10 +95,10 @@ public class StringAdapter extends BaseAdapter {
 	 * @param to_value 置き換え後のデータ
 	 */
 	public void replaceItem(String from_value, String to_value) {
-		int idx = mFileList.indexOf(from_value);
+		int idx = mList.indexOf(from_value);
 
 		if(idx >= 0) {
-			mFileList.set(idx, to_value);
+			mList.set(idx, to_value);
 		}
 	}
 
@@ -86,19 +115,81 @@ public class StringAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		TextView list_item_view = new TextView(mContext);
-		list_item_view.setText(mFileList.get(position));
-		list_item_view.setPadding(10, 10, 10, 10);
-		list_item_view.setTextSize(SettingManager.getTextSize(mContext, SettingManager.FLAG_TEXTSIZE_NORMAL));
+		if(mMode == MODE_SPINNER) {
+			return updateViewSpinner(position, convertView, parent);
+		}
 		
-		return list_item_view;
+		return updateViewDefault(position, convertView);
 	}
 	
 	/**
-	 * ファイル名を追加する
-	 * @param filename 追加するファイル名(ファイルタグ)
+	 * ビューを更新する。(通常)
+	 * @param position データの位置
+	 * @param convertView 更新対象のビュー
+	 * @return ビューのインスタンス
 	 */
-	public void add(String filename) {
-		mFileList.add(filename);
+	private View updateViewDefault(int position, View convertView) {
+		TextView item_view;
+
+		if(convertView == null) {
+			item_view = new TextView(mContext);
+			item_view.setText(mList.get(position));
+			item_view.setPadding(10, 10, 10, 10);
+			item_view.setTextSize(SettingManager.getTextSize(mContext, mTextSize));
+		}
+		else {
+			item_view = (TextView)convertView;
+			item_view.setText(mList.get(position));
+		}
+
+		return item_view;
+	}
+
+	/**
+	 * ビューを更新する。(Spinner向け)
+	 * @param position データの位置
+	 * @param convertView 更新対象のビュー
+	 * @return ビューのインスタンス
+	 */
+	private View updateViewSpinner(int position, View convertView, ViewGroup parent) {
+		TextView item_view;
+
+		if(convertView == null) {
+			Context context = parent.getContext();
+			item_view = new TextView(context);
+			item_view.setText(mList.get(position));
+			item_view.setPadding(10, 10, 10, 10);
+			item_view.setTextSize(SettingManager.getTextSize(context, mTextSize));
+		}
+		else {
+			item_view = (TextView)convertView;
+			item_view.setText(mList.get(position));
+		}
+
+		return item_view;
+	}
+	
+	/**
+	 * データを追加する
+	 * @param value 追加するデータ
+	 */
+	public void add(String value) {
+		mList.add(value);
+	}
+	
+	/**
+	 * テキストサイズを設定する。
+	 * @param text_size テキストサイズ
+	 */
+	public void setTextSize(int text_size) {
+		mTextSize = text_size;
+	}
+	
+	/**
+	 * 表示モードを設定する。
+	 * @param mode モード
+	 */
+	public void setMode(int mode) {
+		mMode = mode;
 	}
 }

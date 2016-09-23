@@ -2,6 +2,7 @@ package hokage.kaede.gmail.com.BBView.Item;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
+import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
@@ -162,6 +163,12 @@ public class InfoActivity extends BaseActivity {
 			if(num > 0) {
 				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorCyan(), key, value_str));
 			}
+		}
+		
+		// セットボーナス情報を表示する
+		if(BBDataManager.isParts(data)) {
+			String bonus = data.getSetBonus();
+			layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorCyan(), "セットボーナス", bonus));
 		}
 		
 		return layout_table;

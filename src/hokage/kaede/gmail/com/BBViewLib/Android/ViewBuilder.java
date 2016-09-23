@@ -2,7 +2,7 @@ package hokage.kaede.gmail.com.BBViewLib.Android;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
-import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray.SpecCol;
+import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray.SpecRow;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.widget.TableRow;
@@ -19,7 +19,7 @@ public class ViewBuilder {
 	 * @param col データ行
 	 * @return テーブルビューの行
 	 */
-	public static TableRow createTableRow(Context context, SpecCol col) {
+	public static TableRow createTableRow(Context context, SpecRow col) {
 		return createTableRow(context, col.getColors(), col.getValues());
 	}
 	

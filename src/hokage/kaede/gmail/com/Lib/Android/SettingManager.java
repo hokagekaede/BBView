@@ -32,10 +32,18 @@ public class SettingManager {
 	
 	/**
 	 * テキストのサイズを取得する。
-	 * @param context
-	 * @param base_size
-	 * @param flag
-	 * @return
+	 * @param context 対象の画面
+	 * @return フォントサイズ
+	 */
+	public static float getTextSize(Context context) {
+		return getTextSize(context, FLAG_TEXTSIZE_NORMAL);
+	}
+	
+	/**
+	 * テキストのサイズを取得する。
+	 * @param context 対象の画面
+	 * @param flag 文字の大きさ情報(LARGE/NORMAL/SMALL)
+	 * @return フォントサイズ
 	 */
 	public static float getTextSize(Context context, int flag) {
 		double ret = TEXT_SIZE_LIST[TEXT_SIZE_DEFAULT_INDEX];

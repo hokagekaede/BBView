@@ -14,13 +14,36 @@ public class CustomData {
 	private BBData mReqArm; // 要請兵器
 	private ArrayList<BBData> mRecentChips;
 	
-	// サテライトバンカー/要請兵器の重量を加算するかどうか。
-	private int mHavingExtraItem;
+	// 各種状態のモード設定
+	private int mMode;
 	
-	public static final int HAVING_NOTHING = 0; // 何も持っていない場合
-	public static final int HAVING_SB      = 1; // SBを持っている場合
-	public static final int HAVING_SBR     = 2; // SBRを持っている場合
-	public static final int HAVING_REQARM  = 3; // 要請兵器を持っている場合
+	public static final int MODE_NORMAL        = 0;  // 通常時
+	public static final int MODE_SB            = 1;  // サテライトバンカー運搬中
+	public static final int MODE_SBR           = 2;  // サテライトバンカーR運搬中
+	public static final int MODE_REQARM        = 3;  // 要請兵器装着中
+	public static final int MODE_ROCKON        = 4;  // ロックオン中
+	public static final int MODE_MOVE          = 5;  // 移動中
+	public static final int MODE_MOVE_HIWATER  = 6;  // 移動中(浅い水中)
+	public static final int MODE_MOVE_LOWATER  = 7;  // 移動中(深い水中)
+	public static final int MODE_MOVE_UPWATER  = 8;  // 移動中(深い水中)
+	public static final int MODE_PLANT         = 9;  // 自軍プラント内
+	public static final int MODE_ATTACK_DEF    = 10; // N-DEF攻撃中
+	public static final int MODE_ATTACK_OBJ    = 11; // 施設攻撃中
+	
+	public static final String[] CUSTOM_MODES = {
+		"通常時",
+		"SB運搬中",
+		"SBR運搬中",
+		"要請兵器装着中",
+		"ロックオン中",
+		"移動中",
+		"移動中(浅い水中)",
+		"移動中(深い水中)",
+		"移動中(水上移動)",
+		"自軍プラント内",
+		"N-DEF攻撃中",
+		"施設攻撃中"
+	};
 
 	private static final int HEAD_IDX = 0;
 	private static final int BODY_IDX = 1;
@@ -35,7 +58,7 @@ public class CustomData {
 	 */
 	public CustomData() {
 		mIsKmPerHour = false;
-		mHavingExtraItem = HAVING_NOTHING;
+		mMode = MODE_NORMAL;
 		
 		mRecentParts   = new BBData[BBDataManager.BLUST_PARTS_LIST.length];
 		mRecentAssalt  = new BBData[BBDataManager.WEAPON_TYPE_LIST.length];
@@ -158,11 +181,11 @@ public class CustomData {
 	}
 	
 	/**
-	 * サテライトバンカー/要請兵器の所持/未所持を設定する。
-	 * @param item_id 所持するアイテム。
+	 * アセンデータの算出モードを設定する。
+	 * @param mode モード
 	 */
-	public void setHavingExtraItem(int item_id) {
-		this.mHavingExtraItem = item_id;
+	public void setMode(int mode) {
+		mMode = mode;
 	}
 	
 	/**
@@ -512,13 +535,13 @@ public class CustomData {
 		
 		// サテライトバンカー/要請兵器の重量を加算する
 		int carried_weight = 0;
-		if(mHavingExtraItem == HAVING_SB) {
+		if(mMode == MODE_SB) {
 			carried_weight = carried_weight + SpecValues.SB_WEIGHT;
 		}
-		else if(mHavingExtraItem == HAVING_SBR) {
+		else if(mMode == MODE_SBR) {
 			carried_weight = carried_weight + SpecValues.SBR_WEIGHT;
 		}
-		else if(mHavingExtraItem == HAVING_REQARM) {
+		else if(mMode == MODE_REQARM) {
 			carried_weight = carried_weight + reqarm_weight;
 		}
 		
@@ -787,6 +810,19 @@ public class CustomData {
 			else if(existChip("頭部パーツ強化II")) {
 				ret = ret + 0.02;
 			}
+			
+			// ロックオン時のみ
+			if(mMode == MODE_ROCKON) {
+				if(existChip("近距離ロック射撃")) {
+					ret = ret + 0.04;
+				}
+				else if(existChip("近距離ロック射撃II")) {
+					ret = ret + 0.08;
+				}
+				else if(existChip("近距離ロック射撃III")) {
+					ret = ret + 0.12;    // IとIIの効果からの暫定値
+				}
+			}
 
 		} catch(Exception e) {
 			ret = 0;
@@ -927,6 +963,19 @@ public class CustomData {
 			}
 			else if(existChip("頭部パーツ強化II")) {
 				ret = ret + 7.0;
+			}
+			
+			// 自軍プラント内の場合、リニアDEF回復チップの効果を反映する
+			if(mMode == MODE_PLANT) {
+				if(existChip("リニアDEF回復")) {
+					ret = ret + 10.0;
+				}
+				else if(existChip("リニアDEF回復II")) {
+					ret = ret + 20.0;
+				}
+				else if(existChip("リニアDEF回復III")) {
+					ret = ret + 30.0;    // IとIIの効果からの暫定値
+				}
 			}
 			
 		} catch(Exception e) {
@@ -1190,6 +1239,19 @@ public class CustomData {
 			}
 			else if(existChip("腕部パーツ強化II")) {
 				ret = ret + 6;
+			}
+			
+			// ロックオン時のみ
+			if(mMode == MODE_ROCKON) {
+				if(existChip("近距離ロック射撃")) {
+					ret = ret + 5;
+				}
+				else if(existChip("近距離ロック射撃II")) {
+					ret = ret + 10;
+				}
+				else if(existChip("近距離ロック射撃III")) {
+					ret = ret + 15;    // IとIIの効果からの暫定値
+				}
 			}
 			
 		} catch(Exception e) {
@@ -1849,6 +1911,9 @@ public class CustomData {
 		// 巡航補正計算を行う。
 		ret = calcNormalDush(ret, is_start);
 		
+		// 水中移動の速度低下を反映する
+		ret = applySpeedDown(ret);
+		
 		// 単位を合わせる
 		if(!mIsKmPerHour) {
 			ret = ret * 1000 / 3600;
@@ -1862,7 +1927,8 @@ public class CustomData {
 	 * @return
 	 */
 	public double calcDash() {
-		return calcDash(true);
+		double ret = calcDash(true);
+		return applySpeedDown(ret);
 	}
 
 	/**
@@ -2007,6 +2073,37 @@ public class CustomData {
 		
 		return ret;
 	}
+	
+	/**
+	 * 水中移動時の速度低下倍率を算出する。
+	 * @param base_speed 基本となる速度
+	 * @return 計算結果の速度
+	 */
+	public double applySpeedDown(double base_speed) {
+		double ret = base_speed;
+		double chip_bonus = 0;
+
+		// チップの効果を反映
+		if(existChip("水中移動適性")) {
+			chip_bonus = 0.25;
+		}
+		else if(existChip("水中移動適性II")) {
+			chip_bonus = 0.5;
+		}
+		
+		// 各種状態による速度低下倍率を反映する
+		if(mMode == MODE_MOVE_HIWATER) {
+			ret = ret * (1 - 0.25 * (1 - chip_bonus));
+		}
+		else if(mMode == MODE_MOVE_LOWATER) {
+			ret = ret * (1 - 0.50 * (1 - chip_bonus));
+		}
+		else if(mMode == MODE_MOVE_UPWATER) {
+			ret = ret * (1 - 0.30 * (1 - chip_bonus));
+		}
+		
+		return ret;
+	}
 
 	/**
 	 * 重量耐性の値を取得する。
@@ -2052,7 +2149,7 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	public double getOneShotPower(BBData data) {
-		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, false, false, false);
+		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, false, false);
 	}
 	
 	/**
@@ -2062,7 +2159,7 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	private double getOneShotPower(BBData data, int charge_level) {
-		return getOneShotPowerMain(data, charge_level, false, false, false);
+		return getOneShotPowerMain(data, charge_level, false, false);
 	}
 	
 	/**
@@ -2072,7 +2169,7 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	public double getCsShotPower(BBData data) {
-		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, true, false, false);
+		return getOneShotPowerMain(data, data.getChargeMaxCount() - 1, true, false);
 	}
 
 	/**
@@ -2081,7 +2178,7 @@ public class CustomData {
 	 * @return 転倒関連の威力。
 	 */
 	public double getShotAntiStability(BBData data, boolean is_critical) {
-		return getOneShotPowerMain(data, 0, is_critical, true, false);
+		return getOneShotPowerMain(data, 0, is_critical, true);
 	}
 
 	/**
@@ -2090,7 +2187,7 @@ public class CustomData {
 	 * @return 威力の値
 	 */
 	public double getObjectShotPower(BBData data) {
-		return getOneShotPowerMain(data, 0, false, false, true);
+		return getOneShotPowerMain(data, 0, false, false);
 	}
 
 	/**
@@ -2102,7 +2199,7 @@ public class CustomData {
 	 * @param is_obj 対施設攻撃かどうか。
 	 * @return
 	 */
-	private double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn, boolean is_obj) {
+	private double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn) {
 		double power = 0;
 		
 		// 武器の単発火力(または転倒ダメージ値)を取得する。
@@ -2151,8 +2248,29 @@ public class CustomData {
 			power = power * (1.0 + rate);
 		}
 		
-		// 対施設による補正を行う
-		if(is_obj) {
+		// 対N-DEFまたは対施設による補正を行う
+		if(mMode == MODE_ATTACK_DEF) {
+			double rate = 0;
+			double base_power = power;
+
+			power =  base_power * (1.2 * data.getBulletAbsPer() / 100);
+			power += base_power * (0.8 * data.getExplosionAbsPer() / 100);
+			power += base_power * (1.2 * data.getNewdAbsPer() / 100);
+			power += base_power * (1.0 * data.getSlashAbsPer() / 100);
+
+			if(existChip("対DEF破壊適性")) {
+				rate = 0.20;
+			}
+			else if(existChip("対DEF破壊適性II")) {
+				rate = 0.40;
+			}
+			else if(existChip("対DEF破壊適性III")) {
+				rate = 0.60;   // IとIIからの暫定値
+			}
+			
+			power = power * (1 + rate);
+		}
+		else if(mMode == MODE_ATTACK_OBJ) {
 			double rate = 0;
 			double base_power = power;
 			
@@ -3048,6 +3166,57 @@ public class CustomData {
 		}
 		else if(key.equals("低下率")) {
 			ret = getSpeedDownRate(blust_type);
+		}
+		else if(key.equals("装甲平均値")) {
+			ret = getArmorAve(blust_type);
+		}
+		else if(key.equals("射撃補正")) {
+			ret = getShotBonus(blust_type);
+		}
+		else if(key.equals("索敵")) {
+			ret = getSearch(blust_type);
+		}
+		else if(key.equals("ロックオン")) {
+			ret = getRockOn(blust_type);
+		}
+		else if(key.equals("DEF回復")) {
+			ret = getDefRecover(blust_type);
+		}
+		else if(key.equals("ブースター")) {
+			ret = getBoost(blust_type);
+		}
+		else if(key.equals("SP供給率")) {
+			ret = getSP(blust_type);
+		}
+		else if(key.equals("エリア移動")) {
+			ret = getAreaMove(blust_type);
+		}
+		else if(key.equals("DEF耐久")) {
+			ret = getDefGuard(blust_type);
+		}
+		else if(key.equals("反動吸収")) {
+			ret = getRecoil(blust_type);
+		}
+		else if(key.equals("リロード")) {
+			ret = getReload(blust_type);
+		}
+		else if(key.equals("武器変更")) {
+			ret = getChangeWeapon(blust_type);
+		}
+		else if(key.equals("予備弾数")) {
+			ret = getSpareBullet(blust_type);
+		}
+		else if(key.equals("重量耐性")) {
+			ret = getAntiWeight(blust_type);
+		}
+		else if(key.equals("ダッシュ")) {
+			ret = getStartDush(blust_type);
+		}
+		else if(key.equals("歩行")) {
+			ret = getWalk(blust_type);
+		}
+		else if(key.equals("加速")) {
+			ret = getAcceleration(blust_type);
 		}
 		else {
 			ret = getSpecValue(key);
