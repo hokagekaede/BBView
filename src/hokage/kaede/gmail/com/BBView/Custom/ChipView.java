@@ -50,7 +50,6 @@ public class ChipView extends LinearLayout {
 	private ArrayList<BBData> mBeforeChipList;
 	
 	private boolean mIsChanged;
-	private Context mContext;
 	
 	// チップ登録エラーメッセージ
 	private String mErrorMessage;
@@ -58,7 +57,6 @@ public class ChipView extends LinearLayout {
 	public ChipView(Context context) {
 		super(context);
 		mIsChanged = false;
-		mContext = context;
 		mErrorMessage = "";
 
 		mDataManager = BBDataManager.getInstance();
@@ -81,6 +79,8 @@ public class ChipView extends LinearLayout {
 	 * 画面を生成する
 	 */
 	private void createView() {
+		Context context = getContext();
+		
 		setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
         setOrientation(LinearLayout.VERTICAL);
 		setGravity(Gravity.TOP);
@@ -90,36 +90,36 @@ public class ChipView extends LinearLayout {
 		mFilter.setOtherType(BBDataManager.CHIP_STR);
 		
 		// アダプタを設定する
-		mChipListAdapter = new ChipListAdapter(mContext, mDataManager.getList(mFilter));
+		mChipListAdapter = new ChipListAdapter(context, mDataManager.getList(mFilter));
 		
-		ExpandableListView chip_list_view = new ExpandableListView(mContext);
+		ExpandableListView chip_list_view = new ExpandableListView(context);
 		chip_list_view.setAdapter(mChipListAdapter);
 		chip_list_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		
 		// 容量と現在の使用状況を表示するテキストビューを生成する
-		TextView weight_text_view = new TextView(mContext);
-		weight_text_view.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		TextView weight_text_view = new TextView(context);
+		weight_text_view.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 		weight_text_view.setId(WEIGHT_TEXT_VIEW_ID);
 
-		LinearLayout layout_btm = new LinearLayout(mContext);
+		LinearLayout layout_btm = new LinearLayout(context);
 		layout_btm.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		layout_btm.setOrientation(LinearLayout.HORIZONTAL);
 		layout_btm.setGravity(Gravity.TOP);
 		
 		// 決定ボタンを生成する
-		Button ok_button = new Button(mContext);
+		Button ok_button = new Button(context);
 		ok_button.setText("決定");
 		ok_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
 		ok_button.setOnClickListener(new OnClickOKButtonListener());
 		
 		// クリアボタンを生成する
-		Button clear_button = new Button(mContext);
+		Button clear_button = new Button(context);
 		clear_button.setText("クリア");
 		clear_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
 		clear_button.setOnClickListener(new OnClickClearButtonListener());
 
 		// 選択中表示ボタンを生成する
-		Button view_button = new Button(mContext);
+		Button view_button = new Button(context);
 		view_button.setText("選択中表示");
 		view_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
 		view_button.setOnClickListener(new OnClickViewButtonListener());
@@ -182,7 +182,7 @@ public class ChipView extends LinearLayout {
 		@Override
 		public void onClick(View arg0) {
 			saveCustomData();
-			Toast.makeText(mContext, "チップを登録しました。", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), "チップを登録しました。", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -213,11 +213,13 @@ public class ChipView extends LinearLayout {
 		
 		@Override
 		public void onClick(View v) {
+			Context context = getContext();
+			
 			mChipList = mCustomData.getChips();
 			int size = mChipList.size();
 			
 			if(size==0) {
-				Toast.makeText(mContext, "チップが選択されていません", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "チップが選択されていません", Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -230,7 +232,7 @@ public class ChipView extends LinearLayout {
 				mChecks[i] = true;
 			}
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setTitle("選択中のチップ一覧");
 			builder.setIcon(android.R.drawable.ic_menu_more);
 			builder.setMultiChoiceItems(selected_chips, mChecks, this);
@@ -267,7 +269,8 @@ public class ChipView extends LinearLayout {
 	private void saveCustomData() {
 
 		// カスタムデータをファイルに書き込む。
-		CustomDataWriter.write(mCustomData, mContext.getFilesDir().toString());
+		Context context = getContext();
+		CustomDataWriter.write(mCustomData, context.getFilesDir().toString());
 		
 		// 変更前リストを更新し、変更フラグを解除する
 		mBeforeChipList = mCustomData.getChips();
@@ -573,7 +576,7 @@ public class ChipView extends LinearLayout {
 			BBArrayAdapterChipView checkbox = (BBArrayAdapterChipView)convertView;
 			
 			if(checkbox == null) {
-				checkbox = new BBArrayAdapterChipView(mContext, null, false);
+				checkbox = new BBArrayAdapterChipView(getContext(), null, false);
 				checkbox.createView();
 			}
 			
@@ -672,15 +675,16 @@ public class ChipView extends LinearLayout {
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
 			
+			Context context = getContext();
 			TextView text_view = (TextView)convertView;
 			
 			if(text_view == null) {
-				text_view = new TextView(mContext);
+				text_view = new TextView(context);
 			}
 			
 			text_view.setText(mGroupList.get(groupPosition));
 			text_view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-			text_view.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+			text_view.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
 			text_view.setPadding(0, 15, 0, 15);
 			text_view.setTextColor(SettingManager.getColorWhite());
 			text_view.setBackgroundColor(SettingManager.getColorBlue());
@@ -732,6 +736,7 @@ public class ChipView extends LinearLayout {
 		 */
 		private boolean checkStatus() {
 			boolean ret = true;
+			Context context = getContext();
 
 			// チップの現在値、最大値を取得する
 			int chip_weight = mCustomData.getChipWeight();
@@ -739,17 +744,17 @@ public class ChipView extends LinearLayout {
 			
 			if(chip_weight > chip_capacity) {
 				mErrorMessage = "[チップ容量超過]";
-				Toast.makeText(mContext, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else if(!mCustomData.judgeActionChip()) {
 				mErrorMessage = "[アクションチップ重複]";
-				Toast.makeText(mContext, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else if(!mCustomData.judgePowerupChip()) {
 				mErrorMessage = "[機体強化チップ重複]";
-				Toast.makeText(mContext, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
 				ret = false;
 			}
 			else {

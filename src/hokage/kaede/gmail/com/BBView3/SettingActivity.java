@@ -93,10 +93,18 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		screen.addPreference(theme_type);
 		
 		CheckBoxPreference speed_view_type = new CheckBoxPreference(this);
-		speed_view_type.setTitle("移動速度の単位");
-		speed_view_type.setSummary("km/h表示にする");
-		speed_view_type.setKey(BBViewSettingManager.SETTING_SPEED_VIEW_TYPE);
+		speed_view_type.setTitle("移動速度のkm/h表示");
+		speed_view_type.setSummary("ONの場合はkm/h表示、OFFの場合はm/s表示");
+		speed_view_type.setKey(BBViewSettingManager.SETTING_KM_PER_HOUR);
+		speed_view_type.setChecked(BBViewSettingManager.IS_KM_PER_HOUR);
 		screen.addPreference(speed_view_type);
+
+		CheckBoxPreference armor_view_type = new CheckBoxPreference(this);
+		armor_view_type.setTitle("装甲のダメージ係数表示");
+		armor_view_type.setSummary("ONの場合はダメージ係数で表示、OFFの場合は公式準拠値で表示");
+		armor_view_type.setKey(BBViewSettingManager.SETTING_ARMOR_RATE);
+		armor_view_type.setChecked(BBViewSettingManager.IS_ARMOR_RATE);
+		screen.addPreference(armor_view_type);
 		
 		// アセン画面
 		PreferenceCategory custom_category = new PreferenceCategory(this);

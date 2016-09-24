@@ -181,6 +181,25 @@ public class BBData extends KVCStore {
 	}
 	
 	/**
+	 * 装甲値を取得する。
+	 * @return 装甲値
+	 */
+	public int getArmor() {
+		int ret = 0;
+
+		// パーツの設定値の読み込み
+		try {
+			String spec = super.get("装甲");
+			ret = Integer.valueOf(SpecValues.ARMOR.get(spec));
+
+		} catch (Exception e) {
+			ret = 0;
+		}
+
+		return ret;
+	}
+	
+	/**
 	 * 積載猶予を取得する。
 	 * @return 積載猶予
 	 */

@@ -476,8 +476,8 @@ public class SpecView extends FrameLayout {
 						blust_name.substring(0, 2),
 						String.format("%d", data.getWeight(blust_name)) + "(" + String.format("%d", data.getSpaceWeight(blust_name)) + ")",
 						String.format("%.2f", data.getStartDush(blust_name)) + "(" + String.format("%.2f", data.getNormalDush(blust_name)) + ")",
-						SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSettingManager.IS_KB_PER_HOUR),
-						SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KB_PER_HOUR),
+						SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSettingManager.IS_KM_PER_HOUR),
+						SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KM_PER_HOUR),
 					};
 				
 				table.addView(ViewBuilder.createTableRow(context, color, cols));
@@ -504,9 +504,12 @@ public class SpecView extends FrameLayout {
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
 			double armor_value = custom_data.getArmorAve();
-			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KB_PER_HOUR);
-			String armor_str = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KB_PER_HOUR);
-			armor_str = armor_point + " (" + armor_str + ")"; 
+			double life_value = custom_data.getLife();
+			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			String armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
 			
 			String[][] speclist = {
 				{ "セットボーナス", custom_data.getSetBonus() },

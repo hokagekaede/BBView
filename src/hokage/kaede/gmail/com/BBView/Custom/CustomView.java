@@ -297,7 +297,7 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 	 */
 	private void createChipView(Context context, CustomData custom_data) {
 		ArrayList<BBData> chiplist = custom_data.getChips();
-		String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KB_PER_HOUR);
+		String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KM_PER_HOUR);
 		String chip_weight_str = String.valueOf(custom_data.getChipWeight());
 		String chip_text_str = "■チップ情報 [" + chip_weight_str + "/" + chip_cap_str + "]" + FileIO.NEWLINE;
 		int size = chiplist.size();

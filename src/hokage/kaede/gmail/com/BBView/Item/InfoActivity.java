@@ -143,7 +143,7 @@ public class InfoActivity extends BaseActivity {
 				continue;
 			}
 
-			String data_str = SpecValues.getSpecUnit(data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String data_str = SpecValues.getSpecUnit(data, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			if(BBDataComparator.isPointKey(target_key)) {
 				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), target_key, point + " (" + data_str + ")"));
@@ -158,7 +158,7 @@ public class InfoActivity extends BaseActivity {
 		for(int i=0; i<size ; i++) {
 			String key = CALC_KEYS[i];
 			double num = data.getCalcValue(key);
-			String value_str = SpecValues.getSpecUnit(num, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String value_str = SpecValues.getSpecUnit(num, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			if(num > 0) {
 				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorCyan(), key, value_str));

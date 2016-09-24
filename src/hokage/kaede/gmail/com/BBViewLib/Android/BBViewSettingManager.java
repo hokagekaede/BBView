@@ -19,7 +19,8 @@ public class BBViewSettingManager extends SettingManager {
 	 * @param context コンテキスト
 	 */
 	public static void loadSettings(Context context) {
-		IS_KB_PER_HOUR = isKbPerHour(context);
+		IS_KM_PER_HOUR = isKmPerHour(context);
+		IS_ARMOR_RATE = isArmorRate(context);
 		IS_SHOW_COLUMN2 = isShowCOLUMN2(context);
 		IS_SHOW_SPECLABEL = isShowSpecLabel(context);
 		IS_SHOW_TYPELABEL = isShowTypeLabel(context);
@@ -36,14 +37,25 @@ public class BBViewSettingManager extends SettingManager {
 	/**
 	 * 移動速度の表示単位。trueの場合はkm/hで表示。falseの場合はm/secで表示。
 	 */
-	public static boolean IS_KB_PER_HOUR = false;
-	public static final String SETTING_SPEED_VIEW_TYPE = "SETTING_SPEED_VIEW_TYPE";
+	public static boolean IS_KM_PER_HOUR = false;
+	public static final String SETTING_KM_PER_HOUR = "SETTING_KM_PER_HOUR";
 
-	private static boolean isKbPerHour(Context context) {
+	private static boolean isKmPerHour(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SPEED_VIEW_TYPE, false);
+		return preferences.getBoolean(SETTING_KM_PER_HOUR, false);
 	}
+	
+	/**
+	 * 装甲値の表示形式設定。trueの場合はダメージ係数で表示。falseの場合はBB.NETなどの公式準拠の値で表示。
+	 */
+	public static boolean IS_ARMOR_RATE = true;
+	public static final String SETTING_ARMOR_RATE = "SETTING_ARMOR_RATE";
 
+	private static boolean isArmorRate(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(SETTING_ARMOR_RATE, true);
+	}
+	
 	/**
 	 * アセン画面の2列表示設定。trueで表示する。
 	 */
@@ -89,14 +101,14 @@ public class BBViewSettingManager extends SettingManager {
 	}
 
 	/**
-	 * パーツ武器選択画面のリストボタン表示設定。trueで表示する。
+	 * パーツ武器選択画面のリストボタン表示設定。trueでTextView配置、falseでButton配置
 	 */
-	public static boolean IS_LISTBUTTON_TYPETEXT = false;
+	public static boolean IS_LISTBUTTON_TYPETEXT = true;
 	public static final String SETTING_LISTBUTTON_TYPETEXT = "SETTING_LISTBUTTON_TYPETEXT";
 	
 	private static boolean isListButtonTypeText(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_LISTBUTTON_TYPETEXT, false);
+		return preferences.getBoolean(SETTING_LISTBUTTON_TYPETEXT, true);
 	}
 	
 	/**
@@ -130,6 +142,9 @@ public class BBViewSettingManager extends SettingManager {
 		return PreferenceIO.read(context, SETTING_MEMORY_SORT, false);
 	}
 	
+	/**
+	 * フィルタ昨日の状態維持設定。Trueで状態維持、Falseで状態破棄。
+	 */
 	public static boolean IS_MEMORY_FILTER = false;
 	public static final String SETTING_MEMORY_FILTER = "SETTING_MEMORY_FILTER";
 	

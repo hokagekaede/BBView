@@ -118,7 +118,7 @@ public class CompareActivity extends BaseActivity {
 		select_file.load();
 		
 		CustomData custom_data = CustomDataReader.read(select_file, CustomDataManager.getDefaultData(), mDataManager);
-		custom_data.setSpeedUnit(BBViewSettingManager.IS_KB_PER_HOUR);
+		custom_data.setSpeedUnit(BBViewSettingManager.IS_KM_PER_HOUR);
 		
 		return custom_data;
 	}
@@ -199,10 +199,10 @@ public class CompareActivity extends BaseActivity {
 		for(int i=0; i<len; i++) {
 			String key = blust_spec_list[i];
 			double fm_value = cmp_fm_data.getSpecValue(key, blust_name);
-			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			double to_value = cmp_to_data.getSpecValue(key, blust_name);
-			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
 			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);
@@ -270,8 +270,8 @@ public class CompareActivity extends BaseActivity {
 				continue;
 			}
 			
-			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
+			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
 
 			if(target_key.equals("重量") || target_key.equals("チップ容量") || target_key.equals("積載猶予") || target_key.equals("DEF回復時間")) {
 				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_str, to_str));
@@ -300,8 +300,8 @@ public class CompareActivity extends BaseActivity {
 		
 		for(int i=0; i<size; i++) {
 			String target_key = cmp_target[i];
-			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
+			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
 		
 			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
 
@@ -331,10 +331,10 @@ public class CompareActivity extends BaseActivity {
 			
 			String key = spec_key[i];
 			double fm_value = cmp_fm_data.getSpecValue(key);
-			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			double to_value = cmp_to_data.getSpecValue(key);
-			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
 			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
 			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);

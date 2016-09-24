@@ -25,7 +25,7 @@ public class CustomDataManager {
 	 * @return 現在編集中のカスタムデータ。
 	 */
 	public static CustomData getCustomData() {
-		boolean speed_unit = BBViewSettingManager.IS_KB_PER_HOUR;
+		boolean speed_unit = BBViewSettingManager.IS_KM_PER_HOUR;
 		boolean data_speed_unit = sTarget.getSpeedUnit();
 		
 		if(speed_unit != data_speed_unit) {

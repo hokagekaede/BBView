@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib;
 
+import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 
 import java.math.BigDecimal;
@@ -321,23 +322,23 @@ public class SpecValues {
 	 */
 	private static void initArmor() {
 		ARMOR = new KeyValueStore();
-		ARMOR.set("S",  "137");
-		ARMOR.set("S-", "133");
-		ARMOR.set("A+", "129");
-		ARMOR.set("A",  "122");
-		ARMOR.set("A-", "118");
-		ARMOR.set("B+", "115");
-		ARMOR.set("B",  "110");
-		ARMOR.set("B-", "105");
-		ARMOR.set("C+", "100");
-		ARMOR.set("C",  "95");
-		ARMOR.set("C-", "90");
-		ARMOR.set("D+", "87");
-		ARMOR.set("D",  "81");
-		ARMOR.set("D-", "75");
-		ARMOR.set("E+", "72");
-		ARMOR.set("E",  "68");
-		ARMOR.set("E-", "64");
+		ARMOR.set("S",   "37");
+		ARMOR.set("S-",  "33");
+		ARMOR.set("A+",  "29");
+		ARMOR.set("A",   "22");
+		ARMOR.set("A-",  "18");
+		ARMOR.set("B+",  "15");
+		ARMOR.set("B",   "10");
+		ARMOR.set("B-",   "5");
+		ARMOR.set("C+",   "0");
+		ARMOR.set("C",   "-5");
+		ARMOR.set("C-", "-10");
+		ARMOR.set("D+", "-13");
+		ARMOR.set("D",  "-19");
+		ARMOR.set("D-", "-25");
+		ARMOR.set("E+", "-28");
+		ARMOR.set("E",  "-32");
+		ARMOR.set("E-", "-36");
 	}
 	
 	/**
@@ -627,11 +628,34 @@ public class SpecValues {
 		WALK.set("E",  "16.848");
 		WALK.set("E-", "14.904");  // 3.5該当パーツなし (2015/10/31)
 	}
+	
+	/**
+	 * 性能の値からポイント番号と値の組み合わせ文字列を取得する。
+	 * @param key 性能の種類
+	 * @param value 性能値
+	 * @param is_km_per_hour 速度の単位
+	 * @return ポイント番号(E～S)
+	 */
+	public static String getPointWithValue(String key, String value, boolean is_km_per_hour) {
+		return getPoint(key, value, is_km_per_hour) + " (" + value + ")"; 
+	}
+
+	/**
+	 * 性能の値からポイント番号と値の組み合わせ文字列を取得する。
+	 * @param key 性能の種類
+	 * @param value 性能値
+	 * @param is_km_per_hour 速度の単位
+	 * @return ポイント番号(E～S)
+	 */
+	public static String getPointWithValue(String key, double value, boolean is_km_per_hour) {
+		return getPoint(key, value, is_km_per_hour) + " (" + value + ")"; 
+	}
 
 	/**
 	 * 性能の値からポイント番号を取得する。
 	 * @param key 性能の種類
 	 * @param value 性能値
+	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
 	public static String getPoint(String key, String value, boolean is_km_per_hour) {
@@ -652,6 +676,7 @@ public class SpecValues {
 	 * 性能の値からポイント番号を取得する。
 	 * @param key 性能の種類
 	 * @param value 性能値
+	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
 	public static String getPoint(String key, double value, boolean is_km_per_hour) {
@@ -916,12 +941,6 @@ public class SpecValues {
 		if(key.equals("チップ容量")) {
 			ret = String.format("%.1f", value);
 		}
-		else if(key.equals("装甲平均値")) {
-			ret = String.format("%.1f(%%)", value);
-		}
-		else if(key.equals("総重量")) {
-			ret = String.format("%.0f", value);
-		}
 		else if(key.equals("猶予")) {
 			ret = String.format("%.0f", value);
 		}
@@ -941,10 +960,20 @@ public class SpecValues {
 			ret = String.format("%.1f(%%)", value);
 		}
 		// パーツデータ系
-		else if(key.equals("装甲")) {
-			ret = String.format("%.0f(%%)", value);
+		else if(key.contains("装甲")) {
+			
+			// 設定ONの場合はダメージ係数に表記を変更する
+			if(BBViewSettingManager.IS_ARMOR_RATE) {
+				ret = String.format("x%.2f", (100 - value) / 100);
+			}
+			else {
+				ret = String.format("%.1f(%%)", value);
+			}
 		}
-		else if(key.equals("重量")) {
+		else if(key.contains("耐久")) {
+			ret = String.format("%.1f", value);
+		}
+		else if(key.contains("重量")) {
 			ret = String.format("%.0f", value);
 		}
 		else if(key.equals("射撃補正")) {

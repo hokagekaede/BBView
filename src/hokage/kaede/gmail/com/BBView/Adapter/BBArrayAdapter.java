@@ -36,7 +36,7 @@ public class BBArrayAdapter extends BaseAdapter {
 	 */
 	public BBArrayAdapter(Context context, ArrayList<BBData> list) {
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
-		this.mIsKmPerHour = preference.getBoolean(BBViewSettingManager.SETTING_SPEED_VIEW_TYPE, false);
+		this.mIsKmPerHour = preference.getBoolean(BBViewSettingManager.SETTING_KM_PER_HOUR, false);
 		this.mContext = context;
 		this.mList = list;
 	}

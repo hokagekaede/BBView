@@ -21,6 +21,9 @@ public class BBDataFilter {
 	private boolean is_show_having = true;
 	private boolean is_show_not_having = true;
 	
+	/**
+	 * 初期化を行う。
+	 */
 	public BBDataFilter() {
 		mPartsList = new ArrayList<String>();
 		mBlustList = new ArrayList<String>();
@@ -36,6 +39,10 @@ public class BBDataFilter {
 		}
 	}
 	
+	/**
+	 * フィルタカテゴリを設定する。
+	 * @param item カテゴリ名
+	 */
 	public void setType(String... item) {
 		boolean is_set = false;
 		int size = item.length;
@@ -86,6 +93,10 @@ public class BBDataFilter {
 		}
 	}
 	
+	/**
+	 * パーツの種類のフィルタカテゴリを設定する。
+	 * @param item カテゴリ名
+	 */
 	public void setPartsType(String... item) {
 		int size = item.length;
 		for(int i=0; i<size; i++) {
@@ -93,6 +104,10 @@ public class BBDataFilter {
 		}
 	}
 
+	/**
+	 * 兵装名のフィルタカテゴリを設定する。
+	 * @param item カテゴリ名
+	 */
 	public void setBlustType(String... item) {
 		int size = item.length;
 		for(int i=0; i<size; i++) {
@@ -100,6 +115,10 @@ public class BBDataFilter {
 		}
 	}
 
+	/**
+	 * 武器の種類のフィルタカテゴリを設定する。
+	 * @param item カテゴリ名
+	 */
 	public void setWeaponType(String... item) {
 		int size = item.length;
 		for(int i=0; i<size; i++) {
@@ -107,6 +126,10 @@ public class BBDataFilter {
 		}
 	}
 
+	/**
+	 * その他のフィルタカテゴリを設定する。
+	 * @param item カテゴリ名
+	 */
 	public void setOtherType(String... item) {
 		int size = item.length;
 		for(int i=0; i<size; i++) {
@@ -124,6 +147,9 @@ public class BBDataFilter {
 		mValueList.add(value);
 	}
 	
+	/**
+	 * 全てのフィルタ情報を削除する。
+	 */
 	public void clear() {
 		mPartsList.clear();
 		mBlustList.clear();
@@ -133,6 +159,9 @@ public class BBDataFilter {
 		mValueList.clear();
 	}
 	
+	/**
+	 * フィルタ対象のキー/値情報を削除する。
+	 */
 	public void clearKey() {
 		mKeyList.clear();
 		mValueList.clear();
@@ -205,9 +234,9 @@ public class BBDataFilter {
 	
 	/**
 	 * 指定のカテゴリかどうかを判定する。
-	 * @param target
-	 * @param list
-	 * @return
+	 * @param target 対象のパーツまたは武器
+	 * @param list 対象のカテゴリ
+	 * @return 対象のカテゴリを1つでも有する場合はtrue、有しない場合はfalse。
 	 */
 	private boolean existCategory(BBData target, ArrayList<String> list) {
 		boolean ret = false;
@@ -254,6 +283,12 @@ public class BBDataFilter {
 		return ret;
 	}
 	
+	/**
+	 * 指定の属性データを含むかどうか判定する。
+	 * @param target 対象のパーツまたは武器
+	 * @param cmp_value 対象の属性
+	 * @return 指定の属性を有する場合はtrue、有しない場合はfalse。
+	 */
 	private boolean compareAbsolute(BBData target, String cmp_value) {
 		boolean ret = false;
 		

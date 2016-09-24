@@ -50,7 +50,7 @@ public class SpecArray {
 		public SpecRow(String key, double normal_value, double real_value, double memo_value, boolean is_km_per_hour) {
 			init(key, normal_value, real_value, is_km_per_hour);
 
-			BBDataComparator cmp = new BBDataComparator(key, true, BBViewSettingManager.IS_KB_PER_HOUR);
+			BBDataComparator cmp = new BBDataComparator(key, true, BBViewSettingManager.IS_KM_PER_HOUR);
 			int ret_cmp = cmp.compareValue(normal_value, memo_value);
 
 			if(ret_cmp > 0) {
@@ -143,8 +143,8 @@ public class SpecArray {
 	 */
 	public static SpecRow getPartsSpecArray(CustomData data, String blust_type, String target_key) {
 		String normal_point = data.getPoint(target_key);
-		double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-		String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
+		String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
 		
 		double real_value;
 		if(blust_type.equals("")) {
@@ -154,8 +154,9 @@ public class SpecArray {
 			real_value = data.getSpecValue(target_key, blust_type);
 		}
 		
-		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
+		
+		String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
 
 		// スペックと内部値を結合する
 		if(BBDataComparator.isPointKey(target_key)) {
@@ -167,15 +168,15 @@ public class SpecArray {
 		if(target_key.equals("DEF回復")) {
 			BBData head_parts = data.getParts(BBDataManager.BLUST_PARTS_HEAD);
 			normal_value_str = String.format("%s (%s)", normal_value_str,
-					SpecValues.getSpecUnit(head_parts.getDefRecoverTime(), "回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
+					SpecValues.getSpecUnit(head_parts.getDefRecoverTime(), "回復時間", BBViewSettingManager.IS_KM_PER_HOUR));
 			real_value_str = String.format("%s (%s)", real_value_str,
-					SpecValues.getSpecUnit(data.getDefRecoverTime(), "回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
+					SpecValues.getSpecUnit(data.getDefRecoverTime(), "回復時間", BBViewSettingManager.IS_KM_PER_HOUR));
 
 		}
 
-		SpecRow col = new SpecRow(target_key, normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		col.setValues(normal_value_str, real_value_str);
-		return col;
+		SpecRow row = new SpecRow(target_key, normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
+		row.setValues(normal_value_str, real_value_str);
+		return row;
 	}
 	
 	//----------------------------------------------------------
@@ -195,14 +196,14 @@ public class SpecArray {
 
 		if(data.existChipGroup("アンチスタビリティ")) {
 			double real_value_stn = data.getShotAntiStability(weapon, false);
-			String real_value_stn_str = "転倒Dmg値：" + SpecValues.getSpecUnit(real_value_stn, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String real_value_stn_str = "転倒Dmg値：" + SpecValues.getSpecUnit(real_value_stn, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
-			SpecRow col = new SpecRow(key, normal_value, real_value, real_value_stn, BBViewSettingManager.IS_KB_PER_HOUR);
-			col.setValues(real_value_stn_str, SpecRow.KEY_MEMO);
-			return col;
+			SpecRow row = new SpecRow(key, normal_value, real_value, real_value_stn, BBViewSettingManager.IS_KM_PER_HOUR);
+			row.setValues(real_value_stn_str, SpecRow.KEY_MEMO);
+			return row;
 		}
 
-		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -218,22 +219,22 @@ public class SpecArray {
 		
 		if(data.existChipGroup("アンチスタビリティ")) {
 			double real_value_stn = data.getShotAntiStability(weapon, true);
-			String real_value_stn_str = "転倒Dmg値：" + SpecValues.getSpecUnit(real_value_stn, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String real_value_stn_str = "転倒Dmg値：" + SpecValues.getSpecUnit(real_value_stn, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
-			SpecRow col = new SpecRow(key, normal_value, real_value, real_value_stn, BBViewSettingManager.IS_KB_PER_HOUR);
-			col.setValues(real_value_stn_str, SpecRow.KEY_MEMO);
+			SpecRow row = new SpecRow(key, normal_value, real_value, real_value_stn, BBViewSettingManager.IS_KM_PER_HOUR);
+			row.setValues(real_value_stn_str, SpecRow.KEY_MEMO);
 			
-			return col;
+			return row;
 		}
 
-		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	public static SpecRow getChargeTimeArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getChargeTime();
 		double real_value = data.getChargeTime(weapon);
 		
-		return new SpecRow("充填時間", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("充填時間", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 	
 	//----------------------------------------------------------
@@ -244,14 +245,14 @@ public class SpecArray {
 		double normal_value = weapon.getMagazinePower();
 		double real_value = data.getMagazinePower(weapon);
 		
-		return new SpecRow("マガジン火力", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("マガジン火力", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 	
 	public static SpecRow getSecPowerArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getSecPower();
 		double real_value = data.getSecPower(weapon);
 
-		return new SpecRow("瞬間火力", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("瞬間火力", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -267,15 +268,15 @@ public class SpecArray {
 
 		if(data.existChipGroup("クイックリロード")) {
 			double real_value_quick = data.getBattlePower(weapon, true);
-			String real_value_quick_str = "手動リロ時：" + SpecValues.getSpecUnit(real_value_quick, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String real_value_quick_str = "手動リロ時：" + SpecValues.getSpecUnit(real_value_quick, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
-			SpecRow col = new SpecRow(key, normal_value, real_value, real_value_quick, BBViewSettingManager.IS_KB_PER_HOUR);
-			col.setValues(real_value_quick_str, SpecRow.KEY_MEMO);
+			SpecRow row = new SpecRow(key, normal_value, real_value, real_value_quick, BBViewSettingManager.IS_KM_PER_HOUR);
+			row.setValues(real_value_quick_str, SpecRow.KEY_MEMO);
 			
-			return col;
+			return row;
 		}
 
-		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -292,15 +293,15 @@ public class SpecArray {
 		double normal_value_oh = weapon.getBattlePowerOverHeat(true);
 		double real_value_oh = data.getBattlePowerOverHeat(weapon, true);
 		
-		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 
-		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 		
-		SpecRow col = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KB_PER_HOUR);
-		col.setValues(normal_str, real_str);
-		return col;
+		SpecRow row = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KM_PER_HOUR);
+		row.setValues(normal_str, real_str);
+		return row;
 	}
 
 	/**
@@ -316,15 +317,15 @@ public class SpecArray {
 
 		if(data.existChipGroup("クイックリロード")) {
 			double real_value_quick = data.getReloadTime(weapon, true);
-			String real_value_quick_str = "手動リロ時：" + SpecValues.getSpecUnit(real_value_quick, key, BBViewSettingManager.IS_KB_PER_HOUR);
+			String real_value_quick_str = "手動リロ時：" + SpecValues.getSpecUnit(real_value_quick, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
-			SpecRow col = new SpecRow(key, normal_value, real_value, real_value_quick, BBViewSettingManager.IS_KB_PER_HOUR);
-			col.setValues(real_value_quick_str, SpecRow.KEY_MEMO);
+			SpecRow row = new SpecRow(key, normal_value, real_value, real_value_quick, BBViewSettingManager.IS_KM_PER_HOUR);
+			row.setValues(real_value_quick_str, SpecRow.KEY_MEMO);
 			
-			return col;
+			return row;
 		}
 
-		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow(key, normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 	
 	/**
@@ -337,7 +338,7 @@ public class SpecArray {
 		double normal_value = weapon.getOverheatTime();
 		double real_value = normal_value;
 
-		return new SpecRow("OH耐性", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("OH耐性", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -354,15 +355,15 @@ public class SpecArray {
 		double normal_value_oh = weapon.getOverheatRepairTime(true);
 		double real_value_oh = data.getOverheatRepairTime(weapon, true);
 		
-		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 
-		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 		
-		SpecRow col = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KB_PER_HOUR);
-		col.setValues(normal_str, real_str);
-		return col;
+		SpecRow row = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KM_PER_HOUR);
+		row.setValues(normal_str, real_str);
+		return row;
 	}
 
 	/**
@@ -389,10 +390,10 @@ public class SpecArray {
 			bullet_str = String.format("%.0fx%.0f +%.0f", magazine_bullet, magazine_count, over_bullet);
 		}
 		
-		SpecRow col = new SpecRow("総弾数", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
-		col.setValues(weapon.get("総弾数"), bullet_str);
+		SpecRow row = new SpecRow("総弾数", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
+		row.setValues(weapon.get("総弾数"), bullet_str);
 		
-		return col;
+		return row;
 	}
 
 	//----------------------------------------------------------
@@ -403,7 +404,7 @@ public class SpecArray {
 		double normal_value = weapon.getExplosionRange();
 		double real_value = data.getExplosionRange(weapon);
 
-		return new SpecRow("爆発半径", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("爆発半径", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	//----------------------------------------------------------
@@ -414,21 +415,21 @@ public class SpecArray {
 		double normal_value = weapon.getSlashDamage(false);
 		double real_value = data.getSlashPower(weapon, false);
 
-		return new SpecRow("通常攻撃(総威力)", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("通常攻撃(総威力)", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	public static SpecRow getDashSlashArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getSlashDamage(true);
 		double real_value = data.getSlashPower(weapon, true);
 
-		return new SpecRow("特殊攻撃(総威力)", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("特殊攻撃(総威力)", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	public static SpecRow getSearchTimeArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getSearchTime();
 		double real_value = data.getSearchTime(weapon);
 
-		return new SpecRow("索敵時間", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("索敵時間", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	//----------------------------------------------------------
@@ -451,15 +452,15 @@ public class SpecArray {
 		double real_value_oh = data.getSpChargeTime(blust_type, weapon, true);
 
 		String key = "チャージ時間";
-		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String normal_str = SpecValues.getSpecUnit(normal_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				          + SpecValues.getSpecUnit(normal_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 
-		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KB_PER_HOUR) + " ("
-				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KB_PER_HOUR) + ")";
+		String real_str = SpecValues.getSpecUnit(real_value_oh, key, BBViewSettingManager.IS_KM_PER_HOUR) + " ("
+				        + SpecValues.getSpecUnit(real_value_notoh, key, BBViewSettingManager.IS_KM_PER_HOUR) + ")";
 		
-		SpecRow col = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KB_PER_HOUR);
-		col.setValues(normal_str, real_str);
-		return col;
+		SpecRow row = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSettingManager.IS_KM_PER_HOUR);
+		row.setValues(normal_str, real_str);
+		return row;
 	}
 
 	/**
@@ -473,7 +474,7 @@ public class SpecArray {
 		double normal_value = data.getACSpeed(weapon);
 		double real_value = normal_value;
 
-		return new SpecRow("AC速度", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("AC速度", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -487,7 +488,7 @@ public class SpecArray {
 		double normal_value = data.getBattleACSpeed(weapon);
 		double real_value = normal_value;
 
-		return new SpecRow("AC戦術速度", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("AC戦術速度", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -500,7 +501,7 @@ public class SpecArray {
 		double normal_value = weapon.getBattleBarrierGuard();
 		double real_value = data.getBattleBarrierGuard(weapon);
 
-		return new SpecRow("秒間耐久回復量", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("秒間耐久回復量", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -513,7 +514,7 @@ public class SpecArray {
 		double normal_value = weapon.getMaxRepair();
 		double real_value = data.getMaxRepair(weapon);
 
-		return new SpecRow("最大回復量", normal_value, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
+		return new SpecRow("最大回復量", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 
 }

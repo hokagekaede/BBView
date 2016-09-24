@@ -2,6 +2,8 @@ package hokage.kaede.gmail.com.BBViewLib;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 /**
  * アセンの詳細情報を管理するクラス。
  */
@@ -586,6 +588,24 @@ public class CustomData {
 	}
 	
 	/**
+	 * 補正前の装甲平均値を取得する
+	 * @return 装甲平均値
+	 */
+	public double getArmorAveBase() {
+		double ret = 0;
+		double armor_sum = 0;
+		int len = mRecentParts.length;
+		
+		for(int i=0; i<len; i++) {
+			armor_sum = armor_sum + mRecentParts[i].getArmor();
+		}
+
+		ret = armor_sum / len;
+		
+		return ret;
+	}
+	
+	/**
 	 * フルセットボーナスの説明文を取得する
 	 * @return フルセットボーナスの説明文
 	 */
@@ -732,16 +752,7 @@ public class CustomData {
 	 * @return 装甲値
 	 */
 	public double getArmor(int idx) {
-		double ret = 0;
-
-		// パーツの設定値の読み込み
-		try {
-			String spec = mRecentParts[idx].get("装甲");
-			ret = Integer.valueOf(SpecValues.ARMOR.get(spec));
-
-		} catch (Exception e) {
-			ret = 0;
-		}
+		double ret = mRecentParts[idx].getArmor();
 
 		// フルセットボーナス
 		if(isFullSet("ヘヴィガード")) {
@@ -2942,6 +2953,13 @@ public class CustomData {
 		return damage;
 	}
 	
+	/**
+	 * 実弾属性のダメージ値を取得する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
 	private double getBulletDamage(BBData data, int attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
@@ -2961,6 +2979,13 @@ public class CustomData {
 		return calcDamage(attack_value, chip_bonus, data.getBulletAbsPer(), armor);
 	}
 	
+	/**
+	 * 爆発属性のダメージ値を取得する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
 	private double getExplosionDamage(BBData data, int attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
@@ -2980,6 +3005,13 @@ public class CustomData {
 		return calcDamage(attack_value, chip_bonus, data.getExplosionAbsPer(), armor);
 	}
 
+	/**
+	 * ニュード属性のダメージ値を取得する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
 	private double getNewdDamage(BBData data, int attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
@@ -2999,6 +3031,13 @@ public class CustomData {
 		return calcDamage(attack_value, chip_bonus, data.getNewdAbsPer(), armor);
 	}
 
+	/**
+	 * 近接属性のダメージ値を取得する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
 	private double getSlashDamage(BBData data, int attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
@@ -3018,10 +3057,28 @@ public class CustomData {
 		return calcDamage(attack_value, chip_bonus, data.getSlashAbsPer(), armor);
 	}
 
+	/**
+	 * 属性の比率に応じたダメージ値を算出する。
+	 * @param attack_value 基本となる威力
+	 * @param chip_bonus チップの効果値
+	 * @param abs_per 属性割合
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
 	private double calcDamage(int attack_value, double chip_bonus, double abs_per, double armor) {
 		double attack_damege = (attack_value * chip_bonus) * (abs_per / 100);
 		
-		return attack_damege + (attack_damege * (100 - armor) / 100);
+		return attack_damege + (attack_damege * armor / 100);
+	}
+	
+	/**
+	 * 装甲平均値から算出する実耐久値を算出する。
+	 * @return 耐久値
+	 */
+	public double getLife() {
+		double damege_rate = (100 - getArmorAve()) / 100;
+		Log.e("check", damege_rate + "/" + SpecValues.BLUST_LIFE_MAX / damege_rate);
+		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 	
 	/**

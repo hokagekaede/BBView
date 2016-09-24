@@ -194,8 +194,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mAdapter.notifyDataSetChanged();
 
 		// 比較ダイアログを初期化する
-		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSettingManager.IS_KB_PER_HOUR);
-		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSettingManager.IS_KB_PER_HOUR);
+		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
+		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
 	
 	/**
