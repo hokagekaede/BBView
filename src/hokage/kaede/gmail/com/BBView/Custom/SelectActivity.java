@@ -25,6 +25,9 @@ import hokage.kaede.gmail.com.Lib.Java.ListConverter;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -71,11 +74,17 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	private static final int MENU_ITEM2 = 2;
 	private static final int MENU_ITEM3 = 3;
 	
-	// リスト制御ダイアログ
+	// コマンド制御ダイアログ関連の定義
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
 	private static final String DIALOG_LIST_ITEM_CMP  = "比較する";
 	private static final String DIALOG_LIST_ITEM_FULL = "フルセットを設定する";
-	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP, DIALOG_LIST_ITEM_FULL };
+	
+	private static final int DIALOG_LIST_IDX_INFO = 0;
+	private static final int DIALOG_LIST_IDX_CMP  = 1;
+	private static final int DIALOG_LIST_IDX_FULL = 2;
+	
+	private static final String[] DIALOG_LIST_ITEMS_PARTS = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP, DIALOG_LIST_ITEM_FULL };
+	private static final String[] DIALOG_LIST_ITEMS_BASE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP };
 	
 	// ソート時のタイプB設定
 	private boolean mIsSortTypeB = false;
@@ -116,32 +125,26 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		// 表示項目のフラグ設定
 		mFilter = new BBDataFilter();
 		String shown_save_key = "";
-		//mSortKeys = null;
 		mSortKeys = BBDataManager.getCmpTarget(recent_data);
-		
+
 		if(parts_type != null) {
 			mFilter.setPartsType(parts_type);
 			shown_save_key = parts_type;
-			//mSortKeys = BBDataManager.getCmpTarget(parts_type);
+			initCmdListDialog(true);
 		}
 		if(blust_type != null && weapon_type != null) {
 			mFilter.setBlustType(blust_type);
 			mFilter.setWeaponType(weapon_type);
 			shown_save_key = blust_type + ":" + weapon_type;
-			//mSortKeys = BBDataManager.getCmpTarget("");
+			initCmdListDialog(false);
 		}
 		if(req_arm != null) {
 			mFilter.setOtherType(req_arm);
 			mFilter.setNotHavingShow(true);
 			shown_save_key = req_arm;
-			//mSortKeys = BBDataManager.getCmpTarget("");
+			initCmdListDialog(false);
 		}
 		ArrayList<String> key_list = ListConverter.convert(mSortKeys);
-
-		// コマンド選択ダイアログを初期化する
-		mCmdDialog = new BBAdapterCmdManager(this, DIALOG_LIST_ITEMS_LISTMODE);
-		mCmdDialog.setOnClickIndexButtonInterface(this);
-		mCmdDialog.setOnExecuteInterface(this);
 
 		// ソート選択ダイアログを初期化する
 		mSortKeyDialog = new BBAdapterSortKeyManager(this, key_list);
@@ -196,6 +199,35 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		// 比較ダイアログを初期化する
 		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
 		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
+	}
+	
+	/**
+	 * コマンド制御ダイアログを初期化する。
+	 * @param is_parts パーツかどうか。
+	 */
+	private void initCmdListDialog(boolean is_parts) {
+		String[] cmd_list = DIALOG_LIST_ITEMS_BASE;
+
+		if(is_parts) {
+			cmd_list = DIALOG_LIST_ITEMS_PARTS;
+		}
+		
+		mCmdDialog = new BBAdapterCmdManager(cmd_list);
+		mCmdDialog.setOnClickIndexButtonInterface(this);
+		mCmdDialog.setOnExecuteInterface(this);
+		
+		// 設定に応じてボタンを非表示にする
+		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWINFO) {
+			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
+		}
+
+		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWCMP) {
+			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_CMP);
+		}
+		
+		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWFULLSET) {
+			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_FULL);
+		}
 	}
 	
 	/**
@@ -285,7 +317,6 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			
 			return false;
 		}
-		
 	}
 	
 	/**
@@ -342,6 +373,37 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 * 指定の位置のパーツでフルセットを設定し、前画面に戻る。
 	 * @param data パーツデータ
 	 */
+	private void backCustomViewFullSetCheck(BBData target_data) {
+		String name = target_data.get("名称");
+		
+		AlertDialog.Builder check_dialog = new AlertDialog.Builder(this);
+		check_dialog.setTitle("フルセット設定");
+		check_dialog.setPositiveButton("OK", new OnOKFullSetListener(target_data));
+		check_dialog.setNegativeButton("Cancel", null);
+		check_dialog.setMessage(name + "に設定しますか？");
+		check_dialog.show();
+	}
+	
+	/**
+	 * フルセット設定OKの場合の処理を行うリスナー。
+	 */
+	private class OnOKFullSetListener implements OnClickListener {
+		private BBData mTarget;
+		
+		public OnOKFullSetListener(BBData target_data) {
+			mTarget = target_data;
+		}
+
+		@Override
+		public void onClick(DialogInterface arg0, int arg1) {
+			backCustomViewFullSet(mTarget);
+		}
+	}
+
+	/**
+	 * 指定の位置のパーツでフルセットを設定し、前画面に戻る。
+	 * @param data パーツデータ
+	 */
 	private void backCustomViewFullSet(BBData target_data) {
 		
 		// 選択したパーツ名を取得し、全部位のパーツをカスタムデータに反映する。
@@ -372,7 +434,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
 		BBData to_item = (BBData)(mAdapter.getItem(position));
 		mCmdDialog.setTarget(to_item);
-		mCmdDialog.showDialog();
+		mCmdDialog.showDialog(this);
 		
 		return true;
 	}
@@ -462,14 +524,14 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public void onExecute(BBData data, int cmd_idx) {
-		if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_INFO)) {
+		if(cmd_idx == DIALOG_LIST_IDX_INFO) {
 			moveInfoActivity(data);
 		}
-		else if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_CMP)) {
+		else if(cmd_idx == DIALOG_LIST_IDX_CMP) {
 			showCmpView(data);
 		}
-		else if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_FULL)) {
-			backCustomViewFullSet(data);
+		else if(cmd_idx == DIALOG_LIST_IDX_FULL) {
+			backCustomViewFullSetCheck(data);
 		}
 	}
 	

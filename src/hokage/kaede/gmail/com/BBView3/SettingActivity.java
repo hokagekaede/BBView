@@ -157,6 +157,27 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		btn_listbutton_typetext.setKey(BBViewSettingManager.SETTING_LISTBUTTON_TYPETEXT);
 		btn_listbutton_typetext.setChecked(BBViewSettingManager.IS_LISTBUTTON_TYPETEXT);
 		screen.addPreference(btn_listbutton_typetext);
+
+		CheckBoxPreference btn_listbutton_showinfo = new CheckBoxPreference(this);
+		btn_listbutton_showinfo.setTitle("リストのボタン表示(詳細)");
+		btn_listbutton_showinfo.setSummary("武器選択画面の操作ボタン(詳細)を表示する");
+		btn_listbutton_showinfo.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWINFO);
+		btn_listbutton_showinfo.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWINFO);
+		screen.addPreference(btn_listbutton_showinfo);
+
+		CheckBoxPreference btn_listbutton_showcmp = new CheckBoxPreference(this);
+		btn_listbutton_showcmp.setTitle("リストのボタン表示(比較)");
+		btn_listbutton_showcmp.setSummary("武器選択画面の操作ボタン(比較)を表示する");
+		btn_listbutton_showcmp.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWCMP);
+		btn_listbutton_showcmp.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWCMP);
+		screen.addPreference(btn_listbutton_showcmp);
+
+		CheckBoxPreference btn_listbutton_showfullset = new CheckBoxPreference(this);
+		btn_listbutton_showfullset.setTitle("リストのボタン表示(フルセット)");
+		btn_listbutton_showfullset.setSummary("武器選択画面の操作ボタン(フルセット)を表示する");
+		btn_listbutton_showfullset.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWFULLSET);
+		btn_listbutton_showfullset.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWFULLSET);
+		screen.addPreference(btn_listbutton_showfullset);
 		
 		CheckBoxPreference btn_memory_showitem = new CheckBoxPreference(this);
 		btn_memory_showitem.setTitle("表示項目選択状態");

@@ -48,21 +48,34 @@ public class SpecView extends FrameLayout {
 
 	// モード設定値
 	private int mMode = MODE_BASE;
-	private static final int MODE_BASE    = 0;
-	private static final int MODE_ASSALT  = 1;
-	private static final int MODE_HEAVY   = 2;
-	private static final int MODE_SNIPER  = 3;
-	private static final int MODE_SUPPORT = 4;
+	public static final int MODE_BASE    = 0;
+	public static final int MODE_ASSALT  = 1;
+	public static final int MODE_HEAVY   = 2;
+	public static final int MODE_SNIPER  = 3;
+	public static final int MODE_SUPPORT = 4;
+	
+	public static String[] MODE_NAME_LIST = {
+		"",
+		BBDataManager.BLUST_TYPE_ASSALT,
+		BBDataManager.BLUST_TYPE_HEAVY,
+		BBDataManager.BLUST_TYPE_SNIPER,
+		BBDataManager.BLUST_TYPE_SUPPORT
+	};
 	
 	// モード設定値に対する選択中の兵装名
 	private String mBlustType = "";
-	
+
+	private boolean mIsShowSimple = false;
 	/**
 	 * 初期化を行う。画面を生成する。
 	 * @param context 対象の画面
 	 */
-	public SpecView(Context context) {
+	public SpecView(Context context, boolean is_simple, int mode) {
 		super(context);
+		
+		mIsShowSimple = is_simple;
+		mMode = mode;
+		mBlustType = MODE_NAME_LIST[mMode];
 
 		LinearLayout main_layout = new LinearLayout(context);
 		main_layout.setOrientation(LinearLayout.VERTICAL);
@@ -75,7 +88,15 @@ public class SpecView extends FrameLayout {
 		this.addView(main_layout);
 		this.addView(createStatusView(context));
 	}
-
+	
+	/**
+	 * モードを取得する。
+	 * @return モード
+	 */
+	public int getMode() {
+		return mMode;
+	}
+	
 	/**
 	 * 各種性能のビューを表示するためのビューを生成する。
 	 * @return ビュー
@@ -120,7 +141,12 @@ public class SpecView extends FrameLayout {
 		}
 		else {
 			layout_table.addView(AssembleViewBuilder.create(context, mBlustType));
-			layout_table.addView(PartsSpecViewBuilder.create(context, mBlustType));
+			if(mIsShowSimple) {
+				layout_table.addView(PartsSpecViewSimpleBuilder.create(context, mBlustType));
+			}
+			else {
+				layout_table.addView(PartsSpecViewBuilder.create(context, mBlustType));
+			}
 			layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType));
 		}
 	}
@@ -146,7 +172,7 @@ public class SpecView extends FrameLayout {
 		assalt_button.setChecked(false);
 		assalt_button.setId(TOGGLE_BUTTON_ASSALT_ID);
 		assalt_button.setLayoutParams(new LayoutParams(WC, WC, 1));
-		assalt_button.setOnClickListener(new ChangeBlustTypeListener(MODE_ASSALT, BBDataManager.BLUST_TYPE_ASSALT));
+		assalt_button.setOnClickListener(new ChangeBlustTypeListener(MODE_ASSALT));
 		assalt_button.setOnCheckedChangeListener(nothing_listener);
 		bottom_layout.addView(assalt_button);
 		
@@ -156,7 +182,7 @@ public class SpecView extends FrameLayout {
 		heavy_button.setChecked(false);
 		heavy_button.setId(TOGGLE_BUTTON_HEAVY_ID);
 		heavy_button.setLayoutParams(new LayoutParams(WC, WC, 1));
-		heavy_button.setOnClickListener(new ChangeBlustTypeListener(MODE_HEAVY, BBDataManager.BLUST_TYPE_HEAVY));
+		heavy_button.setOnClickListener(new ChangeBlustTypeListener(MODE_HEAVY));
 		heavy_button.setOnCheckedChangeListener(nothing_listener);
 		bottom_layout.addView(heavy_button);
 		
@@ -166,7 +192,7 @@ public class SpecView extends FrameLayout {
 		sniper_button.setChecked(false);
 		sniper_button.setId(TOGGLE_BUTTON_SNIPER_ID);
 		sniper_button.setLayoutParams(new LayoutParams(WC, WC, 1));
-		sniper_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SNIPER, BBDataManager.BLUST_TYPE_SNIPER));
+		sniper_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SNIPER));
 		sniper_button.setOnCheckedChangeListener(nothing_listener);
 		bottom_layout.addView(sniper_button);
 
@@ -176,9 +202,22 @@ public class SpecView extends FrameLayout {
 		support_button.setChecked(false);
 		support_button.setId(TOGGLE_BUTTON_SUPPORT_ID);
 		support_button.setLayoutParams(new LayoutParams(WC, WC, 1));
-		support_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SUPPORT, BBDataManager.BLUST_TYPE_SUPPORT));
+		support_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SUPPORT));
 		support_button.setOnCheckedChangeListener(nothing_listener);
 		bottom_layout.addView(support_button);
+
+		if(mMode == MODE_ASSALT) {
+			assalt_button.setChecked(true);
+		}
+		else if(mMode == MODE_HEAVY) {
+			heavy_button.setChecked(true);
+		}
+		else if(mMode == MODE_SNIPER) {
+			sniper_button.setChecked(true);
+		}
+		else if(mMode == MODE_SUPPORT) {
+			support_button.setChecked(true);
+		}
 		
 		return bottom_layout;
 	}
@@ -189,11 +228,9 @@ public class SpecView extends FrameLayout {
 	private class ChangeBlustTypeListener implements OnClickListener {
 		
 		private int mTargetMode;
-		private String mTargetBlustType;
 		
-		public ChangeBlustTypeListener(int mode, String blust_type) {
+		public ChangeBlustTypeListener(int mode) {
 			mTargetMode = mode;
-			mTargetBlustType = blust_type;
 		}
 
 		/**
@@ -213,12 +250,11 @@ public class SpecView extends FrameLayout {
 
 				if(is_checked) {
 					mMode = mTargetMode;
-					mBlustType = mTargetBlustType;
 				}
 				else {
 					mMode = MODE_BASE;
-					mBlustType = "";
 				}
+				mBlustType = MODE_NAME_LIST[mMode];
 				
 				ToggleButton assalt_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_ASSALT_ID);
 				ToggleButton heavy_button = (ToggleButton)SpecView.this.findViewById(TOGGLE_BUTTON_HEAVY_ID);
@@ -236,7 +272,7 @@ public class SpecView extends FrameLayout {
 				e.printStackTrace();
 
 				mMode = MODE_BASE;
-				mBlustType = "";
+				mBlustType = MODE_NAME_LIST[mMode];
 			}
 			
 			// 画面を更新する
@@ -589,40 +625,99 @@ public class SpecView extends FrameLayout {
 			
 			return layout_table;
 		}
+	}
+
+	/**
+	 * 「パーツスペック」のビュー(簡易表示)を生成するクラス
+	 */
+	private static class PartsSpecViewSimpleBuilder {
+
+		private static final String[] BASE_COL_STR = { "装甲平均値", "総重量(猶予)", "低下率", "チップ容量"};
+		private static final String[] HEAD_COL_STR = { "射撃補正", "索敵", "ロックオン", "DEF回復" };
+		private static final String[] BODY_COL_STR = { "ブースター", "SP供給率", "エリア移動", "DEF耐久" };
+		private static final String[] ARMS_COL_STR = { "反動吸収", "リロード", "武器変更", "予備弾倉" };
+		private static final String[] LEGS_COL_STR = { "歩行", "ダッシュ", "重量耐性", "加速" };
 		
 		/**
-		 * パーツスペックテーブルの行を生成する。
-		 * @param custom_data アセンデータ
-		 * @param target_key 性能名
-		 * @return 指定の性能に対応する行
+		 * パーツスペックテーブルを生成する。
+		 * @param data_list データ一覧
+		 * @return パーツスペックのテーブル
 		 */
-		/*
-		private static TableRow createCustomPartsRows(Context context, CustomData custom_data, String target_key) {
-			String normal_point = custom_data.getPoint(target_key);
-			double normal_value = SpecValues.getSpecValue(normal_point, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
-			String normal_value_str = SpecValues.getSpecUnit(normal_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+		private static View create(Context context, String blust_type) {
+			CustomData custom_data = CustomDataManager.getCustomData();
 			
-			double real_value = custom_data.getSpecValue(target_key);
-			String real_point = SpecValues.getPoint(target_key, real_value, BBViewSettingManager.IS_KB_PER_HOUR);
-			String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSettingManager.IS_KB_PER_HOUR);
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			String[] base_value_col_str = {
+				getSpecString("装甲", custom_data.getArmorAve(blust_type)),
+				String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()),
+				SpecValues.getSpecUnit(custom_data.getSpeedDownRate(blust_type), "低下率", BBViewSettingManager.IS_KM_PER_HOUR),
+				SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KM_PER_HOUR)
+			};
+			
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), BASE_COL_STR));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), base_value_col_str));
+			
+			String[] head_value_col_str = {
+				getSpecString("射撃補正", custom_data.getShotBonus(blust_type)),
+				getSpecString("索敵", custom_data.getSearch(blust_type)),
+				getSpecString("ロックオン", custom_data.getRockOn(blust_type)),
+				getSpecString("DEF回復", custom_data.getDefRecover(blust_type))
+			};
 
-			// スペックと内部値を結合する
-			if(BBDataComparator.isPointKey(target_key)) {
-				normal_value_str = normal_point + " (" + normal_value_str + ")";
-				real_value_str = real_point + " (" + real_value_str + ")"; 
-			}
-			
-			// DEF回復の場合、隣に回復時間を併記する
-			if(target_key.equals("DEF回復")) {
-				real_value_str = String.format("%s (%s)", real_value_str,
-						SpecValues.getSpecUnit(custom_data.getDefRecoverTime(), "DEF回復時間", BBViewSettingManager.IS_KB_PER_HOUR));
-			}
-			
-			int[] colors = ViewBuilder.getColors(normal_value, real_value, target_key);
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), HEAD_COL_STR));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), head_value_col_str));
 
-			return ViewBuilder.createTableRow(context, colors, target_key, normal_value_str, real_value_str);
+			String[] body_value_col_str = {
+				getSpecString("ブースター", custom_data.getBoost(blust_type)),
+				getSpecString("SP供給率", custom_data.getSP(blust_type)),
+				getSpecString("エリア移動", custom_data.getAreaMove(blust_type)),
+				getSpecString("DEF耐久", custom_data.getDefGuard(blust_type))
+			};
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), BODY_COL_STR));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), body_value_col_str));
+
+			String[] arms_value_col_str = {
+				getSpecString("反動吸収", custom_data.getRecoil(blust_type)),
+				getSpecString("リロード", custom_data.getReload(blust_type)),
+				getSpecString("武器変更", custom_data.getChangeWeapon(blust_type)),
+				getSpecString("予備弾数", custom_data.getSpareBullet(blust_type))
+			};
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), ARMS_COL_STR));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), arms_value_col_str));
+
+			String[] legs_value_col_str = {
+				getSpecString("歩行", custom_data.getWalk(blust_type)),
+				getSpecString("ダッシュ", custom_data.getStartDush(blust_type)),
+				getSpecString("重量耐性", custom_data.getAntiWeight(blust_type)),
+				getSpecString("加速", custom_data.getAcceleration(blust_type))
+			};
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), LEGS_COL_STR));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), legs_value_col_str));
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView parts_spec_view = ViewBuilder.createTextView(context, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(parts_spec_view);
+			layout_table.addView(table);
+			
+			return layout_table;
 		}
-		*/
+
+		private static String getSpecString(String target_key, double value) {
+			String blust_point = SpecValues.getPoint(target_key, value, BBViewSettingManager.IS_KM_PER_HOUR);
+			String blust_str = SpecValues.getSpecUnit(value, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
+			return blust_point + " (" + blust_str + ")";
+		}
 	}
 	
 	/**

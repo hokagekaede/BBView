@@ -30,12 +30,16 @@ public class CustomMainActivity extends BaseActivity {
 	private static final String VIEWMODE_STR_FILE   = "データ";
 
 	private static final String MENU_SHOW_CHIPS      = "チップを表示する";
+	private static final String MENU_SHOW_SIMPLE     = "簡易表示する";
 	private static final String MENU_SHARE           = "アセン共有";
 	
 	private boolean mIsShowChips = false;
+	private boolean mIsShowSimple = false;
+	private int mSpecViewMode = SpecView.MODE_BASE;
 	
 	// メイン画面のレイアウトID
-	private int MAIN_LAYOUT_ID = 1000;
+	private static final int MAIN_LAYOUT_ID = 10000;
+	private static final int SHOW_VIEW_ID = 20000;
 	
 	/**
 	 * 画面生成時の処理を行う。
@@ -93,23 +97,45 @@ public class CustomMainActivity extends BaseActivity {
 		CustomData custom_data = CustomDataManager.getCustomData();
 		custom_data.setMode(CustomData.MODE_NORMAL);
 		
+		// SpecViewの前回のモードを取得する。前回が存在しない場合は標準を設定する。
+		try {
+			View view = main_layout.findViewById(SHOW_VIEW_ID);
+			
+			if(view instanceof SpecView) {
+				mSpecViewMode = ((SpecView)view).getMode();
+			}
+			
+		} catch(Exception e) {
+			mSpecViewMode = SpecView.MODE_BASE;
+		}
+		
 		main_layout.removeAllViews();
 		main_layout.addView(createTopLayout());
+		
+		View target_view = null;
 
 		if(mViewMode.equals(VIEWMODE_STR_CUSTOM)) {
-			main_layout.addView(new CustomView(this, custom_data, mIsShowChips));
+			target_view = new CustomView(this, custom_data, mIsShowChips);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
-			main_layout.addView(new ChipView(this));
+			target_view = new ChipView(this);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
-			main_layout.addView(new SpecView(this));
+			target_view = new SpecView(this, mIsShowSimple, mSpecViewMode);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
-			main_layout.addView(new ResistView(this));
+			target_view = new ResistView(this);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_FILE)) {
-			main_layout.addView(new FileListView(this));
+			target_view = new FileListView(this);
+		}
+		
+		if(target_view != null) {
+			target_view.setId(SHOW_VIEW_ID);
+			main_layout.addView(target_view);
+			
+			// オプションメニューを更新する
+			invalidateOptionsMenu();
 		}
 	}
 	
@@ -230,10 +256,18 @@ public class CustomMainActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		MenuItem item = menu.add(MENU_SHOW_CHIPS);
-		item.setCheckable(true);
-		item.setChecked(mIsShowChips);
-		item.setOnMenuItemClickListener(new OnMenuShowChipListener());
+		if(mViewMode.equals(VIEWMODE_STR_CUSTOM)) {
+			MenuItem item = menu.add(MENU_SHOW_CHIPS);
+			item.setCheckable(true);
+			item.setChecked(mIsShowChips);
+			item.setOnMenuItemClickListener(new OnMenuShowChipListener());
+		}
+		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
+			MenuItem item = menu.add(MENU_SHOW_SIMPLE);
+			item.setCheckable(true);
+			item.setChecked(mIsShowSimple);
+			item.setOnMenuItemClickListener(new OnMenuShowSimpleListener());
+		}
 		
 		menu.add(MENU_SHARE);
 		
@@ -256,6 +290,30 @@ public class CustomMainActivity extends BaseActivity {
 			}
 			else {
 				mIsShowChips = true;
+				item.setChecked(true);
+				updateView(main_layout);
+			}
+			
+			return false;
+		}
+	}
+
+	/**
+	 * 簡易表示のメニュー選択時の処理を行う。
+	 */
+	private class OnMenuShowSimpleListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			
+			if(item.isChecked()) {
+				mIsShowSimple = false;
+				item.setChecked(false);
+				updateView(main_layout);
+			}
+			else {
+				mIsShowSimple = true;
 				item.setChecked(true);
 				updateView(main_layout);
 			}

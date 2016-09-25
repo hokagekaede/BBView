@@ -20,10 +20,10 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
  * リストの左側ボタン生成と長タップ時のダイアログ表示を管理するクラス
  */
 public class BBAdapterCmdManager implements android.content.DialogInterface.OnClickListener, OnClickListener {
-	private Activity mActivity;
 	
 	// コマンドの文字列
 	private String[] mCommandList;
+	private boolean[] mHiddenList;
 	private OnClickIndexButtonInterface mButtonListener;
 	private OnExecuteInterface mListener;
 	
@@ -31,9 +31,20 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 	
 	private BBData mTarget;
 	
-	public BBAdapterCmdManager(Activity activity, String[] cmd_str) {
-		mActivity = activity;
+	public BBAdapterCmdManager(String[] cmd_str) {
 		mCommandList = cmd_str;
+		
+		int count = mCommandList.length;
+		mHiddenList = new boolean[count];
+		for(int i=0; i<count; i++) {
+			mHiddenList[i] = false;
+		}
+	}
+	
+	public void setHiddenTarget(int position) {
+		if(position < mHiddenList.length) {
+			mHiddenList[position] = true;
+		}
 	}
 	
 	public void setTarget(BBData data) {
@@ -48,18 +59,14 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		mListener = listener;
 	}
 	
-	public String[] getCommandList() {
-		return mCommandList;
-	}
-
-	public void showDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+	public void showDialog(Activity activity) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setTitle("操作を選択");
 		builder.setIcon(android.R.drawable.ic_menu_more);
 		builder.setItems(mCommandList, this);
 
 		Dialog dialog = builder.create();
-		dialog.setOwnerActivity(mActivity);
+		dialog.setOwnerActivity(activity);
 		dialog.show();
 	}
 
@@ -70,8 +77,8 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		}
 	}
 	
-	public IndexLayout createButtonView(int position) {
-		return new IndexLayout(mActivity, mCommandList, position, this);
+	public IndexLayout createButtonView(Context context, int position) {
+		return new IndexLayout(context, mCommandList, mHiddenList, position, this);
 	}
 	
 	@Override
@@ -104,7 +111,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		private int mButtonCount;
 		private IndexHandlerInterface[] mButtons;
 
-		public IndexLayout(Context context, String[] commands, int position, OnClickListener listener) {
+		public IndexLayout(Context context, String[] commands, boolean[] hiddens, int position, OnClickListener listener) {
 			super(context);
 			this.setOrientation(LinearLayout.HORIZONTAL);
 			this.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
@@ -120,6 +127,10 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 					mButtons[i].setIndex(i);
 					mButtons[i].setPosition(position);
 					
+					if(hiddens[i]) {
+						mButtons[i].setVisibility(View.GONE);
+					}
+					
 					this.addView((View)mButtons[i]);
 				}
 			}
@@ -131,6 +142,10 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 					mButtons[i] = new IndexButton(context, btn_text, listener);
 					mButtons[i].setIndex(i);
 					mButtons[i].setPosition(position);
+					
+					if(hiddens[i]) {
+						mButtons[i].setVisibility(View.GONE);
+					}
 					
 					this.addView((View)mButtons[i]);
 				}
@@ -158,21 +173,30 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			setClickable(true);
 			setFocusable(false);
 		}
-		
+
+		@Override
 		public void setPosition(int position) {
 			mPosition = position;
 		}
-		
+
+		@Override
 		public int getPosition() {
 			return mPosition;
 		}
-		
+
+		@Override
 		public void setIndex(int index) {
 			mIndex = index;
 		}
-		
+
+		@Override
 		public int getIndex() {
 			return mIndex;
+		}
+
+		@Override
+		public void setVisibility(int visibility) {
+			super.setVisibility(visibility);
 		}
 	}
 
@@ -199,21 +223,30 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			lp.setMargins(10, 10, 10, 10);
 			setLayoutParams(lp);
 		}
-		
+
+		@Override
 		public void setPosition(int position) {
 			mPosition = position;
 		}
-		
+
+		@Override
 		public int getPosition() {
 			return mPosition;
 		}
-		
+
+		@Override
 		public void setIndex(int index) {
 			mIndex = index;
 		}
-		
+
+		@Override
 		public int getIndex() {
 			return mIndex;
+		}
+
+		@Override
+		public void setVisibility(int visibility) {
+			super.setVisibility(visibility);
 		}
 	}
 	
@@ -225,5 +258,6 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		public int getPosition();
 		public void setIndex(int index);
 		public int getIndex();
+		public void setVisibility(int visibility);
 	}
 }

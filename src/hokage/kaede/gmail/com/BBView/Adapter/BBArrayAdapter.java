@@ -16,8 +16,6 @@ import android.widget.BaseAdapter;
 public class BBArrayAdapter extends BaseAdapter {
 	private boolean mIsKmPerHour;
 	
-	private Context mContext;
-	
 	private ArrayList<BBData> mList;
 	private ArrayList<String> mShownKeys;
 	private BBData mBaseItem;
@@ -37,7 +35,6 @@ public class BBArrayAdapter extends BaseAdapter {
 	public BBArrayAdapter(Context context, ArrayList<BBData> list) {
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
 		this.mIsKmPerHour = preference.getBoolean(BBViewSettingManager.SETTING_KM_PER_HOUR, false);
-		this.mContext = context;
 		this.mList = list;
 	}
 	
@@ -66,18 +63,19 @@ public class BBArrayAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		Context context = parent.getContext();
 		BBData data = mList.get(position);
 		BBArrayAdapterTextView view;
 
 		if(convertView == null) {
-			view = new BBArrayAdapterTextView(mContext, mShownKeys, mIsKmPerHour);
+			view = new BBArrayAdapterTextView(context, mShownKeys, mIsKmPerHour);
 			view.setShowSwitch(mIsShowSwitch);
 			view.setShowTypeB(mIsShowTypeB);
 			view.createView();
 			
 			// ボタン設定ONの場合、ボタンのビューを追加する
 			if(mCmdManager != null) {
-				view.addView(mCmdManager.createButtonView(position), BUTTON_LAYOUT_INDEX);
+				view.addView(mCmdManager.createButtonView(context, position), BUTTON_LAYOUT_INDEX);
 			}
 		}
 		else {

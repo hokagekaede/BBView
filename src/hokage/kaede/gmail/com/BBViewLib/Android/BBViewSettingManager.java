@@ -26,6 +26,9 @@ public class BBViewSettingManager extends SettingManager {
 		IS_SHOW_TYPELABEL = isShowTypeLabel(context);
 		IS_SHOW_LISTBUTTON = isShowButton(context);
 		IS_LISTBUTTON_TYPETEXT = isListButtonTypeText(context);
+		IS_LISTBUTTON_SHOWINFO = isListButtonShowInfo(context);
+		IS_LISTBUTTON_SHOWCMP = isListButtonShowCmp(context);
+		IS_LISTBUTTON_SHOWFULLSET = isListButtonShowFullSet(context);
 		IS_SHOW_HAVING = isHavingOnly(context);
 		IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
 		IS_MEMORY_SORT = isMemorySort(context);
@@ -109,6 +112,39 @@ public class BBViewSettingManager extends SettingManager {
 	private static boolean isListButtonTypeText(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(SETTING_LISTBUTTON_TYPETEXT, true);
+	}
+
+	/**
+	 * パーツ武器選択画面のリストボタンに詳細ボタンを表示するかどうか。trueでTextView配置、falseでButton配置
+	 */
+	public static boolean IS_LISTBUTTON_SHOWINFO = true;
+	public static final String SETTING_LISTBUTTON_SHOWINFO = "SETTING_LISTBUTTON_SHOWINFO";
+	
+	private static boolean isListButtonShowInfo(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWINFO, true);
+	}
+
+	/**
+	 * パーツ武器選択画面のリストボタンに比較ボタンを表示するかどうか。trueでTextView配置、falseでButton配置
+	 */
+	public static boolean IS_LISTBUTTON_SHOWCMP = true;
+	public static final String SETTING_LISTBUTTON_SHOWCMP = "SETTING_LISTBUTTON_SHOWCMP";
+	
+	private static boolean isListButtonShowCmp(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWCMP, true);
+	}
+
+	/**
+	 * パーツ武器選択画面のリストボタンにフルセットボタンを表示するかどうか。trueでTextView配置、falseでButton配置
+	 */
+	public static boolean IS_LISTBUTTON_SHOWFULLSET = true;
+	public static final String SETTING_LISTBUTTON_SHOWFULLSET = "SETTING_LISTBUTTON_SHOWFULLSET";
+	
+	private static boolean isListButtonShowFullSet(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWFULLSET, true);
 	}
 	
 	/**

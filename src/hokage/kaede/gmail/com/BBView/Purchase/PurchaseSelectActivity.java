@@ -48,8 +48,9 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	private static final int MENU_ITEM1 = 1;
 	private static final int MENU_ITEM2 = 2;
 	
-	// リスト制御ダイアログ
+	// コマンド制御ダイアログ関連の定義
 	private static final String DIALOG_LIST_ITEM_INFO   = "詳細を表示する";
+	private static final int DIALOG_LIST_IDX_INFO = 0;
 	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO };
 	
 	/**
@@ -60,21 +61,38 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		super.onCreate(savedInstanceState);
 		
 		setTitle(getTitle() + " (購入リストに追加)");
-		
+
+		// 表示項目のフラグを設定
 		mDataManager = BBDataManager.getInstance();
+		mDataManager.setSortKey(null);
+		
+		mFilter = new BBDataFilter();
+		mFilter.setPartsType(BBDataManager.BLUST_PARTS_LIST);
+		mFilter.setBlustType(BBDataManager.BLUST_TYPE_LIST);
+		mFilter.setWeaponType(BBDataManager.WEAPON_TYPE_LIST);
+		mFilter.setHavingShow(!mIsNotHavingOnly);
+		
+		mFilterManager = new BBAdapterFilterManager(this, mFilter);
+		mFilterManager.setOnOKFilterDialogListener(this);
+		
+		// コマンド制御ダイアログを初期化する
+		initCmdListDialog();
 		
 		// 画面を生成する
 		createView();
-
-		mFilterManager = new BBAdapterFilterManager(this, mFilter);
-		mFilterManager.setOnOKFilterDialogListener(this);
-
-		mCmdDialog = new BBAdapterCmdManager(this, DIALOG_LIST_ITEMS_LISTMODE);
+	}
+	
+	/**
+	 * コマンド制御ダイアログを初期化する
+	 */
+	private void initCmdListDialog() {
+		mCmdDialog = new BBAdapterCmdManager(DIALOG_LIST_ITEMS_LISTMODE);
 		mCmdDialog.setOnClickIndexButtonInterface(this);
 		mCmdDialog.setOnExecuteInterface(this);
 		
-		if(BBViewSettingManager.IS_SHOW_LISTBUTTON) {
-			mAdapter.setBBAdapterCmdManager(mCmdDialog);
+		// 設定に応じてボタンを非表示にする
+		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWINFO) {
+			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
 		}
 	}
 	
@@ -95,15 +113,6 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		list_view.setOnItemLongClickListener(this);
 		layout_all.addView(list_view);
 		
-		// 表示項目のフラグを設定
-		mDataManager.setSortKey(null);
-		
-		mFilter = new BBDataFilter();
-		mFilter.setPartsType(BBDataManager.BLUST_PARTS_LIST);
-		mFilter.setBlustType(BBDataManager.BLUST_TYPE_LIST);
-		mFilter.setWeaponType(BBDataManager.WEAPON_TYPE_LIST);
-		mFilter.setHavingShow(!mIsNotHavingOnly);
-		
 		// 決定ボタンを設定
 		Button btn_ok = new Button(this);
 		btn_ok.setLayoutParams(new LayoutParams(FP, WC));
@@ -116,6 +125,10 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		mAdapter = new BBSelectDataAdapter(this, datalist);
 		mAdapter.setBaseItem(null);
 		list_view.setAdapter(mAdapter);
+
+		if(BBViewSettingManager.IS_SHOW_LISTBUTTON) {
+			mAdapter.setBBAdapterCmdManager(mCmdDialog);
+		}
 
 		setContentView(layout_all);
 	}
@@ -205,7 +218,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
 		BBData to_item = (BBData)(mAdapter.getItem(position));
 		mCmdDialog.setTarget(to_item);
-		mCmdDialog.showDialog();
+		mCmdDialog.showDialog(this);
 		
 		return false;
 	}
