@@ -2,8 +2,6 @@ package hokage.kaede.gmail.com.BBViewLib;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 /**
  * アセンの詳細情報を管理するクラス。
  */
@@ -3077,7 +3075,6 @@ public class CustomData {
 	 */
 	public double getLife() {
 		double damege_rate = (100 - getArmorAve()) / 100;
-		Log.e("check", damege_rate + "/" + SpecValues.BLUST_LIFE_MAX / damege_rate);
 		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 	

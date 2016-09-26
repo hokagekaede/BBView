@@ -254,6 +254,7 @@ public class BBDataFilter {
 	
 	/**
 	 * 各フィルタ用のデータが指定の値以上かどうか判定する。
+	 * 比較対象のキーがコストの場合は、値が不一致の場合にfalseとなる。
 	 * @param target 対象のパーツまたは武器
 	 * @return 全て指定以上の場合はTrue、１つでも指定未満の場合はFalse。
 	 */
@@ -271,9 +272,15 @@ public class BBDataFilter {
 					break;
 				}
 			}
+			else if(key.equals("コスト")) {
+				if(!value.equals(target.get(key))) {
+					ret = false;
+					break;
+				}
+			}
 			else {
 				BBDataComparator comparator = new BBDataComparator(key, true, true);
-				if(comparator.compareString(target.get(key), mValueList.get(i)) < 0) {
+				if(comparator.compareString(target.get(key), value) < 0) {
 					ret = false;
 					break;
 				}

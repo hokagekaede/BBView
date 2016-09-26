@@ -9,6 +9,7 @@ import hokage.kaede.gmail.com.Lib.Android.PreferenceIO;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class BBAdapterValueFilterManager implements OnClickListener {
-	private Activity mActivity;
 	private BBDataFilter mFilter;
 	
 	private ArrayList<CheckBox> mCheckBoxs;
@@ -45,8 +45,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	 * @param activity
 	 * @param filter
 	 */
-	public BBAdapterValueFilterManager(Activity activity, BBDataFilter filter, ArrayList<String> target_keys) {
-		mActivity = activity;
+	public BBAdapterValueFilterManager(BBDataFilter filter, ArrayList<String> target_keys) {
 		mFilter = filter;
 
 		int size = target_keys.size();
@@ -79,6 +78,15 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 		else if(key.equals("積載猶予")) {
 			return "4000";
 		}
+		else if(key.equals("DEF回復時間")) {
+			return "24.0";
+		}
+		else if(key.equals("実耐久値")) {
+			return "10000";
+		}
+		else if(key.equals("コスト")) {
+			return "1";
+		}
 		else {
 			return "C";
 		}
@@ -99,19 +107,19 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	/**
 	 * フィルタ項目の選択用ダイアログを表示する。
 	 */
-	public void showDialog() {
+	public void showDialog(Activity activity) {
 		if(mKeys == null) {
 			return;
 		}
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-		builder.setTitle("絞込み選択");
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle("フィルタ選択");
 		builder.setIcon(android.R.drawable.ic_menu_more);
 		builder.setPositiveButton("OK", this);
-		builder.setView(createView());
+		builder.setView(createView(activity));
 		
 		mDialog = builder.create();
-		mDialog.setOwnerActivity(mActivity);
+		mDialog.setOwnerActivity(activity);
 		mDialog.show();
 	}
 	
@@ -119,40 +127,59 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	 * ダイアログ画面内のビューを生成する。
 	 * @return
 	 */
-	private ScrollView createView() {
+	private ScrollView createView(Context context) {
 		mCheckBoxs = new ArrayList<CheckBox>();
 		mValueViews = new ArrayList<View>();
 		
-		TableLayout table_layout = new TableLayout(mActivity);
+		TableLayout table_layout = new TableLayout(context);
 		table_layout.setColumnStretchable(0, true);
 		
-		ScrollView sv = new ScrollView(mActivity);
+		ScrollView sv = new ScrollView(context);
 		sv.addView(table_layout);
 
 		int size = mKeys.length;
 		for(int i=0; i<size; i++) {
-			TableRow row = new TableRow(mActivity);
+			TableRow row = new TableRow(context);
 			
-			CheckBox box = new CheckBox(mActivity);
+			CheckBox box = new CheckBox(context);
 			box.setChecked(mFlags[i]);
 			box.setText(mKeys[i]);
 			
 			mCheckBoxs.add(box);
 			row.addView(box);
 			
-			if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals(("積載猶予"))) {
-				EditText edit_text = new EditText(mActivity);
+			if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals("積載猶予") || mKeys[i].equals("DEF回復時間") || mKeys[i].equals("実耐久値")) {
+				EditText edit_text = new EditText(context);
 				edit_text.setText(mValues[i]);
 				UIs[i] = edit_text;
 				
 				mValueViews.add(edit_text);
 				row.addView(edit_text);
 			}
-			else {
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(mActivity, android.R.layout.simple_spinner_item, BBDataManager.SPEC_POINT);
+			else if(mKeys[i].equals("コスト")) {
+				String[] list = { "コスト1", "コスト2", "コスト3", "コスト4", "コスト5", "コスト6" };
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				
-				Spinner spinner = new Spinner(mActivity);
+				Spinner spinner = new Spinner(context);
+				spinner.setAdapter(adapter);
+				UIs[i] = spinner;
+				
+				int point_size = list.length;
+				for(int j=0; j<point_size; j++) {
+					if(list[j].equals(mValues[i])) {
+						spinner.setSelection(j);
+					}
+				}
+				
+				mValueViews.add(spinner);
+				row.addView(spinner);
+			}
+			else {
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, BBDataManager.SPEC_POINT);
+				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				
+				Spinner spinner = new Spinner(context);
 				spinner.setAdapter(adapter);
 				UIs[i] = spinner;
 				
@@ -170,18 +197,20 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			table_layout.addView(row);
 		}
 
-		TableRow row = new TableRow(mActivity);
-		
-		TextView text_select_data = new TextView(mActivity);
-		text_select_data.setText("選択中パーツ値");
-		
-		Button btn_select_data = new Button(mActivity);
-		btn_select_data.setText("読込");
-		btn_select_data.setOnClickListener(new OnClickSetDataListener());
-		
-		row.addView(text_select_data);
-		row.addView(btn_select_data);
-		table_layout.addView(row);
+		if(mSelectData != null) {
+			TableRow row = new TableRow(context);
+			
+			TextView text_select_data = new TextView(context);
+			text_select_data.setText("選択中パーツ値");
+			
+			Button btn_select_data = new Button(context);
+			btn_select_data.setText("読込");
+			btn_select_data.setOnClickListener(new OnClickSetDataListener());
+	
+			row.addView(text_select_data);
+			row.addView(btn_select_data);
+			table_layout.addView(row);
+		}
 		
 		return sv;
 	}
@@ -202,9 +231,15 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 
 			int size = mKeys.length;
 			for(int i=0; i<size; i++) {
-				if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals("積載猶予")) {
+				if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量")) {
 					EditText edit_text = (EditText)UIs[i];
 					edit_text.setText(mSelectData.get(mKeys[i]));
+
+				}
+				else if(mKeys[i].equals("積載猶予") || mKeys[i].equals("DEF回復時間") || mKeys[i].equals("実耐久値")) {
+					String value = String.format("%.1f", mSelectData.getCalcValue(mKeys[i]));
+					EditText edit_text = (EditText)UIs[i];
+					edit_text.setText(value);
 
 				}
 				else {
@@ -235,7 +270,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	/**
 	 * 表示項目設定を保存する。
 	 */
-	public void updateSetting() {
+	public void updateSetting(Context context) {
 		String base_key = BBAdapterShownKeysManager.class.getSimpleName() + "/" + mSaveKey;
 		
 		int size = mKeys.length;
@@ -243,15 +278,15 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			String flag_key = base_key + "/" + mKeys[i] + "_flag";
 			String value_key = base_key + "/" + mKeys[i] + "_value";
 			
-			PreferenceIO.write(mActivity, flag_key, mFlags[i]);
-			PreferenceIO.write(mActivity, value_key, mValues[i]);
+			PreferenceIO.write(context, flag_key, mFlags[i]);
+			PreferenceIO.write(context, value_key, mValues[i]);
 		}
 	}
 	
 	/**
 	 * 表示項目設定をロードする。
 	 */
-	public void loadSetting() {
+	public void loadSetting(Context context) {
 		String base_key = BBAdapterShownKeysManager.class.getSimpleName() + "/" + mSaveKey;
 
 		int size = mKeys.length;
@@ -259,8 +294,8 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			String flag_key = base_key + "/" + mKeys[i] + "_flag";
 			String value_key = base_key + "/" + mKeys[i] + "_value";
 			
-			mFlags[i] = PreferenceIO.read(mActivity, flag_key, false);
-			mValues[i] = PreferenceIO.readString(mActivity, value_key, getInitValue(mKeys[i]));
+			mFlags[i] = PreferenceIO.read(context, flag_key, false);
+			mValues[i] = PreferenceIO.readString(context, value_key, getInitValue(mKeys[i]));
 		}
 		
 		updateFilter();
@@ -300,7 +335,15 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 				}
 			}
 			else if(buf_view instanceof Spinner) {
-				value = BBDataManager.SPEC_POINT[((Spinner)buf_view).getSelectedItemPosition()];
+				Spinner spinner = (Spinner)buf_view;
+				
+				if(mKeys[i].equals("コスト")) {
+					value = String.format("%d", spinner.getSelectedItemPosition() + 1);
+				}
+				else {
+					value = BBDataManager.SPEC_POINT[spinner.getSelectedItemPosition()];
+				}
+				
 				mValues[i] = value;
 			}
 		}

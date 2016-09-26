@@ -1,5 +1,7 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
+import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterValueFilterManager;
+import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
 import hokage.kaede.gmail.com.BBView.Adapter.BBArrayAdapterChipView;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
@@ -13,6 +15,7 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,7 +37,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 /**
  * チップ画面のレイアウト
  */
-public class ChipView extends LinearLayout {
+public class ChipView extends LinearLayout implements OnClickValueFilterButtonListener {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
@@ -42,6 +45,7 @@ public class ChipView extends LinearLayout {
 	private static final int WEIGHT_TEXT_VIEW_ID = 5321;
 
 	private BBDataManager mDataManager;
+	private BBAdapterValueFilterManager mFilterManager;
 	private CustomData mCustomData;
 	private BBDataFilter mFilter;
 	
@@ -88,6 +92,12 @@ public class ChipView extends LinearLayout {
 		// フィルタをチップのみに設定
 		mFilter = new BBDataFilter();
 		mFilter.setOtherType(BBDataManager.CHIP_STR);
+
+		// フィルタ設定ダイアログを初期化する
+		ArrayList<String> key_list = new ArrayList<String>();
+		key_list.add("コスト");
+		mFilterManager = new BBAdapterValueFilterManager(mFilter, key_list);
+		mFilterManager.setOnClickValueFilterButtonListener(this);
 		
 		// アダプタを設定する
 		mChipListAdapter = new ChipListAdapter(context, mDataManager.getList(mFilter));
@@ -150,6 +160,7 @@ public class ChipView extends LinearLayout {
 	 */
 	private void updateWeightText() {
 		View tmp_view = this.findViewById(WEIGHT_TEXT_VIEW_ID);
+		checkStatus();
 
 		if(tmp_view instanceof TextView) {
 			TextView weight_text_view = (TextView)tmp_view;
@@ -171,6 +182,41 @@ public class ChipView extends LinearLayout {
 				weight_text_view.setTextColor(SettingManager.getColorMazenta());
 			}
 		}
+	}
+
+	/**
+	 * チップの状態を確認する。
+	 * チップの状態に問題があれば、エラーメッセージを表示する。
+	 * @return 選択中のチップの状態に問題がなければtrueを返す。問題があればfalseを返す。
+	 */
+	private boolean checkStatus() {
+		boolean ret = true;
+		Context context = getContext();
+
+		// チップの現在値、最大値を取得する
+		int chip_weight = mCustomData.getChipWeight();
+		int chip_capacity = SpecValues.castInteger(mCustomData.getChipCapacity());
+		
+		if(chip_weight > chip_capacity) {
+			mErrorMessage = "[チップ容量超過]";
+			Toast.makeText(context, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
+			ret = false;
+		}
+		else if(!mCustomData.judgeActionChip()) {
+			mErrorMessage = "[アクションチップ重複]";
+			Toast.makeText(context, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+			ret = false;
+		}
+		else if(!mCustomData.judgePowerupChip()) {
+			mErrorMessage = "[機体強化チップ重複]";
+			Toast.makeText(context, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
+			ret = false;
+		}
+		else {
+			mErrorMessage = "";
+		}
+		
+		return ret;
 	}
 	
 	/**
@@ -315,6 +361,7 @@ public class ChipView extends LinearLayout {
 	 */
 	private class ChipListAdapter extends BaseExpandableListAdapter implements OnCheckedChangeListener {
 
+		private int mCount;
 		private ArrayList<String> mGroupList;
 		
 		private ArrayList<BBData> mSkillChipList;
@@ -331,9 +378,12 @@ public class ChipView extends LinearLayout {
 		 * @param chip_list チップリスト
 		 */
 		public ChipListAdapter(Context context, ArrayList<BBData> chip_list) {
-			
 			mGroupList = new ArrayList<String>();
-			
+
+			mGroupList.add(BBDataManager.SKILL_CHIP_STR);
+			mGroupList.add(BBDataManager.POWERUP_CHIP_STR);
+			mGroupList.add(BBDataManager.ACTION_CHIP_STR);
+
 			mSkillChipList = new ArrayList<BBData>();
 			mPowerupChipList = new ArrayList<BBData>();
 			mActionChipList = new ArrayList<BBData>();
@@ -342,9 +392,23 @@ public class ChipView extends LinearLayout {
 			mPowerupChipCheckList = new ArrayList<Boolean>();
 			mActionChipCheckList = new ArrayList<Boolean>();
 			
-			mGroupList.add(BBDataManager.SKILL_CHIP_STR);
-			mGroupList.add(BBDataManager.POWERUP_CHIP_STR);
-			mGroupList.add(BBDataManager.ACTION_CHIP_STR);
+			setList(chip_list);
+		}
+		
+		/**
+		 * リストを設定する。
+		 * @param chip_list チップリスト
+		 */
+		public void setList(ArrayList<BBData> chip_list) {
+			mCount = chip_list.size();
+			
+			mSkillChipList.clear();
+			mPowerupChipList.clear();
+			mActionChipList.clear();
+			
+			mSkillChipCheckList.clear();
+			mPowerupChipCheckList.clear();
+			mActionChipCheckList.clear();
 
 			int size = chip_list.size();
 			for(int i=0; i<size; i++) {
@@ -363,6 +427,14 @@ public class ChipView extends LinearLayout {
 					mActionChipCheckList.add(false);
 				}
 			}
+		}
+		
+		/**
+		 * リストの数を取得する。
+		 * @return リストの数
+		 */
+		public int getCount() {
+			return mCount;
 		}
 		
 		private boolean isActionChip(BBData chip) {
@@ -730,41 +802,6 @@ public class ChipView extends LinearLayout {
 		}
 		
 		/**
-		 * チップの状態を確認する。
-		 * チップの状態に問題があれば、エラーメッセージを表示する。
-		 * @return 選択中のチップの状態に問題がなければtrueを返す。問題があればfalseを返す。
-		 */
-		private boolean checkStatus() {
-			boolean ret = true;
-			Context context = getContext();
-
-			// チップの現在値、最大値を取得する
-			int chip_weight = mCustomData.getChipWeight();
-			int chip_capacity = SpecValues.castInteger(mCustomData.getChipCapacity());
-			
-			if(chip_weight > chip_capacity) {
-				mErrorMessage = "[チップ容量超過]";
-				Toast.makeText(context, "チップの容量が超過しています。", Toast.LENGTH_SHORT).show();
-				ret = false;
-			}
-			else if(!mCustomData.judgeActionChip()) {
-				mErrorMessage = "[アクションチップ重複]";
-				Toast.makeText(context, "アクションチップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
-				ret = false;
-			}
-			else if(!mCustomData.judgePowerupChip()) {
-				mErrorMessage = "[機体強化チップ重複]";
-				Toast.makeText(context, "機体強化チップの設定に誤りがあります。", Toast.LENGTH_SHORT).show();
-				ret = false;
-			}
-			else {
-				mErrorMessage = "";
-			}
-			
-			return ret;
-		}
-		
-		/**
 		 * フラグを全てクリアする
 		 */
 		public void clearFlag() {
@@ -782,6 +819,33 @@ public class ChipView extends LinearLayout {
 			for(int i=0; i<size; i++) {
 				mActionChipCheckList.set(i, false);
 			}
+		}
+	}
+	
+	/**
+	 * フィルタ設定ダイアログを表示する。
+	 * @param activity オーナーアクティビティ
+	 */
+	public void showFilterDialog(Activity activity) {
+		mFilterManager.showDialog(activity);
+	}
+	
+	/**
+	 * フィルタ設定を実行した場合の処理を行う。
+	 */
+	@Override
+	public void onClickValueFilterButton() {
+		mFilter = mFilterManager.getFilter();
+
+		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
+		mChipListAdapter.setList(datalist);
+		mChipListAdapter.notifyDataSetChanged();
+		
+		if(mChipListAdapter.getCount() == 0) {
+			Toast.makeText(ChipView.this.getContext(), "条件に一致するチップはありません。", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			loadCustomData();
 		}
 	}
 }

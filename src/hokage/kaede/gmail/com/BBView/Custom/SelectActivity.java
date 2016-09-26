@@ -169,14 +169,14 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 
 		// フィルタ設定ダイアログを初期化する
-		mFilterManager = new BBAdapterValueFilterManager(this, mFilter, key_list);
+		mFilterManager = new BBAdapterValueFilterManager(mFilter, key_list);
 		mFilterManager.setOnClickValueFilterButtonListener(this);
 		mFilterManager.setBBData(recent_data);
 		
 		// フィルタ設定をロードする
 		if(BBViewSettingManager.IS_MEMORY_FILTER) {
 			mFilterManager.setSaveKey(shown_save_key);
-			mFilterManager.loadSetting();
+			mFilterManager.loadSetting(this);
 			mFilter = mFilterManager.getFilter();
 		}
 		
@@ -330,7 +330,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 				break;
 
 			case MENU_ITEM1:
-				mFilterManager.showDialog();
+				mFilterManager.showDialog(this);
 				break;
 				
 			case MENU_ITEM2:
@@ -540,7 +540,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public void onClickValueFilterButton() {
-		mFilterManager.updateSetting();
+		mFilterManager.updateSetting(this);
 		mFilter = mFilterManager.getFilter();
 		
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);

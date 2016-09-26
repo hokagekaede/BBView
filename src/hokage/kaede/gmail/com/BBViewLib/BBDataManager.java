@@ -371,19 +371,19 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	};
 	
 	private static final String[] CMP_HEAD = {
-		"重量", "装甲", "射撃補正", "索敵", "ロックオン", "DEF回復", "DEF回復時間", "チップ容量"
+		"重量", "装甲", "射撃補正", "索敵", "ロックオン", "DEF回復", "DEF回復時間", "チップ容量", "実耐久値"
 	};
 	
 	private static final String[] CMP_BODY = {
-		"重量", "装甲", "ブースター", "SP供給率", "エリア移動", "DEF耐久", "チップ容量"
+		"重量", "装甲", "ブースター", "SP供給率", "エリア移動", "DEF耐久", "チップ容量", "実耐久値"
 	};
 	
 	private static final String[] CMP_ARMS = {
-		"重量", "装甲", "反動吸収", "リロード", "武器変更", "予備弾数", "チップ容量"
+		"重量", "装甲", "反動吸収", "リロード", "武器変更", "予備弾数", "チップ容量", "実耐久値"
 	};
 	
 	private static final String[] CMP_LEGS = {
-		"重量", "装甲", "歩行", "ダッシュ", "重量耐性", "加速", "チップ容量", BBData.CARRY_KEY
+		"重量", "装甲", "歩行", "ダッシュ", "重量耐性", "加速", "チップ容量", BBData.CARRY_KEY, "実耐久値"
 	};
 	
 	private static final String[] CMP_MAIN_WEAPON = {

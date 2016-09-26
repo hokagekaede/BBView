@@ -70,6 +70,7 @@ public class BBData extends KVCStore {
 		return ret;
 	}
 	
+	public static String REAL_LIFE_KEY          = "実耐久値";
 	public static String DEF_RECORVER_TIME_KEY  = "DEF回復時間";
 	
 	public static String FULL_POWER_KEY         = "総火力";
@@ -109,6 +110,9 @@ public class BBData extends KVCStore {
 		
 		if(key == null) {
 			// Do Nothing
+		}
+		else if(key.equals(REAL_LIFE_KEY)) {
+			ret = getLife();
 		}
 		else if(key.equals(DEF_RECORVER_TIME_KEY)) {
 			ret = getDefRecoverTime();
@@ -184,8 +188,8 @@ public class BBData extends KVCStore {
 	 * 装甲値を取得する。
 	 * @return 装甲値
 	 */
-	public int getArmor() {
-		int ret = 0;
+	public double getArmor() {
+		double ret = 0;
 
 		// パーツの設定値の読み込み
 		try {
@@ -193,10 +197,24 @@ public class BBData extends KVCStore {
 			ret = Integer.valueOf(SpecValues.ARMOR.get(spec));
 
 		} catch (Exception e) {
-			ret = 0;
+			ret = NUM_VALUE_NOTHING;
 		}
 
 		return ret;
+	}
+
+	/**
+	 * 装甲値から算出する実耐久値を算出する。
+	 * @return 耐久値
+	 */
+	public double getLife() {
+		double armor = getArmor();
+		if(armor == NUM_VALUE_NOTHING) {
+			return NUM_VALUE_NOTHING;
+		}
+		
+		double damege_rate = (100.0 - armor) / 100.0;
+		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 	
 	/**

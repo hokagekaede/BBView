@@ -102,6 +102,8 @@ public class InfoActivity extends BaseActivity {
 	}
 	
 	private static final String[] CALC_KEYS = {
+		BBData.REAL_LIFE_KEY,
+		BBData.DEF_RECORVER_TIME_KEY,
 		BBData.FULL_POWER_KEY,
 		BBData.MAGAZINE_POWER_KEY,
 		BBData.SEC_POWER_KEY,
@@ -160,7 +162,7 @@ public class InfoActivity extends BaseActivity {
 			double num = data.getCalcValue(key);
 			String value_str = SpecValues.getSpecUnit(num, key, BBViewSettingManager.IS_KM_PER_HOUR);
 			
-			if(num > 0) {
+			if(num > BBData.NUM_VALUE_NOTHING) {
 				layout_table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorCyan(), key, value_str));
 			}
 		}
