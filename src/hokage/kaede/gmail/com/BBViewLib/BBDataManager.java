@@ -388,7 +388,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	
 	private static final String[] CMP_MAIN_WEAPON = {
 		"重量", "威力", "連射速度", "リロード時間",
-		"総火力", "マガジン火力", "瞬間火力", "戦術火力", "総弾数(合計)",
+		"総火力", "マガジン火力", "瞬間火力", "戦術火力", "OH火力", "総弾数(合計)",
 		BBData.ARMOR_BREAK_KEY,
 		BBData.ARMOR_DOWN_KEY,
 		BBData.ARMOR_KB_KEY

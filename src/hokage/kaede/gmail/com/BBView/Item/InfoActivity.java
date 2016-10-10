@@ -108,6 +108,7 @@ public class InfoActivity extends BaseActivity {
 		BBData.MAGAZINE_POWER_KEY,
 		BBData.SEC_POWER_KEY,
 		BBData.BATTLE_POWER_KEY,
+		BBData.OH_POWER_KEY,
 		BBData.BULLET_SUM_KEY,
 		BBData.CARRY_KEY,
 		BBData.FLAIGHT_TIME_KEY,

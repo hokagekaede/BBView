@@ -247,6 +247,13 @@ public class SpecArray {
 		
 		return new SpecRow("マガジン火力", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}
+
+	public static SpecRow getOverheatPowerArray(CustomData data, BBData weapon) {
+		double normal_value = weapon.getOverHeatPower();
+		double real_value = data.getOverHeatPower(weapon);
+		
+		return new SpecRow("OH火力", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
+	}
 	
 	public static SpecRow getSecPowerArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getSecPower();

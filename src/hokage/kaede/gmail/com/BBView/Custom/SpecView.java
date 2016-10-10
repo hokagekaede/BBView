@@ -539,6 +539,14 @@ public class SpecView extends FrameLayout {
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
+			// セットボーナス
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "セットボーナス", custom_data.getSetBonus()));
+			
+			// チップ容量
+			String chip_capacity_str = String.format("%.1f", custom_data.getChipCapacity());
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "チップ容量", chip_capacity_str));
+			
+			// 装甲平均値
 			double armor_value = custom_data.getArmorAve();
 			double life_value = custom_data.getLife();
 			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
@@ -546,19 +554,35 @@ public class SpecView extends FrameLayout {
 			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
-			
-			String[][] speclist = {
-				{ "セットボーナス", custom_data.getSetBonus() },
-				{ "チップ容量", String.format("%.1f", custom_data.getChipCapacity()) },
-				{ "装甲平均値", armor_str },
-				{ "総重量(猶予)", String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()) },
-			};
-			
-			int size = speclist.length;
-			for(int i=0; i<size; i++) {
-				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), speclist[i][0], speclist[i][1]));
-			}
 
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "装甲平均値", armor_str));
+
+			// 装甲平均値(空爆時)
+			armor_value = custom_data.getArmorAveHead();
+			life_value = custom_data.getLifeHead();
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "装甲平均値(空爆時)", armor_str));
+
+			// 装甲平均値(地爆時)
+			armor_value = custom_data.getArmorAveLegs();
+			life_value = custom_data.getLifeLegs();
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "装甲平均値(地爆時)", armor_str));
+			
+			// 総重量(猶予)
+			String weight_str = String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight());
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "総重量(猶予)", weight_str));
+			
 			int color = SettingManager.getColorWhite();
 			int bg_color = SettingManager.getColorBlue();
 			
@@ -862,6 +886,7 @@ public class SpecView extends FrameLayout {
 			
 			if(weapon.existKey("OH耐性")) {
 				table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattlePowerOverheatArray(data, weapon)));
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatPowerArray(data, weapon)));
 				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatTimeArray(data, weapon)));
 				table.addView(ViewBuilder.createTableRow(context, SpecArray.getOverheatRepairTimeArray(data, weapon)));
 			}

@@ -77,6 +77,8 @@ public class BBData extends KVCStore {
 	public static String MAGAZINE_POWER_KEY     = "マガジン火力";
 	public static String SEC_POWER_KEY          = "瞬間火力";
 	public static String BATTLE_POWER_KEY       = "戦術火力";
+	public static String OH_POWER_KEY           = "OH火力";
+	
 	public static String BULLET_SUM_KEY         = "総弾数(合計)";
 	public static String CARRY_KEY              = "積載猶予";
 	
@@ -128,6 +130,9 @@ public class BBData extends KVCStore {
 		}
 		else if(key.equals(BATTLE_POWER_KEY)) {
 			ret = getBattlePower();
+		}
+		else if(key.equals(OH_POWER_KEY)) {
+			ret = getOverHeatPower();
 		}
 		else if(key.equals(BULLET_SUM_KEY)) {
 			ret = getBulletSum();
@@ -1052,6 +1057,19 @@ public class BBData extends KVCStore {
 	}
 
 	/**
+	 * OH火力を取得する。
+	 * @param data 武器データ
+	 * @return OH火力
+	 */
+	public double getOverHeatPower() {
+		double shot_speed = getShotSpeed();
+		double oneshot_power = getOneShotPower();
+		double oh_guard_time = getOverheatTime();
+		
+		return oneshot_power * (shot_speed / 60) * oh_guard_time;
+	}
+
+	/**
 	 * OH武器の戦術火力を取得する。(OH中)
 	 * @return 戦術火力
 	 */
@@ -1074,7 +1092,7 @@ public class BBData extends KVCStore {
 		if(shot_speed > 0) {
 			double oh_guard_time = getOverheatTime();
 			double oh_repair_time = getOverheatRepairTime(is_overheat);
-			double oh_power = oneshot_power * (shot_speed / 60) * oh_guard_time;
+			double oh_power = getOverHeatPower();
 	
 			ret = oh_power / (oh_guard_time + oh_repair_time);
 		}

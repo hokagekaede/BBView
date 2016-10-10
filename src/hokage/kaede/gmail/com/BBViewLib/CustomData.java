@@ -2,6 +2,8 @@ package hokage.kaede.gmail.com.BBViewLib;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 /**
  * アセンの詳細情報を管理するクラス。
  */
@@ -573,32 +575,41 @@ public class CustomData {
 	 */
 	public double getArmorAve() {
 		double ret = 0;
-		double armor_sum = 0;
-		int len = mRecentParts.length;
 		
-		for(int i=0; i<len; i++) {
-			armor_sum = armor_sum + getArmor(i);
-		}
-
-		ret = armor_sum / len;
+		ret += 0.25 * getArmor(HEAD_IDX);
+		ret += 0.25 * getArmor(BODY_IDX);
+		ret += 0.25 * getArmor(ARMS_IDX);
+		ret += 0.25 * getArmor(LEGS_IDX);
 		
 		return ret;
 	}
 	
 	/**
-	 * 補正前の装甲平均値を取得する
+	 * 装甲平均値を取得する。(空爆時)
 	 * @return 装甲平均値
 	 */
-	public double getArmorAveBase() {
+	public double getArmorAveHead() {
 		double ret = 0;
-		double armor_sum = 0;
-		int len = mRecentParts.length;
 		
-		for(int i=0; i<len; i++) {
-			armor_sum = armor_sum + mRecentParts[i].getArmor();
-		}
+		ret += 0.3 * getArmor(HEAD_IDX);
+		ret += 0.3 * getArmor(BODY_IDX);
+		ret += 0.3 * getArmor(ARMS_IDX);
+		ret += 0.1 * getArmor(LEGS_IDX);
+		
+		return ret;
+	}
 
-		ret = armor_sum / len;
+	/**
+	 * 装甲平均値を取得する。(地爆時)
+	 * @return 装甲平均値
+	 */
+	public double getArmorAveLegs() {
+		double ret = 0;
+		
+		ret += 0.05 * getArmor(HEAD_IDX);
+		ret += 0.05 * getArmor(BODY_IDX);
+		ret += 0.20 * getArmor(ARMS_IDX);
+		ret += 0.70 * getArmor(LEGS_IDX);
 		
 		return ret;
 	}
@@ -2359,23 +2370,20 @@ public class CustomData {
 	 * @return 連射速度
 	 */
 	private double getShotSpeed(BBData data) {
-		double ret = 0;
 		double shot_chip_bonus = 1.0;
 
 		// チップの補正値を取得
 		if(existChip("実弾速射")) {
-			shot_chip_bonus = 1.03;
+			shot_chip_bonus += 0.03 * (data.getBulletAbsPer() / 100);
 		}
 		else if(existChip("実弾速射II")) {
-			shot_chip_bonus = 1.08;
+			shot_chip_bonus += 0.08 * (data.getBulletAbsPer() / 100);
 		}
 		else if(existChip("実弾速射III")) {
-			shot_chip_bonus = 1.12;
+			shot_chip_bonus += 0.12 * (data.getBulletAbsPer() / 100);
 		}
-		
-		ret = data.getShotSpeed() * shot_chip_bonus;
-		
-		return ret;
+
+		return data.getShotSpeed() * shot_chip_bonus;
 	}
 	
 	/**
@@ -2551,6 +2559,19 @@ public class CustomData {
 		
 		return ret;
 	}
+	
+	/**
+	 * OH火力を取得する。
+	 * @param data 武器データ
+	 * @return OH火力
+	 */
+	public double getOverHeatPower(BBData data) {
+		double shot_speed = getShotSpeed(data);
+		double oneshot_power = getOneShotPower(data);
+		double oh_guard_time = data.getOverheatTime();
+		
+		return oneshot_power * (shot_speed / 60) * oh_guard_time;
+	}
 
 	/**
 	 * OH武器の戦術火力を取得する。(OH中)
@@ -2564,23 +2585,23 @@ public class CustomData {
 	 * OH武器の戦術火力を取得する。
 	 * 
 	 * 戦術火力＝OH火力÷（OH耐性時間＋OH復帰時間）
+	 * @param data 武器データ
 	 * @param is_overheat OH中かどうか。
 	 * @return 戦術火力
 	 */
 	public double getBattlePowerOverHeat(BBData data, boolean is_overheat) {
 		double ret = 0;
 		double shot_speed = getShotSpeed(data);
-		double oneshot_power = getOneShotPower(data);
 		
 		if(shot_speed > 0) {
 			double oh_guard_time = data.getOverheatTime();
 			double oh_repair_time = getOverheatRepairTime(data, is_overheat);
-			double oh_power = oneshot_power * (shot_speed / 60) * oh_guard_time;
+			double oh_power = getOverHeatPower(data);
 	
 			ret = oh_power / (oh_guard_time + oh_repair_time);
 		}
 		else {
-			ret = oneshot_power;
+			ret = getOneShotPower(data);
 		}
 		
 		return ret;
@@ -3075,6 +3096,24 @@ public class CustomData {
 	 */
 	public double getLife() {
 		double damege_rate = (100 - getArmorAve()) / 100;
+		return SpecValues.BLUST_LIFE_MAX / damege_rate;
+	}
+
+	/**
+	 * 装甲平均値から算出する実耐久値を算出する。(空爆時)
+	 * @return 耐久値
+	 */
+	public double getLifeHead() {
+		double damege_rate = (100 - getArmorAveHead()) / 100;
+		return SpecValues.BLUST_LIFE_MAX / damege_rate;
+	}
+
+	/**
+	 * 装甲平均値から算出する実耐久値を算出する。(地爆時)
+	 * @return 耐久値
+	 */
+	public double getLifeLegs() {
+		double damege_rate = (100 - getArmorAveLegs()) / 100;
 		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 	

@@ -184,13 +184,13 @@ public class SettingManager {
 	 */
 	public static int getColorBlue() {
 		if(sThemeID == android.R.style.Theme_Holo) {
-			return Color.BLUE;
+			return Color.rgb(0, 0, 0xAA);
 		}
 		else if(sThemeID == android.R.style.Theme_Holo_Light) {
 			return Color.rgb(0, 0xCC, 0xFF);
 		}
 
-		return Color.BLUE;
+		return Color.rgb(0, 0, 0xAA);
 	}
 	
 	/**
