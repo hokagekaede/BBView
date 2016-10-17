@@ -2,8 +2,6 @@ package hokage.kaede.gmail.com.BBViewLib;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 /**
  * アセンの詳細情報を管理するクラス。
  */

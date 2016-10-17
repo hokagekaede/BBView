@@ -162,16 +162,17 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 				BBDataComparator cmp_data = new BBDataComparator(shown_key, true, mIsKmPerHour);
 				cmp_data.compare(to_item, from_item);
 				double cmp = cmp_data.getCmpValue();
+				
 				if(cmp_data.isCmpOK()) {
 					if(cmp > 0) {
 						color_stag = SettingManager.getCodeCyan();
 						color_etag = COLOR_TAG_END;
-						cmp_str = " (" + SpecValues.getSpecUnit(Math.abs(cmp), shown_key, mIsKmPerHour) + "↑)";
+						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, mIsKmPerHour) + "↑)";
 					}
 					else if(cmp < 0) {
 						color_stag = SettingManager.getCodeMagenta();
 						color_etag = COLOR_TAG_END;
-						cmp_str = " (" + SpecValues.getSpecUnit(Math.abs(cmp), shown_key, mIsKmPerHour) + "↓)";
+						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, mIsKmPerHour) + "↓)";
 					}
 				}
 			}

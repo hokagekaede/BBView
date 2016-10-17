@@ -1139,6 +1139,32 @@ public class SpecValues {
 	}
 	
 	/**
+	 * 値を単位つきの文字列で取得する。装甲の比較対策向け。
+	 * @param value スペック値
+	 * @param key キー
+	 * @return スペック値の文字列
+	 */
+	public static String getSpecUnitCmpArmor(double value, String key, boolean is_km_per_hour) {
+		String ret = "";
+		
+		if(key.contains("装甲")) {
+			
+			// 設定ONの場合はダメージ係数に表記を変更する
+			if(BBViewSettingManager.IS_ARMOR_RATE) {
+				ret = String.format("x%.2f", value / 100);
+			}
+			else {
+				ret = String.format("%.1f(%%)", value);
+			}
+		}
+		else {
+			ret = getSpecUnit(value, key, is_km_per_hour);
+		}
+		
+		return ret;
+	}
+	
+	/**
 	 * double型をint型に変換する。小数部は破棄する。精度は小数点第一位までとする。
 	 * @param target 変換するdouble型の値
 	 * @return 変換後のint型の値
