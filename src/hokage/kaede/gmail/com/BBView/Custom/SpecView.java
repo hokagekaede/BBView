@@ -135,7 +135,12 @@ public class SpecView extends FrameLayout {
 		if(mMode == MODE_BASE) {
 			layout_table.addView(AssembleViewBuilder.create(context, ""));
 			layout_table.addView(BlustSpeedViewBuilder.create(context));
-			layout_table.addView(CommonSpecViewBuilder.create(context));
+			if(mIsShowSimple) {
+				layout_table.addView(CommonSpecViewSimpleBuilder.create(context));
+			}
+			else {
+				layout_table.addView(CommonSpecViewBuilder.create(context));
+			}
 			layout_table.addView(PartsSpecViewBuilder.create(context, ""));
 
 		}
@@ -524,9 +529,9 @@ public class SpecView extends FrameLayout {
 	}
 	
 	/**
-	 * 「総合スペック」のビューを生成するクラス
+	 * 「総合スペック」のビューを生成するクラス(簡易表示)
 	 */
-	private static class CommonSpecViewBuilder {
+	private static class CommonSpecViewSimpleBuilder {
 
 		/**
 		 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
@@ -548,7 +553,7 @@ public class SpecView extends FrameLayout {
 			
 			// 装甲平均値
 			double armor_value = custom_data.getArmorAve();
-			double life_value = custom_data.getLife();
+			double life_value = custom_data.getLife(false);
 			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
 			String armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
 			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
@@ -559,7 +564,7 @@ public class SpecView extends FrameLayout {
 
 			// 装甲平均値(空爆時)
 			armor_value = custom_data.getArmorAveHead();
-			life_value = custom_data.getLifeHead();
+			life_value = custom_data.getLifeHead(false);
 			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
 			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
 			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
@@ -570,7 +575,7 @@ public class SpecView extends FrameLayout {
 
 			// 装甲平均値(地爆時)
 			armor_value = custom_data.getArmorAveLegs();
-			life_value = custom_data.getLifeLegs();
+			life_value = custom_data.getLifeLegs(false);
 			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
 			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
 			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
@@ -593,6 +598,98 @@ public class SpecView extends FrameLayout {
 			TextView common_spec_view = ViewBuilder.createTextView(context, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 			layout_table.addView(common_spec_view);
 			layout_table.addView(table);
+			
+			return layout_table;
+		}
+	}
+
+	/**
+	 * 「総合スペック」のビューを生成するクラス
+	 */
+	private static class CommonSpecViewBuilder {
+
+		/**
+		 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
+		 * @param custom_data 表示するカスタムデータ
+		 * @return 総合スペックテーブル
+		 */
+		private static View create(Context context) {
+			CustomData custom_data = CustomDataManager.getCustomData();
+			
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			// セットボーナス
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "セットボーナス", custom_data.getSetBonus()));
+			
+			// チップ容量
+			String chip_capacity_str = String.format("%.1f", custom_data.getChipCapacity());
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "チップ容量", chip_capacity_str));
+
+			// 総重量(猶予)
+			String weight_str = String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight());
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "総重量(猶予)", weight_str));
+			
+			// 装甲平均値
+			TableLayout armor_table = new TableLayout(context);
+			armor_table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+			
+			if(BBViewSettingManager.IS_ARMOR_RATE) {
+				armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "被ダメ種別", "ダメージ係数", "実耐久値", "実耐久値(N-DEF)"));
+			}
+			else {
+				armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "被ダメ種別", "装甲平均値", "実耐久値", "実耐久値(N-DEF)"));
+			}
+			
+			double armor_value = custom_data.getArmorAve();
+			double life_value = custom_data.getLife(false);
+			double life_ndef_value = custom_data.getLife(true);
+			String armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			String armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			String life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			String life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ")"; 
+			
+			armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "対近接", armor_str, life_str, life_ndef_str));
+
+			// 装甲平均値(空爆時)
+			armor_value = custom_data.getArmorAveHead();
+			life_value = custom_data.getLifeHead(false);
+			life_ndef_value = custom_data.getLifeHead(true);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ")"; 
+			
+			armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "対空爆時", armor_str, life_str, life_ndef_str));
+
+			// 装甲平均値(地爆時)
+			armor_value = custom_data.getArmorAveLegs();
+			life_value = custom_data.getLifeLegs(false);
+			life_ndef_value = custom_data.getLifeLegs(true);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+
+			armor_str = armor_point + " (" + armor_str + ")"; 
+			
+			armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), "対地爆時", armor_str, life_str, life_ndef_str));
+			
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+			
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView common_spec_view = ViewBuilder.createTextView(context, "総合スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(common_spec_view);
+			layout_table.addView(table);
+			layout_table.addView(armor_table);
 			
 			return layout_table;
 		}

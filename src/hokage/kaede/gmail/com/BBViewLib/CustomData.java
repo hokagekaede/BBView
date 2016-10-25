@@ -3085,34 +3085,49 @@ public class CustomData {
 	private double calcDamage(int attack_value, double chip_bonus, double abs_per, double armor) {
 		double attack_damege = (attack_value * chip_bonus) * (abs_per / 100);
 		
-		return attack_damege + (attack_damege * armor / 100);
+		return ((100 - armor) / 100) * attack_damege;
 	}
 	
 	/**
-	 * 装甲平均値から算出する実耐久値を算出する。
+	 * 装甲平均値から算出する実耐久値を算出する。(近接攻撃時)
+	 * @param ndef_on N-DEFが残っている場合の実耐久値。
 	 * @return 耐久値
 	 */
-	public double getLife() {
+	public double getLife(boolean ndef_on) {
 		double damege_rate = (100 - getArmorAve()) / 100;
 		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 
 	/**
 	 * 装甲平均値から算出する実耐久値を算出する。(空爆時)
+	 * @param ndef_on N-DEFが残っている場合の実耐久値。
 	 * @return 耐久値
 	 */
-	public double getLifeHead() {
+	public double getLifeHead(boolean ndef_on) {
 		double damege_rate = (100 - getArmorAveHead()) / 100;
-		return SpecValues.BLUST_LIFE_MAX / damege_rate;
+		double life = SpecValues.BLUST_LIFE_MAX / damege_rate;
+
+		if(ndef_on) {
+			life = life + (getDefGuard() / 0.8);
+		}
+		
+		return life;
 	}
 
 	/**
 	 * 装甲平均値から算出する実耐久値を算出する。(地爆時)
+	 * @param ndef_on N-DEFが残っている場合の実耐久値。
 	 * @return 耐久値
 	 */
-	public double getLifeLegs() {
+	public double getLifeLegs(boolean ndef_on) {
 		double damege_rate = (100 - getArmorAveLegs()) / 100;
-		return SpecValues.BLUST_LIFE_MAX / damege_rate;
+		double life = SpecValues.BLUST_LIFE_MAX / damege_rate;
+
+		if(ndef_on) {
+			life = life + (getDefGuard() / 0.8);
+		}
+		
+		return life;
 	}
 	
 	/**

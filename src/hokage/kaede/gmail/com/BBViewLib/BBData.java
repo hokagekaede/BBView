@@ -624,8 +624,8 @@ public class BBData extends KVCStore {
 		String abs_str = super.get("属性");
 		String name = super.get("名称");
 
-		// スタナー系統、バインドマイン系統はニュード100%だが除外する
-		if(name.contains("スタナー") || name.contains("バインドマイン")) {
+		// スタナー系統、バインドマイン系統、NeLIS系統はニュード100%だが除外する
+		if(name.contains("スタナー") || name.contains("バインドマイン") || existCategory("NeLIS系統")) {
 			return false;
 		}
 		else if(abs_str.contains(SHOT_ABS_BULLET)) {
@@ -1371,7 +1371,8 @@ public class BBData extends KVCStore {
 	 */
 	public double getArmorBreakJdg(boolean is_critical) {
 		double power = getShotAntiStability(is_critical);
-		return (2 - (SpecValues.getBlustBreakDamage() / power)) * 100;
+		double damege_rate = SpecValues.getBlustBreakDamage() / power;
+		return 100 - (damege_rate * 100);
 	}
 	
 	/**
@@ -1381,7 +1382,8 @@ public class BBData extends KVCStore {
 	 */
 	public double getArmorDownJdg(boolean is_critical) {
 		double power = getShotAntiStability(is_critical);
-		return (2 - (SpecValues.BLUST_DOWN_DAMAGE / power)) * 100;
+		double damege_rate = SpecValues.BLUST_DOWN_DAMAGE / power;
+		return 100 - (damege_rate * 100);
 	}
 	
 	/**
@@ -1391,6 +1393,7 @@ public class BBData extends KVCStore {
 	 */
 	public double getArmorKBJdg(boolean is_critical) {
 		double power = getShotAntiStability(is_critical);
-		return (2 - (SpecValues.BLUST_KB_DAMAGE / power)) * 100;
+		double damege_rate = SpecValues.BLUST_KB_DAMAGE / power;
+		return 100 - (damege_rate * 100);
 	}
 }

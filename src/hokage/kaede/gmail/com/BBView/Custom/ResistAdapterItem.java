@@ -24,7 +24,7 @@ public class ResistAdapterItem extends TableLayout {
 	private static final int TABLE_ROW_MAX = 7;
 	private static final int TABLE_COL_MAX = 5;
 	
-	private static final String[] TITLE_ROW_STR = { "攻撃方法", "威力", "破", "転", "仰" };
+	private static final String[] TITLE_ROW_STR = { "攻撃方法", "被ダメージ", "破", "転", "仰" };
 	
 	private static final String[] PATTERN_SHOT = { "CS" };
 	private static final String[] PATTERN_CHARGE_SHOT = { "CS(CG0)", "CS(CG1)", "CS(CG2)" };

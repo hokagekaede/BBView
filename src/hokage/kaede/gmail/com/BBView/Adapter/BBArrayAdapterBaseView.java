@@ -152,7 +152,6 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		int len = mShownKeys.size();
 		for(int i=0; i<len; i++) {
 			String shown_key = mShownKeys.get(i);
-			String value = to_item.get(shown_key);
 			
 			// 現在選択中のパーツとの性能比較を行い、表示色を決定する。
 			String color_stag = "";
@@ -180,17 +179,18 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			// 表示する値の文字列を取得する
 			String value_str = "";
 			if(BBDataComparator.isPointKey(shown_key)) {
+				String value = to_item.get(shown_key);
 				value_str = value + " (" + SpecValues.getSpecUnit(to_item, shown_key, mIsKmPerHour) + ")";
 
 			}
 			else if(shown_key.equals(BBData.ARMOR_BREAK_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_BREAK_KEY, value);
+				value_str = createArmorBreakString(BBData.ARMOR_BREAK_KEY);
 			}
 			else if(shown_key.equals(BBData.ARMOR_DOWN_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_DOWN_KEY, value);
+				value_str = createArmorBreakString(BBData.ARMOR_DOWN_KEY);
 			}
 			else if(shown_key.equals(BBData.ARMOR_KB_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY, value);
+				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY);
 			}
 			else if(shown_key.equals(BBData.BULLET_SUM_KEY)) {
 				value_str = to_item.get("総弾数") + "=" + SpecValues.getShowValue(to_item, shown_key, mIsKmPerHour);
@@ -214,12 +214,30 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	/**
 	 * 大破判定、転倒判定、KB判定の文字列を生成する。
 	 * @param key
-	 * @param value
+	 * @param value_str
 	 * @return
 	 */
-	private String createArmorBreakString(String key, String value) {
+	private String createArmorBreakString(String key) {
 		String ret = "";
-		String point = SpecValues.getPoint("装甲", value, true);
+		String point = "";
+
+		double min_value = Double.MIN_VALUE;
+		double value = mTargetData.getCalcValue(key);
+		
+		try {
+			min_value = Double.valueOf(SpecValues.ARMOR.get("E-"));
+
+			if(value >= min_value) {
+				point = SpecValues.getPoint("装甲", value, true);
+			}
+			else {
+				point = SpecValues.NOTHING_STR;
+			}
+			
+		} catch(Exception e) {
+			min_value = Double.MIN_VALUE;
+			point = SpecValues.NOTHING_STR;
+		}
 
 		if(point.equals(SpecValues.NOTHING_STR)) {
 			ret = "BS:対象無し";
@@ -246,7 +264,12 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			}
 
 			double cs_value = mTargetData.getCalcValue(cs_key);
-			point = SpecValues.getPoint("装甲", cs_value, true);
+			if(cs_value >= min_value) {
+				point = SpecValues.getPoint("装甲", cs_value, true);
+			}
+			else {
+				point = SpecValues.NOTHING_STR;
+			}
 
 			if(point.equals(SpecValues.NOTHING_STR)) {
 				ret = ret + " - CS:対象無し";
