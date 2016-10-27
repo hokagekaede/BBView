@@ -256,8 +256,8 @@ public class SpecArray {
 	}
 	
 	public static SpecRow getSecPowerArray(CustomData data, BBData weapon) {
-		double normal_value = weapon.getSecPower();
-		double real_value = data.getSecPower(weapon);
+		double normal_value = weapon.get1SecPower();
+		double real_value = data.get1SecPower(weapon);
 
 		return new SpecRow("瞬間火力", normal_value, real_value, BBViewSettingManager.IS_KM_PER_HOUR);
 	}

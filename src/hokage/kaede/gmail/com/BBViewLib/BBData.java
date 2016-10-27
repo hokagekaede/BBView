@@ -126,7 +126,7 @@ public class BBData extends KVCStore {
 			ret = getMagazinePower();
 		}
 		else if(key.equals(SEC_POWER_KEY)) {
-			ret = getSecPower();
+			ret = get1SecPower();
 		}
 		else if(key.equals(BATTLE_POWER_KEY)) {
 			ret = getBattlePower();
@@ -966,6 +966,24 @@ public class BBData extends KVCStore {
 		
 		return ret;
 	}
+
+	/**
+	 * 秒間火力を取得する。
+	 * @param data 指定の武器
+	 * @return 秒間火力
+	 */
+	public double get1SecPower() {
+		double ret = 0;
+
+		if(super.get("名称").equals("ライトニングスマック")) {
+			ret = get1SecPowerLightning();
+		}
+		else {
+			ret = get1SecPowerDefault();
+		}
+		
+		return ret;
+	}
 	
 	/**
 	 * 瞬間火力を返す。
@@ -974,7 +992,7 @@ public class BBData extends KVCStore {
 	 * 
 	 * @return 秒間火力
 	 */
-	public double getSecPower() {
+	private double get1SecPowerDefault() {
 		double ret = 0;
 		double shot_speed = getShotSpeed();
 
@@ -993,6 +1011,22 @@ public class BBData extends KVCStore {
 		}
 
 		return ret;
+	}
+
+	/**
+	 * ライトニングスマックの秒間火力を取得する。
+	 * ポンプアクション込みの計算を行う。
+	 * 連射速度から1射に要する時間を求め、それにポンプアクションの時間(0.8s)を加算し、
+	 * 1秒から算出結果を除算することで実連射速度を求める。
+	 * 
+	 * @param data ライトニングスマック
+	 * @return 秒間火力
+	 */
+	private double get1SecPowerLightning() {
+		double shot_speed = getShotSpeed();
+		double one_power = getOneShotPower(0);
+		
+		return (3 * one_power) * (1.0 / ((3 * (60 / shot_speed)) + 0.8));
 	}
 
 	/**
@@ -1022,6 +1056,9 @@ public class BBData extends KVCStore {
 
 		if(super.existKey("OH復帰時間")) {
 			ret = getBattlePowerOverHeat(false);  // OH前の戦術火力を取得する
+		}
+		if(super.get("名称").equals("ライトニングスマック")) {
+			ret = getBattlePowerLightning(false);
 		}
 		else {
 			ret = getBattlePowerDefault();
@@ -1056,6 +1093,27 @@ public class BBData extends KVCStore {
 		return ret;
 	}
 
+	/**
+	 * ライトニングスマックの戦術火力を取得する。
+	 * @param data ライトニングスマック
+	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerLightning(boolean is_quickreload) {
+		double ret = 0;
+		double shot_speed = getShotSpeed();
+		double magazine_power = getMagazinePower();
+		double reload_time = getReloadTime();
+		int magazine = getMagazine();
+		
+		// 撃ち切り時間＝弾自体を撃ち切る時間＋ポンプアクション時間×回数
+		double all_shot_time = (magazine / shot_speed * 60) + (0.8 * (magazine / 3));
+		
+		ret = magazine_power / (all_shot_time + reload_time);
+		
+		return ret;
+	}
+	
 	/**
 	 * OH火力を取得する。
 	 * @param data 武器データ

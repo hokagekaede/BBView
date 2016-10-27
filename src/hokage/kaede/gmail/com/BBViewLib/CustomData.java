@@ -2389,10 +2389,15 @@ public class CustomData {
 	 * @param data 指定の武器
 	 * @return 秒間火力
 	 */
-	public double getSecPower(BBData data) {
+	public double get1SecPower(BBData data) {
 		double ret = 0;
 
-		ret = get1SecPowerDefault(data);
+		if(data.get("名称").equals("ライトニングスマック")) {
+			ret = get1SecPowerLightning(data);
+		}
+		else {
+			ret = get1SecPowerDefault(data);
+		}
 		
 		return ret;
 	}
@@ -2425,6 +2430,22 @@ public class CustomData {
 		}
 		
 		return ret;
+	}
+
+	/**
+	 * ライトニングスマックの秒間火力を取得する。
+	 * ポンプアクション込みの計算を行う。
+	 * 連射速度から1射に要する時間を求め、それにポンプアクションの時間(0.8s)を加算し、
+	 * 1秒から算出結果を除算することで実連射速度を求める。
+	 * 
+	 * @param data ライトニングスマック
+	 * @return 秒間火力
+	 */
+	private double get1SecPowerLightning(BBData data) {
+		double shot_speed = getShotSpeed(data);
+		double one_power = getOneShotPower(data, 0);
+		
+		return (3 * one_power) * (1.0 / ((3 * (60 / shot_speed)) + 0.8));
 	}
 
 	/**
@@ -2522,6 +2543,9 @@ public class CustomData {
 		if(data.existKey("OH復帰時間")) {
 			ret = getBattlePowerOverHeat(data, false);  // OH前の戦術火力を取得する
 		}
+		if(data.get("名称").equals("ライトニングスマック")) {
+			ret = getBattlePowerLightning(data, false);
+		}
 		else {
 			ret = getBattlePowerDefault(data, is_quickreload);
 		}
@@ -2554,6 +2578,27 @@ public class CustomData {
 		else {
 			ret = getOneShotPower(data);
 		}
+		
+		return ret;
+	}
+
+	/**
+	 * ライトニングスマックの戦術火力を取得する。
+	 * @param data ライトニングスマック
+	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
+	 * @return 戦術火力
+	 */
+	public double getBattlePowerLightning(BBData data, boolean is_quickreload) {
+		double ret = 0;
+		double shot_speed = getShotSpeed(data);
+		double magazine_power = getMagazinePower(data);
+		double reload_time = getReloadTime(data, is_quickreload);
+		int magazine = data.getMagazine();
+		
+		// 撃ち切り時間＝弾自体を撃ち切る時間＋ポンプアクション時間×回数
+		double all_shot_time = (magazine / shot_speed * 60) + (0.8 * (magazine / 3));
+		
+		ret = magazine_power / (all_shot_time + reload_time);
 		
 		return ret;
 	}
