@@ -2,6 +2,7 @@ package hokage.kaede.gmail.com.BBViewLib.Android;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray.SpecRow;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
@@ -38,7 +39,7 @@ public class ViewBuilder {
 			text.setText(args[i]);
 			text.setPadding(5, 0, 5, 0);
 			text.setTextColor(color);
-			text.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+			text.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 			row.addView(text);
 		}
 		
@@ -61,7 +62,7 @@ public class ViewBuilder {
 			text.setText(args[i]);
 			text.setPadding(5, 0, 5, 0);
 			text.setTextColor(colors[i]);
-			text.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+			text.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 			row.addView(text);
 		}
 		
@@ -155,7 +156,7 @@ public class ViewBuilder {
 	public static TextView createTextView(Context context, String text, int flag, int color, int bg_color) {
 		TextView text_view = new TextView(context);
 		text_view.setText(text);
-		text_view.setTextSize(BBViewSettingManager.getTextSize(context, flag));
+		text_view.setTextSize(BBViewSetting.getTextSize(context, flag));
 		text_view.setTextColor(color);
 		text_view.setBackgroundColor(bg_color);
 		
@@ -173,7 +174,7 @@ public class ViewBuilder {
 	public static TextView createTextView(Context context, String text, int flag, int color) {
 		TextView text_view = new TextView(context);
 		text_view.setText(text);
-		text_view.setTextSize(BBViewSettingManager.getTextSize(context, flag));
+		text_view.setTextSize(BBViewSetting.getTextSize(context, flag));
 		text_view.setTextColor(color);
 		
 		return text_view;

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 
 /**
  * BBViewの各画面のベースとなるクラス。
@@ -109,9 +110,9 @@ public abstract class BaseActivity extends Activity {
 	*/
 
 	private void setTheme() {
-		int res_id = BBViewSettingManager.sThemeID;
+		int res_id = BBViewSetting.sThemeID;
 		
-		if(res_id != BBViewSettingManager.THEME_DEFAULT_ID) {
+		if(res_id != BBViewSetting.THEME_DEFAULT_ID) {
 			setTheme(res_id);
 		}
 	}

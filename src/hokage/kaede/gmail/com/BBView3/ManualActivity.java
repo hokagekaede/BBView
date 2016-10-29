@@ -1,7 +1,7 @@
 package hokage.kaede.gmail.com.BBView3;
 
 import hokage.kaede.gmail.com.BBView3.R;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
@@ -43,7 +43,7 @@ public class ManualActivity extends BaseActivity
 		TextView about_text_view = new TextView(this);
 		about_text_view.setText(about_text);
 		about_text_view.setTextColor(SettingManager.getColorWhite());
-		about_text_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+		about_text_view.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 		
 		ScrollView sv = new ScrollView(this);
 		sv.addView(about_text_view);

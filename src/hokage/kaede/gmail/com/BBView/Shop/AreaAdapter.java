@@ -1,11 +1,11 @@
 package hokage.kaede.gmail.com.BBView.Shop;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 
 /**
  * 地域データを管理するアダプタ
@@ -69,7 +69,7 @@ public class AreaAdapter extends BaseAdapter {
 		TextView text = new TextView(mContext);
 		text.setText(ShopDatabase.AREA_LIST[index]);
 		text.setTextSize(24);
-		text.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		text.setTextSize(BBViewSetting.getTextSize(mContext, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		text.setPadding(20, 20, 20, 20);
 		
 		return text;

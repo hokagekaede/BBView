@@ -1,6 +1,5 @@
 package hokage.kaede.gmail.com.BBViewLib;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
 
 /**
@@ -25,7 +24,7 @@ public class CustomDataManager {
 	 * @return 現在編集中のカスタムデータ。
 	 */
 	public static CustomData getCustomData() {
-		boolean speed_unit = BBViewSettingManager.IS_KM_PER_HOUR;
+		boolean speed_unit = BBViewSetting.IS_KM_PER_HOUR;
 		boolean data_speed_unit = sTarget.getSpeedUnit();
 		
 		if(speed_unit != data_speed_unit) {

@@ -2540,10 +2540,10 @@ public class CustomData {
 	public double getBattlePower(BBData data,  boolean is_quickreload) {
 		double ret = 0;
 
-		if(data.existKey("OH復帰時間")) {
+		if(BBViewSetting.IS_BATTLE_POWER_OH && data.existKey("OH復帰時間")) {
 			ret = getBattlePowerOverHeat(data, false);  // OH前の戦術火力を取得する
 		}
-		if(data.get("名称").equals("ライトニングスマック")) {
+		else if(data.get("名称").equals("ライトニングスマック")) {
 			ret = getBattlePowerLightning(data, false);
 		}
 		else {
@@ -2554,7 +2554,7 @@ public class CustomData {
 	}
 	
 	/**
-	 * リロードに依存した基本的な戦術火力を取得する。
+	 * リロード基準の戦術火力を取得する。
 	 * 
 	 * 戦術火力＝マガジン火力÷（撃ち切り時間＋リロード時間）
 	 * なお、連射速度の情報がない場合は単発火力とする。
@@ -2625,7 +2625,7 @@ public class CustomData {
 	}
 	
 	/**
-	 * OH武器の戦術火力を取得する。
+	 * OH基準の戦術火力を取得する。
 	 * 
 	 * 戦術火力＝OH火力÷（OH耐性時間＋OH復帰時間）
 	 * @param data 武器データ

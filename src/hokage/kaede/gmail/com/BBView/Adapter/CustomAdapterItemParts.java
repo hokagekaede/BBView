@@ -3,9 +3,9 @@ package hokage.kaede.gmail.com.BBView.Adapter;
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBView.Custom.SelectActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +39,7 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 		layout.addView(mTitleTextView);
 
 		mSummaryTextView = new TextView(context);
-		if(BBViewSettingManager.IS_SHOW_SPECLABEL) {
+		if(BBViewSetting.IS_SHOW_SPECLABEL) {
 			layout.addView(mSummaryTextView);
 		}
 
@@ -51,7 +51,7 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 	@Override
 	public void updateView() {
 
-		if(BBViewSettingManager.IS_SHOW_SPECLABEL) {
+		if(BBViewSetting.IS_SHOW_SPECLABEL) {
 			mTitleTextView.setPadding(25, 10, 0, 0);
 		}
 		else {
@@ -59,12 +59,12 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 		}
 		mTitleTextView.setGravity(Gravity.LEFT);
 		mTitleTextView.setText(title);
-		mTitleTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		mTitleTextView.setTextSize(BBViewSetting.getTextSize(mContext, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		
 		mSummaryTextView.setPadding(25, 0, 0, 10);
 		mSummaryTextView.setGravity(Gravity.LEFT);
 		mSummaryTextView.setText(summary);
-		mSummaryTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+		mSummaryTextView.setTextSize(BBViewSetting.getTextSize(mContext, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 	}
 
 	@Override

@@ -1,7 +1,8 @@
 package hokage.kaede.gmail.com.BBView3;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
+import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
 
 import java.io.File;
@@ -77,34 +78,41 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		ListPreference text_size_type = new ListPreference(this);
 		text_size_type.setTitle("テキストサイズ");
 		text_size_type.setSummary("文字の大きさを変更する");
-		text_size_type.setKey(BBViewSettingManager.TEXT_SIZE_KEY);
-		text_size_type.setEntries(BBViewSettingManager.STR_TEXT_SIZE_LIST);
-		text_size_type.setEntryValues(BBViewSettingManager.STR_TEXT_SIZE_LIST);	
-		text_size_type.setDefaultValue(BBViewSettingManager.STR_TEXT_SIZE_DEFAULT);
+		text_size_type.setKey(BBViewSetting.TEXT_SIZE_KEY);
+		text_size_type.setEntries(BBViewSetting.STR_TEXT_SIZE_LIST);
+		text_size_type.setEntryValues(BBViewSetting.STR_TEXT_SIZE_LIST);	
+		text_size_type.setDefaultValue(BBViewSetting.STR_TEXT_SIZE_DEFAULT);
 		screen.addPreference(text_size_type);
 		
 		ListPreference theme_type = new ListPreference(this);
 		theme_type.setTitle("テーマ");
 		theme_type.setSummary("画面の背景色などを変更する");
-		theme_type.setKey(BBViewSettingManager.THEME_KEY);
-		theme_type.setEntries(BBViewSettingManager.THEME_LIST);
-		theme_type.setEntryValues(BBViewSettingManager.THEME_LIST);	
-		theme_type.setDefaultValue(BBViewSettingManager.THEME_DEFAULT);
+		theme_type.setKey(BBViewSetting.THEME_KEY);
+		theme_type.setEntries(BBViewSetting.THEME_LIST);
+		theme_type.setEntryValues(BBViewSetting.THEME_LIST);	
+		theme_type.setDefaultValue(BBViewSetting.THEME_DEFAULT);
 		screen.addPreference(theme_type);
 		
 		CheckBoxPreference speed_view_type = new CheckBoxPreference(this);
 		speed_view_type.setTitle("移動速度のkm/h表示");
 		speed_view_type.setSummary("ONの場合はkm/h表示、OFFの場合はm/s表示");
-		speed_view_type.setKey(BBViewSettingManager.SETTING_KM_PER_HOUR);
-		speed_view_type.setChecked(BBViewSettingManager.IS_KM_PER_HOUR);
+		speed_view_type.setKey(BBViewSetting.SETTING_KM_PER_HOUR);
+		speed_view_type.setChecked(BBViewSetting.IS_KM_PER_HOUR);
 		screen.addPreference(speed_view_type);
 
 		CheckBoxPreference armor_view_type = new CheckBoxPreference(this);
 		armor_view_type.setTitle("装甲のダメージ係数表示");
 		armor_view_type.setSummary("ONの場合はダメージ係数で表示、OFFの場合は公式準拠値で表示");
-		armor_view_type.setKey(BBViewSettingManager.SETTING_ARMOR_RATE);
-		armor_view_type.setChecked(BBViewSettingManager.IS_ARMOR_RATE);
+		armor_view_type.setKey(BBViewSetting.SETTING_ARMOR_RATE);
+		armor_view_type.setChecked(BBViewSetting.IS_ARMOR_RATE);
 		screen.addPreference(armor_view_type);
+
+		CheckBoxPreference battle_power_oh_view_type = new CheckBoxPreference(this);
+		battle_power_oh_view_type.setTitle("OH武器の戦術火力計算");
+		battle_power_oh_view_type.setSummary("ONの場合はOH基準で計算、OFFの場合はリロード基準で計算");
+		battle_power_oh_view_type.setKey(BBViewSetting.SETTING_BATTLE_POWER_OH);
+		battle_power_oh_view_type.setChecked(BBViewSetting.IS_BATTLE_POWER_OH);
+		screen.addPreference(battle_power_oh_view_type);
 		
 		// アセン画面
 		PreferenceCategory custom_category = new PreferenceCategory(this);
@@ -114,22 +122,22 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		CheckBoxPreference show_column2 = new CheckBoxPreference(this);
 		show_column2.setTitle("2列表示");
 		show_column2.setSummary("武器を2列表示にする");
-		show_column2.setKey(BBViewSettingManager.SETTING_SHOW_COLUMN2);
-		show_column2.setChecked(BBViewSettingManager.IS_SHOW_COLUMN2);
+		show_column2.setKey(BBViewSetting.SETTING_SHOW_COLUMN2);
+		show_column2.setChecked(BBViewSetting.IS_SHOW_COLUMN2);
 		screen.addPreference(show_column2);
 		
 		CheckBoxPreference show_spec_label = new CheckBoxPreference(this);
 		show_spec_label.setTitle("性能表示");
 		show_spec_label.setSummary("パーツの下に性能を簡略表示する");
-		show_spec_label.setKey(BBViewSettingManager.SETTING_SHOW_SPECLABEL);
-		show_spec_label.setChecked(BBViewSettingManager.IS_SHOW_SPECLABEL);
+		show_spec_label.setKey(BBViewSetting.SETTING_SHOW_SPECLABEL);
+		show_spec_label.setChecked(BBViewSetting.IS_SHOW_SPECLABEL);
 		screen.addPreference(show_spec_label);
 
 		CheckBoxPreference show_type_label = new CheckBoxPreference(this);
 		show_type_label.setTitle("武器種類表示");
 		show_type_label.setSummary("武器の下に兵装名と武器の種類を表示する");
-		show_type_label.setKey(BBViewSettingManager.SETTING_SHOW_TYPELABEL);
-		show_type_label.setChecked(BBViewSettingManager.IS_SHOW_TYPELABEL);
+		show_type_label.setKey(BBViewSetting.SETTING_SHOW_TYPELABEL);
+		show_type_label.setChecked(BBViewSetting.IS_SHOW_TYPELABEL);
 		screen.addPreference(show_type_label);
 		
 		// パーツ/武器選択画面
@@ -140,64 +148,64 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		CheckBoxPreference show_having_item_only = new CheckBoxPreference(this);
 		show_having_item_only.setTitle("パーツ武器表示");
 		show_having_item_only.setSummary("所持済みのパーツ/武器のみ表示する");
-		show_having_item_only.setKey(BBViewSettingManager.SETTING_SHOW_HAVING_ONLY);
-		show_having_item_only.setChecked(BBViewSettingManager.IS_SHOW_HAVING);
+		show_having_item_only.setKey(BBViewSetting.SETTING_SHOW_HAVING_ONLY);
+		show_having_item_only.setChecked(BBViewSetting.IS_SHOW_HAVING);
 		screen.addPreference(show_having_item_only);
 
 		CheckBoxPreference show_listbutton = new CheckBoxPreference(this);
 		show_listbutton.setTitle("リストのボタン表示");
 		show_listbutton.setSummary("武器選択画面の操作ボタンを表示する");
-		show_listbutton.setKey(BBViewSettingManager.SETTING_SHOW_LISTBUTTON);
-		show_listbutton.setChecked(BBViewSettingManager.IS_SHOW_LISTBUTTON);
+		show_listbutton.setKey(BBViewSetting.SETTING_SHOW_LISTBUTTON);
+		show_listbutton.setChecked(BBViewSetting.IS_SHOW_LISTBUTTON);
 		screen.addPreference(show_listbutton);
 
 		CheckBoxPreference btn_listbutton_typetext = new CheckBoxPreference(this);
 		btn_listbutton_typetext.setTitle("リストのボタン変更");
 		btn_listbutton_typetext.setSummary("武器選択画面の操作ボタンをテキストにする");
-		btn_listbutton_typetext.setKey(BBViewSettingManager.SETTING_LISTBUTTON_TYPETEXT);
-		btn_listbutton_typetext.setChecked(BBViewSettingManager.IS_LISTBUTTON_TYPETEXT);
+		btn_listbutton_typetext.setKey(BBViewSetting.SETTING_LISTBUTTON_TYPETEXT);
+		btn_listbutton_typetext.setChecked(BBViewSetting.IS_LISTBUTTON_TYPETEXT);
 		screen.addPreference(btn_listbutton_typetext);
 
 		CheckBoxPreference btn_listbutton_showinfo = new CheckBoxPreference(this);
 		btn_listbutton_showinfo.setTitle("リストのボタン表示(詳細)");
 		btn_listbutton_showinfo.setSummary("武器選択画面の操作ボタン(詳細)を表示する");
-		btn_listbutton_showinfo.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWINFO);
-		btn_listbutton_showinfo.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWINFO);
+		btn_listbutton_showinfo.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWINFO);
+		btn_listbutton_showinfo.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWINFO);
 		screen.addPreference(btn_listbutton_showinfo);
 
 		CheckBoxPreference btn_listbutton_showcmp = new CheckBoxPreference(this);
 		btn_listbutton_showcmp.setTitle("リストのボタン表示(比較)");
 		btn_listbutton_showcmp.setSummary("武器選択画面の操作ボタン(比較)を表示する");
-		btn_listbutton_showcmp.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWCMP);
-		btn_listbutton_showcmp.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWCMP);
+		btn_listbutton_showcmp.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWCMP);
+		btn_listbutton_showcmp.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWCMP);
 		screen.addPreference(btn_listbutton_showcmp);
 
 		CheckBoxPreference btn_listbutton_showfullset = new CheckBoxPreference(this);
 		btn_listbutton_showfullset.setTitle("リストのボタン表示(フルセット)");
 		btn_listbutton_showfullset.setSummary("武器選択画面の操作ボタン(フルセット)を表示する");
-		btn_listbutton_showfullset.setKey(BBViewSettingManager.SETTING_LISTBUTTON_SHOWFULLSET);
-		btn_listbutton_showfullset.setChecked(BBViewSettingManager.IS_LISTBUTTON_SHOWFULLSET);
+		btn_listbutton_showfullset.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWFULLSET);
+		btn_listbutton_showfullset.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWFULLSET);
 		screen.addPreference(btn_listbutton_showfullset);
 		
 		CheckBoxPreference btn_memory_showitem = new CheckBoxPreference(this);
 		btn_memory_showitem.setTitle("表示項目選択状態");
 		btn_memory_showitem.setSummary("表示項目選択状態を維持する");
-		btn_memory_showitem.setKey(BBViewSettingManager.SETTING_MEMORY_SHOWSPEC);
-		btn_memory_showitem.setChecked(BBViewSettingManager.IS_MEMORY_SHOWSPEC);
+		btn_memory_showitem.setKey(BBViewSetting.SETTING_MEMORY_SHOWSPEC);
+		btn_memory_showitem.setChecked(BBViewSetting.IS_MEMORY_SHOWSPEC);
 		screen.addPreference(btn_memory_showitem);
 
 		CheckBoxPreference btn_memory_sort = new CheckBoxPreference(this);
 		btn_memory_sort.setTitle("ソート状態");
 		btn_memory_sort.setSummary("ソートの状態を維持する");
-		btn_memory_sort.setKey(BBViewSettingManager.SETTING_MEMORY_SORT);
-		btn_memory_sort.setChecked(BBViewSettingManager.IS_MEMORY_SORT);
+		btn_memory_sort.setKey(BBViewSetting.SETTING_MEMORY_SORT);
+		btn_memory_sort.setChecked(BBViewSetting.IS_MEMORY_SORT);
 		screen.addPreference(btn_memory_sort);
 
 		CheckBoxPreference btn_memory_filter = new CheckBoxPreference(this);
 		btn_memory_filter.setTitle("フィルタ状態");
 		btn_memory_filter.setSummary("フィルタの状態を維持する");
-		btn_memory_filter.setKey(BBViewSettingManager.SETTING_MEMORY_FILTER);
-		btn_memory_filter.setChecked(BBViewSettingManager.IS_MEMORY_FILTER);
+		btn_memory_filter.setKey(BBViewSetting.SETTING_MEMORY_FILTER);
+		btn_memory_filter.setChecked(BBViewSetting.IS_MEMORY_FILTER);
 		screen.addPreference(btn_memory_filter);
 
 		setPreferenceScreen(screen);

@@ -4,9 +4,9 @@ import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.PurchaseManager;
 import hokage.kaede.gmail.com.BBViewLib.PurchaseStore;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
@@ -170,7 +170,7 @@ public class PurchasePreviewActivity extends BaseActivity {
 			text_view.setText(text_list[i]);
 			text_view.setTextColor(color);
 			text_view.setPadding(5, 0, 5, 0);
-			text_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+			text_view.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 			table_row.addView(text_view);
 		}
 		

@@ -9,6 +9,7 @@ import hokage.kaede.gmail.com.BBView.Shop.ShopMainActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBDataReader;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataReader;
@@ -74,13 +75,13 @@ public class TopActivity extends BaseActivity {
 		BBNetDatabase.getInstance().init(this.getFilesDir().toString());
 		
 		// 初回起動時は説明ページを起動し、アップデート時は更新情報をダイアログ表示する。
-		if(BBViewSettingManager.isFirstFlag(this)) {
-			BBViewSettingManager.setVersionCode(this);
+		if(BBViewSetting.isFirstFlag(this)) {
+			BBViewSetting.setVersionCode(this);
 			Intent intent = new Intent(this, ManualActivity.class);
 			startActivity(intent);
 		}
-		else if(BBViewSettingManager.isUpdateFlag(this)) {
-			BBViewSettingManager.setVersionCode(this);
+		else if(BBViewSetting.isUpdateFlag(this)) {
+			BBViewSetting.setVersionCode(this);
 			showFirstDialog();
 		}
 
@@ -105,7 +106,7 @@ public class TopActivity extends BaseActivity {
 		TextView title_view = new TextView(this);
 		title_view.setText("アプリ更新情報");
 		title_view.setTextColor(SettingManager.getColorWhite());
-		title_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		title_view.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		title_view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		title_layout.addView(title_view);
 		
@@ -120,7 +121,7 @@ public class TopActivity extends BaseActivity {
 		TextView appupd_text_view = new TextView(this);
 		appupd_text_view.setText(loadUpdateText());
 		appupd_text_view.setTextColor(SettingManager.getColorWhite());
-		appupd_text_view.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+		appupd_text_view.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 		appupd_text_view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		sv.addView(appupd_text_view);
 		
@@ -307,7 +308,7 @@ public class TopActivity extends BaseActivity {
 		if(intent.getAction().equals(Intent.ACTION_SEND)) {
 			String code = intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString();
 			CustomData custom_data = CustomDataManager.getCustomData();
-			int ret = custom_data.setCustomDataID(BBViewSettingManager.getVersionCode(this), (String) code);
+			int ret = custom_data.setCustomDataID(BBViewSetting.getVersionCode(this), (String) code);
 			
 			if(ret == CustomData.RET_SUCCESS) {
 				Toast.makeText(this, "アセンデータを読み込みました", Toast.LENGTH_SHORT).show();

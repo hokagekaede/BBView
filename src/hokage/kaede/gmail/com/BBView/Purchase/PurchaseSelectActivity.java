@@ -10,7 +10,7 @@ import hokage.kaede.gmail.com.BBView.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 
@@ -91,7 +91,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		mCmdDialog.setOnExecuteInterface(this);
 		
 		// 設定に応じてボタンを非表示にする
-		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWINFO) {
+		if(!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
 			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
 		}
 	}
@@ -126,7 +126,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		mAdapter.setBaseItem(null);
 		list_view.setAdapter(mAdapter);
 
-		if(BBViewSettingManager.IS_SHOW_LISTBUTTON) {
+		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
 			mAdapter.setBBAdapterCmdManager(mCmdDialog);
 		}
 

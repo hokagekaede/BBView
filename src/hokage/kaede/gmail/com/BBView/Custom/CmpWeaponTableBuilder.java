@@ -3,8 +3,8 @@ package hokage.kaede.gmail.com.BBView.Custom;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
@@ -91,15 +91,15 @@ public class CmpWeaponTableBuilder {
 			TableRow typename_row = new TableRow(mActivity);
 			TableRow typebtn_row = new TableRow(mActivity);
 			
-			typename_row.addView(ViewBuilder.createTextView(mActivity, "タイプ", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-			typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+			typename_row.addView(ViewBuilder.createTextView(mActivity, "タイプ", BBViewSetting.FLAG_TEXTSIZE_SMALL));
+			typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSetting.FLAG_TEXTSIZE_SMALL));
 
 			if(from_data_typeB != null) {
-				TextView text = ViewBuilder.createTextView(mActivity, "タイプA", BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
+				TextView text = ViewBuilder.createTextView(mActivity, "タイプA", BBViewSetting.FLAG_TEXTSIZE_SMALL);
 				text.setId(FROM_DATA_TYPE_ID);
 				typename_row.addView(text);
 				
-				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
+				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSetting.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
 				btn.setOnClickListener(new TypeChangeListener(FROM_DATA_TYPE_ID));
 				btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 				btn.setClickable(true);
@@ -109,16 +109,16 @@ public class CmpWeaponTableBuilder {
 				typebtn_row.addView(btn);
 			}
 			else {
-				typename_row.addView(ViewBuilder.createTextView(mActivity, "－", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-				typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+				typename_row.addView(ViewBuilder.createTextView(mActivity, "－", BBViewSetting.FLAG_TEXTSIZE_SMALL));
+				typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSetting.FLAG_TEXTSIZE_SMALL));
 			}
 			
 			if(to_data_typeB != null) {
-				TextView text = ViewBuilder.createTextView(mActivity, "タイプA", BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
+				TextView text = ViewBuilder.createTextView(mActivity, "タイプA", BBViewSetting.FLAG_TEXTSIZE_SMALL);
 				text.setId(TO_DATA_TYPE_ID);
 				typename_row.addView(text);
 				
-				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSettingManager.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
+				TextView btn = ViewBuilder.createTextView(mActivity, "切り替え", BBViewSetting.FLAG_TEXTSIZE_SMALL, SettingManager.getColorYellow());
 				btn.setOnClickListener(new TypeChangeListener(TO_DATA_TYPE_ID));
 				btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 				btn.setClickable(true);
@@ -128,8 +128,8 @@ public class CmpWeaponTableBuilder {
 				typebtn_row.addView(btn);
 			}
 			else {
-				typename_row.addView(ViewBuilder.createTextView(mActivity, "－", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
-				typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+				typename_row.addView(ViewBuilder.createTextView(mActivity, "－", BBViewSetting.FLAG_TEXTSIZE_SMALL));
+				typebtn_row.addView(ViewBuilder.createTextView(mActivity, "", BBViewSetting.FLAG_TEXTSIZE_SMALL));
 			}
 			
 			table.addView(typename_row);

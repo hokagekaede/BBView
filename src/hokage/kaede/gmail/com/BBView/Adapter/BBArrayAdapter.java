@@ -2,7 +2,7 @@ package hokage.kaede.gmail.com.BBView.Adapter;
 
 import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterCmdManager.IndexLayout;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class BBArrayAdapter extends BaseAdapter {
 	 */
 	public BBArrayAdapter(Context context, ArrayList<BBData> list) {
 		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
-		this.mIsKmPerHour = preference.getBoolean(BBViewSettingManager.SETTING_KM_PER_HOUR, false);
+		this.mIsKmPerHour = preference.getBoolean(BBViewSetting.SETTING_KM_PER_HOUR, false);
 		this.mList = list;
 	}
 	

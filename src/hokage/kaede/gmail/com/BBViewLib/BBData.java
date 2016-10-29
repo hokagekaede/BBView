@@ -1054,10 +1054,10 @@ public class BBData extends KVCStore {
 	public double getBattlePower() {
 		double ret = 0;
 
-		if(super.existKey("OH復帰時間")) {
+		if(BBViewSetting.IS_BATTLE_POWER_OH && super.existKey("OH復帰時間")) {
 			ret = getBattlePowerOverHeat(false);  // OH前の戦術火力を取得する
 		}
-		if(super.get("名称").equals("ライトニングスマック")) {
+		else if(super.get("名称").equals("ライトニングスマック")) {
 			ret = getBattlePowerLightning(false);
 		}
 		else {

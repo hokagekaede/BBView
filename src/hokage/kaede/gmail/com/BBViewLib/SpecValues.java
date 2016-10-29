@@ -1,6 +1,5 @@
 package hokage.kaede.gmail.com.BBViewLib;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 
 import java.math.BigDecimal;
@@ -963,7 +962,7 @@ public class SpecValues {
 		else if(key.contains("装甲")) {
 			
 			// 設定ONの場合はダメージ係数に表記を変更する
-			if(BBViewSettingManager.IS_ARMOR_RATE) {
+			if(BBViewSetting.IS_ARMOR_RATE) {
 				ret = String.format("x%.2f", (100 - value) / 100);
 			}
 			else {
@@ -1150,7 +1149,7 @@ public class SpecValues {
 		if(key.contains("装甲")) {
 			
 			// 設定ONの場合はダメージ係数に表記を変更する
-			if(BBViewSettingManager.IS_ARMOR_RATE) {
+			if(BBViewSetting.IS_ARMOR_RATE) {
 				ret = String.format("x%.2f", value / 100);
 			}
 			else {

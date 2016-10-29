@@ -2,8 +2,8 @@ package hokage.kaede.gmail.com.BBView.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -50,7 +50,7 @@ public class ResistAdapterItem extends TableLayout {
 				mTextViews[row][col] = new TextView(context);
 				mTextViews[row][col].setPadding(5, 5, 5, 5);
 				mTextViews[row][col].setGravity(Gravity.RIGHT);
-				mTextViews[row][col].setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+				mTextViews[row][col].setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 				mTableRows[row].addView(mTextViews[row][col]);
 			}
 

@@ -4,7 +4,7 @@ import hokage.kaede.gmail.com.BBView.Item.CardSelectDialog.OnSelectCardListener;
 import hokage.kaede.gmail.com.BBView.Item.CardDataReadTask.OnPostExecuteListener;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Android.UidManager;
@@ -63,7 +63,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		TextView parts_text = new TextView(this);
 		parts_text.setText("機体パーツ");
 		parts_text.setTextColor(SettingManager.getColorWhite());
-		parts_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		parts_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(parts_text);
 
 		LinearLayout parts_layout = new LinearLayout(this);
@@ -91,7 +91,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 			TextView weapon_text = new TextView(this);
 			weapon_text.setText(BBDataManager.BLUST_TYPE_LIST[i]);
 			weapon_text.setTextColor(SettingManager.getColorWhite());
-			weapon_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+			weapon_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 			layout.addView(weapon_text);
 			
 			LinearLayout weapon_layout = new LinearLayout(this);
@@ -117,7 +117,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		TextView others_text = new TextView(this);
 		others_text.setText("その他");
 		others_text.setTextColor(SettingManager.getColorWhite());
-		others_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		others_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(others_text);
 
 		LinearLayout others_layout = new LinearLayout(this);
@@ -155,7 +155,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		TextView bbnet_text = new TextView(this);
 		bbnet_text.setText("BB.NET");
 		bbnet_text.setTextColor(SettingManager.getColorWhite());
-		bbnet_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		bbnet_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		layout.addView(bbnet_text);
 
 		LinearLayout bbnet_layout = new LinearLayout(this);

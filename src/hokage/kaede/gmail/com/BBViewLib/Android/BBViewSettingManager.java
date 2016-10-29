@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib.Android;
 
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.Lib.Android.PreferenceIO;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
@@ -11,180 +12,101 @@ import android.preference.PreferenceManager;
  */
 public class BBViewSettingManager extends SettingManager {
 	
-	// Xのデータ設定
-	//public static boolean IS_VER_X_ON = false;
-
 	/**
 	 * 全ての設定値を読み込む。
 	 * @param context コンテキスト
 	 */
 	public static void loadSettings(Context context) {
-		IS_KM_PER_HOUR = isKmPerHour(context);
-		IS_ARMOR_RATE = isArmorRate(context);
-		IS_SHOW_COLUMN2 = isShowCOLUMN2(context);
-		IS_SHOW_SPECLABEL = isShowSpecLabel(context);
-		IS_SHOW_TYPELABEL = isShowTypeLabel(context);
-		IS_SHOW_LISTBUTTON = isShowButton(context);
-		IS_LISTBUTTON_TYPETEXT = isListButtonTypeText(context);
-		IS_LISTBUTTON_SHOWINFO = isListButtonShowInfo(context);
-		IS_LISTBUTTON_SHOWCMP = isListButtonShowCmp(context);
-		IS_LISTBUTTON_SHOWFULLSET = isListButtonShowFullSet(context);
-		IS_SHOW_HAVING = isHavingOnly(context);
-		IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
-		IS_MEMORY_SORT = isMemorySort(context);
-		IS_MEMORY_FILTER = isMemoryFilter(context);
+		BBViewSetting.IS_KM_PER_HOUR = isKmPerHour(context);
+		BBViewSetting.IS_ARMOR_RATE = isArmorRate(context);
+		BBViewSetting.IS_BATTLE_POWER_OH = isBattlePowerOH(context);
+		
+		BBViewSetting.IS_SHOW_COLUMN2 = isShowCOLUMN2(context);
+		BBViewSetting.IS_SHOW_SPECLABEL = isShowSpecLabel(context);
+		BBViewSetting.IS_SHOW_TYPELABEL = isShowTypeLabel(context);
+		
+		BBViewSetting.IS_SHOW_LISTBUTTON = isShowButton(context);
+		BBViewSetting.IS_LISTBUTTON_TYPETEXT = isListButtonTypeText(context);
+		BBViewSetting.IS_LISTBUTTON_SHOWINFO = isListButtonShowInfo(context);
+		BBViewSetting.IS_LISTBUTTON_SHOWCMP = isListButtonShowCmp(context);
+		BBViewSetting.IS_LISTBUTTON_SHOWFULLSET = isListButtonShowFullSet(context);
+		BBViewSetting.IS_SHOW_HAVING = isHavingOnly(context);
+		BBViewSetting.IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
+		BBViewSetting.IS_MEMORY_SORT = isMemorySort(context);
+		BBViewSetting.IS_MEMORY_FILTER = isMemoryFilter(context);
 		
 		sThemeID = loadThemeID(context);
 	}
 	
-	/**
-	 * 移動速度の表示単位。trueの場合はkm/hで表示。falseの場合はm/secで表示。
-	 */
-	public static boolean IS_KM_PER_HOUR = false;
-	public static final String SETTING_KM_PER_HOUR = "SETTING_KM_PER_HOUR";
-
 	private static boolean isKmPerHour(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_KM_PER_HOUR, false);
+		return preferences.getBoolean(BBViewSetting.SETTING_KM_PER_HOUR, false);
 	}
 	
-	/**
-	 * 装甲値の表示形式設定。trueの場合はダメージ係数で表示。falseの場合はBB.NETなどの公式準拠の値で表示。
-	 */
-	public static boolean IS_ARMOR_RATE = true;
-	public static final String SETTING_ARMOR_RATE = "SETTING_ARMOR_RATE";
-
 	private static boolean isArmorRate(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_ARMOR_RATE, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_ARMOR_RATE, true);
 	}
-	
-	/**
-	 * アセン画面の2列表示設定。trueで表示する。
-	 */
-	public static boolean IS_SHOW_COLUMN2 = true;
-	public static final String SETTING_SHOW_COLUMN2 = "SETTING_SHOW_COLUMN2";
+
+	private static boolean isBattlePowerOH(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(BBViewSetting.SETTING_BATTLE_POWER_OH, true);
+	}
 	
 	private static boolean isShowCOLUMN2(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SHOW_COLUMN2, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_COLUMN2, true);
 	}
 
-	/**
-	 * アセン画面の性能表示設定。trueで表示する。
-	 */
-	public static boolean IS_SHOW_SPECLABEL = true;
-	public static final String SETTING_SHOW_SPECLABEL = "SETTING_SHOW_SPECLABEL";
-	
 	private static boolean isShowSpecLabel(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SHOW_SPECLABEL, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_SPECLABEL, true);
 	}
 
-	/**
-	 * アセン画面の種類表示設定。trueで表示する。
-	 */
-	public static boolean IS_SHOW_TYPELABEL = true;
-	public static final String SETTING_SHOW_TYPELABEL = "SETTING_SHOW_TYPELABEL";
-	
 	private static boolean isShowTypeLabel(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SHOW_TYPELABEL, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_TYPELABEL, true);
 	}
 
-	/**
-	 * パーツ武器選択画面のリストボタン表示設定。trueで表示する。
-	 */
-	public static boolean IS_SHOW_LISTBUTTON = true;
-	public static final String SETTING_SHOW_LISTBUTTON = "SETTING_SHOW_LISTBUTTON";
-	
 	private static boolean isShowButton(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SHOW_LISTBUTTON, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_LISTBUTTON, true);
 	}
 
-	/**
-	 * パーツ武器選択画面のリストボタン表示設定。trueでTextView配置、falseでButton配置
-	 */
-	public static boolean IS_LISTBUTTON_TYPETEXT = true;
-	public static final String SETTING_LISTBUTTON_TYPETEXT = "SETTING_LISTBUTTON_TYPETEXT";
-	
 	private static boolean isListButtonTypeText(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_LISTBUTTON_TYPETEXT, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_TYPETEXT, true);
 	}
 
-	/**
-	 * パーツ武器選択画面のリストボタンに詳細ボタンを表示するかどうか。trueでTextView配置、falseでButton配置
-	 */
-	public static boolean IS_LISTBUTTON_SHOWINFO = true;
-	public static final String SETTING_LISTBUTTON_SHOWINFO = "SETTING_LISTBUTTON_SHOWINFO";
-	
 	private static boolean isListButtonShowInfo(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWINFO, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_SHOWINFO, true);
 	}
 
-	/**
-	 * パーツ武器選択画面のリストボタンに比較ボタンを表示するかどうか。trueでTextView配置、falseでButton配置
-	 */
-	public static boolean IS_LISTBUTTON_SHOWCMP = true;
-	public static final String SETTING_LISTBUTTON_SHOWCMP = "SETTING_LISTBUTTON_SHOWCMP";
-	
 	private static boolean isListButtonShowCmp(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWCMP, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_SHOWCMP, true);
 	}
 
-	/**
-	 * パーツ武器選択画面のリストボタンにフルセットボタンを表示するかどうか。trueでTextView配置、falseでButton配置
-	 */
-	public static boolean IS_LISTBUTTON_SHOWFULLSET = true;
-	public static final String SETTING_LISTBUTTON_SHOWFULLSET = "SETTING_LISTBUTTON_SHOWFULLSET";
-	
 	private static boolean isListButtonShowFullSet(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_LISTBUTTON_SHOWFULLSET, true);
+		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_SHOWFULLSET, true);
 	}
-	
-	/**
-	 * 所持品表示設定。Trueで購入済み(開発済み)のみを表示する。
-	 */
-	public static boolean IS_SHOW_HAVING = false;
-	public static final String SETTING_SHOW_HAVING_ONLY = "SETTING_SHOW_HAVING_ONLY";
 	
 	private static boolean isHavingOnly(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SETTING_SHOW_HAVING_ONLY, false);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_HAVING_ONLY, false);
 	}
 
-	/**
-	 * 表示項目選択機能の状態維持設定。Trueで状態維持、Falseで状態破棄。
-	 */
-	public static boolean IS_MEMORY_SHOWSPEC = true;
-	public static final String SETTING_MEMORY_SHOWSPEC = "SETTING_MEMORY_SHOWITEM";
-	
 	private static boolean isMemoryShowSpec(Context context) {
-		return PreferenceIO.read(context, SETTING_MEMORY_SHOWSPEC, true);
+		return PreferenceIO.read(context, BBViewSetting.SETTING_MEMORY_SHOWSPEC, true);
 	}
 
-	/**
-	 * ソート機能の状態維持設定。Trueで状態維持、Falseで状態破棄。
-	 */
-	public static boolean IS_MEMORY_SORT = false;
-	public static final String SETTING_MEMORY_SORT = "SETTING_MEMORY_SORT";
-	
 	private static boolean isMemorySort(Context context) {
-		return PreferenceIO.read(context, SETTING_MEMORY_SORT, false);
+		return PreferenceIO.read(context, BBViewSetting.SETTING_MEMORY_SORT, false);
 	}
-	
-	/**
-	 * フィルタ昨日の状態維持設定。Trueで状態維持、Falseで状態破棄。
-	 */
-	public static boolean IS_MEMORY_FILTER = false;
-	public static final String SETTING_MEMORY_FILTER = "SETTING_MEMORY_FILTER";
 	
 	private static boolean isMemoryFilter(Context context) {
-		return PreferenceIO.read(context, SETTING_MEMORY_FILTER, false);
+		return PreferenceIO.read(context, BBViewSetting.SETTING_MEMORY_FILTER, false);
 	}
 }

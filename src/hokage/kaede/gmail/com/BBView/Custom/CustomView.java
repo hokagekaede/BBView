@@ -8,9 +8,9 @@ import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemReqArm;
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemWeapon;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
@@ -45,7 +45,7 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 		
 		mShowChips = is_show_chips;
 		
-		if(BBViewSettingManager.IS_SHOW_COLUMN2) {
+		if(BBViewSetting.IS_SHOW_COLUMN2) {
 			createViewColTwo(context, custom_data);
 		}
 		else {
@@ -297,7 +297,7 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 	 */
 	private void createChipView(Context context, CustomData custom_data) {
 		ArrayList<BBData> chiplist = custom_data.getChips();
-		String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KM_PER_HOUR);
+		String chip_cap_str = SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSetting.IS_KM_PER_HOUR);
 		String chip_weight_str = String.valueOf(custom_data.getChipWeight());
 		String chip_text_str = "■チップ情報 [" + chip_weight_str + "/" + chip_cap_str + "]" + FileIO.NEWLINE;
 		int size = chiplist.size();
@@ -305,7 +305,7 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 			chip_text_str = chip_text_str + chiplist.get(i).get("名称") + FileIO.NEWLINE;
 		}
 		
-		TextView chip_text_view = ViewBuilder.createTextView(context, chip_text_str, BBViewSettingManager.FLAG_TEXTSIZE_SMALL);
+		TextView chip_text_view = ViewBuilder.createTextView(context, chip_text_str, BBViewSetting.FLAG_TEXTSIZE_SMALL);
 		chip_text_view.setLayoutParams(new LayoutParams(WC, WC));
 		chip_text_view.setTextColor(SettingManager.getColorWhite());
 		chip_text_view.setBackgroundColor(SettingManager.getColorGray());

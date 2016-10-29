@@ -6,11 +6,11 @@ import hokage.kaede.gmail.com.BBView.Adapter.BBArrayAdapterChipView;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		
 		// 容量と現在の使用状況を表示するテキストビューを生成する
 		TextView weight_text_view = new TextView(context);
-		weight_text_view.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+		weight_text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		weight_text_view.setId(WEIGHT_TEXT_VIEW_ID);
 
 		LinearLayout layout_btm = new LinearLayout(context);
@@ -756,7 +756,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			
 			text_view.setText(mGroupList.get(groupPosition));
 			text_view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-			text_view.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+			text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 			text_view.setPadding(0, 15, 0, 15);
 			text_view.setTextColor(SettingManager.getColorWhite());
 			text_view.setBackgroundColor(SettingManager.getColorBlue());

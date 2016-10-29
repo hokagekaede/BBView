@@ -1,7 +1,5 @@
 package hokage.kaede.gmail.com.BBViewLib;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
-
 import java.util.ArrayList;
 
 /**
@@ -34,7 +32,7 @@ public class BBDataFilter {
 		mValueList = new ArrayList<String>();
 		
 		// 所持済みのデータのみ表示する設定の場合、未所持は非表示にする。
-		if(BBViewSettingManager.IS_SHOW_HAVING) {
+		if(BBViewSetting.IS_SHOW_HAVING) {
 			is_show_not_having = false;
 		}
 	}

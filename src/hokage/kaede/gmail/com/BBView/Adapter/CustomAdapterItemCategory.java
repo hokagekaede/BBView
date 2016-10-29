@@ -1,7 +1,7 @@
 package hokage.kaede.gmail.com.BBView.Adapter;
 
 import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter.CustomAdapterBaseItem;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.view.Gravity;
@@ -40,7 +40,7 @@ public class CustomAdapterItemCategory implements CustomAdapterBaseItem {
 		mTitleTextView.setPadding(5, 0, 0, 0);
 		mTitleTextView.setGravity(Gravity.LEFT);
 		mTitleTextView.setText(title);
-		mTitleTextView.setTextSize(BBViewSettingManager.getTextSize(mContext, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+		mTitleTextView.setTextSize(BBViewSetting.getTextSize(mContext, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 	}
 
 	@Override

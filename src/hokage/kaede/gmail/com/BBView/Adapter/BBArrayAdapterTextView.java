@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.text.Html;
@@ -43,13 +43,13 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 		Context context = getContext();
 		
         mNameTextView = new TextView(context);
-        mNameTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+        mNameTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
         
     	mSubTextView = new TextView(context);
-        mSubTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_SMALL));
+        mSubTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 
     	mExistTextView = new TextView(context);
-        mExistTextView.setTextSize(BBViewSettingManager.getTextSize(context, BBViewSettingManager.FLAG_TEXTSIZE_NORMAL));
+        mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
         mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
         mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 

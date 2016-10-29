@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 /**
@@ -118,7 +118,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			
 			mButtonCount  = commands.length;
 			
-			if(BBViewSettingManager.IS_LISTBUTTON_TYPETEXT) {
+			if(BBViewSetting.IS_LISTBUTTON_TYPETEXT) {
 				mButtons = new IndexTextView[mButtonCount];
 
 				for(int i=0; i<mButtonCount; i++) {

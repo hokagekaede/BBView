@@ -2,10 +2,10 @@ package hokage.kaede.gmail.com.BBView.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
@@ -517,8 +517,8 @@ public class SpecView extends FrameLayout {
 						blust_name.substring(0, 2),
 						String.format("%d", data.getWeight(blust_name)) + "(" + String.format("%d", data.getSpaceWeight(blust_name)) + ")",
 						String.format("%.2f", data.getStartDush(blust_name)) + "(" + String.format("%.2f", data.getNormalDush(blust_name)) + ")",
-						SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSettingManager.IS_KM_PER_HOUR),
-						SpecValues.getSpecUnit(rate, "低下率", BBViewSettingManager.IS_KM_PER_HOUR),
+						SpecValues.getSpecUnit(data.getWalk(blust_name), "歩速", BBViewSetting.IS_KM_PER_HOUR),
+						SpecValues.getSpecUnit(rate, "低下率", BBViewSetting.IS_KM_PER_HOUR),
 					};
 				
 				table.addView(ViewBuilder.createTableRow(context, color, cols));
@@ -554,9 +554,9 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値
 			double armor_value = custom_data.getArmorAve();
 			double life_value = custom_data.getLife(false);
-			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			String armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			String armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
 
@@ -565,9 +565,9 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値(空爆時)
 			armor_value = custom_data.getArmorAveHead();
 			life_value = custom_data.getLifeHead(false);
-			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
 
@@ -576,9 +576,9 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値(地爆時)
 			armor_value = custom_data.getArmorAveLegs();
 			life_value = custom_data.getLifeLegs(false);
-			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ") (実耐久換算：" + life_str + ")"; 
 
@@ -634,7 +634,7 @@ public class SpecView extends FrameLayout {
 			TableLayout armor_table = new TableLayout(context);
 			armor_table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
-			if(BBViewSettingManager.IS_ARMOR_RATE) {
+			if(BBViewSetting.IS_ARMOR_RATE) {
 				armor_table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "被ダメ種別", "ダメージ係数", "実耐久値", "実耐久値(N-DEF)"));
 			}
 			else {
@@ -644,10 +644,10 @@ public class SpecView extends FrameLayout {
 			double armor_value = custom_data.getArmorAve();
 			double life_value = custom_data.getLife(false);
 			double life_ndef_value = custom_data.getLife(true);
-			String armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			String armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			String life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
-			String life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			String armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			String armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			String life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
+			String life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ")"; 
 			
@@ -657,10 +657,10 @@ public class SpecView extends FrameLayout {
 			armor_value = custom_data.getArmorAveHead();
 			life_value = custom_data.getLifeHead(false);
 			life_ndef_value = custom_data.getLifeHead(true);
-			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
+			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ")"; 
 			
@@ -670,10 +670,10 @@ public class SpecView extends FrameLayout {
 			armor_value = custom_data.getArmorAveLegs();
 			life_value = custom_data.getLifeLegs(false);
 			life_ndef_value = custom_data.getLifeLegs(true);
-			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSettingManager.IS_KM_PER_HOUR);
-			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
-			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSettingManager.IS_KM_PER_HOUR);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
+			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
+			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
 			armor_str = armor_point + " (" + armor_str + ")"; 
 			
@@ -773,8 +773,8 @@ public class SpecView extends FrameLayout {
 			String[] base_value_col_str = {
 				getSpecString("装甲", custom_data.getArmorAve(blust_type)),
 				String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()),
-				SpecValues.getSpecUnit(custom_data.getSpeedDownRate(blust_type), "低下率", BBViewSettingManager.IS_KM_PER_HOUR),
-				SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSettingManager.IS_KM_PER_HOUR)
+				SpecValues.getSpecUnit(custom_data.getSpeedDownRate(blust_type), "低下率", BBViewSetting.IS_KM_PER_HOUR),
+				SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSetting.IS_KM_PER_HOUR)
 			};
 			
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), BASE_COL_STR));
@@ -835,8 +835,8 @@ public class SpecView extends FrameLayout {
 		}
 
 		private static String getSpecString(String target_key, double value) {
-			String blust_point = SpecValues.getPoint(target_key, value, BBViewSettingManager.IS_KM_PER_HOUR);
-			String blust_str = SpecValues.getSpecUnit(value, target_key, BBViewSettingManager.IS_KM_PER_HOUR);
+			String blust_point = SpecValues.getPoint(target_key, value, BBViewSetting.IS_KM_PER_HOUR);
+			String blust_str = SpecValues.getSpecUnit(value, target_key, BBViewSetting.IS_KM_PER_HOUR);
 			return blust_point + " (" + blust_str + ")";
 		}
 	}

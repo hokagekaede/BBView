@@ -14,10 +14,10 @@ import hokage.kaede.gmail.com.BBView.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
@@ -151,7 +151,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mSortKeyDialog.setSelectItemListener(this);
 		
 		// ソート設定をロードする
-		if(BBViewSettingManager.IS_MEMORY_SORT) {
+		if(BBViewSetting.IS_MEMORY_SORT) {
 			mSortKeyDialog.setSaveKey(shown_save_key);
 			mSortKeyDialog.loadSetting();
 			mDataManager.setSortKey(mSortKeyDialog.getSortKey());
@@ -163,7 +163,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mShownKeysDialog.setOnButtonClickListener(this);
 		
 		// 表示項目設定をロードする
-		if(BBViewSettingManager.IS_MEMORY_SHOWSPEC) {
+		if(BBViewSetting.IS_MEMORY_SHOWSPEC) {
 			mShownKeysDialog.setSaveKey(shown_save_key);
 			mShownKeysDialog.loadSetting();
 		}
@@ -174,7 +174,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mFilterManager.setBBData(recent_data);
 		
 		// フィルタ設定をロードする
-		if(BBViewSettingManager.IS_MEMORY_FILTER) {
+		if(BBViewSetting.IS_MEMORY_FILTER) {
 			mFilterManager.setSaveKey(shown_save_key);
 			mFilterManager.loadSetting(this);
 			mFilter = mFilterManager.getFilter();
@@ -189,7 +189,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			Toast.makeText(this, "条件に一致するパーツはありません。", Toast.LENGTH_SHORT).show();
 		}
 		
-		if(BBViewSettingManager.IS_SHOW_LISTBUTTON) {
+		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
 			mAdapter.setBBAdapterCmdManager(mCmdDialog);
 		}
 		
@@ -197,8 +197,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mAdapter.notifyDataSetChanged();
 
 		// 比較ダイアログを初期化する
-		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
-		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSettingManager.IS_KM_PER_HOUR);
+		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
+		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
 	}
 	
 	/**
@@ -217,15 +217,15 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mCmdDialog.setOnExecuteInterface(this);
 		
 		// 設定に応じてボタンを非表示にする
-		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWINFO) {
+		if(!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
 			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
 		}
 
-		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWCMP) {
+		if(!BBViewSetting.IS_LISTBUTTON_SHOWCMP) {
 			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_CMP);
 		}
 		
-		if(!BBViewSettingManager.IS_LISTBUTTON_SHOWFULLSET) {
+		if(!BBViewSetting.IS_LISTBUTTON_SHOWFULLSET) {
 			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_FULL);
 		}
 	}
@@ -248,7 +248,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		// タイトルを設定
 		TextView title_text = new TextView(this);
 		title_text.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
-		title_text.setTextSize(BBViewSettingManager.getTextSize(this, BBViewSettingManager.FLAG_TEXTSIZE_LARGE));
+		title_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_LARGE));
 		title_text.setGravity(Gravity.CENTER);
 		title_text.setTextColor(SettingManager.getColorWhite());
 		title_text.setBackgroundColor(SettingManager.getColorBlue());
@@ -494,7 +494,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mShownKeysDialog.set(sort_key, true);
 		
 		// 表示項目選択状態を記録する
-		if(BBViewSettingManager.IS_MEMORY_SHOWSPEC) {
+		if(BBViewSetting.IS_MEMORY_SHOWSPEC) {
 			mShownKeysDialog.updateSetting();
 		}
 		

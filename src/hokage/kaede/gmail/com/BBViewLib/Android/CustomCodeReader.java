@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import hokage.kaede.gmail.com.BBView.Custom.CustomMainActivity;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
@@ -48,7 +49,7 @@ public class CustomCodeReader {
 			}
 			
 			CustomData custom_data = CustomDataManager.getCustomData();
-			return custom_data.setCustomDataID(BBViewSettingManager.getVersionCode(mContext), code);
+			return custom_data.setCustomDataID(BBViewSetting.getVersionCode(mContext), code);
 		}
 
 		/**

@@ -1,8 +1,8 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
@@ -359,7 +359,7 @@ public class CustomMainActivity extends BaseActivity {
 			
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
-			intent.putExtra(Intent.EXTRA_TEXT, custom_data.getCustomDataID(BBViewSettingManager.getVersionCode(this)));
+			intent.putExtra(Intent.EXTRA_TEXT, custom_data.getCustomDataID(BBViewSetting.getVersionCode(this)));
 			startActivity(intent);
 		}
 		
