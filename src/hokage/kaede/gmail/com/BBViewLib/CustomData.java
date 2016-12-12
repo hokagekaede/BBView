@@ -1196,6 +1196,9 @@ public class CustomData {
 			else if(isFullSet("ガルム")) {
 				ret = ret + getFullSetBonus(250);
 			}
+			else if(isFullSet("ヤマ")) {
+				ret = ret + getFullSetBonus(500);
+			}
 			
 			// チップボーナス
 			if(existChip("DEF耐久")) {

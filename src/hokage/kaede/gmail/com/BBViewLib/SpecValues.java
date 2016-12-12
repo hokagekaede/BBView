@@ -217,7 +217,7 @@ public class SpecValues {
 	 */
 	private static void initDefGuard() {
 		DEF_GUARD = new KeyValueStore();
-		DEF_GUARD.set("S",  "5000");  // 3.5該当パーツなし (2015/10/22)
+		DEF_GUARD.set("S",  "5000");  // ヤマ・羅          (2016/12/13)
 		DEF_GUARD.set("S-", "4750");
 		DEF_GUARD.set("A+", "4500");  // 3.5該当パーツなし (2015/10/22)
 		DEF_GUARD.set("A",  "4250");  // 3.5該当パーツなし (2015/10/22)
@@ -241,7 +241,7 @@ public class SpecValues {
 	private static void initSpareBullet() {
 		SPARE_BULLET = new KeyValueStore();
 		SPARE_BULLET.set("S",  "68");  // 3.5該当パーツなし (2015/10/22)
-		SPARE_BULLET.set("S-", "63");  // 3.5該当パーツなし (2015/10/31)
+		SPARE_BULLET.set("S-", "63");  // ヤマ・羅          (2016/12/13)
 		SPARE_BULLET.set("A+", "59");
 		SPARE_BULLET.set("A",  "54");
 		SPARE_BULLET.set("A-", "50");
@@ -265,7 +265,7 @@ public class SpecValues {
 		ACCELERATION = new KeyValueStore();
 		ACCELERATION.set("S",  "0.84");   // 5.0該当パーツなし (2016/8/27)
 		ACCELERATION.set("S-", "1.11");   // 5.0該当パーツなし (2016/8/27)
-		ACCELERATION.set("A+", "1.38");   // 5.0該当パーツなし (2016/8/27)
+		ACCELERATION.set("A+", "1.38");   // ヤマ・羅          (2016/12/13)
 		ACCELERATION.set("A",  "1.65");   // ツェーブラ38
 		ACCELERATION.set("A-", "1.92");   // ヘヴィガードIII型
 		ACCELERATION.set("B+", "2.19");   // クーガーII型
@@ -314,6 +314,7 @@ public class SpecValues {
 		SETBONUS.set("ガルム", "加速UP / DEF耐久UP");
 		SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
 		SETBONUS.set("X－", "リロードUP / 重量耐性UP");
+		SETBONUS.set("ヤマ", "DEF耐久UP");
 	}
 	
 	/**
