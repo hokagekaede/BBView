@@ -172,10 +172,95 @@ public class SpecArray {
 					SpecValues.getSpecUnit(head_parts.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
 			real_value_str = String.format("%s (%s)", real_value_str,
 					SpecValues.getSpecUnit(data.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
-
 		}
-
+		
 		SpecRow row = new SpecRow(target_key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(normal_value_str, real_value_str);
+		return row;
+	}
+
+	/**
+	 * DEF回復の配列を生成する。隣にDEF回復時間を併記する。
+	 * @param data アセンデータ
+	 * @param blust_type 兵装名
+	 * @return 配列
+	 */
+	public static SpecRow getDefRecoverArray(CustomData data, String blust_type) {
+		String key = "DEF回復";
+		String normal_point = data.getPoint(key);
+		double normal_value = SpecValues.getSpecValue(normal_point, key, BBViewSetting.IS_KM_PER_HOUR);
+		String normal_value_str = SpecValues.getSpecUnit(normal_value, key, BBViewSetting.IS_KM_PER_HOUR);
+		
+		double real_value = data.getDefRecover(blust_type);
+		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		String real_value_str = SpecValues.getSpecUnit(real_value, key, BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		normal_value_str = normal_point + " (" + normal_value_str + ")";
+		real_value_str = real_point + " (" + real_value_str + ")"; 
+
+		// DEF回復の場合、隣に回復時間を併記する
+		BBData parts = data.getParts(BBDataManager.BLUST_PARTS_HEAD);
+		normal_value_str = String.format("%s (%s)", normal_value_str,
+				SpecValues.getSpecUnit(parts.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
+		real_value_str = String.format("%s (%s)", real_value_str,
+				SpecValues.getSpecUnit(data.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
+		
+		SpecRow row = new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(normal_value_str, real_value_str);
+		return row;
+	}
+
+	/**
+	 * ブースターの配列を生成する。隣に最大ステップ数を併記する。
+	 * @param data アセンデータ
+	 * @param blust_type 兵装名
+	 * @return 配列
+	 */
+	public static SpecRow getBoostArray(CustomData data, String blust_type) {
+		String key = "ブースター";
+		String normal_point = data.getPoint(key);
+		double normal_value = SpecValues.getSpecValue(normal_point, key, BBViewSetting.IS_KM_PER_HOUR);
+		String normal_value_str = SpecValues.getSpecUnit(normal_value, key, BBViewSetting.IS_KM_PER_HOUR);
+		
+		double real_value = data.getBoost(blust_type);
+		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		String real_value_str = SpecValues.getSpecUnit(real_value, key, BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		normal_value_str = normal_point + " (" + normal_value_str + ")";
+		real_value_str = real_point + " (" + real_value_str + ")";
+
+		// 隣に最大ステップ数を併記する
+		BBData parts = data.getParts(BBDataManager.BLUST_PARTS_BODY);
+		normal_value_str = String.format("%s (%s)", normal_value_str,
+				SpecValues.getSpecUnit(parts.getStepMaxCount(), BBData.STEP_MAX_COUNT_KEY, BBViewSetting.IS_KM_PER_HOUR));
+		real_value_str = String.format("%s (%s)", real_value_str,
+				SpecValues.getSpecUnit(data.getStepMaxCount(blust_type), BBData.STEP_MAX_COUNT_KEY, BBViewSetting.IS_KM_PER_HOUR));
+
+		SpecRow row = new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(normal_value_str, real_value_str);
+		return row;
+	}
+	
+
+	/**
+	 * ブースター回復時間の配列を生成する。
+	 * @param data アセンデータ
+	 * @param blust_type 兵装名
+	 * @return 配列
+	 */
+	public static SpecRow getBoostChargeTimeArray(CustomData data, String blust_type) {
+		String key = "ブースター回復時間";
+		BBData parts = data.getParts(BBDataManager.BLUST_PARTS_BODY);
+		
+		double normal_value = parts.getBoostChargeTime();
+		double real_value = data.getBoostChargeTime(blust_type);
+
+		String normal_value_str = SpecValues.getSpecUnit(normal_value, key, BBViewSetting.IS_KM_PER_HOUR);
+		String real_value_str = SpecValues.getSpecUnit(real_value, key, BBViewSetting.IS_KM_PER_HOUR);
+
+		SpecRow row = new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 		row.setValues(normal_value_str, real_value_str);
 		return row;
 	}

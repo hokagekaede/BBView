@@ -1012,56 +1012,73 @@ public class CustomData {
 	}
 	
 	/**
-	 * ブースター容量の値を取得する。
-	 * @return ブースター容量の値。
+	 * ブースターの値を取得する。
+	 * @return ブースターの値。
 	 */
 	public double getBoost() {
-		double ret = 0;
-
 		BBData body_parts = mRecentParts[BODY_IDX];
-		String point = body_parts.get("ブースター");
-		String value = SpecValues.BOOST.get(point);
-		
-		try {
-			ret = Integer.valueOf(value);
+		double ret = body_parts.getBoost();
 
-			// フルセットボーナス
-			if(isFullSet("エンフォーサー")) {
-				ret = ret + getFullSetBonus(7.5);
-			}
-			else if(isFullSet("雷花")) {
-				ret = ret + getFullSetBonus(5);
-			}
-			else if(isFullSet("スペクター")) {
-				ret = ret + getFullSetBonus(5);
-			}
-			else if(isFullSet("シュライク")) {
-				ret = ret + getFullSetBonus(5);
-			}
-
-			// チップセットボーナス
-			if(existChip("ブースター")) {
-				ret = ret + 2;
-			}
-			else if(existChip("ブースターII")) {
-				ret = ret + 6;
-			}
-			else if(existChip("ブースターIII")) {
-				ret = ret + 10;
-			}
-
-			if(existChip("胴部パーツ強化")) {
-				ret = ret + 2;
-			}
-			else if(existChip("胴部パーツ強化II")) {
-				ret = ret + 4;
-			}
-			
-		} catch(Exception e) {
-			ret = 0;
+		// フルセットボーナス
+		if(isFullSet("エンフォーサー")) {
+			ret = ret + getFullSetBonus(7.5);
 		}
+		else if(isFullSet("雷花")) {
+			ret = ret + getFullSetBonus(5);
+		}
+		else if(isFullSet("スペクター")) {
+			ret = ret + getFullSetBonus(5);
+		}
+		else if(isFullSet("シュライク")) {
+			ret = ret + getFullSetBonus(5);
+		}
+
+		// チップセットボーナス
+		if(existChip("ブースター")) {
+			ret = ret + 2;
+		}
+		else if(existChip("ブースターII")) {
+			ret = ret + 6;
+		}
+		else if(existChip("ブースターIII")) {
+			ret = ret + 10;
+		}
+
+		if(existChip("胴部パーツ強化")) {
+			ret = ret + 2;
+		}
+		else if(existChip("胴部パーツ強化II")) {
+			ret = ret + 4;
+		}	
 			
 		return ret;
+	}
+
+	/**
+	 * 最大ステップ回数を取得する。(1ステップの消費量は12)
+	 * @return 最大ステップ回数
+	 */
+	public double getStepMaxCount() {
+		int ret = (int)(getBoost() / 12.0);
+		
+		return (double)ret;
+	}
+	
+	/**
+	 * ブースター回復時間を取得する。(非OH時は毎秒50回復する)
+	 * @return ブースター回復時間
+	 */
+	public double getBoostChargeTime() {
+		double charge = 50;
+
+		if(existChip("ブースター回復")) {
+			charge = charge * 1.1;
+		}
+		else if(existChip("ブースター回復II")) {
+			charge = charge * 1.25;
+		}
+		
+		return getBoost() / charge;
 	}
 	
 	/**
@@ -1770,9 +1787,9 @@ public class CustomData {
 	}
 	
 	/**
-	 * ブースター容量の値を取得する。
+	 * ブースターの値を取得する。
 	 * @param blust_type 兵装の種類
-	 * @return ブースター容量の値。
+	 * @return ブースターの値。
 	 */
 	public double getBoost(String blust_type) {
 		double ret = getBoost();
@@ -1787,6 +1804,33 @@ public class CustomData {
 		return ret;
 	}
 
+	/**
+	 * 最大ステップ回数を取得する。(1ステップの消費量は12)
+	 * @return 最大ステップ回数
+	 */
+	public double getStepMaxCount(String blust_type) {
+		int ret = (int)(getBoost(blust_type) / 12.0);
+		
+		return (double)ret;
+	}
+	
+	/**
+	 * ブースター回復時間を取得する。(非OH時は毎秒50回復する)
+	 * @return ブースター回復時間
+	 */
+	public double getBoostChargeTime(String blust_type) {
+		double charge = 50;
+
+		if(existChip("ブースター回復")) {
+			charge = charge * 1.1;
+		}
+		else if(existChip("ブースター回復II")) {
+			charge = charge * 1.25;
+		}
+		
+		return getBoost(blust_type) / charge;
+	}
+	
 	/**
 	 * SP供給率の値を取得する。
 	 * @param blust_type 兵装の種類
@@ -3373,6 +3417,12 @@ public class CustomData {
 		else if(key.equals("ブースター")) {
 			ret = getBoost(blust_type);
 		}
+		else if(key.equals("最大ステップ数")) {
+			ret = getStepMaxCount(blust_type);
+		}
+		else if(key.equals("ブースター回復時間")) {
+			ret = getBoostChargeTime(blust_type);
+		}
 		else if(key.equals("SP供給率")) {
 			ret = getSP(blust_type);
 		}
@@ -3441,6 +3491,12 @@ public class CustomData {
 		}
 		else if(key.equals("ブースター")) {
 			ret = getBoost();
+		}
+		else if(key.equals("最大ステップ数")) {
+			ret = getStepMaxCount();
+		}
+		else if(key.equals("ブースター回復時間")) {
+			ret = getBoostChargeTime();
 		}
 		else if(key.equals("SP供給率")) {
 			ret = getSP();

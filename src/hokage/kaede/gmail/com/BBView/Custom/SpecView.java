@@ -716,9 +716,10 @@ public class SpecView extends FrameLayout {
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "射撃補正")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "索敵")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "ロックオン")));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "DEF回復")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getDefRecoverArray(custom_data, blust_type)));
 			
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "ブースター")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBoostArray(custom_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBoostChargeTimeArray(custom_data, blust_type)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "SP供給率")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "エリア移動")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getPartsSpecArray(custom_data, blust_type, "DEF耐久")));

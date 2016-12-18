@@ -45,6 +45,7 @@ public class BBDataComparator implements Comparator<BBData> {
 		"リロード時間",
 		"総重量",
 		"DEF回復時間",
+		"ブースター回復時間",
 		"加速",
 		"チャージ時間",
 		"OH復帰時間",

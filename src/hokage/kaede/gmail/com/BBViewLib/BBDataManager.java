@@ -375,7 +375,10 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	};
 	
 	private static final String[] CMP_BODY = {
-		"重量", "装甲", "ブースター", "SP供給率", "エリア移動", "DEF耐久", "チップ容量", "実耐久値"
+		"重量", "装甲", "ブースター", "SP供給率", "エリア移動", "DEF耐久", 
+		BBData.STEP_MAX_COUNT_KEY,
+		BBData.BOOST_CHARGE_TIME_KEY,
+		"チップ容量", "実耐久値"
 	};
 	
 	private static final String[] CMP_ARMS = {

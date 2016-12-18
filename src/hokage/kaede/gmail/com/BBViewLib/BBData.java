@@ -70,9 +70,13 @@ public class BBData extends KVCStore {
 		return ret;
 	}
 	
+	// パーツスペック関連
 	public static String REAL_LIFE_KEY          = "実耐久値";
 	public static String DEF_RECORVER_TIME_KEY  = "DEF回復時間";
+	public static String STEP_MAX_COUNT_KEY     = "最大ステップ数";
+	public static String BOOST_CHARGE_TIME_KEY  = "ブースター回復時間";
 	
+	// 武器スペック関連
 	public static String FULL_POWER_KEY         = "総火力";
 	public static String MAGAZINE_POWER_KEY     = "マガジン火力";
 	public static String SEC_POWER_KEY          = "瞬間火力";
@@ -118,6 +122,12 @@ public class BBData extends KVCStore {
 		}
 		else if(key.equals(DEF_RECORVER_TIME_KEY)) {
 			ret = getDefRecoverTime();
+		}
+		else if(key.equals(STEP_MAX_COUNT_KEY)) {
+			ret = getStepMaxCount();
+		}
+		else if(key.equals(BOOST_CHARGE_TIME_KEY)) {
+			ret = getBoostChargeTime();
 		}
 		else if(key.equals(FULL_POWER_KEY)) {
 			ret = getFullPower();
@@ -220,6 +230,66 @@ public class BBData extends KVCStore {
 		
 		double damege_rate = (100.0 - armor) / 100.0;
 		return SpecValues.BLUST_LIFE_MAX / damege_rate;
+	}
+
+	/**
+	 * DEF回復時間を取得する。
+	 * @return
+	 */
+	public double getDefRecoverTime() {
+		double ret = NUM_VALUE_NOTHING;
+		
+		String point = super.get("DEF回復");
+		String spec = SpecValues.DEF_RECOVER.get(point);
+		
+		try {
+			double value = Double.valueOf(spec);
+			ret = 30.0 / (1 + (value / 100));
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * ブースターの値を取得する。
+	 * @return ブースターの値。
+	 */
+	public double getBoost() {
+		double ret = 0;
+
+		String point = super.get("ブースター");
+		String value = SpecValues.BOOST.get(point);
+		
+		try {
+			ret = Integer.valueOf(value);
+			
+		} catch(Exception e) {
+			ret = 0;
+		}
+			
+		return ret;
+	}
+	/**
+	 * 最大ステップ回数を取得する。(1ステップの消費量は12)
+	 * @return 最大ステップ回数
+	 */
+	public double getStepMaxCount() {
+		int ret = (int)(getBoost() / 12.0);
+		
+		return (double)ret;
+	}
+	
+	/**
+	 * ブースター回復時間を取得する。(非OH時は毎秒50回復する)
+	 * @return ブースター回復時間
+	 */
+	public double getBoostChargeTime() {
+		double charge = 50;
+
+		return getBoost() / charge;
 	}
 	
 	/**
@@ -1396,27 +1466,6 @@ public class BBData extends KVCStore {
 
 		if(mTypeB_data != null) {
 			ret = true;
-		}
-		
-		return ret;
-	}
-	
-	/**
-	 * DEF回復時間を取得する。
-	 * @return
-	 */
-	public double getDefRecoverTime() {
-		double ret = NUM_VALUE_NOTHING;
-		
-		String point = super.get("DEF回復");
-		String spec = SpecValues.DEF_RECOVER.get(point);
-		
-		try {
-			double value = Double.valueOf(spec);
-			ret = 30.0 / (1 + (value / 100));
-			
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 		
 		return ret;

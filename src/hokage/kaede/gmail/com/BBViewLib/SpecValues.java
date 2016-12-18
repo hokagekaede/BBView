@@ -1121,6 +1121,9 @@ public class SpecValues {
 			ret = String.format("%.3f", value);
 			is_speed = true;
 		}
+		else if(key.equals("最大ステップ数")) {
+			ret = String.format("%.0f(回)", value);
+		}
 		else {
 			ret = String.format("%.0f", value);
 		}
