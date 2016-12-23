@@ -10,6 +10,7 @@ import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
+import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
@@ -371,26 +372,34 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		private ArrayList<Boolean> mSkillChipCheckList;
 		private ArrayList<Boolean> mPowerupChipCheckList;
 		private ArrayList<Boolean> mActionChipCheckList;
-		
+
+		// お気に入りのリスト
+		private static final String FAVORITE_CATEGORY_NAME = "お気に入り";
+		private ArrayList<BBData> mFavoriteChipList;
+		private ArrayList<Boolean> mFavoriteChipCheckList;
+	
 		/**
 		 * 初期化処理を行う。
 		 * @param context アダプタを使用するオブジェクト
 		 * @param chip_list チップリスト
 		 */
-		public ChipListAdapter(Context context, ArrayList<BBData> chip_list) {
+		private ChipListAdapter(Context context, ArrayList<BBData> chip_list) {
 			mGroupList = new ArrayList<String>();
 
 			mGroupList.add(BBDataManager.SKILL_CHIP_STR);
 			mGroupList.add(BBDataManager.POWERUP_CHIP_STR);
 			mGroupList.add(BBDataManager.ACTION_CHIP_STR);
+			mGroupList.add(FAVORITE_CATEGORY_NAME);
 
 			mSkillChipList = new ArrayList<BBData>();
 			mPowerupChipList = new ArrayList<BBData>();
 			mActionChipList = new ArrayList<BBData>();
+			mFavoriteChipList = new ArrayList<BBData>();
 			
 			mSkillChipCheckList = new ArrayList<Boolean>();
 			mPowerupChipCheckList = new ArrayList<Boolean>();
 			mActionChipCheckList = new ArrayList<Boolean>();
+			mFavoriteChipCheckList = new ArrayList<Boolean>();
 			
 			setList(chip_list);
 		}
@@ -399,16 +408,18 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		 * リストを設定する。
 		 * @param chip_list チップリスト
 		 */
-		public void setList(ArrayList<BBData> chip_list) {
+		private void setList(ArrayList<BBData> chip_list) {
 			mCount = chip_list.size();
 			
 			mSkillChipList.clear();
 			mPowerupChipList.clear();
 			mActionChipList.clear();
+			mFavoriteChipList.clear();
 			
 			mSkillChipCheckList.clear();
 			mPowerupChipCheckList.clear();
 			mActionChipCheckList.clear();
+			mFavoriteChipCheckList.clear();
 
 			int size = chip_list.size();
 			for(int i=0; i<size; i++) {
@@ -426,6 +437,12 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 					mActionChipList.add(buf_chip);
 					mActionChipCheckList.add(false);
 				}
+				
+				// お気に入りリストに格納されているチップを追加する
+				if(FavoriteManager.sFavoriteStore.exist(buf_chip.get("名称"))) {
+					mFavoriteChipList.add(buf_chip);
+					mFavoriteChipCheckList.add(false);
+				}
 			}
 		}
 		
@@ -433,7 +450,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		 * リストの数を取得する。
 		 * @return リストの数
 		 */
-		public int getCount() {
+		private int getCount() {
 			return mCount;
 		}
 		
@@ -497,33 +514,54 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		}
 
 		/**
-		 * 選択フラグを設定する
-		 * @param position フラグを設定する位置
+		 * 選択フラグを設定する。
+		 * 
+		 * お気に入りリストからの変更がある都合により、
+		 * 指定位置のチェックを変更する方法ではチェック状況が同期できない。
+		 * そのため、ポジション値は完全に無視することとし、
+		 * 全リストの中身を確認し、対象のチップを探し出してチェックを変更する方式を採用する。
+		 * 
+		 * @param groupPosition 親のアイテム位置
+		 * @param position 子のアイテム位置
 		 * @param flag 設定するフラグ値
 		 */
-		public void setFlag(int groupPosition, int childPosition, boolean flag) {
+		private void setFlag(int groupPosition, int childPosition, boolean flag) {
 			if(groupPosition < 0 || groupPosition >= mGroupList.size()) {
 				return;
 			}
 			
 			String type = mGroupList.get(groupPosition);
-			ArrayList<Boolean> list = getCheckList(type);
+			ArrayList<BBData> list = getChipList(type);
 			
 			if(childPosition < 0 || childPosition >= list.size()) {
 				return;
 			}
 			
-			list.set(childPosition, flag);
+			BBData chip = list.get(childPosition);
+			
+			setFlag(chip, flag);
 		}
 		
 		/**
-		 * 選択フラグを設定する
-		 * @param chip フラグを設定するデータ
+		 * 選択フラグを設定する。
+		 * @param chip 対象のチップデータ
+		 * @param flag 設定するフラグ
+		 */
+		private void setFlag(BBData chip, boolean flag) {
+			updateCheckList(mSkillChipList, mSkillChipCheckList, chip, flag);
+			updateCheckList(mPowerupChipList, mPowerupChipCheckList, chip, flag);
+			updateCheckList(mActionChipList, mActionChipCheckList, chip, flag);
+			updateCheckList(mFavoriteChipList, mFavoriteChipCheckList, chip, flag);
+		}
+		
+		/**
+		 * リストの中に指定のチップデータが存在した場合、選択フラグを設定する。
+		 * @param chip_list 対象のチップリスト
+		 * @param check_list 対象のチェックリスト
+		 * @param chip フラグを設定するチップ
 		 * @param flag 設定するフラグ値
 		 */
-		public void setFlag(BBData chip, boolean flag) {
-			ArrayList<BBData> chip_list = getChipList(chip);
-			ArrayList<Boolean> check_list = getCheckList(chip);
+		private void updateCheckList(ArrayList<BBData> chip_list, ArrayList<Boolean> check_list, BBData chip, boolean flag) {
 			
 			if(chip_list != null && check_list != null) {
 				int size = chip_list.size();
@@ -536,33 +574,12 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 						break;
 					}
 				}
-				
 			}
 		}
 		
 		/**
-		 * チップに対応したデータリストを取得する。
-		 * @param chip チップ
-		 * @return チップのデータリスト
-		 */
-		private ArrayList<BBData> getChipList(BBData chip) {
-			ArrayList<BBData> ret = null;
-
-			if(chip.existCategory(BBDataManager.SKILL_CHIP_STR)) {
-				ret = mSkillChipList;
-			}
-			else if(chip.existCategory(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = mPowerupChipList;
-			}
-			else if(isActionChip(chip)) {
-				ret = mActionChipList;
-			}
-			
-			return ret;
-		}
-
-		/**
 		 * 種類に対応したデータリストを返す。
+		 * 「お気に入り」の文字列を設定した場合はお気に入りリストを返す。
 		 * @param type チップの種類
 		 * @return チップのデータリスト
 		 */
@@ -578,32 +595,16 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			else if(isActionChip(type)) {
 				ret = mActionChipList;
 			}
-			
-			return ret;
-		}
-
-		/**
-		 * チップに対応したチェックリストを取得する。
-		 * @param chip チップ
-		 * @return チップのデータリスト
-		 */
-		private ArrayList<Boolean> getCheckList(BBData chip) {
-			ArrayList<Boolean> ret = null;
-
-			if(chip.existCategory(BBDataManager.SKILL_CHIP_STR)) {
-				ret = mSkillChipCheckList;
-			}
-			else if(chip.existCategory(BBDataManager.POWERUP_CHIP_STR)) {
-				ret = mPowerupChipCheckList;
-			}
-			else if(isActionChip(chip)) {
-				ret = mActionChipCheckList;
+			else if(type.equals(FAVORITE_CATEGORY_NAME)) {
+				ret = mFavoriteChipList;
 			}
 			
 			return ret;
 		}
+
 		/**
 		 * 種類に対応したチェックリストを返す。
+		 * 「お気に入り」の文字列を設定した場合はお気に入りリストを返す。
 		 * @param type チップの種類
 		 * @return チップのチェックリスト
 		 */
@@ -618,6 +619,9 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			}
 			else if(isActionChip(type)) {
 				ret = mActionChipCheckList;
+			}
+			else if(type.equals(FAVORITE_CATEGORY_NAME)) {
+				ret = mFavoriteChipCheckList;
 			}
 			
 			return ret;
@@ -638,8 +642,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		 * 子のビューを取得する。
 		 */
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
-		{
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 			ArrayList<BBData> chip_list = getChipList(mGroupList.get(groupPosition));
 			ArrayList<Boolean> check_list = getCheckList(mGroupList.get(groupPosition));
 			
@@ -658,6 +661,8 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			checkbox.setOnCheckedChangeListener(null);
 			checkbox.setChecked(check_list.get(childPosition));
 			checkbox.setOnCheckedChangeListener(this);
+			
+			checkbox.setOnClickFavListener(new OnClickFavListener(chipdata));
 			
 			return checkbox;
 		}
@@ -761,7 +766,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			text_view.setTextColor(SettingManager.getColorWhite());
 			text_view.setBackgroundColor(SettingManager.getColorBlue());
 			text_view.setLayoutParams(lp);
-						
+
 			return text_view;
 		}
 
@@ -797,14 +802,52 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 			}
 
 			mIsChanged = true;
-			checkStatus();
 			updateWeightText();
+		}
+
+		/**
+		 * Favoriteボタンを押下した場合の処理を行う。
+		 * お気に入りの設定状況に応じて、リストへの追加/削除を行う。
+		 * また、お気に入りリストのファイルも更新する。
+		 */
+		private class OnClickFavListener implements OnClickListener {
+			private BBData target;
+			
+			public OnClickFavListener(BBData data) {
+				target = data;
+			}
+
+			@Override
+			public void onClick(View view) {
+				String name = target.get("名称");
+				
+				int index = FavoriteManager.sFavoriteStore.indexOf(name);
+				
+				if(index > -1) {
+					FavoriteManager.sFavoriteStore.remove(index);
+
+					int fav_index = mFavoriteChipList.indexOf(target);
+					mFavoriteChipList.remove(fav_index);
+					mFavoriteChipCheckList.remove(fav_index);
+				}
+				else {
+					FavoriteManager.sFavoriteStore.add(name);
+					
+					mFavoriteChipList.add(target);
+					mFavoriteChipCheckList.add(mCustomData.existChip(name));
+				}
+				
+				FavoriteManager.sFavoriteStore.save();
+				
+				mChipListAdapter.notifyDataSetChanged();
+			}
+			
 		}
 		
 		/**
 		 * フラグを全てクリアする
 		 */
-		public void clearFlag() {
+		private void clearFlag() {
 			int size = mSkillChipCheckList.size();
 			for(int i=0; i<size; i++) {
 				mSkillChipCheckList.set(i, false);

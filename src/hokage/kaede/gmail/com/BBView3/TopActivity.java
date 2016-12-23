@@ -13,6 +13,7 @@ import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataReader;
+import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
@@ -67,6 +68,7 @@ public class TopActivity extends BaseActivity {
 		SpecValues.init();
 		loadPartsData();
 		initCustomData();
+		FavoriteManager.init(getFilesDir().toString());
 		
 		// アプリの設定値を読み込む
 		BBViewSettingManager.loadSettings(this);
