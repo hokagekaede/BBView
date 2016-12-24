@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
+import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.CheckBox;
@@ -77,10 +78,12 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
     	mExistTextView.setText(createExistText());
     	
     	if(FavoriteManager.sFavoriteStore.exist(target_item.get("名称"))) {
+    		mFavoriteTextView.setTextColor(SettingManager.getColorYellow());
     		mFavoriteTextView.setText("[Fav:ON]");
     	}
     	else {
     		mFavoriteTextView.setText("[Fav:OFF]");
+    		mFavoriteTextView.setTextColor(SettingManager.getColorCyan());
     	}
 	}
 

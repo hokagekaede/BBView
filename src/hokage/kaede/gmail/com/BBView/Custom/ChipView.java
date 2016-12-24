@@ -803,6 +803,9 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 
 			mIsChanged = true;
 			updateWeightText();
+			
+			// 通常のリストとFavoriteリストのチェック状態を同期させるために、アダプタを更新する。
+			mChipListAdapter.notifyDataSetChanged();
 		}
 
 		/**
