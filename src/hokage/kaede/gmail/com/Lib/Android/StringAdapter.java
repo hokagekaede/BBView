@@ -178,6 +178,18 @@ public class StringAdapter extends BaseAdapter {
 	}
 	
 	/**
+	 * 配列データを追加する。
+	 * @param values 追加するデータの配列
+	 */
+	public void addArrays(String[] values) {
+		int size = values.length;
+		
+		for(int i=0; i<size; i++) {
+			mList.add(values[i]);
+		}
+	}
+	
+	/**
 	 * テキストサイズを設定する。
 	 * @param text_size テキストサイズ
 	 */

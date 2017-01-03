@@ -197,6 +197,23 @@ public class ShopDatabase {
 	}
 	
 	/**
+	 * 建物・地名からの検索処理の進捗更新時の処理を行うリスナー。
+	 */
+	public interface UpdateProgressListener {
+		public void Update(int size, int finish);
+	}
+	
+	private UpdateProgressListener mDistanceListener;
+	
+	/**
+	 * 建物・地名からの検索処理の進捗更新時の処理を行うリスナーを設定する。
+	 * @param listener リスナー
+	 */
+	public void setOnUpdateProgressListener(UpdateProgressListener listener) {
+		mDistanceListener = listener;
+	}
+	
+	/**
 	 * 指定の住所情報から店舗までの距離を設定し、リストを更新する。
 	 * @param context
 	 * @param recent_address
@@ -212,6 +229,8 @@ public class ShopDatabase {
 			mTargetList.clear();
 			
 			int size = mShopDataList.size();
+			mDistanceListener.Update(size, 0);
+			
 			for(int i=0; i<size; i++) {
 				ShopData shopdata = mShopDataList.get(i);
 				Address target_address = getAddress(context, shopdata.address);
@@ -224,6 +243,8 @@ public class ShopDatabase {
 						mTargetList.add(shopdata);
 					}
 				}
+				
+				mDistanceListener.Update(size, i);
 			}
 			
 			ret = true;

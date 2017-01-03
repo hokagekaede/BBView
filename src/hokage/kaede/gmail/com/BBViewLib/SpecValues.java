@@ -674,6 +674,8 @@ public class SpecValues {
 	
 	/**
 	 * 性能の値からポイント番号を取得する。
+	 * 誤差による比較失敗を回避するため、パラメータを有効桁数で四捨五入する。
+	 * 
 	 * @param key 性能の種類
 	 * @param value 性能値
 	 * @param is_km_per_hour 速度の単位
@@ -681,66 +683,84 @@ public class SpecValues {
 	 */
 	public static String getPoint(String key, double value, boolean is_km_per_hour) {
 		String point = "";
+		double tmp_value = value;
 		
 		if(key.equals("装甲")) {
-			point = getPointAsc(SpecValues.ARMOR, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.ARMOR, tmp_value);
 		}
 		else if(key.equals("射撃補正")) {
-			point = getPointAsc(SpecValues.SHOTBONUS, value);
+			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
+			point = getPointAsc(SpecValues.SHOTBONUS, tmp_value);
 		}
 		else if(key.equals("索敵")) {
-			point = getPointAsc(SpecValues.SEARCH, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.SEARCH, tmp_value);
 		}
 		else if(key.equals("ロックオン")) {
-			point = getPointAsc(SpecValues.ROCKON, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.ROCKON, tmp_value);
 		}
 		else if(key.equals("ブースター")) {
-			point = getPointAsc(SpecValues.BOOST, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.BOOST, tmp_value);
 		}
 		else if(key.equals("SP供給率")) {
-			point = getPointAsc(SpecValues.SP, value);
+			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
+			point = getPointAsc(SpecValues.SP, tmp_value);
 		}
 		else if(key.equals("エリア移動")) {
-			point = getPointDsc(SpecValues.AREAMOVE, value);
+			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
+			point = getPointDsc(SpecValues.AREAMOVE, tmp_value);
 		}
 		else if(key.equals("反動吸収")) {
-			point = getPointAsc(SpecValues.RECOIL, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.RECOIL, tmp_value);
 		}
 		else if(key.equals("リロード")) {
-			point = getPointDsc(SpecValues.RELOAD, value);
+			tmp_value = Math.round(tmp_value * 1000.0) / 1000.0;
+			point = getPointDsc(SpecValues.RELOAD, tmp_value);
 		}
 		else if(key.equals("武器変更")) {
-			point = getPointAsc(SpecValues.CHANGEWEAPON, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.CHANGEWEAPON, tmp_value);
 		}
 		else if(key.equals("歩行")) {
 			if(!is_km_per_hour) {
-				value = value * 3600 / 1000;
+				tmp_value = tmp_value * 3600 / 1000;
 			}
-			
-			point = getPointAsc(SpecValues.WALK, value);
+
+			tmp_value = Math.round(tmp_value * 1000.0) / 1000.0;
+			point = getPointAsc(SpecValues.WALK, tmp_value);
 		}
 		else if(key.equals("ダッシュ")) {
 			if(!is_km_per_hour) {
-				value = value * 3600 / 1000;
+				tmp_value = tmp_value * 3600 / 1000;
 			}
-			
-			point = getPointAsc(SpecValues.DASH, value);
+
+			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
+			point = getPointAsc(SpecValues.DASH, tmp_value);
 		}
 		else if(key.equals("重量耐性")) {
-			point = getPointAsc(SpecValues.ANTIWEIGHT, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.ANTIWEIGHT, tmp_value);
 		}
 		// 4.5対応
 		else if(key.equals("DEF回復")) {
-			point = getPointAsc(SpecValues.DEF_RECOVER, value);
+			tmp_value = Math.round(tmp_value * 10.0) / 10.0;
+			point = getPointAsc(SpecValues.DEF_RECOVER, tmp_value);
 		}
 		else if(key.equals("DEF耐久")) {
-			point = getPointAsc(SpecValues.DEF_GUARD, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.DEF_GUARD, tmp_value);
 		}
 		else if(key.equals("予備弾数")) {
-			point = getPointAsc(SpecValues.SPARE_BULLET, value);
+			tmp_value = Math.round(tmp_value);
+			point = getPointAsc(SpecValues.SPARE_BULLET, tmp_value);
 		}
 		else if(key.equals("加速")) {
-			point = getPointDsc(SpecValues.ACCELERATION, value);
+			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
+			point = getPointDsc(SpecValues.ACCELERATION, tmp_value);
 		}
 		
 		return point;

@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.os.AsyncTask;
+import hokage.kaede.gmail.com.BBView.Shop.ShopDatabase.UpdateProgressListener;
 
-public class DistanceSetTask extends AsyncTask<Object, Integer, Object> {
+public class DistanceSetTask extends AsyncTask<Object, String, Object> {
 	private Context mContext;
 	private ProgressDialog mDialog;
 	private Address mAddress;
 	private OnEndTaskListener mEndTask;
+	private int mDistance = 1000;
 
 	/**
 	 * 初期化処理を行う。
@@ -19,6 +21,14 @@ public class DistanceSetTask extends AsyncTask<Object, Integer, Object> {
 		mDialog = null;
 		mAddress = address;
 		mEndTask = task;
+	}
+	
+	/**
+	 * 指定位置からの距離を設定する。
+	 * @param value 設定する距離
+	 */
+	public void setDistance(int value) {
+		mDistance = value;
 	}
 
 	/**
@@ -33,6 +43,14 @@ public class DistanceSetTask extends AsyncTask<Object, Integer, Object> {
 		mDialog.setCancelable(false);
 		mDialog.show();
 	}
+
+	/**
+	 * 処理中に表示するダイアログメッセージを更新する。
+	 */
+	@Override
+	protected void onProgressUpdate(String... values) {
+		mDialog.setMessage(values[0]);
+	}
 	
 	/**
 	 * バックグラウンドの処理を行う。
@@ -41,9 +59,25 @@ public class DistanceSetTask extends AsyncTask<Object, Integer, Object> {
 	@Override
 	protected Object doInBackground(Object... arg0) {
 		ShopDatabase shop_database = ShopDatabase.getShopDatabase();
-		shop_database.setDistance(mContext, mAddress, 1000);
-
+		shop_database.setOnUpdateProgressListener(new setOnUpdateListener());
+		shop_database.setDistance(mContext, mAddress, mDistance);
+		
 		return null;
+	}
+	
+	/**
+	 * ダイアログの進捗情報を更新する処理を行うリスナー。
+	 */
+	private class setOnUpdateListener implements UpdateProgressListener {
+
+		@Override
+		public void Update(int size, int finish) {
+			
+			if(size > 0) {
+				double rate = (double)finish / (double)size * 100.0;
+				publishProgress("検索中 [" + finish + "/" + size + " (" + (int)(rate) + "%)]");
+			}
+		}
 	}
 	
 	/**
