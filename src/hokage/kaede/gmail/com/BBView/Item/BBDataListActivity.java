@@ -1,10 +1,10 @@
 package hokage.kaede.gmail.com.BBView.Item;
 
-import hokage.kaede.gmail.com.BBView.Adapter.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 

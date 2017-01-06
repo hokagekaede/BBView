@@ -1,7 +1,7 @@
-package hokage.kaede.gmail.com.BBView.Adapter;
+package hokage.kaede.gmail.com.BBViewLib.Adapter;
 
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.view.Gravity;

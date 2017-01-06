@@ -1,8 +1,8 @@
-package hokage.kaede.gmail.com.BBView.Adapter;
+package hokage.kaede.gmail.com.BBViewLib.Adapter;
 
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterCmdManager.IndexLayout;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.IndexLayout;
 
 import java.util.ArrayList;
 

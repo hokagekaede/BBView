@@ -1,16 +1,16 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter;
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapter.CustomAdapterBaseItem;
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemCategory;
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemParts;
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemReqArm;
-import hokage.kaede.gmail.com.BBView.Adapter.CustomAdapterItemWeapon;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemCategory;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemParts;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemReqArm;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemWeapon;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;

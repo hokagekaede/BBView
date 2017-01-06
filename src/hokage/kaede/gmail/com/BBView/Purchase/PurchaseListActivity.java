@@ -1,9 +1,9 @@
 package hokage.kaede.gmail.com.BBView.Purchase;
 
-import hokage.kaede.gmail.com.BBView.Adapter.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBView.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.PurchaseStore;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 

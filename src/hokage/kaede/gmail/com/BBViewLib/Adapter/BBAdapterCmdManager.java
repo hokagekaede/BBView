@@ -1,4 +1,4 @@
-package hokage.kaede.gmail.com.BBView.Adapter;
+package hokage.kaede.gmail.com.BBViewLib.Adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,16 +1,16 @@
 package hokage.kaede.gmail.com.BBView.Purchase;
 
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterCmdManager;
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterFilterManager;
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterCmdManager.OnClickIndexButtonInterface;
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterCmdManager.OnExecuteInterface;
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterFilterManager.OnOKFilterDialogListener;
-import hokage.kaede.gmail.com.BBView.Adapter.BBSelectDataAdapter;
 import hokage.kaede.gmail.com.BBView.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterFilterManager;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBSelectDataAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnClickIndexButtonInterface;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnExecuteInterface;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterFilterManager.OnOKFilterDialogListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 

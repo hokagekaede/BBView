@@ -1,8 +1,5 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterValueFilterManager;
-import hokage.kaede.gmail.com.BBView.Adapter.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
-import hokage.kaede.gmail.com.BBView.Adapter.BBArrayAdapterChipView;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
@@ -12,6 +9,9 @@ import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
 import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterValueFilterManager;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBArrayAdapterChipView;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
