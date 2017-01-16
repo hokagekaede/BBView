@@ -184,13 +184,13 @@ public class SettingManager {
 	 */
 	public static int getColorBlue() {
 		if(sThemeID == android.R.style.Theme_Holo) {
-			return Color.rgb(0, 0, 0xAA);
+			return Color.rgb(0x00, 0x00, 0xAA);
 		}
 		else if(sThemeID == android.R.style.Theme_Holo_Light) {
-			return Color.rgb(0, 0xCC, 0xFF);
+			return Color.rgb(0x00, 0xCC, 0xFF);
 		}
 
-		return Color.rgb(0, 0, 0xAA);
+		return Color.rgb(0x00, 0x00, 0xAA);
 	}
 	
 	/**
@@ -202,10 +202,36 @@ public class SettingManager {
 			return Color.YELLOW;
 		}
 		else if(sThemeID == android.R.style.Theme_Holo_Light) {
-			return Color.rgb(0xFF, 0x99, 0);
+			return Color.rgb(0xFF, 0x99, 0x00);
 		}
 
 		return Color.YELLOW;
+	}
+	
+	/**
+	 * 緑色(グリーン)の設定値を取得する。
+	 * @return 文字色
+	 */
+	public static int getColorGreen() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.GREEN;
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.rgb(0x00, 0xAA, 0x00);
+		}
+
+		return Color.GREEN;
+	}
+	
+	public static int getColorDarkGreen() {
+		if(sThemeID == android.R.style.Theme_Holo) {
+			return Color.rgb(0, 0xAA, 0x00);
+		}
+		else if(sThemeID == android.R.style.Theme_Holo_Light) {
+			return Color.rgb(0, 0xFF, 0xCC);
+		}
+
+		return Color.rgb(0x00, 0xAA, 0x00);
 	}
 
 	private static final String COLOR_TAG_MAGENTA_DARK  = "<font color=\"Magenta\">";

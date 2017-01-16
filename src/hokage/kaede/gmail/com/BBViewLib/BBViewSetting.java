@@ -77,6 +77,12 @@ public class BBViewSetting extends SettingManager {
 	public static final String SETTING_LISTBUTTON_SHOWFULLSET = "SETTING_LISTBUTTON_SHOWFULLSET";
 	
 	/**
+	 * パーツ選択画面のカテゴリ表示(初期値)を有効にするかどうか。trueでカテゴリ表示、falseで通常表示。
+	 */
+	public static boolean IS_SHOW_CATEGORYPARTS_INIT = false;
+	public static final String SETTING_SHOW_CATEGORYPARTS_INIT = "SETTING_SHOW_CATEGORYPARTS_INIT";
+	
+	/**
 	 * 所持品表示設定。Trueで購入済み(開発済み)のみを表示する。
 	 */
 	public static boolean IS_SHOW_HAVING = false;

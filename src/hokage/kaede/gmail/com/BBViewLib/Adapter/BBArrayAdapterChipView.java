@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
-import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.CheckBox;
@@ -24,8 +22,8 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 	private TextView mExistTextView;
 	private TextView mFavoriteTextView;
 	
-	public BBArrayAdapterChipView(Context context, ArrayList<String> keys, boolean is_km_per_hour) {
-		super(context, keys, is_km_per_hour);
+	public BBArrayAdapterChipView(Context context, ArrayList<String> keys) {
+		super(context, keys);
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -77,14 +75,7 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 		mCheckBox.setText(target_item.get("名称") + " [" + target_item.get("コスト") + "]");
     	mExistTextView.setText(createExistText());
     	
-    	if(FavoriteManager.sFavoriteStore.exist(target_item.get("名称"))) {
-    		mFavoriteTextView.setTextColor(SettingManager.getColorYellow());
-    		mFavoriteTextView.setText("[Fav:ON]");
-    	}
-    	else {
-    		mFavoriteTextView.setText("[Fav:OFF]");
-    		mFavoriteTextView.setTextColor(SettingManager.getColorCyan());
-    	}
+    	super.updateFavorite(mFavoriteTextView);
 	}
 
 	/**

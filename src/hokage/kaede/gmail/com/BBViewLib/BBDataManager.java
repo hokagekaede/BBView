@@ -50,7 +50,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	 * 性能評価文字
 	 */
 	public static String[] SPEC_POINT = {
-		"S+", "S", "S-",
+		      "S", "S-",
 		"A+", "A", "A-",
 		"B+", "B", "B-",
 		"C+", "C", "C-",
@@ -641,6 +641,28 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * 指定のデータがアクションチップかどうか判別する。
+	 * @param chip 判別するチップ名
+	 * @return アクションチップの場合はtrueを返し、そうでない場合はfalseを返す。
+	 */
+	public boolean isActionChip(BBData chip) {
+		if(chip.existCategory(BBDataManager.ACTION_CHIP_STR)) {
+			return true;
+		}
+		else if(chip.existCategory(BBDataManager.ACTION_ACT_CHIP_STR)) {
+			return true;
+		}
+		else if(chip.existCategory(BBDataManager.ACTION_DASH_CHIP_STR)) {
+			return true;				
+		}
+		else if(chip.existCategory(BBDataManager.ACTION_JUMP_CHIP_STR)) {
+			return true;				
+		}
+		
+		return false;
 	}
 	
 	/**

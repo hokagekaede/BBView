@@ -19,14 +19,17 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 	private TextView mNameTextView;
 	private TextView mSubTextView;
 	private TextView mExistTextView;
+	private TextView mFavoriteTextView;
+	
+	private BBData mBaseItem;
 	
 	/**
 	 * 初期化処理を行う。
 	 * LinearLayoutのコンストラクタをコールし、TextViewのオブジェクトを生成する。
 	 * @param context リストを表示する画面
 	 */
-	public BBArrayAdapterTextView(Context context, ArrayList<String> keys, boolean is_km_per_hour) {
-		super(context, keys, is_km_per_hour);
+	public BBArrayAdapterTextView(Context context, ArrayList<String> keys) {
+		super(context, keys);
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -53,6 +56,12 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
         mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
         mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 
+    	mFavoriteTextView = new TextView(context);
+        mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+        mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
+        mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+        mFavoriteTextView.setPadding(10, 0, 10, 0);
+
         mMainLayout = new LinearLayout(context);
         mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
         mMainLayout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
@@ -68,16 +77,16 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
         
         mMainLayout.addView(sub_layout);
         mMainLayout.addView(mExistTextView);
+        mMainLayout.addView(mFavoriteTextView);
         
         this.addView(mMainLayout);
 	}
 	
 	/**
 	 * ビューの更新する。
-	 * @param base_item 比較対象のデータ
 	 */
-	public void updateView(BBData base_item) {
-		String sub_text = createSubText(base_item);
+	public void updateView() {
+		String sub_text = createSubText(mBaseItem);
         mNameTextView.setText(createNameText());
     	mSubTextView.setText(Html.fromHtml(sub_text));
     	mExistTextView.setText(createExistText());
@@ -92,19 +101,29 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 
         // 選択中のアイテムの場合は文字色を黄色に変更する
         BBData target_item = getItem();
-        if(base_item != null && BBDataManager.equalData(target_item, base_item)) {
+        if(mBaseItem != null && BBDataManager.equalData(target_item, mBaseItem)) {
         	mNameTextView.setTextColor(SettingManager.getColorYellow());
         }
         else {
         	mNameTextView.setTextColor(SettingManager.getColorWhite());
         }
+
+    	super.updateFavorite(mFavoriteTextView);
+	}
+
+	/**
+	 * Favoriteボタンがクリックされた場合のリスナーを設定する。
+	 * @param listener 対象のリスナー
+	 */
+	public void setOnClickFavListener(OnClickListener listener) {
+		mFavoriteTextView.setOnClickListener(listener);
 	}
 	
 	/**
-	 * ビューの更新をする。比較対象無し。
-	 * @param item リストのデータ。
+	 * 比較対象のデータを設定する。
+	 * @param base_item 比較対象のデータ
 	 */
-	public void updateView() {
-		updateView();
+	public void setBaseItem(BBData base_item) {
+		mBaseItem = base_item;
 	}
 }

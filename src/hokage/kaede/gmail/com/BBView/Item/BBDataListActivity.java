@@ -88,7 +88,7 @@ public class BBDataListActivity extends BaseActivity implements OnItemClickListe
 		layout_all.addView(list_view);
 		
 		// リストの生成
-		BBArrayAdapter adapter = new BBArrayAdapter(this, data_manager.getList(filter));
+		BBArrayAdapter adapter = new BBArrayAdapter(data_manager.getList(filter));
 		adapter.setBaseItem(null);
 		list_view.setAdapter(adapter);
 

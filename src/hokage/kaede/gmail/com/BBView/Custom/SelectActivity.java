@@ -8,11 +8,13 @@ import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataWriter;
+import hokage.kaede.gmail.com.BBViewLib.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterShownKeysManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterSortKeyManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterValueFilterManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBArrayAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Adapter.BBExpandableTextAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnClickIndexButtonInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnExecuteInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterShownKeysManager.OnOKClickListener;
@@ -21,6 +23,7 @@ import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterValueFilterManager.OnCl
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.Lib.Java.FileArrayList;
 import hokage.kaede.gmail.com.Lib.Java.ListConverter;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,7 +53,10 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	
 	private BBDataManager mDataManager;
 	private BBArrayAdapter mAdapter;
+	private BBExpandableTextAdapter mExAdapter;
 	private BBDataFilter mFilter;
+	
+	private FileArrayList mFavStore;
 	
 	private BBAdapterSortKeyManager mSortKeyDialog;
 	private BBAdapterShownKeysManager mShownKeysDialog;
@@ -73,6 +80,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	private static final int MENU_ITEM1 = 1;
 	private static final int MENU_ITEM2 = 2;
 	private static final int MENU_ITEM3 = 3;
+	private static final int MENU_ITEM4 = 4;
 	
 	// コマンド制御ダイアログ関連の定義
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
@@ -85,9 +93,17 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	
 	private static final String[] DIALOG_LIST_ITEMS_PARTS = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP, DIALOG_LIST_ITEM_FULL };
 	private static final String[] DIALOG_LIST_ITEMS_BASE = { DIALOG_LIST_ITEM_INFO, DIALOG_LIST_ITEM_CMP };
+
+	// リストのViewID
+	private static final int VIEW_ID_DEFALUT_LIST = 5000;
+	private static final int VIEW_ID_EX_LIST = 6000;
 	
 	// ソート時のタイプB設定
 	private boolean mIsSortTypeB = false;
+
+	// リストのカテゴリ表示設定
+	private boolean mIsExpandable = false;
+	
 	
 	/**
 	 * 画面生成時の処理を行う。
@@ -128,6 +144,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mSortKeys = BBDataManager.getCmpTarget(recent_data);
 
 		if(parts_type != null) {
+			mIsExpandable = BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT;
+			mFavStore = FavoriteManager.getStore(parts_type);
+			
 			mFilter.setPartsType(parts_type);
 			shown_save_key = parts_type;
 			initCmdListDialog(true);
@@ -181,21 +200,30 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		
 		// アダプタの生成
-		mAdapter = new BBArrayAdapter(this, mDataManager.getList(mFilter, mIsSortTypeB));
+		ArrayList<BBData> itemlist = mDataManager.getList(mFilter);
+		mAdapter = new BBArrayAdapter(itemlist);
 		mAdapter.setShowSwitch(true);
 		mAdapter.setBaseItem(recent_data);
+		mAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
+		mAdapter.notifyDataSetChanged();
+		
+		mExAdapter = new BBExpandableTextAdapter();
+		mExAdapter.setFavStore(mFavStore);
+		mExAdapter.addChildren(itemlist);
+		mExAdapter.setShowSwitch(true);
+		mExAdapter.setBaseItem(recent_data);
+		mExAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
+		mExAdapter.notifyDataSetChanged();
 
-		if(mAdapter.getCount() == 0) {
+		if(itemlist.size() <= 0) {
 			Toast.makeText(this, "条件に一致するパーツはありません。", Toast.LENGTH_SHORT).show();
 		}
 		
 		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
 			mAdapter.setBBAdapterCmdManager(mCmdDialog);
+			mExAdapter.setBBAdapterCmdManager(mCmdDialog);
 		}
 		
-		mAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
-		mAdapter.notifyDataSetChanged();
-
 		// 比較ダイアログを初期化する
 		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
 		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
@@ -251,7 +279,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		title_text.setTextSize(BBViewSetting.getTextSize(this, BBViewSetting.FLAG_TEXTSIZE_LARGE));
 		title_text.setGravity(Gravity.CENTER);
 		title_text.setTextColor(SettingManager.getColorWhite());
-		title_text.setBackgroundColor(SettingManager.getColorBlue());
+		title_text.setBackgroundColor(SettingManager.getColorDarkGreen());
 		title_text.setText(title);
 		
 		// リスト設定
@@ -259,11 +287,27 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		list_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		list_view.setOnItemClickListener(this);
 		list_view.setOnItemLongClickListener(this);
+		list_view.setId(VIEW_ID_DEFALUT_LIST);
 		list_view.setAdapter(mAdapter);
+		
+		// カテゴリリスト設定
+		ExpandableListView exlist_view = new ExpandableListView(this);
+		exlist_view.setAdapter(mExAdapter);
+		exlist_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		exlist_view.setOnChildClickListener(new OnClickExItemListener());
+		exlist_view.setId(VIEW_ID_EX_LIST);
+
+		if(mIsExpandable) {
+			list_view.setVisibility(View.GONE);
+		}
+		else {
+			exlist_view.setVisibility(View.GONE);
+		}
 		
 		// 画面上部のテキストを設定する
 		layout_all.addView(title_text);
 		layout_all.addView(list_view);
+		layout_all.addView(exlist_view);
 		
 		// リストの位置を選択中のアイテムの位置に変更する
 		list_view.setSelection(mAdapter.getBaseItemIndex());
@@ -287,6 +331,10 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 
 		if(parts_type != null) {
 			menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
+
+			MenuItem item = menu.add(0, MENU_ITEM4, 0, "カテゴリ表示").setIcon(android.R.drawable.ic_menu_add);
+			item.setCheckable(true);
+			item.setChecked(mIsExpandable);
 		}
 
 		if(weapon_type != null) {
@@ -336,9 +384,33 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			case MENU_ITEM2:
 				mShownKeysDialog.showDialog();
 				break;
+				
+			case MENU_ITEM4:
+				changedListVisiblity(item);
+				break;
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * リストの表示状態を変更する。
+	 */
+	private void changedListVisiblity(MenuItem item) {
+		View default_list_view = this.findViewById(VIEW_ID_DEFALUT_LIST);
+		View ex_list_view = this.findViewById(VIEW_ID_EX_LIST);
+		
+		mIsExpandable = !mIsExpandable;
+		if(mIsExpandable) {
+			default_list_view.setVisibility(View.GONE);
+			ex_list_view.setVisibility(View.VISIBLE);
+		}
+		else {
+			default_list_view.setVisibility(View.VISIBLE);
+			ex_list_view.setVisibility(View.GONE);
+		}
+		
+		item.setChecked(mIsExpandable);
 	}
 	
 	/**
@@ -348,6 +420,19 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		BBData data = (BBData)(mAdapter.getItem(position));
 		backCustomView(data);
+	}
+	
+	/**
+	 * カテゴリリストのデータ選択時の処理を行うリスナー
+	 * データをアセンに設定する。
+	 */
+	private class OnClickExItemListener implements ExpandableListView.OnChildClickListener {
+
+		@Override
+		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+			backCustomView(mExAdapter.getChild(groupPosition, childPosition));
+			return false;
+		}
 	}
 
 	/**
@@ -511,6 +596,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	public void onSelectItem(BBAdapterShownKeysManager manager) {
 		mAdapter.setShownKeys(manager.getShownKeys());
 		mAdapter.notifyDataSetChanged();
+
+		mExAdapter.setShownKeys(manager.getShownKeys());
+		mExAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -547,7 +635,11 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mAdapter.setList(datalist);
 		mAdapter.notifyDataSetChanged();
 		
-		if(mAdapter.getCount() == 0) {
+		mExAdapter.clearChildrenAll();
+		mExAdapter.addChildren(datalist);
+		mExAdapter.notifyDataSetChanged();
+		
+		if(datalist.size() == 0) {
 			Toast.makeText(this, "条件に一致するパーツはありません。", Toast.LENGTH_SHORT).show();
 		}
 	}

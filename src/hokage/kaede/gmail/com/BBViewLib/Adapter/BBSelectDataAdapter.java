@@ -5,7 +5,6 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,8 +12,8 @@ public class BBSelectDataAdapter extends BBArrayAdapter {
 	
 	private ArrayList<BBData> mSelectedItemList;
 
-	public BBSelectDataAdapter(Context context, ArrayList<BBData> list) {
-		super(context, list);
+	public BBSelectDataAdapter(ArrayList<BBData> list) {
+		super(list);
 		mSelectedItemList = new ArrayList<BBData>();
 	}
 	

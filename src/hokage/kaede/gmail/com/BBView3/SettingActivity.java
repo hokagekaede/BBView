@@ -186,6 +186,13 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		btn_listbutton_showfullset.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWFULLSET);
 		btn_listbutton_showfullset.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWFULLSET);
 		screen.addPreference(btn_listbutton_showfullset);
+
+		CheckBoxPreference btn_show_category_partsinit = new CheckBoxPreference(this);
+		btn_show_category_partsinit.setTitle("カテゴリ表示(パーツ)");
+		btn_show_category_partsinit.setSummary("パーツ選択画面の初期状態をカテゴリ表示にする");
+		btn_show_category_partsinit.setKey(BBViewSetting.SETTING_SHOW_CATEGORYPARTS_INIT);
+		btn_show_category_partsinit.setChecked(BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT);
+		screen.addPreference(btn_show_category_partsinit);
 		
 		CheckBoxPreference btn_memory_showitem = new CheckBoxPreference(this);
 		btn_memory_showitem.setTitle("表示項目選択状態");

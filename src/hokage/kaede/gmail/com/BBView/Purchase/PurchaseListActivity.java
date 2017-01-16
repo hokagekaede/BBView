@@ -56,7 +56,7 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 		// アダプタの設定
 		PurchaseStore store = new PurchaseStore(this.getFilesDir().toString());
 		ArrayList<BBData> data_list = store.getPurchaseList();
-		mAdapter = new BBArrayAdapter(this, data_list);
+		mAdapter = new BBArrayAdapter(data_list);
 		
 		// リスト設定
 		ListView list_view = new ListView(this);

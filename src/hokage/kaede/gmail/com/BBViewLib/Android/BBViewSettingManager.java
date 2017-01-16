@@ -30,6 +30,7 @@ public class BBViewSettingManager extends SettingManager {
 		BBViewSetting.IS_LISTBUTTON_SHOWINFO = isListButtonShowInfo(context);
 		BBViewSetting.IS_LISTBUTTON_SHOWCMP = isListButtonShowCmp(context);
 		BBViewSetting.IS_LISTBUTTON_SHOWFULLSET = isListButtonShowFullSet(context);
+		BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT = isShowCategoryPartsInit(context);
 		BBViewSetting.IS_SHOW_HAVING = isHavingOnly(context);
 		BBViewSetting.IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
 		BBViewSetting.IS_MEMORY_SORT = isMemorySort(context);
@@ -91,6 +92,11 @@ public class BBViewSettingManager extends SettingManager {
 	private static boolean isListButtonShowFullSet(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_SHOWFULLSET, true);
+	}
+
+	private static boolean isShowCategoryPartsInit(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_CATEGORYPARTS_INIT, false);
 	}
 	
 	private static boolean isHavingOnly(Context context) {

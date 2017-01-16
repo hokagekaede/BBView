@@ -313,7 +313,7 @@ public class SpecValues {
 		SETBONUS.set("ザオレン", "SP供給UP / 予備弾数UP");
 		SETBONUS.set("ガルム", "加速UP / DEF耐久UP");
 		SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
-		SETBONUS.set("X－", "リロードUP / 重量耐性UP");
+		SETBONUS.set("X", "リロードUP / 重量耐性UP");
 		SETBONUS.set("ヤマ", "DEF耐久UP");
 	}
 	
@@ -490,7 +490,7 @@ public class SpecValues {
 	 */
 	private static void initRecoil() {
 		RECOIL = new KeyValueStore();
-		RECOIL.set("S-", "150");  // 3.5該当パーツなし (2015/10/31)
+		RECOIL.set("S",  "150");  // 3.5該当パーツなし (2015/10/31)
 		RECOIL.set("S-", "145");  // 3.5該当パーツなし (2015/10/31)
 		RECOIL.set("A+", "140");
 		RECOIL.set("A",  "135");

@@ -1,21 +1,16 @@
 package hokage.kaede.gmail.com.BBViewLib.Adapter;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
-import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.IndexLayout;
 
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class BBArrayAdapter extends BaseAdapter {
-	private boolean mIsKmPerHour;
-	
 	private ArrayList<BBData> mList;
 	private ArrayList<String> mShownKeys;
 	private BBData mBaseItem;
@@ -32,10 +27,8 @@ public class BBArrayAdapter extends BaseAdapter {
 	 * @param context
 	 * @param list
 	 */
-	public BBArrayAdapter(Context context, ArrayList<BBData> list) {
-		SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
-		this.mIsKmPerHour = preference.getBoolean(BBViewSetting.SETTING_KM_PER_HOUR, false);
-		this.mList = list;
+	public BBArrayAdapter(ArrayList<BBData> list) {
+		mList = list;
 	}
 	
 	public void setBBAdapterCmdManager(BBAdapterCmdManager manager) {
@@ -68,7 +61,7 @@ public class BBArrayAdapter extends BaseAdapter {
 		BBArrayAdapterTextView view;
 
 		if(convertView == null) {
-			view = new BBArrayAdapterTextView(context, mShownKeys, mIsKmPerHour);
+			view = new BBArrayAdapterTextView(context, mShownKeys);
 			view.setShowSwitch(mIsShowSwitch);
 			view.setShowTypeB(mIsShowTypeB);
 			view.createView();
@@ -90,9 +83,10 @@ public class BBArrayAdapter extends BaseAdapter {
 		}
 		
 		view.setItem(data);
-		view.updateView(mBaseItem);
+		view.setBaseItem(mBaseItem);
+		view.updateView();
 		
-		return (View)view;
+		return view;
 	}
 	
 	/**

@@ -122,7 +122,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		
 		// リストの生成
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
-		mAdapter = new BBSelectDataAdapter(this, datalist);
+		mAdapter = new BBSelectDataAdapter(datalist);
 		mAdapter.setBaseItem(null);
 		list_view.setAdapter(mAdapter);
 

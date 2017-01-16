@@ -6,22 +6,27 @@ import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBNetDatabase;
+import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.Lib.Java.FileArrayList;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	private ArrayList<String> mShownKeys;
-	private boolean mIsKmPerHour;
 
 	private boolean mIsShowSwitch = false;
 	private boolean mIsShowTypeB = false;
 
 	// 表示対象のデータ
 	private BBData mTargetData;
-	
+
+	// お気に入りのデータ
+	private FileArrayList mFavoriteStore;
+
 	// テキストビューに設定するタグ
 	private static final String COLOR_TAG_END    = "</font>";
 	private static final String TAG_BR = "<BR>";
@@ -31,16 +36,25 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	 * LinearLayoutのコンストラクタをコールし、TextViewのオブジェクトを生成する。
 	 * @param context リストを表示する画面
 	 */
-	public BBArrayAdapterBaseView(Context context, ArrayList<String> keys, boolean is_km_per_hour) {
+	public BBArrayAdapterBaseView(Context context, ArrayList<String> keys) {
 		super(context);
 		mShownKeys = keys;
-		mIsKmPerHour = is_km_per_hour;
 		mIsShowTypeB = false;
+		
+		mFavoriteStore = null;
 		
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL );
 		this.setPadding(10, 10, 10, 10);
 		this.setWeightSum((float)1.0);
+	}
+	
+	/**
+	 * お気に入りリストのデータストアを設定する。
+	 * @param store ストア
+	 */
+	public void setFavoriteStore(FileArrayList store) {
+		mFavoriteStore = store;
 	}
 
 	/**
@@ -53,7 +67,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	
 	/**
 	 * タイプBの情報を表示するかどうかの設定を行う。
-	 * @param is_show_typeb
+	 * @param is_show_typeb trueを設定した場合は表示し、falseを設定した場合はタイプAを表示する。
 	 */
 	public void setShowTypeB(boolean is_show_typeb) {
 		mIsShowTypeB = is_show_typeb;
@@ -130,7 +144,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	protected String createSubText(BBData base_item) {
 		String ret = "";
 		
-		if(mShownKeys == null) {
+		if(base_item == null || mShownKeys == null) {
 			return ret;
 		}
 		
@@ -158,7 +172,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			String color_etag = "";
 			String cmp_str = "";
 			if(from_item != null) {
-				BBDataComparator cmp_data = new BBDataComparator(shown_key, true, mIsKmPerHour);
+				BBDataComparator cmp_data = new BBDataComparator(shown_key, true, BBViewSetting.IS_KM_PER_HOUR);
 				cmp_data.compare(to_item, from_item);
 				double cmp = cmp_data.getCmpValue();
 				
@@ -166,12 +180,12 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 					if(cmp > 0) {
 						color_stag = SettingManager.getCodeCyan();
 						color_etag = COLOR_TAG_END;
-						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, mIsKmPerHour) + "↑)";
+						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, BBViewSetting.IS_KM_PER_HOUR) + "↑)";
 					}
 					else if(cmp < 0) {
 						color_stag = SettingManager.getCodeMagenta();
 						color_etag = COLOR_TAG_END;
-						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, mIsKmPerHour) + "↓)";
+						cmp_str = " (" + SpecValues.getSpecUnitCmpArmor(Math.abs(cmp), shown_key, BBViewSetting.IS_KM_PER_HOUR) + "↓)";
 					}
 				}
 			}
@@ -180,7 +194,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			String value_str = "";
 			if(BBDataComparator.isPointKey(shown_key)) {
 				String value = to_item.get(shown_key);
-				value_str = value + " (" + SpecValues.getSpecUnit(to_item, shown_key, mIsKmPerHour) + ")";
+				value_str = value + " (" + SpecValues.getSpecUnit(to_item, shown_key, BBViewSetting.IS_KM_PER_HOUR) + ")";
 
 			}
 			else if(shown_key.equals(BBData.ARMOR_BREAK_KEY)) {
@@ -193,10 +207,10 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY);
 			}
 			else if(shown_key.equals(BBData.BULLET_SUM_KEY)) {
-				value_str = to_item.get("総弾数") + "=" + SpecValues.getShowValue(to_item, shown_key, mIsKmPerHour);
+				value_str = to_item.get("総弾数") + "=" + SpecValues.getShowValue(to_item, shown_key, BBViewSetting.IS_KM_PER_HOUR);
 			}
 			else {
-				value_str = SpecValues.getShowValue(to_item, shown_key, mIsKmPerHour);
+				value_str = SpecValues.getShowValue(to_item, shown_key, BBViewSetting.IS_KM_PER_HOUR);
 			}
 			
 			// 文字を結合する
@@ -285,6 +299,10 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		return ret;
 	}
 	
+	/**
+	 * 購入した項目かどうかの文字列を生成する。
+	 * @return 購入した武器(開発済みのチップ)かどうかを示す文字列
+	 */
 	protected String createExistText() {
 		String item_name = "";
 		String data_name = mTargetData.get("名称");
@@ -337,5 +355,24 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
     	}
     	
     	return item_name;
+	}
+	
+	/**
+	 * お気に入りデータに応じてビューの表示を更新する。
+	 * @param target_view 対象のビュー。
+	 */
+	protected void updateFavorite(TextView target_view) {
+		if(mFavoriteStore == null) {
+			return;
+		}
+		
+    	if(mFavoriteStore.exist(mTargetData.get("名称"))) {
+    		target_view.setTextColor(SettingManager.getColorYellow());
+    		target_view.setText("[Fav:ON]");
+    	}
+    	else {
+    		target_view.setText("[Fav:OFF]");
+    		target_view.setTextColor(SettingManager.getColorCyan());
+    	}
 	}
 }
