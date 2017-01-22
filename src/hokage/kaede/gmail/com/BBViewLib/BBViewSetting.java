@@ -8,7 +8,8 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 public class BBViewSetting extends SettingManager {
 	
 	// Xのデータ設定
-	//public static boolean IS_VER_X_ON = false;
+	public static boolean IS_NEXT_VERSION_ON = false;
+	public static String NEXT_VERSION_TITLE = "X Zero";
 
 	/**
 	 * 移動速度の表示単位。trueの場合はkm/hで表示。falseの場合はm/secで表示。

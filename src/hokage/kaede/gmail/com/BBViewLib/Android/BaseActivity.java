@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
@@ -30,6 +31,7 @@ public abstract class BaseActivity extends Activity {
 	 * 通常時のベースレイアウトを生成する。
 	 * @param view
 	 */
+	/*
 	private void createLayout(View view) {
 
 		// テーマを設定する
@@ -51,9 +53,9 @@ public abstract class BaseActivity extends Activity {
 
 		super.setContentView(main_layout);
 	}
+	*/
 	
 	// バージョンアップ前のレイアウトを生成する
-	/*
 	private static final int VER_VIEW_ID = 1000;
 	
 	private void createLayout(View view) {
@@ -75,11 +77,11 @@ public abstract class BaseActivity extends Activity {
 		bottom_layout.addView(sega_text_view);
 		
 		String ver_text_str = "";
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			ver_text_str = "X Data = ON";
+		if(BBViewSetting.IS_NEXT_VERSION_ON) {
+			ver_text_str = BBViewSetting.NEXT_VERSION_TITLE + " Data = ON";
 		}
 		else {
-			ver_text_str = "X Data = OFF";
+			ver_text_str = BBViewSetting.NEXT_VERSION_TITLE + " Data = OFF";
 		}
 		
 		TextView ver_text_view = new TextView(this);
@@ -98,16 +100,15 @@ public abstract class BaseActivity extends Activity {
 		TextView ver_text_view = (TextView)this.findViewById(VER_VIEW_ID);
 
 		String ver_text_str = "";
-		if(BBViewSettingManager.IS_VER_X_ON) {
-			ver_text_str = "X Data = ON";
+		if(BBViewSetting.IS_NEXT_VERSION_ON) {
+			ver_text_str = BBViewSetting.NEXT_VERSION_TITLE + " Data = ON";
 		}
 		else {
-			ver_text_str = "X Data = OFF";
+			ver_text_str = BBViewSetting.NEXT_VERSION_TITLE + " Data = OFF";
 		}
 		
 		ver_text_view.setText(ver_text_str);
 	}
-	*/
 
 	private void setTheme() {
 		int res_id = BBViewSetting.sThemeID;

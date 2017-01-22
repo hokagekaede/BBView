@@ -34,10 +34,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class TopActivity extends BaseActivity {
 	
@@ -62,7 +65,7 @@ public class TopActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		// バージョンアップデータを使用するかどうかの設定値を初期化
-		// BBViewSettingManager.IS_VER_X_ON = false;
+		BBViewSetting.IS_NEXT_VERSION_ON = false;
 		
 		// 初期化する
 		SpecValues.init();
@@ -154,34 +157,31 @@ public class TopActivity extends BaseActivity {
 		layout.addView(blog_btn);
 
 		/* 次回のバージョンアップ用(データ切り替え) */
-		/*
 		ToggleButton ver_btn = new ToggleButton(this);
-		ver_btn.setChecked(BBViewSettingManager.IS_VER_X_ON);
-		ver_btn.setText("Xデータ [OFF]");
-		ver_btn.setTextOn("Xデータ [ON]");
-		ver_btn.setTextOff("Xデータ [OFF]");
+		ver_btn.setChecked(BBViewSetting.IS_NEXT_VERSION_ON);
+		ver_btn.setText(BBViewSetting.NEXT_VERSION_TITLE + "データ [OFF]");
+		ver_btn.setTextOn(BBViewSetting.NEXT_VERSION_TITLE + "データ [ON]");
+		ver_btn.setTextOff(BBViewSetting.NEXT_VERSION_TITLE + "データ [OFF]");
 		ver_btn.setOnCheckedChangeListener(new OnChangeVersionListener());
 		layout.addView(ver_btn);
-		*/
 
 		setContentView(layout);
 	}
 	
 	/* 次回のバージョンアップ用(データ切り替え) */
-	/*
 	private class OnChangeVersionListener implements OnCheckedChangeListener {
 
 		@Override
 		public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 			
 			if(arg1) {
-				BBViewSettingManager.IS_VER_X_ON = true;
+				BBViewSetting.IS_NEXT_VERSION_ON = true;
 				SpecValues.init();
-				loadPartsData(R.raw.bb_data_x);
+				loadPartsData(R.raw.bb_data_x_zero);
 				initCustomData();
 			}
 			else {
-				BBViewSettingManager.IS_VER_X_ON = false;
+				BBViewSetting.IS_NEXT_VERSION_ON = false;
 				SpecValues.init();
 				loadPartsData();
 				initCustomData();
@@ -190,7 +190,6 @@ public class TopActivity extends BaseActivity {
 			TopActivity.this.updateVer();
 		}
 	}
-	*/
 
 	/**
 	 * 既存のアクティビティを使用する場合の処理を行う。
