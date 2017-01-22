@@ -15,7 +15,6 @@ import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterSortKeyManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterValueFilterManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBExpandableTextAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnClickIndexButtonInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnExecuteInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterShownKeysManager.OnOKClickListener;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterSortKeyManager.OnSelectItemListener;
@@ -47,7 +46,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class SelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnSelectItemListener, OnOKClickListener, OnExecuteInterface, OnClickIndexButtonInterface, OnClickValueFilterButtonListener {
+public class SelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnSelectItemListener, OnOKClickListener, OnExecuteInterface, OnClickValueFilterButtonListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
@@ -220,8 +219,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		
 		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
-			mAdapter.setBBAdapterCmdManager(mCmdDialog);
 			mExAdapter.setBBAdapterCmdManager(mCmdDialog);
+			mAdapter.setBBAdapterCmdManager(mCmdDialog);
 		}
 		
 		// 比較ダイアログを初期化する
@@ -241,7 +240,6 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		
 		mCmdDialog = new BBAdapterCmdManager(cmd_list);
-		mCmdDialog.setOnClickIndexButtonInterface(this);
 		mCmdDialog.setOnExecuteInterface(this);
 		
 		// 設定に応じてボタンを非表示にする
@@ -409,7 +407,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			default_list_view.setVisibility(View.VISIBLE);
 			ex_list_view.setVisibility(View.GONE);
 		}
-		
+
 		item.setChecked(mIsExpandable);
 	}
 	
@@ -514,6 +512,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	
 	/**
 	 * リストの項目選択時(長)の処理を行う。
+	 * コマンドダイアログに選択したデータを設定し、操作選択ダイアログを表示する。
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -601,14 +600,8 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mExAdapter.notifyDataSetChanged();
 	}
 
-	@Override
-	public void onClickIndexButton(int position, int index) {
-		BBData to_item = (BBData)(mAdapter.getItem(position));
-		mCmdDialog.setTarget(to_item);
-	}
-	
 	/**
-	 * 指定された操作を実行する。
+	 * コマンドボタン押下または操作選択ダイアログ選択時の処理を行う。
 	 */
 	@Override
 	public void onExecute(BBData data, int cmd_idx) {

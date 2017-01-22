@@ -8,7 +8,6 @@ import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterFilterManager;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBSelectDataAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnClickIndexButtonInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterCmdManager.OnExecuteInterface;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.BBAdapterFilterManager.OnOKFilterDialogListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
@@ -31,7 +30,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class PurchaseSelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnOKFilterDialogListener, OnExecuteInterface, OnClickIndexButtonInterface, OnClickListener {
+public class PurchaseSelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnOKFilterDialogListener, OnExecuteInterface, OnClickListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
@@ -87,7 +86,6 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 */
 	private void initCmdListDialog() {
 		mCmdDialog = new BBAdapterCmdManager(DIALOG_LIST_ITEMS_LISTMODE);
-		mCmdDialog.setOnClickIndexButtonInterface(this);
 		mCmdDialog.setOnExecuteInterface(this);
 		
 		// 設定に応じてボタンを非表示にする
@@ -242,12 +240,6 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		mAdapter.notifyDataSetChanged();
 	}
 
-	@Override
-	public void onClickIndexButton(int position, int index) {
-		BBData to_item = (BBData)(mAdapter.getItem(position));
-		mCmdDialog.setTarget(to_item);
-	}
-	
 	/**
 	 * 指定された操作を実行する。
 	 */

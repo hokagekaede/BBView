@@ -24,7 +24,6 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 	// コマンドの文字列
 	private String[] mCommandList;
 	private boolean[] mHiddenList;
-	private OnClickIndexButtonInterface mButtonListener;
 	private OnExecuteInterface mListener;
 	
 	private static final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -41,24 +40,43 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		}
 	}
 	
+	/**
+	 * 非表示にするコマンドボタンを設定する。
+	 * @param position コマンドボタンの位置
+	 */
 	public void setHiddenTarget(int position) {
 		if(position < mHiddenList.length) {
 			mHiddenList[position] = true;
 		}
 	}
 	
+	/**
+	 * 実行対象のデータを設定する。
+	 * @param data データ
+	 */
 	public void setTarget(BBData data) {
 		mTarget = data;
 	}
 	
-	public void setOnClickIndexButtonInterface(OnClickIndexButtonInterface listener) {
-		mButtonListener = listener;
-	}
-	
+	/**
+	 * 操作選択ダイアログの項目選択時およびコマンドボタン押下時の処理を行うリスナーを設定する。
+	 * @param listener リスナー
+	 */
 	public void setOnExecuteInterface(OnExecuteInterface listener) {
 		mListener = listener;
 	}
+
+	/**
+	 * 操作選択ダイアログの項目選択時およびコマンドボタン押下時の処理を管理するインターフェース
+	 */
+	public interface OnExecuteInterface {
+		public void onExecute(BBData data, int cmd_idx);
+	}
 	
+	/**
+	 * 長いタップ時の操作選択ダイアログを表示する。
+	 * @param activity 操作中のActivity
+	 */
 	public void showDialog(Activity activity) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setTitle("操作を選択");
@@ -70,6 +88,9 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		dialog.show();
 	}
 
+	/**
+	 * 操作選択ダイアログのコマンド選択時の処理を行う。
+	 */
 	@Override
 	public void onClick(DialogInterface arg0, int arg1) {
 		if(mListener != null) {
@@ -77,31 +98,27 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		}
 	}
 	
-	public IndexLayout createButtonView(Context context, int position) {
-		return new IndexLayout(context, mCommandList, mHiddenList, position, this);
+	/**
+	 * ボタンのビューを生成する。
+	 * @param context 対象のContext
+	 * @return ボタンのビュー
+	 */
+	public IndexLayout createButtonView(Context context) {
+		return new IndexLayout(context, mCommandList, mHiddenList, this);
 	}
 	
+	/**
+	 * コマンドボタン押下時の処理を行う。
+	 */
 	@Override
 	public void onClick(View v) {
 		if(v instanceof IndexHandlerInterface) {
 			IndexHandlerInterface btn = (IndexHandlerInterface)v;
 			
-			if(mButtonListener != null) {
-				mButtonListener.onClickIndexButton(btn.getPosition(), btn.getIndex());
-			}
-			
 			if(mListener != null) {
-				mListener.onExecute(mTarget, btn.getIndex());
+				mListener.onExecute(btn.getData(), btn.getIndex());
 			}
 		}
-	}
-	
-	public interface OnClickIndexButtonInterface {
-		public void onClickIndexButton(int position, int index);
-	}
-	
-	public interface OnExecuteInterface {
-		public void onExecute(BBData data, int cmd_idx);
 	}
 	
 	/**
@@ -111,7 +128,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		private int mButtonCount;
 		private IndexHandlerInterface[] mButtons;
 
-		public IndexLayout(Context context, String[] commands, boolean[] hiddens, int position, OnClickListener listener) {
+		public IndexLayout(Context context, String[] commands, boolean[] hiddens, OnClickListener listener) {
 			super(context);
 			this.setOrientation(LinearLayout.HORIZONTAL);
 			this.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
@@ -125,7 +142,6 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 					String btn_text = commands[i].substring(0, 1);
 					mButtons[i] = new IndexTextView(context, btn_text, listener);
 					mButtons[i].setIndex(i);
-					mButtons[i].setPosition(position);
 					
 					if(hiddens[i]) {
 						mButtons[i].setVisibility(View.GONE);
@@ -141,7 +157,6 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 					String btn_text = commands[i].substring(0, 1);
 					mButtons[i] = new IndexButton(context, btn_text, listener);
 					mButtons[i].setIndex(i);
-					mButtons[i].setPosition(position);
 					
 					if(hiddens[i]) {
 						mButtons[i].setVisibility(View.GONE);
@@ -152,9 +167,9 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			}
 		}
 		
-		public void update(int position) {
+		public void update(BBData data) {
 			for(int i=0; i<mButtonCount; i++) {
-				mButtons[i].setPosition(position);
+				mButtons[i].setData(data);
 			}
 		}
 	}
@@ -163,7 +178,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 	 * リストのボタンのクラス
 	 */
 	private class IndexButton extends Button implements IndexHandlerInterface {
-		private int mPosition;
+		private BBData mData;
 		private int mIndex;
 
 		public IndexButton(Context context, String btn_text, OnClickListener listener) {
@@ -175,13 +190,13 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 		}
 
 		@Override
-		public void setPosition(int position) {
-			mPosition = position;
+		public void setData(BBData data) {
+			mData = data;
 		}
 
 		@Override
-		public int getPosition() {
-			return mPosition;
+		public BBData getData() {
+			return mData;
 		}
 
 		@Override
@@ -205,7 +220,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 	 * Android 5.0でボタンが大きくなる現象への対応
 	 */
 	private class IndexTextView extends TextView implements IndexHandlerInterface {
-		private int mPosition;
+		private BBData mData;
 		private int mIndex;
 
 		public IndexTextView(Context context, String btn_text, OnClickListener listener) {
@@ -224,14 +239,15 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			setLayoutParams(lp);
 		}
 
+		
 		@Override
-		public void setPosition(int position) {
-			mPosition = position;
+		public void setData(BBData data) {
+			mData = data;
 		}
 
 		@Override
-		public int getPosition() {
-			return mPosition;
+		public BBData getData() {
+			return mData;
 		}
 
 		@Override
@@ -254,8 +270,8 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 	 * ボタンの位置とリスト上の位置を管理するハンドラインターフェース
 	 */
 	private interface IndexHandlerInterface {
-		public void setPosition(int position);
-		public int getPosition();
+		public void setData(BBData data);
+		public BBData getData();
 		public void setIndex(int index);
 		public int getIndex();
 		public void setVisibility(int visibility);

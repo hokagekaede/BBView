@@ -68,7 +68,9 @@ public class BBArrayAdapter extends BaseAdapter {
 			
 			// ボタン設定ONの場合、ボタンのビューを追加する
 			if(mCmdManager != null) {
-				view.addView(mCmdManager.createButtonView(context, position), BUTTON_LAYOUT_INDEX);
+				IndexLayout button_view = mCmdManager.createButtonView(context);
+				button_view.update(data);
+				view.addView(button_view, BUTTON_LAYOUT_INDEX);
 			}
 		}
 		else {
@@ -78,7 +80,7 @@ public class BBArrayAdapter extends BaseAdapter {
 
 			if(mCmdManager != null) {
 				IndexLayout button_view = (IndexLayout)view.getChildAt(BUTTON_LAYOUT_INDEX);
-				button_view.update(position);
+				button_view.update(data);
 			}
 		}
 		

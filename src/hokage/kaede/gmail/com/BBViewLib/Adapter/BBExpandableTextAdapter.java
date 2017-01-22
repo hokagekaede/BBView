@@ -68,7 +68,9 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 			
 			// ボタン設定ONの場合、ボタンのビューを追加する
 			if(mCmdManager != null) {
-				view.addView(mCmdManager.createButtonView(context, childPosition), BUTTON_LAYOUT_INDEX);
+				IndexLayout button_view = mCmdManager.createButtonView(context);
+				button_view.update(data);
+				view.addView(button_view, BUTTON_LAYOUT_INDEX);
 			}
 		}
 		else {
@@ -78,7 +80,7 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 
 			if(mCmdManager != null) {
 				IndexLayout button_view = (IndexLayout)view.getChildAt(BUTTON_LAYOUT_INDEX);
-				button_view.update(childPosition);
+				button_view.update(data);
 			}
 		}
 		
@@ -161,13 +163,6 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 			if(name.startsWith(brand_name)) {
 				addChild(i, item);
 			}
-
-			// お気に入りリストに格納されているチップを追加する。
-			//if(brand_name.equals(FavoriteManager.FAVORITE_CATEGORY_NAME)) {
-			//	if(mFavStore != null && mFavStore.exist(name)) {
-			//		addChild(i, item);
-			//	}
-			//}
 		}
 		
 		// お気に入りリストに格納されているチップを追加する。
