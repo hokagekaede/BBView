@@ -58,6 +58,15 @@ public class BBViewSetting extends SettingManager {
 	 */
 	public static boolean IS_LISTBUTTON_TYPETEXT = true;
 	public static final String SETTING_LISTBUTTON_TYPETEXT = "SETTING_LISTBUTTON_TYPETEXT";
+
+	/**
+	 * パーツ武器選択画面のリストボタンにフルセットボタンを表示するかどうか。trueでTextView配置、falseでButton配置
+	 */
+	public static double LISTBUTTON_TEXTSIZE = 1.0;
+	public static double[] LISTBUTTON_TEXTSIZE_VALUES = {1.6, 1.4, 1.2, 1.0, 0.8}; 
+	public static String[] LISTBUTTON_TEXTSIZE_CAPTIONS = { "特大", "大", "中", "小", "極小" };
+	public static String LISTBUTTON_TEXTSIZE_DEFAULT = LISTBUTTON_TEXTSIZE_CAPTIONS[3];
+	public static final String SETTING_LISTBUTTON_TEXTSIZE = "SETTING_LISTBUTTON_TEXTSIZE";
 	
 	/**
 	 * パーツ武器選択画面のリストボタンに詳細ボタンを表示するかどうか。trueでTextView配置、falseでButton配置
@@ -76,7 +85,7 @@ public class BBViewSetting extends SettingManager {
 	 */
 	public static boolean IS_LISTBUTTON_SHOWFULLSET = true;
 	public static final String SETTING_LISTBUTTON_SHOWFULLSET = "SETTING_LISTBUTTON_SHOWFULLSET";
-	
+
 	/**
 	 * パーツ選択画面のカテゴリ表示(初期値)を有効にするかどうか。trueでカテゴリ表示、falseで通常表示。
 	 */

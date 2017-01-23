@@ -153,36 +153,45 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		screen.addPreference(show_having_item_only);
 
 		CheckBoxPreference show_listbutton = new CheckBoxPreference(this);
-		show_listbutton.setTitle("リストのボタン表示");
-		show_listbutton.setSummary("武器選択画面の操作ボタンを表示する");
+		show_listbutton.setTitle("操作ボタンの表示");
+		show_listbutton.setSummary("左側に操作ボタンを表示する");
 		show_listbutton.setKey(BBViewSetting.SETTING_SHOW_LISTBUTTON);
 		show_listbutton.setChecked(BBViewSetting.IS_SHOW_LISTBUTTON);
 		screen.addPreference(show_listbutton);
 
 		CheckBoxPreference btn_listbutton_typetext = new CheckBoxPreference(this);
-		btn_listbutton_typetext.setTitle("リストのボタン変更");
-		btn_listbutton_typetext.setSummary("武器選択画面の操作ボタンをテキストにする");
+		btn_listbutton_typetext.setTitle("操作ボタンの表示形式変更");
+		btn_listbutton_typetext.setSummary("操作ボタンの表示をテキストにする");
 		btn_listbutton_typetext.setKey(BBViewSetting.SETTING_LISTBUTTON_TYPETEXT);
 		btn_listbutton_typetext.setChecked(BBViewSetting.IS_LISTBUTTON_TYPETEXT);
 		screen.addPreference(btn_listbutton_typetext);
 
+		ListPreference listbutton_size = new ListPreference(this);
+		listbutton_size.setTitle("操作ボタンのサイズ");
+		listbutton_size.setSummary("操作ボタン(テキスト)のサイズを変更する");
+		listbutton_size.setKey(BBViewSetting.SETTING_LISTBUTTON_TEXTSIZE);
+		listbutton_size.setEntries(BBViewSetting.LISTBUTTON_TEXTSIZE_CAPTIONS);
+		listbutton_size.setEntryValues(BBViewSetting.LISTBUTTON_TEXTSIZE_CAPTIONS);	
+		listbutton_size.setDefaultValue(BBViewSetting.LISTBUTTON_TEXTSIZE_DEFAULT);
+		screen.addPreference(listbutton_size);
+		
 		CheckBoxPreference btn_listbutton_showinfo = new CheckBoxPreference(this);
-		btn_listbutton_showinfo.setTitle("リストのボタン表示(詳細)");
-		btn_listbutton_showinfo.setSummary("武器選択画面の操作ボタン(詳細)を表示する");
+		btn_listbutton_showinfo.setTitle("操作ボタン表示(詳細)");
+		btn_listbutton_showinfo.setSummary("操作ボタン(詳細)を表示する");
 		btn_listbutton_showinfo.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWINFO);
 		btn_listbutton_showinfo.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWINFO);
 		screen.addPreference(btn_listbutton_showinfo);
 
 		CheckBoxPreference btn_listbutton_showcmp = new CheckBoxPreference(this);
-		btn_listbutton_showcmp.setTitle("リストのボタン表示(比較)");
-		btn_listbutton_showcmp.setSummary("武器選択画面の操作ボタン(比較)を表示する");
+		btn_listbutton_showcmp.setTitle("ボタン表示(比較)");
+		btn_listbutton_showcmp.setSummary("操作ボタン(比較)を表示する");
 		btn_listbutton_showcmp.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWCMP);
 		btn_listbutton_showcmp.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWCMP);
 		screen.addPreference(btn_listbutton_showcmp);
 
 		CheckBoxPreference btn_listbutton_showfullset = new CheckBoxPreference(this);
-		btn_listbutton_showfullset.setTitle("リストのボタン表示(フルセット)");
-		btn_listbutton_showfullset.setSummary("武器選択画面の操作ボタン(フルセット)を表示する");
+		btn_listbutton_showfullset.setTitle("操作ボタン表示(フルセット)");
+		btn_listbutton_showfullset.setSummary("操作ボタン(フルセット)を表示する");
 		btn_listbutton_showfullset.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWFULLSET);
 		btn_listbutton_showfullset.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWFULLSET);
 		screen.addPreference(btn_listbutton_showfullset);

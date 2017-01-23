@@ -277,9 +277,7 @@ public class BBData extends KVCStore {
 	 * @return 最大ステップ回数
 	 */
 	public double getStepMaxCount() {
-		int ret = (int)(getBoost() / 12.0);
-		
-		return (double)ret;
+		return Math.ceil(getBoost() / 12.0);
 	}
 	
 	/**

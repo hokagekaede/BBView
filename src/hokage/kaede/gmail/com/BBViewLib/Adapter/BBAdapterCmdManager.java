@@ -227,6 +227,7 @@ public class BBAdapterCmdManager implements android.content.DialogInterface.OnCl
 			super(context);
 
 			setText(btn_text);
+			setTextSize((float)(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL) * BBViewSetting.LISTBUTTON_TEXTSIZE));
 			setOnClickListener(listener);
 			setClickable(true);
 			setFocusable(false);

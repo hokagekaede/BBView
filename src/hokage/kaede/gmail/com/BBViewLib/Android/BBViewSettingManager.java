@@ -30,6 +30,7 @@ public class BBViewSettingManager extends SettingManager {
 		BBViewSetting.IS_LISTBUTTON_SHOWINFO = isListButtonShowInfo(context);
 		BBViewSetting.IS_LISTBUTTON_SHOWCMP = isListButtonShowCmp(context);
 		BBViewSetting.IS_LISTBUTTON_SHOWFULLSET = isListButtonShowFullSet(context);
+		BBViewSetting.LISTBUTTON_TEXTSIZE = loadListButtonTextSize(context);
 		BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT = isShowCategoryPartsInit(context);
 		BBViewSetting.IS_SHOW_HAVING = isHavingOnly(context);
 		BBViewSetting.IS_MEMORY_SHOWSPEC = isMemoryShowSpec(context);
@@ -77,6 +78,23 @@ public class BBViewSettingManager extends SettingManager {
 	private static boolean isListButtonTypeText(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(BBViewSetting.SETTING_LISTBUTTON_TYPETEXT, true);
+	}
+
+	private static double loadListButtonTextSize(Context context) {
+		double ret = BBViewSetting.LISTBUTTON_TEXTSIZE;
+		int size = BBViewSetting.LISTBUTTON_TEXTSIZE_CAPTIONS.length;
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String data = preferences.getString(BBViewSetting.SETTING_LISTBUTTON_TEXTSIZE, BBViewSetting.LISTBUTTON_TEXTSIZE_DEFAULT);
+		
+		for(int i=0; i<size; i++) {
+			if(data.equals(BBViewSetting.LISTBUTTON_TEXTSIZE_CAPTIONS[i])) {
+				ret = BBViewSetting.LISTBUTTON_TEXTSIZE_VALUES[i];
+				break;
+			}
+		}
+		
+		return ret;
 	}
 
 	private static boolean isListButtonShowInfo(Context context) {

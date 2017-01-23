@@ -1059,9 +1059,7 @@ public class CustomData {
 	 * @return 最大ステップ回数
 	 */
 	public double getStepMaxCount() {
-		int ret = (int)(getBoost() / 12.0);
-		
-		return (double)ret;
+		return Math.ceil(getBoost() / 12.0);
 	}
 	
 	/**
@@ -1159,7 +1157,7 @@ public class CustomData {
 				ret = ret - getFullSetBonus(0.5);
 			}
 			else if(isFullSet("ガルム") && BBViewSetting.IS_NEXT_VERSION_ON) {
-				ret = ret + getFullSetBonus(0.5);
+				ret = ret - getFullSetBonus(0.5);
 			}
 			
 			// チップセットボーナス
@@ -1811,10 +1809,8 @@ public class CustomData {
 	 * 最大ステップ回数を取得する。(1ステップの消費量は12)
 	 * @return 最大ステップ回数
 	 */
-	public double getStepMaxCount(String blust_type) {
-		int ret = (int)(getBoost(blust_type) / 12.0);
-		
-		return (double)ret;
+	public double getStepMaxCount(String blust_type) {		
+		return Math.ceil(getBoost(blust_type) / 12.0);
 	}
 	
 	/**
