@@ -633,6 +633,93 @@ public class SpecValues {
 		WALK.set("E",  "16.848");
 		WALK.set("E-", "14.904");  // 3.5該当パーツなし (2015/10/31)
 	}
+
+	/**
+	 * 値の初期値を取得する。
+	 * @param key キー
+	 * @return 値の初期値。
+	 */
+	public static String getInitValue(String key) {
+
+		if(BBDataComparator.isPointKey(key)) {
+			return "C";
+		}
+		else if(key.equals("重量")) {
+			return "1000";
+		}
+		else if(key.equals("チップ容量")) {
+			return "2.0";
+		}
+		else if(key.equals("積載猶予")) {
+			return "4000";
+		}
+		else if(key.equals("DEF回復時間")) {
+			return "24.0";
+		}
+		else if(key.equals("実耐久値")) {
+			return "10000";
+		}
+		else if(key.equals("威力")) {
+			return "1000";
+		}
+		else if(key.equals("連射速度")) {
+			return "300";
+		}
+		else if(key.equals("リロード時間")) {
+			return "2.0";
+		}
+		else if(key.equals("総火力")) {
+			return "2000000";
+		}
+		else if(key.equals("マガジン火力")) {
+			return "20000";
+		}
+		else if(key.equals("瞬間火力")) {
+			return "5000";
+		}
+		else if(key.equals("戦術火力")) {
+			return "3500";
+		}
+		else if(key.equals("OH火力")) {
+			return "30000";
+		}
+		else if(key.equals("総弾数(合計)")) {
+			return "1000";
+		}
+		else if(key.equals("爆発半径")) {
+			return "20";
+		}
+		else if(key.equals("索敵面積")) {
+			return "10000";
+		}
+		else if(key.equals("初動索敵面積")) {
+			return "10000";
+		}
+		else if(key.equals("総索敵面積")) {
+			return "20000";
+		}
+		else if(key.equals("戦術索敵面積")) {
+			return "20000";
+		}
+		else if(key.equals("チャージ時間")) {
+			return "40";
+		}
+		else if(key.equals("最大持続時間")) {
+			return "10";
+		}
+		else if(key.equals("修理速度")) {
+			return "1000";
+		}
+		else if(key.equals("最大修理量")) {
+			return "10000";
+		}
+		else if(key.equals("コスト")) {
+			return "1";
+		}
+		else {
+			return "";
+		}
+	}
 	
 	/**
 	 * 性能の値からポイント番号と値の組み合わせ文字列を取得する。

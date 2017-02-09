@@ -3,8 +3,10 @@ package hokage.kaede.gmail.com.BBViewLib.Adapter;
 import java.util.ArrayList;
 
 import hokage.kaede.gmail.com.BBViewLib.BBData;
+import hokage.kaede.gmail.com.BBViewLib.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
+import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.Lib.Android.PreferenceIO;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -58,37 +60,8 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			String key = target_keys.get(i);;
 			mKeys[i] = key;
 			mFlags[i] = false;
-			mValues[i] = getInitValue(key);
+			mValues[i] = SpecValues.getInitValue(key);
 			UIs[i] = null;
-		}
-	}
-	
-	/**
-	 * 値の初期値を取得する。
-	 * @param key キー
-	 * @return 値の初期値。
-	 */
-	private String getInitValue(String key) {
-		if(key.equals("重量")) {
-			return "1000";
-		}
-		else if(key.equals("チップ容量")) {
-			return "2.0";
-		}
-		else if(key.equals("積載猶予")) {
-			return "4000";
-		}
-		else if(key.equals("DEF回復時間")) {
-			return "24.0";
-		}
-		else if(key.equals("実耐久値")) {
-			return "10000";
-		}
-		else if(key.equals("コスト")) {
-			return "1";
-		}
-		else {
-			return "C";
 		}
 	}
 	
@@ -139,6 +112,8 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 
 		int size = mKeys.length;
 		for(int i=0; i<size; i++) {
+			String key = mKeys[i];
+			
 			TableRow row = new TableRow(context);
 			
 			CheckBox box = new CheckBox(context);
@@ -148,7 +123,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			mCheckBoxs.add(box);
 			row.addView(box);
 			
-			if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量") || mKeys[i].equals("積載猶予") || mKeys[i].equals("DEF回復時間") || mKeys[i].equals("実耐久値")) {
+			if(key.equals("重量") || key.equals("チップ容量") || key.equals("積載猶予") || key.equals("DEF回復時間") || key.equals("実耐久値")) {
 				EditText edit_text = new EditText(context);
 				edit_text.setText(mValues[i]);
 				UIs[i] = edit_text;
@@ -156,7 +131,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 				mValueViews.add(edit_text);
 				row.addView(edit_text);
 			}
-			else if(mKeys[i].equals("コスト")) {
+			else if(key.equals("コスト")) {
 				String[] list = { "コスト1", "コスト2", "コスト3", "コスト4", "コスト5", "コスト6" };
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -175,7 +150,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 				mValueViews.add(spinner);
 				row.addView(spinner);
 			}
-			else {
+			else if(BBDataComparator.isPointKey(key)){
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, BBDataManager.SPEC_POINT);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				
@@ -192,6 +167,14 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 				
 				mValueViews.add(spinner);
 				row.addView(spinner);
+			}
+			else {
+				EditText edit_text = new EditText(context);
+				edit_text.setText(mValues[i]);
+				UIs[i] = edit_text;
+				
+				mValueViews.add(edit_text);
+				row.addView(edit_text);
 			}
 			
 			table_layout.addView(row);
@@ -231,29 +214,45 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 
 			int size = mKeys.length;
 			for(int i=0; i<size; i++) {
-				if(mKeys[i].equals("重量") || mKeys[i].equals("チップ容量")) {
-					EditText edit_text = (EditText)UIs[i];
-					edit_text.setText(mSelectData.get(mKeys[i]));
-
-				}
-				else if(mKeys[i].equals("積載猶予") || mKeys[i].equals("DEF回復時間") || mKeys[i].equals("実耐久値")) {
-					String value = String.format("%.1f", mSelectData.getCalcValue(mKeys[i]));
-					EditText edit_text = (EditText)UIs[i];
-					edit_text.setText(value);
-
-				}
-				else {
+				String key = mKeys[i];
+				
+				if(BBDataComparator.isPointKey(key) || key.equals("コスト")){
 					Spinner spinner = (Spinner)UIs[i];
 					ArrayAdapter<String> adapter = (ArrayAdapter<String>)spinner.getAdapter();
 
 					int count = adapter.getCount();
 					for(int j=0; j<count; j++) {
-						if(mSelectData.get(mKeys[i]).equals(adapter.getItem(j))) {
+						if(mSelectData.get(key).equals(adapter.getItem(j))) {
 							spinner.setSelection(j);
 							adapter.notifyDataSetChanged();
 							break;
 						}
 					}
+				}
+				else {
+					int idx = mSelectData.indexOf(key);
+					String value_str = "";
+					
+					if(idx >= 0) {
+						value_str = mSelectData.get(mKeys[i]);
+					}
+					else {
+						double value = mSelectData.getCalcValue(key);
+						
+						if(value < 0) {
+							value = 0;
+						}
+						
+						if(key.equals("DEF回復時間") || key.equals("リロード時間")) {
+							value_str = String.format("%.1f", value);
+						}
+						else {
+							value_str = String.format("%.0f", value);
+						}
+					}
+					
+					EditText edit_text = (EditText)UIs[i];
+					edit_text.setText(value_str);
 				}
 			}
 		}
@@ -295,7 +294,7 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 			String value_key = base_key + "/" + mKeys[i] + "_value";
 			
 			mFlags[i] = PreferenceIO.read(context, flag_key, false);
-			mValues[i] = PreferenceIO.readString(context, value_key, getInitValue(mKeys[i]));
+			mValues[i] = PreferenceIO.readString(context, value_key, SpecValues.getInitValue(mKeys[i]));
 		}
 		
 		updateFilter();

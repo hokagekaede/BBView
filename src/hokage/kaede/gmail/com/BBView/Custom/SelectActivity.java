@@ -80,6 +80,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	private static final int MENU_ITEM2 = 2;
 	private static final int MENU_ITEM3 = 3;
 	private static final int MENU_ITEM4 = 4;
+	private static final int MENU_ITEM5 = 5;
 	
 	// コマンド制御ダイアログ関連の定義
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
@@ -102,7 +103,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 
 	// リストのカテゴリ表示設定
 	private boolean mIsExpandable = false;
-	
+
+	// 所持品のみ表示設定
+	private boolean mIsHavingOnly = false;
 	
 	/**
 	 * 画面生成時の処理を行う。
@@ -326,10 +329,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		
 		menu.add(0, MENU_ITEM0, 0, "ソート設定").setIcon(android.R.drawable.ic_menu_sort_alphabetically);
 		menu.add(0, MENU_ITEM2, 0, "表示項目設定").setIcon(android.R.drawable.ic_menu_add);
+		menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
 
 		if(parts_type != null) {
-			menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
-
 			MenuItem item = menu.add(0, MENU_ITEM4, 0, "カテゴリ表示").setIcon(android.R.drawable.ic_menu_add);
 			item.setCheckable(true);
 			item.setChecked(mIsExpandable);
@@ -340,6 +342,10 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			item.setCheckable(true);
 			item.setOnMenuItemClickListener(new ClickTypebMenuListener());
 		}
+
+		MenuItem item = menu.add(0, MENU_ITEM5, 0, "所持品のみ表示").setIcon(android.R.drawable.ic_menu_add);
+		item.setCheckable(true);
+		item.setChecked(mIsHavingOnly);
 		
 		return true;
 	}
@@ -386,13 +392,19 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			case MENU_ITEM4:
 				changedListVisiblity(item);
 				break;
+
+			case MENU_ITEM5:
+				mIsHavingOnly = !mIsHavingOnly;
+				item.setChecked(mIsHavingOnly);
+				updateList();
+				break;
 		}
 		
 		return true;
 	}
 	
 	/**
-	 * リストの表示状態を変更する。
+	 * リストの表示状態(通常表示/カテゴリ表示)を変更する。
 	 */
 	private void changedListVisiblity(MenuItem item) {
 		View default_list_view = this.findViewById(VIEW_ID_DEFALUT_LIST);
@@ -624,6 +636,15 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mFilterManager.updateSetting(this);
 		mFilter = mFilterManager.getFilter();
 		
+		updateList();
+	}
+	
+	/**
+	 * リストを更新する。
+	 */
+	private void updateList() {
+		mFilter.setNotHavingShow(!mIsHavingOnly);
+		
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
 		mAdapter.setList(datalist);
 		mAdapter.notifyDataSetChanged();
@@ -631,7 +652,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mExAdapter.clearChildrenAll();
 		mExAdapter.addChildren(datalist);
 		mExAdapter.notifyDataSetChanged();
-		
+
 		if(datalist.size() == 0) {
 			Toast.makeText(this, "条件に一致するパーツはありません。", Toast.LENGTH_SHORT).show();
 		}

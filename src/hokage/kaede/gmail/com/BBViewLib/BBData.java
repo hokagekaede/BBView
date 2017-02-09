@@ -109,7 +109,7 @@ public class BBData extends KVCStore {
 	/**
 	 * 算出値データを取得する
 	 * @param key 取得する算出値データのキー。(CALC_KEY)
-	 * @return 算出値データ
+	 * @return 算出値データ。対象のキーがない場合はDouble.MIN_NORMALを返す。
 	 */
 	public double getCalcValue(String key) {
 		double ret = NUM_VALUE_NOTHING;
