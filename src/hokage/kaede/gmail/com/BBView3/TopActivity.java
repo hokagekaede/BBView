@@ -34,13 +34,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class TopActivity extends BaseActivity {
 	
@@ -65,7 +62,7 @@ public class TopActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		// バージョンアップデータを使用するかどうかの設定値を初期化
-		BBViewSetting.IS_NEXT_VERSION_ON = false;
+		//BBViewSetting.IS_NEXT_VERSION_ON = false;
 		
 		// 初期化する
 		SpecValues.init();
@@ -157,6 +154,7 @@ public class TopActivity extends BaseActivity {
 		layout.addView(blog_btn);
 
 		/* 次回のバージョンアップ用(データ切り替え) */
+		/*
 		ToggleButton ver_btn = new ToggleButton(this);
 		ver_btn.setChecked(BBViewSetting.IS_NEXT_VERSION_ON);
 		ver_btn.setText(BBViewSetting.NEXT_VERSION_TITLE + "データ [OFF]");
@@ -164,11 +162,13 @@ public class TopActivity extends BaseActivity {
 		ver_btn.setTextOff(BBViewSetting.NEXT_VERSION_TITLE + "データ [OFF]");
 		ver_btn.setOnCheckedChangeListener(new OnChangeVersionListener());
 		layout.addView(ver_btn);
+		*/
 
 		setContentView(layout);
 	}
 	
 	/* 次回のバージョンアップ用(データ切り替え) */
+	/*
 	private class OnChangeVersionListener implements OnCheckedChangeListener {
 
 		@Override
@@ -190,6 +190,7 @@ public class TopActivity extends BaseActivity {
 			TopActivity.this.updateVer();
 		}
 	}
+	*/
 
 	/**
 	 * 既存のアクティビティを使用する場合の処理を行う。

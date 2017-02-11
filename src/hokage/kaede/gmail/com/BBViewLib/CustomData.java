@@ -2766,7 +2766,7 @@ public class CustomData {
 			newd_chip_bonus = 0.07;
 		}
 		else if(existChip("ニュード威力上昇III")) {
-			newd_chip_bonus = 0.1;
+			newd_chip_bonus = 0.09;
 		}
 		
 		return 1.0 + (newd_chip_bonus * (newd_percent / 100));
@@ -2968,6 +2968,9 @@ public class CustomData {
 	
 	/**
 	 * チャージ武器の充填時間を算出する。
+	 * 高速充填チップの効果(充填速度の上昇率)を反映する。
+	 * エックス時点    ：I=1.5倍、II=2.0倍
+	 * エックスゼロ時点：I=1.4倍、II=1.7倍
 	 * @param data 対象の武器
 	 * @return 充填時間
 	 */
@@ -2976,10 +2979,10 @@ public class CustomData {
 
 		// チップの補正値を取得
 		if(existChip("高速充填")) {
-			ret = ret * (2.0 / 3.0);
+			ret = ret / 1.4;
 		}
 		else if(existChip("高速充填II")) {
-			ret = ret * (1.0 / 2.0);
+			ret = ret / 1.7;
 		}
 		
 		return ret;
