@@ -1156,7 +1156,7 @@ public class CustomData {
 			else if(isFullSet("雷花")) {
 				ret = ret - getFullSetBonus(0.5);
 			}
-			else if(isFullSet("ガルム") && BBViewSetting.IS_NEXT_VERSION_ON) {
+			else if(isFullSet("ガルム")) {
 				ret = ret - getFullSetBonus(0.5);
 			}
 			
@@ -1209,9 +1209,6 @@ public class CustomData {
 				ret = ret + getFullSetBonus(250);
 			}
 			else if(isFullSet("グライフ")) {
-				ret = ret + getFullSetBonus(250);
-			}
-			else if(isFullSet("ガルム") && !BBViewSetting.IS_NEXT_VERSION_ON) {
 				ret = ret + getFullSetBonus(250);
 			}
 			else if(isFullSet("ヤマ")) {

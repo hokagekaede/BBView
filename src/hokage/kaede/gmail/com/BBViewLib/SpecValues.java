@@ -311,15 +311,10 @@ public class SpecValues {
 		SETBONUS.set("スペクター", "重量耐性UP / ブースターUP");
 		SETBONUS.set("グライフ", "DEF回復UP / DEF耐久UP");
 		SETBONUS.set("ザオレン", "SP供給UP / 予備弾数UP");
-		SETBONUS.set("ガルム", "加速UP / DEF耐久UP");
+		SETBONUS.set("ガルム", "加速UP / エリア移動UP");
 		SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
 		SETBONUS.set("X", "リロードUP / 重量耐性UP");
 		SETBONUS.set("ヤマ", "DEF耐久UP");
-		
-		// エックスゼロのデータで上書きする
-		if(BBViewSetting.IS_NEXT_VERSION_ON) {
-			SETBONUS.set("ガルム", "加速UP / エリア移動UP");
-		}
 	}
 	
 	/**
