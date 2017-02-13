@@ -961,7 +961,10 @@ public class CustomData {
 			if(isFullSet("グライフ")) {
 				ret = ret + getFullSetBonus(10);
 			}
-			if(isFullSet("B.U.Z.")) {
+			else if(isFullSet("B.U.Z.")) {
+				ret = ret + getFullSetBonus(10);
+			}
+			else if(isFullSet("Z.t.")) {
 				ret = ret + getFullSetBonus(10);
 			}
 			
@@ -2035,6 +2038,9 @@ public class CustomData {
 				ret = ret + getFullSetBonus(0.72 * 3600 / 1000);
 			}
 			else if(isFullSet("ヤーデ")) {
+				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
+			}
+			else if(isFullSet("Z.t.")) {
 				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
 			}
 

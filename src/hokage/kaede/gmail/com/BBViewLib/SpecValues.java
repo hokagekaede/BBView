@@ -315,6 +315,7 @@ public class SpecValues {
 		SETBONUS.set("アイアンフォート", "予備弾数UP / 武器変更UP");
 		SETBONUS.set("X", "リロードUP / 重量耐性UP");
 		SETBONUS.set("ヤマ", "DEF耐久UP");
+		SETBONUS.set("Z.t.", "ダッシュUP / DEF回復UP");
 	}
 	
 	/**
