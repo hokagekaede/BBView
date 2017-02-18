@@ -183,7 +183,7 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		screen.addPreference(btn_listbutton_showinfo);
 
 		CheckBoxPreference btn_listbutton_showcmp = new CheckBoxPreference(this);
-		btn_listbutton_showcmp.setTitle("ボタン表示(比較)");
+		btn_listbutton_showcmp.setTitle("操作ボタン表示(比較)");
 		btn_listbutton_showcmp.setSummary("操作ボタン(比較)を表示する");
 		btn_listbutton_showcmp.setKey(BBViewSetting.SETTING_LISTBUTTON_SHOWCMP);
 		btn_listbutton_showcmp.setChecked(BBViewSetting.IS_LISTBUTTON_SHOWCMP);
@@ -197,8 +197,8 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		screen.addPreference(btn_listbutton_showfullset);
 
 		CheckBoxPreference btn_show_category_partsinit = new CheckBoxPreference(this);
-		btn_show_category_partsinit.setTitle("カテゴリ表示(パーツ)");
-		btn_show_category_partsinit.setSummary("パーツ選択画面の初期状態をカテゴリ表示にする");
+		btn_show_category_partsinit.setTitle("カテゴリ表示");
+		btn_show_category_partsinit.setSummary("パーツ武器選択画面の初期状態をカテゴリ表示にする");
 		btn_show_category_partsinit.setKey(BBViewSetting.SETTING_SHOW_CATEGORYPARTS_INIT);
 		btn_show_category_partsinit.setChecked(BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT);
 		screen.addPreference(btn_show_category_partsinit);

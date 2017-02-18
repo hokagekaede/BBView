@@ -154,6 +154,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			initCmdListDialog(true);
 		}
 		if(blust_type != null && weapon_type != null) {
+			mIsExpandable = BBViewSetting.IS_SHOW_CATEGORYPARTS_INIT;
+			mFavStore = FavoriteManager.getStore(blust_type);
+			
 			mFilter.setBlustType(blust_type);
 			mFilter.setWeaponType(weapon_type);
 			shown_save_key = blust_type + ":" + weapon_type;
@@ -208,8 +211,16 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mAdapter.setBaseItem(recent_data);
 		mAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
 		mAdapter.notifyDataSetChanged();
+
+		if(blust_type != null && weapon_type != null) {
+			mExAdapter = new BBExpandableTextAdapter(false);
+			mExAdapter.initWeapon(blust_type, weapon_type);
+		}
+		else {
+			mExAdapter = new BBExpandableTextAdapter(true);
+			mExAdapter.initParts();
+		}
 		
-		mExAdapter = new BBExpandableTextAdapter();
 		mExAdapter.setFavStore(mFavStore);
 		mExAdapter.addChildren(itemlist);
 		mExAdapter.setShowSwitch(true);
@@ -331,7 +342,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		menu.add(0, MENU_ITEM2, 0, "表示項目設定").setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
 
-		if(parts_type != null) {
+		if(parts_type != null || weapon_type != null) {
 			MenuItem item = menu.add(0, MENU_ITEM4, 0, "カテゴリ表示").setIcon(android.R.drawable.ic_menu_add);
 			item.setCheckable(true);
 			item.setChecked(mIsExpandable);

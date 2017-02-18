@@ -3,6 +3,7 @@ package hokage.kaede.gmail.com.BBViewLib;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class SpecValues {
 
@@ -15,7 +16,7 @@ public class SpecValues {
 	 * 一致するデータが無かった場合の値 (文字列)
 	 */
 	public static final String NOTHING_STR = "情報無し";
-
+	
 	/**
 	 * 	セットボーナスの文字列一覧
 	 */
@@ -1317,5 +1318,93 @@ public class SpecValues {
 	 */
 	public static int getBlustBreakDamage() {
 		return BLUST_BREAK_DAMAGE;
+	}
+	
+	
+	//----------------------------------------------------------
+	// 武器の系統関連の処理
+	//----------------------------------------------------------
+
+	// 系統名を保持する
+	public static ArrayList<String> ASSALT_MAIN_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> ASSALT_SUB_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> ASSALT_SUPPORT_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> ASSALT_SPECIAL_SEIRES = new ArrayList<String>();
+
+	public static ArrayList<String> HEAVY_MAIN_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> HEAVY_SUB_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> HEAVY_SUPPORT_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> HEAVY_SPECIAL_SEIRES = new ArrayList<String>();
+
+	public static ArrayList<String> SNIPER_MAIN_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SNIPER_SUB_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SNIPER_SUPPORT_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SNIPER_SPECIAL_SEIRES = new ArrayList<String>();
+
+	public static ArrayList<String> SUPPORT_MAIN_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SUPPORT_SUB_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SUPPORT_SUPPORT_SEIRES = new ArrayList<String>();
+	public static ArrayList<String> SUPPORT_SPECIAL_SEIRES = new ArrayList<String>();
+	
+	public static ArrayList<String> getWeaponSeiresList(String blust_type, String weapon_type) {
+		
+		if(blust_type.equals(BBDataManager.BLUST_TYPE_ASSALT)) {
+			if(weapon_type.equals(BBDataManager.WEAPON_TYPE_MAIN)) {
+				return ASSALT_MAIN_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUB)) {
+				return ASSALT_SUB_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUPPORT)) {
+				return ASSALT_SUPPORT_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SPECIAL)) {
+				return ASSALT_SPECIAL_SEIRES;
+			}
+		}
+		else if(blust_type.equals(BBDataManager.BLUST_TYPE_HEAVY)) {
+			if(weapon_type.equals(BBDataManager.WEAPON_TYPE_MAIN)) {
+				return HEAVY_MAIN_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUB)) {
+				return HEAVY_SUB_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUPPORT)) {
+				return HEAVY_SUPPORT_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SPECIAL)) {
+				return HEAVY_SPECIAL_SEIRES;
+			}
+		}
+		else if(blust_type.equals(BBDataManager.BLUST_TYPE_SNIPER)) {
+			if(weapon_type.equals(BBDataManager.WEAPON_TYPE_MAIN)) {
+				return SNIPER_MAIN_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUB)) {
+				return SNIPER_SUB_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUPPORT)) {
+				return SNIPER_SUPPORT_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SPECIAL)) {
+				return SUPPORT_SPECIAL_SEIRES;
+			}
+		}
+		else if(blust_type.equals(BBDataManager.BLUST_TYPE_SUPPORT)) {
+			if(weapon_type.equals(BBDataManager.WEAPON_TYPE_MAIN)) {
+				return SUPPORT_MAIN_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUB)) {
+				return SUPPORT_SUB_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SUPPORT)) {
+				return SUPPORT_SUPPORT_SEIRES;
+			}
+			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SPECIAL)) {
+				return SUPPORT_SPECIAL_SEIRES;
+			}
+		}
+		
+		return null;
 	}
 }

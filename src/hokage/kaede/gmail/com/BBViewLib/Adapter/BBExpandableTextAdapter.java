@@ -23,6 +23,7 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	private BBAdapterCmdManager mCmdManager;	
 	private FileArrayList mFavStore;
 	
+	private boolean mIsShowParts = false;
 	private boolean mIsShowSwitch = false;
 	private boolean mIsShowTypeB = false;
 
@@ -31,7 +32,15 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	/**
 	 * コンストラクタ。リストを初期化する。
 	 */
-	public BBExpandableTextAdapter() {
+	public BBExpandableTextAdapter(boolean is_parts) {
+		mIsShowParts = is_parts;
+	}
+	
+	/**
+	 * パーツカテゴリ表示時の初期化処理を行う。
+	 * カテゴリにシリーズを追加する。
+	 */
+	public void initParts() {
 		ArrayList<String> series_list = SpecValues.SETBONUS.getKeys();
 		int series_count = series_list.size();
 		
@@ -42,6 +51,23 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 		addGroup(FavoriteManager.FAVORITE_CATEGORY_NAME);
 	}
 
+	/**
+	 * 武器カテゴリ表示時の初期化処理を行う。
+	 * カテゴリにシリーズを追加する。
+	 * 
+	 * 引数が違うのでコンストラクタ内の分岐処理による実装は不可。
+	 */
+	public void initWeapon(String blust_type, String weapon_type) {
+		ArrayList<String> series_list = SpecValues.getWeaponSeiresList(blust_type, weapon_type);
+		int series_count = series_list.size();
+		
+		for(int i=0; i<series_count; i++) {
+			addGroup(series_list.get(i));
+		}
+		
+		addGroup(FavoriteManager.FAVORITE_CATEGORY_NAME);
+	}
+	
 	/**
 	 * お気に入りリストのストアを設定する。
 	 * @param store
@@ -151,9 +177,22 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 
 	/**
 	 * データを追加する。
-	 * @param chip 追加するデータ
+	 * @param item 追加するデータ
 	 */
 	public void addChild(BBData item) {
+		if(this.mIsShowParts) {
+			addChildParts(item);
+		}
+		else {
+			addChildWeapon(item);
+		}
+	}
+	
+	/**
+	 * パーツデータを追加する。
+	 * @param item 追加するパーツ
+	 */
+	private void addChildParts(BBData item) {
 		String name = item.get("名称");
 		
 		// ブランド名と同じ位置に格納する。
@@ -161,6 +200,33 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 		for(int i=0; i<size-1; i++) {
 			String brand_name = getGroup(i);
 			if(name.startsWith(brand_name)) {
+				addChild(i, item);
+			}
+		}
+		
+		// お気に入りリストに格納されているチップを追加する。
+		if(mFavStore != null && mFavStore.exist(name)) {
+			addChild(size - 1, item);
+		}
+	}
+	
+	/**
+	 * 武器データを追加する。
+	 * @param item 追加する武器
+	 */
+	private void addChildWeapon(BBData item) {
+		String name = item.get("名称");
+		
+		// ブランド名と同じ位置に格納する。
+		int size = getGroupCount();
+		for(int i=0; i<size-1; i++) {
+			String series_name = getGroup(i);
+			
+			if(item.isSwitchWeapon()) {
+				series_name = series_name + "(タイプA)";
+			}
+
+			if(item.existCategory(series_name)) {
 				addChild(i, item);
 			}
 		}

@@ -48,6 +48,7 @@ public class BBDataReader {
 		boolean isTypeA = false;
 		boolean isTypeB = false;
 		ArrayList<BBData> switch_weapon_list = new ArrayList<BBData>();
+		ArrayList<String> weapon_series_list = null;
 		
 		int count = 0;
 
@@ -68,6 +69,9 @@ public class BBDataReader {
 
 				isTypeA = false;
 				isTypeB = false;
+				
+				// 武器の系統名を格納するリストを取得する
+				weapon_series_list = SpecValues.getWeaponSeiresList(category1, category2);
 			}
 			else if(buf.startsWith(WEAPON_TYPE_CATEGORY_STR)) {
 				category3 = buf.substring(1);
@@ -75,6 +79,9 @@ public class BBDataReader {
 				if(category3.contains("タイプA")) {
 					isTypeA = true;
 					isTypeB = false;
+					
+					// 武器の系統名を格納する
+					weapon_series_list.add(category3.replace("(タイプA)", ""));
 				}
 				else if(category3.contains("タイプB")) {
 					isTypeA = false;
@@ -84,6 +91,9 @@ public class BBDataReader {
 					isTypeA = false;
 					isTypeB = false;
 					switch_weapon_list.clear();
+
+					// 武器の系統名を格納する
+					weapon_series_list.add(category3);
 				}
 			}
 			else if(buf.startsWith(TITLE_STR)) {
