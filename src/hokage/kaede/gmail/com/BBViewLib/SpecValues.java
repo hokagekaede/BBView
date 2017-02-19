@@ -1387,7 +1387,7 @@ public class SpecValues {
 				return SNIPER_SUPPORT_SEIRES;
 			}
 			else if(weapon_type.equals(BBDataManager.WEAPON_TYPE_SPECIAL)) {
-				return SUPPORT_SPECIAL_SEIRES;
+				return SNIPER_SPECIAL_SEIRES;
 			}
 		}
 		else if(blust_type.equals(BBDataManager.BLUST_TYPE_SUPPORT)) {
