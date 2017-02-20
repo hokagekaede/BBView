@@ -165,17 +165,44 @@ public class SpecArray {
 			real_value_str = real_point + " (" + real_value_str + ")"; 
 		}
 
-		// DEF回復の場合、隣に回復時間を併記する
-		if(target_key.equals("DEF回復")) {
-			BBData head_parts = data.getParts(BBDataManager.BLUST_PARTS_HEAD);
-			normal_value_str = String.format("%s (%s)", normal_value_str,
-					SpecValues.getSpecUnit(head_parts.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
-			real_value_str = String.format("%s (%s)", real_value_str,
-					SpecValues.getSpecUnit(data.getDefRecoverTime(), "回復時間", BBViewSetting.IS_KM_PER_HOUR));
-		}
-		
 		SpecRow row = new SpecRow(target_key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 		row.setValues(normal_value_str, real_value_str);
+		return row;
+	}
+
+	/**
+	 * アセン比較用のパーツデータの配列を生成する。
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @param blust_type 兵装名
+	 * @param target_key スペック名
+	 * @return 配列
+	 */
+	public static SpecRow getCmpPartsSpecArray(CustomData from_data, CustomData to_data, String blust_type, String target_key) {
+		double from_value, to_value;
+		if(blust_type.equals("")) {
+			from_value = from_data.getSpecValue(target_key);
+			to_value = to_data.getSpecValue(target_key);
+		}
+		else {
+			from_value = from_data.getSpecValue(target_key, blust_type);
+			to_value = to_data.getSpecValue(target_key, blust_type);
+		}
+		
+		String from_point = SpecValues.getPoint(target_key, from_value, BBViewSetting.IS_KM_PER_HOUR);
+		String to_point = SpecValues.getPoint(target_key, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		
+		String from_value_str = SpecValues.getSpecUnit(from_value, target_key, BBViewSetting.IS_KM_PER_HOUR);
+		String to_value_str = SpecValues.getSpecUnit(to_value, target_key, BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		if(BBDataComparator.isPointKey(target_key)) {
+			from_value_str = from_point + " (" + from_value_str + ")";
+			to_value_str = to_point + " (" + to_value_str + ")"; 
+		}
+
+		SpecRow row = new SpecRow(target_key, from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(from_value_str, to_value_str);
 		return row;
 	}
 
@@ -242,7 +269,6 @@ public class SpecArray {
 		row.setValues(normal_value_str, real_value_str);
 		return row;
 	}
-	
 
 	/**
 	 * ブースター回復時間の配列を生成する。
@@ -263,6 +289,118 @@ public class SpecArray {
 		SpecRow row = new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 		row.setValues(normal_value_str, real_value_str);
 		return row;
+	}
+
+	/**
+	 * アセン比較用の装甲平均値の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpArmorAveSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value, to_value;
+		if(blust_type.equals("")) {
+			from_value = from_data.getArmorAve();
+			to_value = to_data.getArmorAve();			
+		}
+		else {
+			from_value = from_data.getArmorAve(blust_type);
+			to_value = to_data.getArmorAve(blust_type);
+		}
+
+		return new SpecRow("装甲平均値", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+	
+	/**
+	 * アセン比較用の重量の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpWeightSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value, to_value;
+		if(blust_type.equals("")) {
+			from_value = from_data.getPartsWeight();
+			to_value = to_data.getPartsWeight();
+		}
+		else {
+			from_value = from_data.getWeight(blust_type);
+			to_value = to_data.getWeight(blust_type);
+		}
+
+		return new SpecRow("重量", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * アセン比較用の積載猶予の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpSpaceWeightSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value, to_value;
+		if(blust_type.equals("")) {
+			from_value = from_data.getSpacePartsWeight();
+			to_value = to_data.getSpacePartsWeight();
+		}
+		else {
+			from_value = from_data.getSpaceWeight(blust_type);
+			to_value = to_data.getSpaceWeight(blust_type);
+		}
+
+		return new SpecRow("積載猶予", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * アセン比較用の初速の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpStartDushSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value = from_data.getStartDush(blust_type);
+		double to_value = to_data.getStartDush(blust_type);
+
+		return new SpecRow("初速", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * アセン比較用の巡航速度の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpNormalDushSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value = from_data.getNormalDush(blust_type);
+		double to_value = to_data.getNormalDush(blust_type);
+
+		return new SpecRow("巡航", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * アセン比較用の歩行速度の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpWalkSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value = from_data.getWalk(blust_type);
+		double to_value = to_data.getWalk(blust_type);
+
+		return new SpecRow("歩速", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * アセン比較用の低下率の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpSpeedDonRateSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
+		double from_value = from_data.getSpeedDownRate(blust_type);
+		double to_value = to_data.getSpeedDownRate(blust_type);
+
+		return new SpecRow("低下率", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 	
 	//----------------------------------------------------------

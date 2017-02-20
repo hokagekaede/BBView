@@ -1,15 +1,13 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
-import java.util.ArrayList;
-
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataReader;
-import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
@@ -18,15 +16,51 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout.LayoutParams;
 
 public class CompareActivity extends BaseActivity {
+	
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
+
+	// レイアウトID
+	private static final int TOGGLE_BUTTON_ASSALT_ID  = 1000;
+	private static final int TOGGLE_BUTTON_HEAVY_ID   = 2000;
+	private static final int TOGGLE_BUTTON_SNIPER_ID  = 3000;
+	private static final int TOGGLE_BUTTON_SUPPORT_ID = 4000;
+	
+	private static final int TABLELAYOUT_ID = 100;
+	
+	// モード設定値
+	private int mMode = MODE_BASE;
+	public static final int MODE_BASE    = 0;
+	public static final int MODE_ASSALT  = 1;
+	public static final int MODE_HEAVY   = 2;
+	public static final int MODE_SNIPER  = 3;
+	public static final int MODE_SUPPORT = 4;
+
+	public static String[] MODE_NAME_LIST = {
+		"",
+		BBDataManager.BLUST_TYPE_ASSALT,
+		BBDataManager.BLUST_TYPE_HEAVY,
+		BBDataManager.BLUST_TYPE_SNIPER,
+		BBDataManager.BLUST_TYPE_SUPPORT
+	};
+
+	// モード設定値に対する選択中の兵装名
+	private String mBlustType = MODE_NAME_LIST[mMode];
 
 	/**
 	 * 比較対象のファイル名指定用のintentキー
@@ -36,7 +70,7 @@ public class CompareActivity extends BaseActivity {
 	private BBDataManager mDataManager;
 	private CustomData mCmpFmData;
 	private CustomData mCmpToData;
-	
+
 	/**
 	 * アプリ起動時の処理を行う。
 	 */
@@ -57,44 +91,6 @@ public class CompareActivity extends BaseActivity {
 		createView();
 	}
 
-	/**
-	 * 画面の生成処理を行う。
-	 */
-	private void createView() {
-		// 全体レイアウト設定
-		LinearLayout layout_all = new LinearLayout(this);
-		layout_all.setOrientation(LinearLayout.VERTICAL);
-		layout_all.setGravity(Gravity.LEFT | Gravity.TOP);
-
-		// 名称表示画面
-		layout_all.addView(ViewBuilder.createTextView(this, "アセン比較", BBViewSetting.FLAG_TEXTSIZE_LARGE));
-		
-		LinearLayout layout_table = new LinearLayout(this);
-		layout_table.setOrientation(LinearLayout.VERTICAL);
-
-		// 兵装スペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "兵装スペック", BBViewSetting.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
-		layout_table.addView(createCmpBlustSpeedViews(mCmpFmData, mCmpToData));
-
-		// 総合スペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "総合スペック", BBViewSetting.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
-		layout_table.addView(createCmpBlustSpecView(mCmpFmData, mCmpToData));
-		
-		// パーツスペックを画面に表示する
-		layout_table.addView(ViewBuilder.createTextView(this, "パーツスペック", BBViewSetting.FLAG_TEXTSIZE_NORMAL, SettingManager.getColorYellow()));
-		BBData[] parts_fm_list = mCmpFmData.getPartsList();
-		BBData[] parts_to_list = mCmpToData.getPartsList();
-		layout_table.addView(createCmpItemViews(parts_fm_list, parts_to_list, true));
-		
-		ScrollView srv = new ScrollView(this);
-		srv.addView(layout_table);
-		
-		layout_all.addView(srv);
-		
-		// 全体レイアウトの画面表示
-		setContentView(layout_all);
-	}
-	
 	/**
 	 * 比較対象のカスタムデータを読み込む
 	 * @return カスタムデータ。読み込みに失敗した場合はnullを返す。
@@ -124,224 +120,332 @@ public class CompareActivity extends BaseActivity {
 	}
 
 	/**
-	 * アセンの重量と速度を指定の兵装で比較したビューを生成する
-	 * @param cmp_fm_data 比較元のデータ
-	 * @param cmp_to_data 比較先のデータ
-	 * @return 生成したビュー
+	 * 画面の生成処理を行う。
 	 */
-	public TableLayout createCmpBlustSpeedViews(CustomData cmp_fm_data, CustomData cmp_to_data) {
-		TableLayout table = new TableLayout(this);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+	private void createView() {		
+		LinearLayout main_layout = new LinearLayout(this);
+		main_layout.setOrientation(LinearLayout.VERTICAL);
+		main_layout.setGravity(Gravity.LEFT | Gravity.TOP);
+		main_layout.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
+		main_layout.addView(createSpecTable(this));		
+		main_layout.addView(createBottomView(this));
 
-		String[] blust_list = BBDataManager.BLUST_TYPE_LIST;
-		int blust_list_len = blust_list.length;
+		LinearLayout all_layout = new LinearLayout(this);
+		all_layout.setLayoutParams(new FrameLayout.LayoutParams(FP, FP));
+		all_layout.addView(main_layout);
 		
-		for(int blust_idx=0; blust_idx<blust_list_len; blust_idx++) {
-			String blust_name = blust_list[blust_idx];
-			
-			ArrayList<TableRow> rows = createCmpBlustSpeedRows(cmp_fm_data, cmp_to_data, blust_name);
-			int size = rows.size();
-			
-			for(int i=0; i<size; i++) {
-				table.addView(rows.get(i));
-			}
+		// 全体レイアウトの画面表示
+		setContentView(all_layout);
+	}
+
+	/**
+	 * 各種性能のビューを表示するためのビューを生成する。
+	 * @return ビュー
+	 */
+	private View createSpecTable(Context context) {
+		LinearLayout layout_table = new LinearLayout(context);
+		layout_table.setOrientation(LinearLayout.VERTICAL);
+		layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		layout_table.setId(TABLELAYOUT_ID);
+		
+		createSpecTableMain(context, layout_table);
+
+		ScrollView data_view = new ScrollView(context);
+		data_view.addView(layout_table);
+		data_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		
+		return data_view;
+	}
+
+	/**
+	 * 各種性能のビューを表示するためのビューを更新する。
+	 */
+	private void updateSpecTable(Context context) {
+		LinearLayout layout = (LinearLayout)this.findViewById(TABLELAYOUT_ID);
+		layout.removeAllViews();
+		
+		createSpecTableMain(context, layout);
+	}
+
+	/**
+	 * 各種性能のビューを表示するためのビューに対して、その中身を作る。
+	 * 生成メソッドと構築メソッドが共通で使用する。
+	 */
+	private void createSpecTableMain(Context context, LinearLayout layout_table) {
+
+		if(mMode == MODE_BASE) {
+			layout_table.addView(AssembleViewBuilder.create(context, mCmpFmData, mCmpToData, ""));
+			layout_table.addView(PartsSpecViewBuilder.create(context, mCmpFmData, mCmpToData, ""));
+
+		}
+		else {
+			layout_table.addView(AssembleViewBuilder.create(context, mCmpFmData, mCmpToData, mBlustType));
+			layout_table.addView(PartsSpecViewBuilder.create(context, mCmpFmData, mCmpToData, mBlustType));
+			//layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType));
+		}
+	}
+	
+	//----------------------------------------------------------
+	// 兵装選択トグルボタン関連の処理
+	//----------------------------------------------------------
+	
+	/**
+	 * 画面下部のボタンビューを生成する。
+	 * @param context 対象の画面
+	 * @return ビュー
+	 */
+	private LinearLayout createBottomView(Context context) {
+		LinearLayout bottom_layout = new LinearLayout(context);
+		bottom_layout.setOrientation(LinearLayout.HORIZONTAL);
+		
+		ChangeNothingListener nothing_listener = new ChangeNothingListener();
+
+		ToggleButton assalt_button = new ToggleButton(context);
+		assalt_button.setTextOn("強襲");
+		assalt_button.setTextOff("強襲");
+		assalt_button.setChecked(false);
+		assalt_button.setId(TOGGLE_BUTTON_ASSALT_ID);
+		assalt_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		assalt_button.setOnClickListener(new ChangeBlustTypeListener(MODE_ASSALT));
+		assalt_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(assalt_button);
+		
+		ToggleButton heavy_button = new ToggleButton(context);
+		heavy_button.setTextOn("重火力");
+		heavy_button.setTextOff("重火力");
+		heavy_button.setChecked(false);
+		heavy_button.setId(TOGGLE_BUTTON_HEAVY_ID);
+		heavy_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		heavy_button.setOnClickListener(new ChangeBlustTypeListener(MODE_HEAVY));
+		heavy_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(heavy_button);
+		
+		ToggleButton sniper_button = new ToggleButton(context);
+		sniper_button.setTextOn("遊撃");
+		sniper_button.setTextOff("遊撃");
+		sniper_button.setChecked(false);
+		sniper_button.setId(TOGGLE_BUTTON_SNIPER_ID);
+		sniper_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		sniper_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SNIPER));
+		sniper_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(sniper_button);
+
+		ToggleButton support_button = new ToggleButton(context);
+		support_button.setTextOn("支援");
+		support_button.setTextOff("支援");
+		support_button.setChecked(false);
+		support_button.setId(TOGGLE_BUTTON_SUPPORT_ID);
+		support_button.setLayoutParams(new LayoutParams(WC, WC, 1));
+		support_button.setOnClickListener(new ChangeBlustTypeListener(MODE_SUPPORT));
+		support_button.setOnCheckedChangeListener(nothing_listener);
+		bottom_layout.addView(support_button);
+
+		if(mMode == MODE_ASSALT) {
+			assalt_button.setChecked(true);
+		}
+		else if(mMode == MODE_HEAVY) {
+			heavy_button.setChecked(true);
+		}
+		else if(mMode == MODE_SNIPER) {
+			sniper_button.setChecked(true);
+		}
+		else if(mMode == MODE_SUPPORT) {
+			support_button.setChecked(true);
 		}
 		
-		return table;
+		return bottom_layout;
+	}
+
+	/**
+	 * トグルボタン押下時の処理を行うリスナー。
+	 */
+	private class ChangeBlustTypeListener implements OnClickListener {
+		
+		private int mTargetMode;
+		
+		public ChangeBlustTypeListener(int mode) {
+			mTargetMode = mode;
+		}
+
+		/**
+		 * トグルボタン押下時の処理を行う。
+		 * 兵装の選択状態を切り替える。
+		 * 
+		 * ■実装メモ
+		 * 押下されたボタンの状態を保持した後、全てのトグルボタンをOFFにする。
+		 * その後、保持値を反転させて押下されたボタンに設定する。
+		 */
+		@Override
+		public void onClick(View view) {
+			
+			try {
+				ToggleButton btn = (ToggleButton)view;
+				boolean is_checked = btn.isChecked();
+
+				if(is_checked) {
+					mMode = mTargetMode;
+				}
+				else {
+					mMode = MODE_BASE;
+				}
+				mBlustType = MODE_NAME_LIST[mMode];
+				
+				ToggleButton assalt_button = (ToggleButton)CompareActivity.this.findViewById(TOGGLE_BUTTON_ASSALT_ID);
+				ToggleButton heavy_button = (ToggleButton)CompareActivity.this.findViewById(TOGGLE_BUTTON_HEAVY_ID);
+				ToggleButton sniper_button = (ToggleButton)CompareActivity.this.findViewById(TOGGLE_BUTTON_SNIPER_ID);
+				ToggleButton support_button = (ToggleButton)CompareActivity.this.findViewById(TOGGLE_BUTTON_SUPPORT_ID);
+				
+				assalt_button.setChecked(false);
+				heavy_button.setChecked(false);
+				sniper_button.setChecked(false);
+				support_button.setChecked(false);
+				
+				btn.setChecked(is_checked);
+
+			} catch(Exception e) {
+				e.printStackTrace();
+
+				mMode = MODE_BASE;
+				mBlustType = MODE_NAME_LIST[mMode];
+			}
+			
+			// 画面を更新する
+			updateSpecTable(view.getContext());
+		}
 	}
 	
 	/**
-	 * アセンの重量と速度を指定の兵装で比較したビューを生成する
-	 * @param context 表示する画面
-	 * @param cmp_fm_data 比較元のデータ
-	 * @param cmp_to_data 比較先のデータ
-	 * @param blust_name 兵装名
-	 * @return 生成したビュー
+	 * トグルボタンのチェックが変更された場合の処理を行うリスナー
 	 */
-	public TableLayout createCmpBlustSpeedView(Context context, CustomData cmp_fm_data, CustomData cmp_to_data, String blust_name) {
-		TableLayout table = new TableLayout(context);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		
-		ArrayList<TableRow> rows = createCmpBlustSpeedRows(cmp_fm_data, cmp_to_data, blust_name);
-		int size = rows.size();
-		
-		for(int i=0; i<size; i++) {
-			table.addView(rows.get(i));
+	private class ChangeNothingListener implements OnCheckedChangeListener {
+
+		/**
+		 * トグルボタンのチェックが変更された場合の処理。
+	     * 既存の処理の実行を防ぐため、本関数では何も処理を行わない。
+		 */
+		@Override
+		public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+			// Do Nothing
 		}
-		
-		return table;
 	}
 
+	//----------------------------------------------------------
+	// 各画面のビューを生成するクラス群
+	//----------------------------------------------------------
+	
 	/**
-	 * 兵装依存の指定データリスト
+	 * 「アセン」のビューを生成するクラス
 	 */
-	public static final String[] BLUST_SPEC_LIST = {
-		"総重量", "猶予", "初速", "巡航", "歩速", "低下率"
-	};
+	private static class AssembleViewBuilder {
 		
-	/**
-	 * アセンの重量と速度を指定の兵装で比較した行を生成する
-	 * @param context 表示する画面
-	 * @param cmp_fm_data 比較元のデータ
-	 * @param cmp_to_data 比較先のデータ
-	 * @param blust_name 兵装名
-	 * @return 生成した行
-	 */
-	public ArrayList<TableRow> createCmpBlustSpeedRows(CustomData cmp_fm_data, CustomData cmp_to_data, String blust_name) {
-		ArrayList<TableRow> rows = new ArrayList<TableRow>();
-		
-		// タイトル行を生成
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), blust_name, "比較元", "比較先"));
-		
-		String[] blust_spec_list = BLUST_SPEC_LIST;
-		int len = blust_spec_list.length;
+		private static View create(Context context, CustomData from_data, CustomData to_data, String blust_type) {
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
 
-		for(int i=0; i<len; i++) {
-			String key = blust_spec_list[i];
-			double fm_value = cmp_fm_data.getSpecValue(key, blust_name);
-			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSetting.IS_KM_PER_HOUR);
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView assemble_view = ViewBuilder.createTextView(context, "アセン", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(assemble_view);
+			layout_table.addView(createAssembleView(context, from_data, to_data, blust_type));
 			
-			double to_value = cmp_to_data.getSpecValue(key, blust_name);
-			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSetting.IS_KM_PER_HOUR);
-			
-			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
-			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);
-			rows.add(ViewBuilder.createTableRow(this, colors, key, fm_str, to_str));
+			return layout_table;
 		}
-		
-		return rows;
+
+		/**
+		 * 「アセン」のビューを生成する。
+		 * @param context
+		 * @param custom_data
+		 * @return
+		 */
+		private static TableLayout createAssembleView(Context context, CustomData from_data, CustomData to_data, String blust_type) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
+			
+			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_HEAD));
+			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_BODY));
+			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_ARMS));
+			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_LEGS));
+
+			return table;
+		}
+
+		/**
+		 * パーツスペックテーブルの行を生成する。
+		 * @param from_data 比較元のアセンデータ
+		 * @param to_data 比較先のアセンデータ
+		 * @param parts_type パーツの種類
+		 * @return 指定のパーツ種類に対応する行
+		 */
+		private static TableRow createPartsRow(Context context, CustomData from_data, CustomData to_data, String blust_type, String parts_key) {
+			int[] colors = {
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite(),
+					SettingManager.getColorWhite()
+			};
+			BBData from_parts = from_data.getParts(parts_key);
+			BBData to_parts = to_data.getParts(parts_key);
+			return ViewBuilder.createTableRow(context, colors, parts_key, from_parts.get("名称"), to_parts.get("名称"));
+		}
 	}
 	
 	/**
-	 * 複数のパーツまたは武器の比較ビューを生成する
-	 * @param from_data_list 比較元のデータ一覧
-	 * @param to_data_list 比較先のデータ一覧
-	 * @return 比較結果を示すビュー
+	 * 「パーツスペック」のビューを生成するクラス
 	 */
-	public TableLayout createCmpItemViews(BBData[] from_data_list, BBData[] to_data_list, boolean is_parts) {
-		TableLayout table = new TableLayout(this);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		ArrayList<TableRow> rows;
+	private static class PartsSpecViewBuilder {
 
-		int data_len = from_data_list.length;
-		
-		for(int data_idx=0; data_idx<data_len; data_idx++) {
-			BBData from_data = from_data_list[data_idx];
-			BBData to_data = to_data_list[data_idx];
+		/**
+		 * パーツスペックテーブルを生成する。
+		 * @param data_list データ一覧
+		 * @return パーツスペックのテーブル
+		 */
+		private static View create(Context context, CustomData from_data, CustomData to_data, String blust_type) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
-			if(is_parts) {
-				rows = createCmpPartsRows(from_data, to_data);
-			}
-			else {
-				rows = createCmpWeaponRows(from_data, to_data);
-			}
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
+
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpWeightSpecArray(from_data, to_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpSpaceWeightSpecArray(from_data, to_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpArmorAveSpecArray(from_data, to_data, blust_type)));
+
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "射撃補正")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "索敵")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "ロックオン")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "DEF回復")));
 			
-			int size = rows.size();
-			for(int i=0; i<size; i++) {
-				table.addView(rows.get(i));
-			}
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "ブースター")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "SP供給率")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "エリア移動")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "DEF耐久")));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "反動吸収")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "リロード")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "武器変更")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "予備弾数")));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "歩行")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "初速")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "巡航")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "低下率")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "重量耐性")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "加速")));
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView parts_spec_view = ViewBuilder.createTextView(context, "パーツスペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(parts_spec_view);
+			layout_table.addView(table);
+			
+			return layout_table;
 		}
-		
-		return table;
-	}
-
-	/**
-	 * パーツの比較行のリストを生成する
-	 * @param from_data 比較元のデータ
-	 * @param to_data 比較先のデータ
-	 * @return 比較結果を示すビュー
-	 */
-	private ArrayList<TableRow> createCmpPartsRows(BBData from_data, BBData to_data) {
-		ArrayList<TableRow> rows = new ArrayList<TableRow>();
-		
-		String[] cmp_target = BBDataManager.getCmpTarget(from_data);
-		int size = cmp_target.length;
-		
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
-		
-		for(int i=0; i<size; i++) {
-			String target_key = cmp_target[i];
-			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
-			
-			String from_point = from_data.get(target_key);
-			String to_point = to_data.get(target_key);
-			
-			if(from_point == null || to_point == null) {
-				continue;
-			}
-			
-			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSetting.IS_KM_PER_HOUR);
-			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSetting.IS_KM_PER_HOUR);
-
-			if(target_key.equals("重量") || target_key.equals("チップ容量") || target_key.equals("積載猶予") || target_key.equals("DEF回復時間")) {
-				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_str, to_str));
-			}
-			else {
-				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_point + " (" + from_str + ")", to_point + " (" + to_str + ")"));
-			}
-		}
-		
-		return rows;
-	}
-
-	/**
-	 * 武器の比較行のリストを生成する
-	 * @param from_data 比較元のデータ
-	 * @param to_data 比較先のデータ
-	 * @return 比較結果を示すビュー
-	 */
-	private ArrayList<TableRow> createCmpWeaponRows(BBData from_data, BBData to_data) {
-		ArrayList<TableRow> rows = new ArrayList<TableRow>();
-		
-		String[] cmp_target = BBDataManager.getCmpTarget(from_data);
-		int size = cmp_target.length;
-		
-		rows.add(ViewBuilder.createTableRow(this, SettingManager.getColorYellow(), "名称", from_data.get("名称"), to_data.get("名称")));
-		
-		for(int i=0; i<size; i++) {
-			String target_key = cmp_target[i];
-			String from_str = SpecValues.getSpecUnit(from_data, target_key, BBViewSetting.IS_KM_PER_HOUR);
-			String to_str = SpecValues.getSpecUnit(to_data, target_key, BBViewSetting.IS_KM_PER_HOUR);
-		
-			int[] colors = ViewBuilder.getColors(from_data, to_data, target_key);
-
-			if(from_str != null && to_str != null) {
-				rows.add(ViewBuilder.createTableRow(this, colors, target_key, from_str, to_str));
-			}
-		}
-		
-		return rows;
-	}
-	
-	/**
-	 * パーツの基本性能を表示するビューを生成する。
-	 * @param cmp_fm_data 比較元のデータ
-	 * @param cmp_to_data 比較先のデータ
-	 * @return 結果のビュー
-	 */
-	public TableLayout createCmpBlustSpecView(CustomData cmp_fm_data, CustomData cmp_to_data) {
-		TableLayout table = new TableLayout(this);
-		table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-		table.addView(ViewBuilder.createTableRow(this, SettingManager.getColorWhite(), "セットボーナス", cmp_fm_data.getSetBonus(), cmp_to_data.getSetBonus()));
-		
-		String[] spec_key = { "チップ容量", "装甲平均値" };
-		
-		int size = spec_key.length;
-		for(int i=0; i<size; i++) {
-			
-			String key = spec_key[i];
-			double fm_value = cmp_fm_data.getSpecValue(key);
-			String fm_str = SpecValues.getSpecUnit(fm_value, key, BBViewSetting.IS_KM_PER_HOUR);
-			
-			double to_value = cmp_to_data.getSpecValue(key);
-			String to_str = SpecValues.getSpecUnit(to_value, key, BBViewSetting.IS_KM_PER_HOUR);
-			
-			//int[] colors = getColors(String.format("%.2f", fm_value), String.format("%.2f", to_value), key);
-			int[] colors = ViewBuilder.getColors(fm_value, to_value, key);
-			
-			table.addView(ViewBuilder.createTableRow(this, colors, key, fm_str, to_str));
-		}
-		
-		return table;
 	}
 }

@@ -66,6 +66,7 @@ public class SpecView extends FrameLayout {
 	private String mBlustType = "";
 
 	private boolean mIsShowSimple = false;
+	
 	/**
 	 * 初期化を行う。画面を生成する。
 	 * @param context 対象の画面

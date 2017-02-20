@@ -2113,6 +2113,32 @@ public class CustomData {
 		
 		return ret;
 	}
+
+	/**
+	 * パーツのみの場合の速度低下率を取得する
+	 * @return 速度低下率
+	 */
+	public double getSpeedDownRate() {
+		double ret = 0;
+		int space = getSpacePartsWeight();
+		
+		if(space >= 0) {
+			ret = 0;
+		}
+		else {
+			ret = space * 0.025;
+		}
+		
+		// チップの効果を反映
+		if(existChip("重量超過耐性")) {
+			ret = ret * 80.0 / 100.0;
+		}
+		else if(existChip("重量超過耐性II")) {
+			ret = ret * 50.0 / 100.0;
+		}
+		
+		return ret;
+	}
 	
 	/**
 	 * 速度低下率を取得する
@@ -3535,6 +3561,9 @@ public class CustomData {
 		}
 		else if(key.equals("加速")) {
 			ret = getAcceleration();
+		}
+		else if(key.equals("低下率")) {
+			ret = getSpeedDownRate();
 		}
 		
 		return ret;
