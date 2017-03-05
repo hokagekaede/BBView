@@ -18,11 +18,18 @@ public class BBViewSetting extends SettingManager {
 	public static final String SETTING_KM_PER_HOUR = "SETTING_KM_PER_HOUR";
 
 	/**
+	 * ホバー脚部時の歩行速度/ダッシュ速度の表示形式設定。
+	 * trueの場合はアルファベットを二脚基準で表示し、falseの場合はホバー基準で表示する。
+	 */
+	public static boolean IS_HOVER_TO_LEGS = false;
+	public static final String SETTING_HOVER_TO_LEGS = "SETTING_HOVER_TO_LEGS";
+
+	/**
 	 * 装甲値の表示形式設定。trueの場合はダメージ係数で表示。falseの場合はBB.NETなどの公式準拠の値で表示。
 	 */
 	public static boolean IS_ARMOR_RATE = true;
 	public static final String SETTING_ARMOR_RATE = "SETTING_ARMOR_RATE";
-
+	
 	/**
 	 * OH武器の戦術火力の計算方式設定。trueの場合はOH基準で計算し、falseの場合はリロード基準で計算する。
 	 */

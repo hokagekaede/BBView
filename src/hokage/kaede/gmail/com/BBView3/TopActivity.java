@@ -22,6 +22,7 @@ import hokage.kaede.gmail.com.Lib.Java.FileIO;
 import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -54,6 +55,13 @@ public class TopActivity extends BaseActivity {
 	private final static String MENU_WIKI            = "BB wikiを開く";
 	private final static String MENU_ABOUT           = "BB Viewについて";
 	
+	public static final String[] BLOG_TITLES = { "トップページ", "よくある質問", "スペック計算式" };
+	public static final String[] BLOG_URLS   = {
+		"http://bbview.blog.fc2.com/",
+		"http://bbview.blog.fc2.com/blog-entry-21.html",
+		"http://bbview.blog.fc2.com/blog-entry-8.html",
+	};
+
 	/**
 	 * 画面生成時の処理を行う。
 	 */
@@ -150,7 +158,7 @@ public class TopActivity extends BaseActivity {
 		
 		Button blog_btn = new Button(this);
 		blog_btn.setText(BTN_TEXT_BLOG);
-		blog_btn.setOnClickListener(new OnMoveBlogListener());
+		blog_btn.setOnClickListener(new OnSelectBlogListener());
 		layout.addView(blog_btn);
 
 		/* 次回のバージョンアップ用(データ切り替え) */
@@ -428,15 +436,34 @@ public class TopActivity extends BaseActivity {
 			startActivity(intent);
 		}
 	}
+	
+	/**
+	 * BBView開発室の表示するページを選択するリスナー
+	 */
+	private class OnSelectBlogListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(TopActivity.this);
+			builder.setTitle("表示するページを選択");
+			builder.setItems(BLOG_TITLES, new OnMoveBlogListener());
+
+			Dialog dialog = builder.create();
+			dialog.setOwnerActivity(TopActivity.this);
+			dialog.show();
+		}
+		
+	}
 
 	/**
 	 * BBView開発室を表示するインテントを発行するリスナー
 	 */
-	private class OnMoveBlogListener implements OnClickListener {
+	private class OnMoveBlogListener implements android.content.DialogInterface.OnClickListener {
 
 		@Override
-		public void onClick(View arg0) {
-			Uri uri = Uri.parse("http://bbview.blog.fc2.com/");
+		public void onClick(DialogInterface dialog, int position) {
+			Uri uri = Uri.parse(BLOG_URLS[position]);
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			startActivity(intent);
 		}

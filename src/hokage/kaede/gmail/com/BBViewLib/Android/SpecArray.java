@@ -155,7 +155,7 @@ public class SpecArray {
 			real_value = data.getSpecValue(target_key, blust_type);
 		}
 		
-		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		String real_point = SpecValues.getPoint(target_key, real_value, BBViewSetting.IS_KM_PER_HOUR, data.isHoverLegs());
 		
 		String real_value_str = SpecValues.getSpecUnit(real_value, target_key, BBViewSetting.IS_KM_PER_HOUR);
 
@@ -189,8 +189,8 @@ public class SpecArray {
 			to_value = to_data.getSpecValue(target_key, blust_type);
 		}
 		
-		String from_point = SpecValues.getPoint(target_key, from_value, BBViewSetting.IS_KM_PER_HOUR);
-		String to_point = SpecValues.getPoint(target_key, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		String from_point = SpecValues.getPoint(target_key, from_value, BBViewSetting.IS_KM_PER_HOUR, from_data.isHoverLegs());
+		String to_point = SpecValues.getPoint(target_key, to_value, BBViewSetting.IS_KM_PER_HOUR, to_data.isHoverLegs());
 		
 		String from_value_str = SpecValues.getSpecUnit(from_value, target_key, BBViewSetting.IS_KM_PER_HOUR);
 		String to_value_str = SpecValues.getSpecUnit(to_value, target_key, BBViewSetting.IS_KM_PER_HOUR);
@@ -219,7 +219,7 @@ public class SpecArray {
 		String normal_value_str = SpecValues.getSpecUnit(normal_value, key, BBViewSetting.IS_KM_PER_HOUR);
 		
 		double real_value = data.getDefRecover(blust_type);
-		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR, data.isHoverLegs());
 		String real_value_str = SpecValues.getSpecUnit(real_value, key, BBViewSetting.IS_KM_PER_HOUR);
 
 		// スペックと内部値を結合する
@@ -251,7 +251,7 @@ public class SpecArray {
 		String normal_value_str = SpecValues.getSpecUnit(normal_value, key, BBViewSetting.IS_KM_PER_HOUR);
 		
 		double real_value = data.getBoost(blust_type);
-		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR);
+		String real_point = SpecValues.getPoint(key, real_value, BBViewSetting.IS_KM_PER_HOUR, data.isHoverLegs());
 		String real_value_str = SpecValues.getSpecUnit(real_value, key, BBViewSetting.IS_KM_PER_HOUR);
 
 		// スペックと内部値を結合する
@@ -292,6 +292,20 @@ public class SpecArray {
 	}
 
 	/**
+	 * アセン比較用のチップ使用量の配列を生成する
+	 * @param from_data 比較元のアセンデータ
+	 * @param to_data 比較先のアセンデータ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpChipWeight(CustomData from_data, CustomData to_data) {
+		double from_value, to_value;
+		from_value = from_data.getChipWeight();
+		to_value = to_data.getChipWeight();
+
+		return new SpecRow("チップ使用量", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+	
+	/**
 	 * アセン比較用の装甲平均値の配列を生成する
 	 * @param from_data 比較元のアセンデータ
 	 * @param to_data 比較先のアセンデータ
@@ -308,7 +322,19 @@ public class SpecArray {
 			to_value = to_data.getArmorAve(blust_type);
 		}
 
-		return new SpecRow("装甲平均値", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		String from_point = SpecValues.getPoint("装甲", from_value, BBViewSetting.IS_KM_PER_HOUR, from_data.isHoverLegs());
+		String to_point = SpecValues.getPoint("装甲", to_value, BBViewSetting.IS_KM_PER_HOUR, to_data.isHoverLegs());
+		
+		String from_value_str = SpecValues.getSpecUnit(from_value, "装甲", BBViewSetting.IS_KM_PER_HOUR);
+		String to_value_str = SpecValues.getSpecUnit(to_value, "装甲", BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		from_value_str = from_point + " (" + from_value_str + ")";
+		to_value_str = to_point + " (" + to_value_str + ")"; 
+
+		SpecRow row = new SpecRow("装甲平均値", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(from_value_str, to_value_str);
+		return row;
 	}
 	
 	/**
@@ -361,7 +387,19 @@ public class SpecArray {
 		double from_value = from_data.getStartDush(blust_type);
 		double to_value = to_data.getStartDush(blust_type);
 
-		return new SpecRow("初速", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		String from_point = SpecValues.getPoint("ダッシュ", from_value, BBViewSetting.IS_KM_PER_HOUR, from_data.isHoverLegs());
+		String to_point = SpecValues.getPoint("ダッシュ", to_value, BBViewSetting.IS_KM_PER_HOUR, to_data.isHoverLegs());
+		
+		String from_value_str = SpecValues.getSpecUnit(from_value, "ダッシュ", BBViewSetting.IS_KM_PER_HOUR);
+		String to_value_str = SpecValues.getSpecUnit(to_value, "ダッシュ", BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		from_value_str = from_point + " (" + from_value_str + ")";
+		to_value_str = to_point + " (" + to_value_str + ")"; 
+
+		SpecRow row = new SpecRow("ダッシュ(初速)", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(from_value_str, to_value_str);
+		return row;
 	}
 
 	/**
@@ -387,7 +425,19 @@ public class SpecArray {
 		double from_value = from_data.getWalk(blust_type);
 		double to_value = to_data.getWalk(blust_type);
 
-		return new SpecRow("歩速", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		String from_point = SpecValues.getPoint("歩行", from_value, BBViewSetting.IS_KM_PER_HOUR, from_data.isHoverLegs());
+		String to_point = SpecValues.getPoint("歩行", to_value, BBViewSetting.IS_KM_PER_HOUR, to_data.isHoverLegs());
+		
+		String from_value_str = SpecValues.getSpecUnit(from_value, "歩行", BBViewSetting.IS_KM_PER_HOUR);
+		String to_value_str = SpecValues.getSpecUnit(to_value, "歩行", BBViewSetting.IS_KM_PER_HOUR);
+
+		// スペックと内部値を結合する
+		from_value_str = from_point + " (" + from_value_str + ")";
+		to_value_str = to_point + " (" + to_value_str + ")"; 
+
+		SpecRow row = new SpecRow("歩行", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(from_value_str, to_value_str);
+		return row;
 	}
 
 	/**
@@ -397,8 +447,16 @@ public class SpecArray {
 	 * @return 配列
 	 */
 	public static SpecRow getCmpSpeedDonRateSpecArray(CustomData from_data, CustomData to_data, String blust_type) {
-		double from_value = from_data.getSpeedDownRate(blust_type);
-		double to_value = to_data.getSpeedDownRate(blust_type);
+		double from_value, to_value;
+		
+		if(blust_type.equals("")) {
+			from_value = from_data.getSpeedDownRate();
+			to_value = to_data.getSpeedDownRate();
+		}
+		else {
+			from_value = from_data.getSpeedDownRate(blust_type);
+			to_value = to_data.getSpeedDownRate(blust_type);
+		}
 
 		return new SpecRow("低下率", from_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
 	}

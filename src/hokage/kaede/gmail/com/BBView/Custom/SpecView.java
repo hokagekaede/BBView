@@ -555,7 +555,7 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値
 			double armor_value = custom_data.getArmorAve();
 			double life_value = custom_data.getLife(false);
-			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			String armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			String armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			String life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
@@ -566,7 +566,7 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値(空爆時)
 			armor_value = custom_data.getArmorAveHead();
 			life_value = custom_data.getLifeHead(false);
-			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
@@ -577,7 +577,7 @@ public class SpecView extends FrameLayout {
 			// 装甲平均値(地爆時)
 			armor_value = custom_data.getArmorAveLegs();
 			life_value = custom_data.getLifeLegs(false);
-			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_point = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			armor_str   = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			life_str    = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 
@@ -645,7 +645,7 @@ public class SpecView extends FrameLayout {
 			double armor_value = custom_data.getArmorAve();
 			double life_value = custom_data.getLife(false);
 			double life_ndef_value = custom_data.getLife(true);
-			String armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			String armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			String armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			String life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 			String life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
@@ -658,7 +658,7 @@ public class SpecView extends FrameLayout {
 			armor_value = custom_data.getArmorAveHead();
 			life_value = custom_data.getLifeHead(false);
 			life_ndef_value = custom_data.getLifeHead(true);
-			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
@@ -671,7 +671,7 @@ public class SpecView extends FrameLayout {
 			armor_value = custom_data.getArmorAveLegs();
 			life_value = custom_data.getLifeLegs(false);
 			life_ndef_value = custom_data.getLifeLegs(true);
-			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR);
+			armor_point   = SpecValues.getPoint("装甲", armor_value, BBViewSetting.IS_KM_PER_HOUR, custom_data.isHoverLegs());
 			armor_str     = SpecValues.getSpecUnit(armor_value, "装甲平均値", BBViewSetting.IS_KM_PER_HOUR);
 			life_str      = SpecValues.getSpecUnit(life_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
 			life_ndef_str = SpecValues.getSpecUnit(life_ndef_value, "耐久", BBViewSetting.IS_KM_PER_HOUR);
@@ -773,7 +773,7 @@ public class SpecView extends FrameLayout {
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
 			String[] base_value_col_str = {
-				getSpecString("装甲", custom_data.getArmorAve(blust_type)),
+				getSpecString(custom_data, "装甲", custom_data.getArmorAve(blust_type)),
 				String.format("%d (%d)", custom_data.getPartsWeight(), custom_data.getSpacePartsWeight()),
 				SpecValues.getSpecUnit(custom_data.getSpeedDownRate(blust_type), "低下率", BBViewSetting.IS_KM_PER_HOUR),
 				SpecValues.getSpecUnit(custom_data.getChipCapacity(), "チップ容量", BBViewSetting.IS_KM_PER_HOUR)
@@ -783,40 +783,40 @@ public class SpecView extends FrameLayout {
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), base_value_col_str));
 			
 			String[] head_value_col_str = {
-				getSpecString("射撃補正", custom_data.getShotBonus(blust_type)),
-				getSpecString("索敵", custom_data.getSearch(blust_type)),
-				getSpecString("ロックオン", custom_data.getRockOn(blust_type)),
-				getSpecString("DEF回復", custom_data.getDefRecover(blust_type))
+				getSpecString(custom_data, "射撃補正", custom_data.getShotBonus(blust_type)),
+				getSpecString(custom_data, "索敵", custom_data.getSearch(blust_type)),
+				getSpecString(custom_data, "ロックオン", custom_data.getRockOn(blust_type)),
+				getSpecString(custom_data, "DEF回復", custom_data.getDefRecover(blust_type))
 			};
 
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), HEAD_COL_STR));
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), head_value_col_str));
 
 			String[] body_value_col_str = {
-				getSpecString("ブースター", custom_data.getBoost(blust_type)),
-				getSpecString("SP供給率", custom_data.getSP(blust_type)),
-				getSpecString("エリア移動", custom_data.getAreaMove(blust_type)),
-				getSpecString("DEF耐久", custom_data.getDefGuard(blust_type))
+				getSpecString(custom_data, "ブースター", custom_data.getBoost(blust_type)),
+				getSpecString(custom_data, "SP供給率", custom_data.getSP(blust_type)),
+				getSpecString(custom_data, "エリア移動", custom_data.getAreaMove(blust_type)),
+				getSpecString(custom_data, "DEF耐久", custom_data.getDefGuard(blust_type))
 			};
 
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), BODY_COL_STR));
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), body_value_col_str));
 
 			String[] arms_value_col_str = {
-				getSpecString("反動吸収", custom_data.getRecoil(blust_type)),
-				getSpecString("リロード", custom_data.getReload(blust_type)),
-				getSpecString("武器変更", custom_data.getChangeWeapon(blust_type)),
-				getSpecString("予備弾数", custom_data.getSpareBullet(blust_type))
+				getSpecString(custom_data, "反動吸収", custom_data.getRecoil(blust_type)),
+				getSpecString(custom_data, "リロード", custom_data.getReload(blust_type)),
+				getSpecString(custom_data, "武器変更", custom_data.getChangeWeapon(blust_type)),
+				getSpecString(custom_data, "予備弾数", custom_data.getSpareBullet(blust_type))
 			};
 
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), ARMS_COL_STR));
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), arms_value_col_str));
 
 			String[] legs_value_col_str = {
-				getSpecString("歩行", custom_data.getWalk(blust_type)),
-				getSpecString("ダッシュ", custom_data.getStartDush(blust_type)),
-				getSpecString("重量耐性", custom_data.getAntiWeight(blust_type)),
-				getSpecString("加速", custom_data.getAcceleration(blust_type))
+				getSpecString(custom_data, "歩行", custom_data.getWalk(blust_type)),
+				getSpecString(custom_data, "ダッシュ", custom_data.getStartDush(blust_type)),
+				getSpecString(custom_data, "重量耐性", custom_data.getAntiWeight(blust_type)),
+				getSpecString(custom_data, "加速", custom_data.getAcceleration(blust_type))
 			};
 
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), LEGS_COL_STR));
@@ -836,8 +836,8 @@ public class SpecView extends FrameLayout {
 			return layout_table;
 		}
 
-		private static String getSpecString(String target_key, double value) {
-			String blust_point = SpecValues.getPoint(target_key, value, BBViewSetting.IS_KM_PER_HOUR);
+		private static String getSpecString(CustomData data, String target_key, double value) {
+			String blust_point = SpecValues.getPoint(target_key, value, BBViewSetting.IS_KM_PER_HOUR, data.isHoverLegs());
 			String blust_str = SpecValues.getSpecUnit(value, target_key, BBViewSetting.IS_KM_PER_HOUR);
 			return blust_point + " (" + blust_str + ")";
 		}

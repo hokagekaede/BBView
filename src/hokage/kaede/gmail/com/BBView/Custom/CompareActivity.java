@@ -362,13 +362,21 @@ public class CompareActivity extends BaseActivity {
 		private static TableLayout createAssembleView(Context context, CustomData from_data, CustomData to_data, String blust_type) {
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
-
-			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
 			
-			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_HEAD));
-			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_BODY));
-			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_ARMS));
-			table.addView(createPartsRow(context, from_data, to_data, blust_type, BBDataManager.BLUST_PARTS_LEGS));
+			if(blust_type.equals("")) {
+				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_HEAD));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_BODY));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_ARMS));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS));				
+			}
+			else {
+				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先", "", "比較元", "比較先"));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_HEAD, blust_type, BBDataManager.WEAPON_TYPE_MAIN));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_BODY, blust_type, BBDataManager.WEAPON_TYPE_SUB));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_ARMS, blust_type, BBDataManager.WEAPON_TYPE_SUPPORT));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS, blust_type, BBDataManager.WEAPON_TYPE_SPECIAL));
+			}
 
 			return table;
 		}
@@ -380,15 +388,42 @@ public class CompareActivity extends BaseActivity {
 		 * @param parts_type パーツの種類
 		 * @return 指定のパーツ種類に対応する行
 		 */
-		private static TableRow createPartsRow(Context context, CustomData from_data, CustomData to_data, String blust_type, String parts_key) {
+		private static TableRow createPartsRow(Context context, CustomData from_data, CustomData to_data, String parts_type) {
 			int[] colors = {
 					SettingManager.getColorYellow(),
 					SettingManager.getColorWhite(),
 					SettingManager.getColorWhite()
 			};
-			BBData from_parts = from_data.getParts(parts_key);
-			BBData to_parts = to_data.getParts(parts_key);
-			return ViewBuilder.createTableRow(context, colors, parts_key, from_parts.get("名称"), to_parts.get("名称"));
+			BBData from_parts = from_data.getParts(parts_type);
+			BBData to_parts = to_data.getParts(parts_type);
+			
+			return ViewBuilder.createTableRow(context, colors, parts_type, from_parts.get("名称"), to_parts.get("名称"));
+		}
+		/**
+		 * パーツスペックテーブルの行を生成する。
+		 * @param from_data 比較元のアセンデータ
+		 * @param to_data 比較先のアセンデータ
+		 * @param parts_type パーツの種類
+		 * @param blust_type 兵装名
+		 * @param weapon_type 武器の種類
+		 * @return 指定のパーツ種類に対応する行
+		 */
+		private static TableRow createPartsRow(Context context, CustomData from_data, CustomData to_data, String parts_type, String blust_type, String weapon_type) {
+			int[] colors = {
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite(),
+					SettingManager.getColorWhite(),
+					SettingManager.getColorYellow(),
+					SettingManager.getColorWhite(),
+					SettingManager.getColorWhite()
+			};
+			BBData from_parts = from_data.getParts(parts_type);
+			BBData to_parts = to_data.getParts(parts_type);
+			
+			BBData from_weapon = from_data.getWeapon(blust_type, weapon_type);
+			BBData to_weapon = to_data.getWeapon(blust_type, weapon_type);
+			
+			return ViewBuilder.createTableRow(context, colors, parts_type, from_parts.get("名称"), to_parts.get("名称"), weapon_type, from_weapon.get("名称"), to_weapon.get("名称"));
 		}
 	}
 	
@@ -408,6 +443,9 @@ public class CompareActivity extends BaseActivity {
 			
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
 
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "チップ容量")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpChipWeight(from_data, to_data)));
+			
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpWeightSpecArray(from_data, to_data, blust_type)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpSpaceWeightSpecArray(from_data, to_data, blust_type)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpArmorAveSpecArray(from_data, to_data, blust_type)));
@@ -427,10 +465,10 @@ public class CompareActivity extends BaseActivity {
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "武器変更")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "予備弾数")));
 			
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "歩行")));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "初速")));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "巡航")));
-			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "低下率")));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpWalkSpecArray(from_data, to_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpStartDushSpecArray(from_data, to_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpNormalDushSpecArray(from_data, to_data, blust_type)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpSpeedDonRateSpecArray(from_data, to_data, blust_type)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "重量耐性")));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpPartsSpecArray(from_data, to_data, blust_type, "加速")));
 

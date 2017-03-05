@@ -18,6 +18,7 @@ public class BBViewSettingManager extends SettingManager {
 	 */
 	public static void loadSettings(Context context) {
 		BBViewSetting.IS_KM_PER_HOUR = isKmPerHour(context);
+		BBViewSetting.IS_HOVER_TO_LEGS = isHoverToLegs(context);
 		BBViewSetting.IS_ARMOR_RATE = isArmorRate(context);
 		BBViewSetting.IS_BATTLE_POWER_OH = isBattlePowerOH(context);
 		
@@ -43,6 +44,11 @@ public class BBViewSettingManager extends SettingManager {
 	private static boolean isKmPerHour(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(BBViewSetting.SETTING_KM_PER_HOUR, false);
+	}
+
+	private static boolean isHoverToLegs(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(BBViewSetting.SETTING_HOVER_TO_LEGS, false);
 	}
 	
 	private static boolean isArmorRate(Context context) {

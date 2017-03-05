@@ -5,6 +5,8 @@ import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class SpecValues {
 
 	/**
@@ -83,9 +85,19 @@ public class SpecValues {
 	public static KeyValueStore DASH;
 	
 	/**
+	 * ダッシュ速度(初速)のデータ一覧(ホバー)
+	 */
+	public static KeyValueStore DASH_HOVER;
+	
+	/**
 	 * 歩行のデータ一覧
 	 */
 	public static KeyValueStore WALK;
+	
+	/**
+	 * 歩行のデータ一覧(ホバー)
+	 */
+	public static KeyValueStore WALK_HOVER;
 	
 	/**
 	 * ブラストの最大HP
@@ -605,6 +617,18 @@ public class SpecValues {
 		DASH.set("E+", "70.20");
 		DASH.set("E",  "68.04");
 		DASH.set("E-", "65.88");  // 5.0の他データからの予想数値 (2016/06/23)
+		
+		// ホバー脚の場合の値を初期化する
+		DASH_HOVER = new KeyValueStore();
+		int size = DASH.size();
+		for(int i=0; i<size; i++) {
+			try {
+				double walk_value = Math.round(Double.valueOf(DASH.get(i)) * 1000) / 1000;
+				DASH_HOVER.set(DASH.getKey(i), String.valueOf(walk_value * 0.8));
+			} catch(Exception e) {
+				// Do Nothing
+			}
+		}
 	}
 
 	/**
@@ -629,6 +653,18 @@ public class SpecValues {
 		WALK.set("E+", "18.792");
 		WALK.set("E",  "16.848");
 		WALK.set("E-", "14.904");  // 3.5該当パーツなし (2015/10/31)
+
+		// ホバー脚の場合の値を初期化する
+		WALK_HOVER = new KeyValueStore();
+		int size = WALK.size();
+		for(int i=0; i<size; i++) {
+			try {
+				double dash_value = Math.round(Double.valueOf(WALK.get(i)) * 100) / 100;
+				WALK_HOVER.set(DASH.getKey(i), String.valueOf(dash_value * 4 / 3));
+			} catch(Exception e) {
+				// Do Nothing
+			}
+		}
 	}
 
 	/**
@@ -725,8 +761,8 @@ public class SpecValues {
 	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
-	public static String getPointWithValue(String key, String value, boolean is_km_per_hour) {
-		return getPoint(key, value, is_km_per_hour) + " (" + value + ")"; 
+	public static String getPointWithValue(String key, String value, boolean is_km_per_hour, boolean is_hover) {
+		return getPoint(key, value, is_km_per_hour, is_hover) + " (" + value + ")"; 
 	}
 
 	/**
@@ -736,8 +772,8 @@ public class SpecValues {
 	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
-	public static String getPointWithValue(String key, double value, boolean is_km_per_hour) {
-		return getPoint(key, value, is_km_per_hour) + " (" + value + ")"; 
+	public static String getPointWithValue(String key, double value, boolean is_km_per_hour, boolean is_hover) {
+		return getPoint(key, value, is_km_per_hour, is_hover) + " (" + value + ")"; 
 	}
 
 	/**
@@ -747,12 +783,12 @@ public class SpecValues {
 	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
-	public static String getPoint(String key, String value, boolean is_km_per_hour) {
+	public static String getPoint(String key, String value, boolean is_km_per_hour, boolean is_hover) {
 		String ret = NOTHING_STR;
 
 		try {
 			double buf = Double.valueOf(value);
-			ret = getPoint(key, buf, is_km_per_hour);
+			ret = getPoint(key, buf, is_km_per_hour, is_hover);
 
 		} catch(Exception e) {
 			ret = NOTHING_STR;
@@ -770,7 +806,7 @@ public class SpecValues {
 	 * @param is_km_per_hour 速度の単位
 	 * @return ポイント番号(E～S)
 	 */
-	public static String getPoint(String key, double value, boolean is_km_per_hour) {
+	public static String getPoint(String key, double value, boolean is_km_per_hour, boolean is_hover) {
 		String point = "";
 		double tmp_value = value;
 		
@@ -820,7 +856,15 @@ public class SpecValues {
 			}
 
 			tmp_value = Math.round(tmp_value * 1000.0) / 1000.0;
-			point = getPointAsc(SpecValues.WALK, tmp_value);
+			
+			// ホバー脚部の二脚基準/ホバー基準設定に応じて、使用するテーブルを変更する
+			if(!BBViewSetting.IS_HOVER_TO_LEGS && is_hover) {
+				point = getPointAsc(SpecValues.WALK_HOVER, tmp_value);
+				Log.e("check", "check");
+			}
+			else {
+				point = getPointAsc(SpecValues.WALK, tmp_value);
+			}
 		}
 		else if(key.equals("ダッシュ")) {
 			if(!is_km_per_hour) {
@@ -828,7 +872,14 @@ public class SpecValues {
 			}
 
 			tmp_value = Math.round(tmp_value * 100.0) / 100.0;
-			point = getPointAsc(SpecValues.DASH, tmp_value);
+
+			// ホバー脚部の二脚基準/ホバー基準設定に応じて、使用するテーブルを変更する
+			if(!BBViewSetting.IS_HOVER_TO_LEGS && is_hover) {
+				point = getPointAsc(SpecValues.DASH_HOVER, tmp_value);
+			}
+			else {
+				point = getPointAsc(SpecValues.DASH, tmp_value);
+			}
 		}
 		else if(key.equals("重量耐性")) {
 			tmp_value = Math.round(tmp_value);

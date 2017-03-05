@@ -100,6 +100,13 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		speed_view_type.setChecked(BBViewSetting.IS_KM_PER_HOUR);
 		screen.addPreference(speed_view_type);
 
+		CheckBoxPreference hover_view_type = new CheckBoxPreference(this);
+		hover_view_type.setTitle("ホバー脚部の二脚基準表示");
+		hover_view_type.setSummary("ONの場合は二脚基準、OFFの場合はホバー基準");
+		hover_view_type.setKey(BBViewSetting.SETTING_HOVER_TO_LEGS);
+		hover_view_type.setChecked(BBViewSetting.IS_HOVER_TO_LEGS);
+		screen.addPreference(hover_view_type);
+
 		CheckBoxPreference armor_view_type = new CheckBoxPreference(this);
 		armor_view_type.setTitle("装甲のダメージ係数表示");
 		armor_view_type.setSummary("ONの場合はダメージ係数で表示、OFFの場合は公式準拠値で表示");

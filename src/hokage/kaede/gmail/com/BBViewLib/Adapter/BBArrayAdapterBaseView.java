@@ -242,7 +242,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			min_value = Double.valueOf(SpecValues.ARMOR.get("E-"));
 
 			if(value >= min_value) {
-				point = SpecValues.getPoint("装甲", value, true);
+				point = SpecValues.getPoint("装甲", value, true, false);
 			}
 			else {
 				point = SpecValues.NOTHING_STR;
@@ -279,7 +279,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 
 			double cs_value = mTargetData.getCalcValue(cs_key);
 			if(cs_value >= min_value) {
-				point = SpecValues.getPoint("装甲", cs_value, true);
+				point = SpecValues.getPoint("装甲", cs_value, true, false);
 			}
 			else {
 				point = SpecValues.NOTHING_STR;
@@ -291,7 +291,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			else {
 				ret = String.format("%s - CS:%s(%s)以下",
 						ret,
-						SpecValues.getPoint("装甲", cs_value, true),
+						SpecValues.getPoint("装甲", cs_value, true, false),
 						SpecValues.getSpecUnit(cs_value, "装甲", true));
 			}
 		}
