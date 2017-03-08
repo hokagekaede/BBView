@@ -41,6 +41,7 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	 * カテゴリにシリーズを追加する。
 	 */
 	public void initParts() {
+		clear();
 		ArrayList<String> series_list = SpecValues.SETBONUS.getKeys();
 		int series_count = series_list.size();
 		
@@ -58,6 +59,7 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	 * 引数が違うのでコンストラクタ内の分岐処理による実装は不可。
 	 */
 	public void initWeapon(String blust_type, String weapon_type) {
+		clear();
 		ArrayList<String> series_list = SpecValues.getWeaponSeiresList(blust_type, weapon_type);
 		int series_count = series_list.size();
 		
@@ -254,7 +256,10 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	@Override
 	public void clear() {
 		super.clear();
-		mShownKeys.clear();
+		
+		if(mShownKeys != null) {
+			mShownKeys.clear();
+		}
 	}
 
 	/**
