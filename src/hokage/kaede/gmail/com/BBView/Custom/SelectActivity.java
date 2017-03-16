@@ -378,6 +378,9 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			mAdapter.setList(datalist);
 			mAdapter.notifyDataSetChanged();
 			
+			mExAdapter.setShowTypeB(is_checked);
+			mExAdapter.notifyDataSetChanged();
+			
 			return false;
 		}
 	}

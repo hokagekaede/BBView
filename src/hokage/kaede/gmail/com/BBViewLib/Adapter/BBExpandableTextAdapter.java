@@ -251,6 +251,13 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	}
 	
 	/**
+	 * 子の項目を削除する。
+	 */
+	public void clearChildren() {
+		super.clear();
+	}
+	
+	/**
 	 * 項目を全削除する。
 	 */
 	@Override

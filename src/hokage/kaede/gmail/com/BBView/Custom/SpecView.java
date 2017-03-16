@@ -932,6 +932,12 @@ public class SpecView extends FrameLayout {
 						   weapon.existCategory("NDディテクター系統") || weapon.existCategory("クリアリングソナー系統")) {
 							addSearchRow(table, data, weapon);
 						}
+						else if(weapon.existCategory("高振動ブレード系統")) {
+							addSlashRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("スタングレネード系統")) {
+							addSupportBombRow(table, data, weapon);
+						}
 						else {
 							addMainWeaponRow(table, data, weapon);
 						}
@@ -1049,6 +1055,10 @@ public class SpecView extends FrameLayout {
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
+			
+			if(weapon.existKey("効果持続")) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getEffectTimeArray(data, weapon)));
+			}
 		}
 
 		/**

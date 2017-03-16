@@ -198,13 +198,13 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 
 			}
 			else if(shown_key.equals(BBData.ARMOR_BREAK_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_BREAK_KEY);
+				value_str = createArmorBreakString(BBData.ARMOR_BREAK_KEY, to_item);
 			}
 			else if(shown_key.equals(BBData.ARMOR_DOWN_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_DOWN_KEY);
+				value_str = createArmorBreakString(BBData.ARMOR_DOWN_KEY, to_item);
 			}
 			else if(shown_key.equals(BBData.ARMOR_KB_KEY)) {
-				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY);
+				value_str = createArmorBreakString(BBData.ARMOR_KB_KEY, to_item);
 			}
 			else if(shown_key.equals(BBData.BULLET_SUM_KEY)) {
 				value_str = to_item.get("総弾数") + "=" + SpecValues.getShowValue(to_item, shown_key, BBViewSetting.IS_KM_PER_HOUR);
@@ -231,12 +231,12 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	 * @param value_str
 	 * @return
 	 */
-	private String createArmorBreakString(String key) {
+	private String createArmorBreakString(String key, BBData target_data) {
 		String ret = "";
 		String point = "";
 
 		double min_value = Double.MIN_VALUE;
-		double value = mTargetData.getCalcValue(key);
+		double value = target_data.getCalcValue(key);
 		
 		try {
 			min_value = Double.valueOf(SpecValues.ARMOR.get("E-"));
@@ -262,7 +262,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		}
 
 		// CS時の情報を追加
-		if(mTargetData.isShotWeapon()) {
+		if(target_data.isShotWeapon()) {
 			String cs_key = "";
 			if(key.equals(BBData.ARMOR_BREAK_KEY)) {
 				cs_key = BBData.ARMOR_CS_BREAK_KEY;
@@ -277,7 +277,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 				return ret;
 			}
 
-			double cs_value = mTargetData.getCalcValue(cs_key);
+			double cs_value = target_data.getCalcValue(cs_key);
 			if(cs_value >= min_value) {
 				point = SpecValues.getPoint("装甲", cs_value, true, false);
 			}

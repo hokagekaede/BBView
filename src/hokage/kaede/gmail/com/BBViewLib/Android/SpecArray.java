@@ -721,6 +721,22 @@ public class SpecArray {
 		return new SpecRow("索敵時間", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 
+	public static SpecRow getEffectTimeArray(CustomData data, BBData weapon) {
+		String str_value = weapon.get("効果持続");
+		double normal_value = 0;
+		double real_value = 0;
+		
+		try {
+			normal_value = Double.valueOf(str_value);
+			real_value = normal_value;
+			
+		} catch(Exception e) {
+			// Do Nothing
+		}
+		
+		return new SpecRow("効果持続", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
 	//----------------------------------------------------------
 	// 特別装備のスペック
 	//----------------------------------------------------------
