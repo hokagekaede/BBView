@@ -39,6 +39,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	private static final int WEIGHT_TEXT_VIEW_ID = 5321;
+	private static final int CHIP_LIST_VIEW_ID = 3231;
 
 	private BBDataManager mDataManager;
 	private BBAdapterValueFilterManager mFilterManager;
@@ -102,6 +103,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		ExpandableListView chip_list_view = new ExpandableListView(context);
 		chip_list_view.setAdapter(mChipListAdapter);
 		chip_list_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		chip_list_view.setId(CHIP_LIST_VIEW_ID);
 		
 		// 容量と現在の使用状況を表示するテキストビューを生成する
 		TextView weight_text_view = new TextView(context);
@@ -127,13 +129,27 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 
 		// 選択中表示ボタンを生成する
 		Button view_button = new Button(context);
-		view_button.setText("選択中表示");
+		view_button.setText("選択中");
 		view_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
 		view_button.setOnClickListener(new OnClickViewButtonListener());
+
+		// 前へボタンを生成する
+		Button last_button = new Button(context);
+		last_button.setText("前へ");
+		last_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
+		last_button.setOnClickListener(new OnClickLastButtonListener());
 		
+		// 次へボタンを生成する
+		Button next_button = new Button(context);
+		next_button.setText("次へ");
+		next_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
+		next_button.setOnClickListener(new OnClickNextButtonListener());
+
 		layout_btm.addView(ok_button);
 		layout_btm.addView(clear_button);
 		layout_btm.addView(view_button);
+		layout_btm.addView(last_button);
+		layout_btm.addView(next_button);
 		
 		addView(chip_list_view);
 		addView(weight_text_view);
@@ -319,6 +335,42 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		// 変更前リストを更新し、変更フラグを解除する
 		mBeforeChipList = mCustomData.getChips();
 		mIsChanged = false;
+	}
+	
+	/**
+	 * 次へボタンを押下した時の処理を行うリスナー
+	 */
+	private class OnClickNextButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			mChipListAdapter.selectNext();
+			int group_pos = mChipListAdapter.getSelectedGroupPosition();
+			int child_pos = mChipListAdapter.getSelectedChildPosition();
+
+			ExpandableListView chip_list_view = (ExpandableListView)ChipView.this.findViewById(CHIP_LIST_VIEW_ID);
+			
+			chip_list_view.expandGroup(group_pos);
+			chip_list_view.setSelectedChild(group_pos, child_pos, true);
+		}
+	}
+
+	/**
+	 * 次へボタンを押下した時の処理を行うリスナー
+	 */
+	private class OnClickLastButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			mChipListAdapter.selectLast();
+			int group_pos = mChipListAdapter.getSelectedGroupPosition();
+			int child_pos = mChipListAdapter.getSelectedChildPosition();
+
+			ExpandableListView chip_list_view = (ExpandableListView)ChipView.this.findViewById(CHIP_LIST_VIEW_ID);
+
+			chip_list_view.expandGroup(group_pos);
+			chip_list_view.setSelectedChild(group_pos, child_pos, true);
+		}
 	}
 	
 	/**

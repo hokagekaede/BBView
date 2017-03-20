@@ -30,12 +30,26 @@ public class BBExpandableChipAdapter extends BBExpandableAdapter {
 	private static final int ACTION_CHIP_CATEGORY_INDEX = 2;
 	private static final int FAVORITE_CHIP_CATEGORY_INDEX = 3;
 	
+	// 現在選択中のチップ位置
+	private int mSelectedGroupPosition = 0;
+	private int mSelectedChildPosition = 0;
+	
 	/**
 	 * コンストラクタ。リストを初期化する。
 	 */
 	public BBExpandableChipAdapter() {
 		mCustomData = CustomDataManager.getCustomData();
 		mGroupCheckList = new ArrayList<ArrayList<Boolean>>();
+		
+		init();
+	}
+	
+	/**
+	 * グループリストを初期化する。
+	 */
+	private void init() {
+		mSelectedGroupPosition = 0;
+		mSelectedChildPosition = 0;
 		
 		super.addGroup(BBDataManager.SKILL_CHIP_STR);
 		mGroupCheckList.add(new ArrayList<Boolean>());
@@ -89,6 +103,9 @@ public class BBExpandableChipAdapter extends BBExpandableAdapter {
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			mSelectedGroupPosition = 0;
+			mSelectedChildPosition = 0;
+			
 			int id = buttonView.getId();
 			int group_position = getGroupPositionFromID(id);
 			int child_position = getChildPositionFromID(id);
@@ -221,6 +238,9 @@ public class BBExpandableChipAdapter extends BBExpandableAdapter {
 	 * フラグを全てクリアする。
 	 */
 	public void clearFlags() {
+		mSelectedGroupPosition = 0;
+		mSelectedChildPosition = 0;
+		
 		int group_size = mGroupCheckList.size();
 		
 		for(int i=0; i<group_size; i++) {
@@ -290,11 +310,87 @@ public class BBExpandableChipAdapter extends BBExpandableAdapter {
 	public void clear() {
 		super.clear();
 		
+		mSelectedGroupPosition = 0;
+		mSelectedChildPosition = 0;
+		
 		int size = mGroupCheckList.size();
 		for(int i=0; i<size; i++) {
 			mGroupCheckList.get(i).clear();
 		}
 		
 		mGroupCheckList.clear();
+		
+		init();
+	}
+	
+	/**
+	 * 選択中のチップを次の項目に移動させる。
+	 * 次の項目がない場合(現在選択中が最後の場合)は現在位置のままにする。
+	 */
+	public void selectNext() {
+		int size = mGroupCheckList.size();
+		for(int i=mSelectedGroupPosition; i<size; i++) {
+			ArrayList<Boolean> check_list = mGroupCheckList.get(i);
+
+			int start_pos;
+			if(i == mSelectedGroupPosition) {
+				start_pos = mSelectedChildPosition + 1;
+			}
+			else {
+				start_pos = 0;
+			}
+			
+			int check_list_size = check_list.size();
+			for(int j=start_pos; j<check_list_size; j++) {
+				if(check_list.get(j)) {
+					mSelectedGroupPosition = i;
+					mSelectedChildPosition = j;
+					return;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 選択中のチップを前の項目に移動させる。
+	 * 前の項目がない場合(現在選択中が最初の場合)は現在位置のままにする。
+	 */
+	public void selectLast() {
+		for(int i=mSelectedGroupPosition; i>=0; i--) {
+			ArrayList<Boolean> check_list = mGroupCheckList.get(i);
+
+			int start_pos;
+			if(i == mSelectedGroupPosition) {
+				start_pos = mSelectedChildPosition - 1;
+			}
+			else {
+				start_pos = check_list.size() - 1;
+			}
+			
+			for(int j=start_pos; j>=0; j--) {
+				if(check_list.get(j)) {
+					mSelectedGroupPosition = i;
+					mSelectedChildPosition = j;
+					return;
+				}
+			}
+			
+		}
+	}
+	
+	/**
+	 * 選択中のチップのグループ位置を返す。
+	 * @return グループ位置
+	 */
+	public int getSelectedGroupPosition() {
+		return mSelectedGroupPosition;
+	}
+	
+	/**
+	 * 選択中のチップの子の位置を返す。
+	 * @return 子の位置
+	 */
+	public int getSelectedChildPosition() {
+		return mSelectedChildPosition;
 	}
 }

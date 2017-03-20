@@ -989,13 +989,13 @@ public class CustomData {
 			// 自軍プラント内の場合、リニアDEF回復チップの効果を反映する
 			if(mMode == MODE_PLANT) {
 				if(existChip("リニアDEF回復")) {
-					ret = ret + 10.0;
+					ret = ret + 5.0;
 				}
 				else if(existChip("リニアDEF回復II")) {
-					ret = ret + 20.0;
+					ret = ret + 10.0;
 				}
 				else if(existChip("リニアDEF回復III")) {
-					ret = ret + 30.0;    // IとIIの効果からの暫定値
+					ret = ret + 15.0;
 				}
 			}
 			
