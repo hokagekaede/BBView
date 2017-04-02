@@ -2829,8 +2829,8 @@ public class CustomData {
 	 * @return 爆発範囲
 	 */
 	public double getExplosionRange(BBData data) {
-		int range = data.getExplosionRange();
-		int chip_bonus = 0;
+		double range = data.getExplosionRange();
+		double chip_bonus = 0;
 
 		// チップの補正値を取得
 		if(existChip("爆発範囲拡大")) {
@@ -2843,7 +2843,7 @@ public class CustomData {
 			chip_bonus = 3;
 		}
 		
-		return range + (chip_bonus * (data.getExplosionAbsPer() / 100));
+		return range + (chip_bonus * ((double)data.getExplosionAbsPer() / 100.0));
 	}
 	
 	/**
