@@ -2128,16 +2128,10 @@ public class CustomData {
 		else {
 			ret = space * 0.025;
 		}
-		
-		// チップの効果を反映
-		if(existChip("重量超過耐性")) {
-			ret = ret * 80.0 / 100.0;
-		}
-		else if(existChip("重量超過耐性II")) {
-			ret = ret * 50.0 / 100.0;
-		}
-		
-		return ret;
+
+		// 重量超過耐性チップの効果を反映
+		double chip_rate = getValueResistOverWeightChip();
+		return ret * ((100.0 - chip_rate) / 100.0);
 	}
 	
 	/**
@@ -2155,13 +2149,28 @@ public class CustomData {
 		else {
 			ret = space * 0.025;
 		}
-		
+
+		// 重量超過耐性チップの効果を反映
+		double chip_rate = getValueResistOverWeightChip();
+		return ret * ((100.0 - chip_rate) / 100.0);
+	}
+	
+	/**
+	 * 重量超過耐性チップの効果を取得する。
+	 * @return チップ効果(%)
+	 */
+	private double getValueResistOverWeightChip() {
+		double ret = 0.0;
+
 		// チップの効果を反映
 		if(existChip("重量超過耐性")) {
-			ret = ret * 80.0 / 100.0;
+			ret = 20.0;
 		}
 		else if(existChip("重量超過耐性II")) {
-			ret = ret * 50.0 / 100.0;
+			ret = 50.0;
+		}
+		else if(existChip("重量超過耐性III")) {
+			ret = 80.0;    // 暫定値
 		}
 		
 		return ret;
