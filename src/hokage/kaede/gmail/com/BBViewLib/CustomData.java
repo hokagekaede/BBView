@@ -2170,7 +2170,7 @@ public class CustomData {
 			ret = 50.0;
 		}
 		else if(existChip("重量超過耐性III")) {
-			ret = 65.0;    // 暫定値
+			ret = 70.0;
 		}
 		
 		return ret;

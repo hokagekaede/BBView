@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
@@ -26,8 +26,15 @@ public class InfoActivity extends BaseActivity {
 	
 	// スペック表示画面のID
 	private int sSpecLayoutId = 1000;
+
+	// オプションメニューのID
+	private static final int MENU_ITEM0 = 0;
+	
+	// 表示するデータ
+	private BBData mTargetData;
 	
 	private boolean isShowingTypeB = false;
+	
 	
 	/**
 	 * アプリ起動時の処理を行う。
@@ -44,10 +51,12 @@ public class InfoActivity extends BaseActivity {
 		if(data == null) {
 			finish();
 		}
+		
+		mTargetData = data;
 
 		createView(data);
 	}
-	
+
 	/**
 	 * 画面全体の生成処理を行う。
 	 * @param data
@@ -66,14 +75,6 @@ public class InfoActivity extends BaseActivity {
 		
 		layout_all.addView(layout_spec);
 
-		// スイッチ武器の場合は切り替えボタンを追加する。
-		if(data.getTypeB() != null) {
-			Button button = new Button(this);
-			button.setText("切り替え");
-			button.setOnClickListener(new OnTypeChangeListener());
-			layout_all.addView(button);
-		}
-		
 		// 全体レイアウトの画面表示
 		setContentView(layout_all);
 	} 
@@ -176,32 +177,54 @@ public class InfoActivity extends BaseActivity {
 		
 		return layout_table;
 	}
-	
-	/**
-	 * 切り替えボタン押下時の処理を行うリスナー。
-	 * タイプA/タイプBの切り替えを行う。
-	 */
-	private class OnTypeChangeListener implements OnClickListener {
 
-		@Override
-		public void onClick(View arg0) {
-			View view = InfoActivity.this.findViewById(sSpecLayoutId);
-			LinearLayout layout_spec = (LinearLayout)view;
-			layout_spec.removeAllViews();
-			
-			BBData data = IntentManager.getSelectedData(getIntent());
-			
-			if(isShowingTypeB) {
-				isShowingTypeB = false;
-			}
-			else {
-				isShowingTypeB = true;
-				data = data.getTypeB();   // スイッチ武器のみボタンを表示するので、nullチェックはしない
-			}
-			
-			setSpecView(layout_spec, data);
+	/**
+	 * オプションメニュー生成時の処理を行う。
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		if(mTargetData.getTypeB() != null) {
+			MenuItem item = menu.add(0, MENU_ITEM0, 0, "タイプB表示");
+			item.setCheckable(true);
 		}
 		
+		return true;
+	}
+
+	/**
+	 * オプションメニュータップ時の処理を行う。
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case MENU_ITEM0:
+				changeShownWeaponType();
+				item.setChecked(isShowingTypeB);
+				break;
+		}
+		
+		return true;
 	}
 	
+	/**
+	 * タイプA/タイプBの表示切り替えを行う。
+	 */
+	private void changeShownWeaponType() {
+		View view = InfoActivity.this.findViewById(sSpecLayoutId);
+		LinearLayout layout_spec = (LinearLayout)view;
+		layout_spec.removeAllViews();
+		
+		BBData data = mTargetData;
+		
+		if(isShowingTypeB) {
+			isShowingTypeB = false;
+			setSpecView(layout_spec, data);
+		}
+		else {
+			isShowingTypeB = true;
+			setSpecView(layout_spec, data.getTypeB());	// スイッチ武器のみメニューを表示するので、nullチェックはしない
+		}
+	}
 }
