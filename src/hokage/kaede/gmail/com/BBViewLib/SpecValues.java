@@ -125,12 +125,6 @@ public class SpecValues {
 	public static final int SBR_WEIGHT = 1600;
 	
 	/**
-	 * ブラストが大破するダメージ値
-	 */
-	public static final int BLUST_BREAK_DAMAGE = 15000;
-	public static final int BLUST_BREAK_GUARD_VAL = 1500;  // 大破抑制チップ
-	
-	/**
 	 * ブラストが転倒するダメージ値
 	 */
 	public static final int BLUST_DOWN_DAMAGE = 6600;
@@ -1362,15 +1356,6 @@ public class SpecValues {
 
 		return ret;
 	}
-	
-	/**
-	 * ブラストが大破するダメージ値を返す。
-	 * @return ダメージ値
-	 */
-	public static int getBlustBreakDamage() {
-		return BLUST_BREAK_DAMAGE;
-	}
-	
 	
 	//----------------------------------------------------------
 	// 武器の系統関連の処理

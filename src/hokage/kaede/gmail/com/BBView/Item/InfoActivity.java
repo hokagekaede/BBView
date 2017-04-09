@@ -25,15 +25,18 @@ public class InfoActivity extends BaseActivity {
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	// スペック表示画面のID
-	private int sSpecLayoutId = 1000;
+	private static final int VIEWID_SHOWSPEC  = 100;
+	private static final int VIEWID_WEAPONSIM = 200;
 
 	// オプションメニューのID
 	private static final int MENU_ITEM0 = 0;
+	private static final int MENU_ITEM1 = 1;
 	
 	// 表示するデータ
 	private BBData mTargetData;
 	
 	private boolean isShowingTypeB = false;
+	private boolean isShowingWeaponSim = false;
 	
 	
 	/**
@@ -67,13 +70,18 @@ public class InfoActivity extends BaseActivity {
 		layout_all.setGravity(Gravity.LEFT | Gravity.TOP);
 
 		LinearLayout layout_spec = new LinearLayout(this);
+		layout_spec.setId(VIEWID_SHOWSPEC);
 		layout_spec.setOrientation(LinearLayout.VERTICAL);
 		layout_spec.setGravity(Gravity.LEFT | Gravity.TOP);
-		layout_spec.setId(sSpecLayoutId);
 		
 		setSpecView(layout_spec, data);
 		
+		WeaponSimView sim_view = new WeaponSimView(this, mTargetData);
+		sim_view.setId(VIEWID_WEAPONSIM);
+		sim_view.setVisibility(View.GONE);
+		
 		layout_all.addView(layout_spec);
+		layout_all.addView(sim_view);
 
 		// 全体レイアウトの画面表示
 		setContentView(layout_all);
@@ -190,6 +198,11 @@ public class InfoActivity extends BaseActivity {
 			item.setCheckable(true);
 		}
 		
+		if(mTargetData.existCategory("主武器")) {
+			MenuItem item = menu.add(0, MENU_ITEM1, 0, "武器シミュ表示");
+			item.setCheckable(true);
+		}
+		
 		return true;
 	}
 
@@ -203,6 +216,11 @@ public class InfoActivity extends BaseActivity {
 				changeShownWeaponType();
 				item.setChecked(isShowingTypeB);
 				break;
+				
+			case MENU_ITEM1:
+				changeShownWeaponSim();
+				item.setChecked(isShowingWeaponSim);
+				break;
 		}
 		
 		return true;
@@ -212,11 +230,14 @@ public class InfoActivity extends BaseActivity {
 	 * タイプA/タイプBの表示切り替えを行う。
 	 */
 	private void changeShownWeaponType() {
-		View view = InfoActivity.this.findViewById(sSpecLayoutId);
-		LinearLayout layout_spec = (LinearLayout)view;
+		LinearLayout layout_spec = (LinearLayout)(InfoActivity.this.findViewById(VIEWID_SHOWSPEC));
+		WeaponSimView weapon_sim_view = (WeaponSimView)(InfoActivity.this.findViewById(VIEWID_WEAPONSIM));
+		
 		layout_spec.removeAllViews();
 		
 		BBData data = mTargetData;
+		
+		weapon_sim_view.setData(data);
 		
 		if(isShowingTypeB) {
 			isShowingTypeB = false;
@@ -226,5 +247,25 @@ public class InfoActivity extends BaseActivity {
 			isShowingTypeB = true;
 			setSpecView(layout_spec, data.getTypeB());	// スイッチ武器のみメニューを表示するので、nullチェックはしない
 		}
+	}
+	
+	/**
+	 * 武器シミュレータの表示切替を行う。
+	 */
+	private void changeShownWeaponSim() {
+		LinearLayout layout_spec = (LinearLayout)(InfoActivity.this.findViewById(VIEWID_SHOWSPEC));
+		WeaponSimView weapon_sim_view = (WeaponSimView)(InfoActivity.this.findViewById(VIEWID_WEAPONSIM));
+		
+		if(isShowingWeaponSim) {
+			isShowingWeaponSim = false;
+			layout_spec.setVisibility(View.VISIBLE);
+			weapon_sim_view.setVisibility(View.GONE);
+		}
+		else {
+			isShowingWeaponSim = true;
+			layout_spec.setVisibility(View.GONE);
+			weapon_sim_view.setVisibility(View.VISIBLE);
+		}
+		
 	}
 }

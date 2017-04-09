@@ -26,7 +26,7 @@ public class ViewBuilder {
 	
 	/**
 	 * テーブルビューの行を生成する
-	 * @param mContext 生成する画面
+	 * @param context 生成する画面
 	 * @param args 表示する文字列
 	 * @return テーブルビューの行
 	 */
@@ -40,6 +40,29 @@ public class ViewBuilder {
 			text.setPadding(5, 0, 5, 0);
 			text.setTextColor(color);
 			text.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
+			row.addView(text);
+		}
+		
+		return row;
+	}
+
+	/**
+	 * テーブルビューの行を生成する
+	 * @param context 生成する画面
+	 * @param size フォンサイズ
+	 * @param args 表示する文字列
+	 * @return テーブルビューの行
+	 */
+	public static TableRow createTableRow(Context context, int color, float size, String... args) {
+		TableRow row = new TableRow(context);
+		
+		int len = args.length;
+		for(int i=0; i<len; i++) {
+			TextView text = new TextView(context);
+			text.setText(args[i]);
+			text.setPadding(5, 0, 5, 0);
+			text.setTextColor(color);
+			text.setTextSize(size);
 			row.addView(text);
 		}
 		

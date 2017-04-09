@@ -169,7 +169,7 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	}
 	
 	/**
-	 * チップデータの取得
+	 * チップデータを取得する。
 	 * @param name チップ名
 	 * @return チップデータ
 	 */
@@ -184,6 +184,26 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 		}
 		
 		return new BBData();
+	}
+	
+	/**
+	 * 指定した系統のチップすべてを取得する。
+	 * @param series 系統名
+	 * @return チップリスト
+	 */
+	public ArrayList<BBData> getChipSeries(String series) {
+		ArrayList<BBData> list = new ArrayList<BBData>();
+		
+		int len = super.size();
+		for(int i=0; i<len; i++) {
+			BBData buf = super.get(i);
+			String buf_name = buf.get("名称");
+			if(buf_name.startsWith(series) && buf.existCategory(CHIP_STR)) {
+				list.add(buf);
+			}
+		}
+		
+		return list;
 	}
 	
 	/**

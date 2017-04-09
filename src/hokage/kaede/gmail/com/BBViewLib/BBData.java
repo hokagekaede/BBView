@@ -1476,7 +1476,7 @@ public class BBData extends KVCStore {
 	 */
 	public double getArmorBreakJdg(boolean is_critical) {
 		double power = getShotAntiStability(is_critical);
-		double damege_rate = SpecValues.getBlustBreakDamage() / power;
+		double damege_rate = (SpecValues.BLUST_LIFE_MAX + 5000) / power;
 		return 100 - (damege_rate * 100);
 	}
 	

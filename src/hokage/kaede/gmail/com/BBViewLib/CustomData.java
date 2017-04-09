@@ -86,7 +86,7 @@ public class CustomData {
 			}
 		}
 	}
-
+	
 	//----------------------------------------------------------
 	// データ設定系の関数
 	//----------------------------------------------------------
@@ -167,6 +167,22 @@ public class CustomData {
 			String tmp_name2 = data.get("名称");
 			
 			if(tmp_name1.equals(tmp_name2)) {
+				mRecentChips.remove(i);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * 指定のチップ系統を全て削除する。
+	 * @param name 削除するチップの系統名
+	 */
+	public void removeChipSeries(String name) {
+		int size = mRecentChips.size();
+		for(int i=0; i<size; i++) {
+			String tmp_name1 = mRecentChips.get(i).get("名称");
+			
+			if(tmp_name1.startsWith(name)) {
 				mRecentChips.remove(i);
 				break;
 			}
@@ -2195,13 +2211,13 @@ public class CustomData {
 		
 		// 各種状態による速度低下倍率を反映する
 		if(mMode == MODE_MOVE_HIWATER) {
-			ret = ret * (1 - 0.25 * (1 - chip_bonus));
+			ret = ret * (1.0 - 0.25 * (1 - chip_bonus));
 		}
 		else if(mMode == MODE_MOVE_LOWATER) {
-			ret = ret * (1 - 0.50 * (1 - chip_bonus));
+			ret = ret * (1.0 - 0.50 * (1 - chip_bonus));
 		}
 		else if(mMode == MODE_MOVE_UPWATER) {
-			ret = ret * (1 - 0.30 * (1 - chip_bonus));
+			ret = ret * (1.0 - 0.30 * (1 - chip_bonus));
 		}
 		
 		return ret;
@@ -2242,7 +2258,7 @@ public class CustomData {
 	 * 予備弾数を反映した総弾数を計算する。
 	 */
 	public double getBulletSum(BBData data) {
-		return Math.floor(data.getBulletSum() * (1.0 + (getSpareBullet() / 100)));
+		return Math.floor(data.getBulletSum() * (1.0 + (getSpareBullet() / 100.0)));
 	}
 
 	/**
@@ -2301,7 +2317,7 @@ public class CustomData {
 	 * @param is_obj 対施設攻撃かどうか。
 	 * @return
 	 */
-	private double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn) {
+	public double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn) {
 		double power = 0;
 		
 		// 武器の単発火力(または転倒ダメージ値)を取得する。
@@ -2355,10 +2371,10 @@ public class CustomData {
 			double rate = 0;
 			double base_power = power;
 
-			power =  base_power * (1.2 * data.getBulletAbsPer() / 100);
-			power += base_power * (0.8 * data.getExplosionAbsPer() / 100);
-			power += base_power * (1.2 * data.getNewdAbsPer() / 100);
-			power += base_power * (1.0 * data.getSlashAbsPer() / 100);
+			power =  base_power * (1.2 * data.getBulletAbsPer() / 100.0);
+			power += base_power * (0.8 * data.getExplosionAbsPer() / 100.0);
+			power += base_power * (1.2 * data.getNewdAbsPer() / 100.0);
+			power += base_power * (1.0 * data.getSlashAbsPer() / 100.0);
 
 			if(existChip("対DEF破壊適性")) {
 				rate = 0.20;
@@ -2376,10 +2392,10 @@ public class CustomData {
 			double rate = 0;
 			double base_power = power;
 			
-			power =  base_power * (0.9 * data.getBulletAbsPer() / 100);
-			power += base_power * (1.0 * data.getExplosionAbsPer() / 100);
-			power += base_power * (1.2 * data.getNewdAbsPer() / 100);
-			power += base_power * (1.0 * data.getSlashAbsPer() / 100);
+			power =  base_power * (0.9 * data.getBulletAbsPer() / 100.0);
+			power += base_power * (1.0 * data.getExplosionAbsPer() / 100.0);
+			power += base_power * (1.2 * data.getNewdAbsPer() / 100.0);
+			power += base_power * (1.0 * data.getSlashAbsPer() / 100.0);
 
 			if(existChip("対物破壊適性")) {
 				rate = 0.07;
@@ -2456,13 +2472,13 @@ public class CustomData {
 
 		// チップの補正値を取得
 		if(existChip("実弾速射")) {
-			shot_chip_bonus += 0.03 * (data.getBulletAbsPer() / 100);
+			shot_chip_bonus += 0.03 * (data.getBulletAbsPer() / 100.0);
 		}
 		else if(existChip("実弾速射II")) {
-			shot_chip_bonus += 0.08 * (data.getBulletAbsPer() / 100);
+			shot_chip_bonus += 0.08 * (data.getBulletAbsPer() / 100.0);
 		}
 		else if(existChip("実弾速射III")) {
-			shot_chip_bonus += 0.12 * (data.getBulletAbsPer() / 100);
+			shot_chip_bonus += 0.12 * (data.getBulletAbsPer() / 100.0);
 		}
 
 		return data.getShotSpeed() * shot_chip_bonus;
@@ -2529,7 +2545,7 @@ public class CustomData {
 		double shot_speed = getShotSpeed(data);
 		double one_power = getOneShotPower(data, 0);
 		
-		return (3 * one_power) * (1.0 / ((3 * (60 / shot_speed)) + 0.8));
+		return (3 * one_power) * (1.0 / ((3.0 * (60.0 / shot_speed)) + 0.8));
 	}
 
 	/**
@@ -2680,7 +2696,7 @@ public class CustomData {
 		int magazine = data.getMagazine();
 		
 		// 撃ち切り時間＝弾自体を撃ち切る時間＋ポンプアクション時間×回数
-		double all_shot_time = (magazine / shot_speed * 60) + (0.8 * (magazine / 3));
+		double all_shot_time = (magazine / shot_speed * 60) + (0.8 * (magazine / 3.0));
 		
 		ret = magazine_power / (all_shot_time + reload_time);
 		
@@ -2697,7 +2713,7 @@ public class CustomData {
 		double oneshot_power = getOneShotPower(data);
 		double oh_guard_time = data.getOverheatTime();
 		
-		return oneshot_power * (shot_speed / 60) * oh_guard_time;
+		return oneshot_power * (shot_speed / 60.0) * oh_guard_time;
 	}
 
 	/**
@@ -2763,7 +2779,7 @@ public class CustomData {
 			}
 			
 			// 威力×(打ち切った弾数＋残った秒数で撃てる弾数)
-			ret = one_power * ((magazine * magazine_count) + (magazine * shot_speed / 60));
+			ret = one_power * ((magazine * magazine_count) + (magazine * shot_speed / 60.0));
 		}
 		
 		return ret;
@@ -2807,7 +2823,7 @@ public class CustomData {
 			newd_chip_bonus = 0.09;
 		}
 		
-		return 1.0 + (newd_chip_bonus * (newd_percent / 100));
+		return 1.0 + (newd_chip_bonus * (newd_percent / 100.0));
 	}
 
 	/**
@@ -2829,7 +2845,7 @@ public class CustomData {
 			slash_chip_bonus = 0.00020;
 		}
 		
-		return 1.0 + ((getPartsWeight() - 2000) * slash_chip_bonus) * (slash_percent / 100);
+		return 1.0 + ((getPartsWeight() - 2000) * slash_chip_bonus) * (slash_percent / 100.0);
 	}
 
 	/**
@@ -2943,7 +2959,7 @@ public class CustomData {
 				ret = ret + 16.2;
 			}
 			else {
-				ret = ret + (16.2 * 3600 / 1000);
+				ret = ret + (16.2 * 3600.0 / 1000.0);
 			}
 
 		} catch(Exception e) {
@@ -3217,7 +3233,7 @@ public class CustomData {
 	private double calcDamage(int attack_value, double chip_bonus, double abs_per, double armor) {
 		double attack_damege = (attack_value * chip_bonus) * (abs_per / 100);
 		
-		return ((100 - armor) / 100) * attack_damege;
+		return ((100.0 - armor) / 100.0) * attack_damege;
 	}
 	
 	/**
@@ -3226,7 +3242,7 @@ public class CustomData {
 	 * @return 耐久値
 	 */
 	public double getLife(boolean ndef_on) {
-		double damege_rate = (100 - getArmorAve()) / 100;
+		double damege_rate = (100 - getArmorAve()) / 100.0;
 		return SpecValues.BLUST_LIFE_MAX / damege_rate;
 	}
 
@@ -3236,7 +3252,7 @@ public class CustomData {
 	 * @return 耐久値
 	 */
 	public double getLifeHead(boolean ndef_on) {
-		double damege_rate = (100 - getArmorAveHead()) / 100;
+		double damege_rate = (100 - getArmorAveHead()) / 100.0;
 		double life = SpecValues.BLUST_LIFE_MAX / damege_rate;
 
 		if(ndef_on) {
@@ -3252,7 +3268,7 @@ public class CustomData {
 	 * @return 耐久値
 	 */
 	public double getLifeLegs(boolean ndef_on) {
-		double damege_rate = (100 - getArmorAveLegs()) / 100;
+		double damege_rate = (100 - getArmorAveLegs()) / 100.0;
 		double life = SpecValues.BLUST_LIFE_MAX / damege_rate;
 
 		if(ndef_on) {
@@ -3261,30 +3277,47 @@ public class CustomData {
 		
 		return life;
 	}
+
+	/**
+	 * 大破するかどうか
+	 * @param attack_value 計算対象の威力
+	 * @return 大破するときはtrueを返し、大破しないときはfalseを返す。
+	 */
+	public boolean isBreak(double attack_value) {
+		return isBreak(attack_value, SpecValues.BLUST_LIFE_MAX, 0);
+	}
 	
 	/**
 	 * 大破するかどうか
-	 * @param attack_value
-	 * @return
+	 * @param attack_value 計算対象の威力
+	 * @param life 現在の耐久値
+	 * @param fatal_attack_lv フェイタルアタックチップのレベル。セットしないときは0に設定する。
+	 * @return 大破するときはtrueを返し、大破しないときはfalseを返す。
 	 */
-	public boolean isBreak(double attack_value) {
+	public boolean isBreak(double attack_value, int life, int fatal_attack_lv) {
 		boolean ret = false;
+		double attack_value_calc = attack_value;
+		double blust_break_damage = life + 5000;
 		
+		// チップの効果を反映する
 		if(existChip("大破抑制")) {
-			if(attack_value - SpecValues.BLUST_BREAK_GUARD_VAL >= SpecValues.getBlustBreakDamage()) {
-				ret = true;
-			}
-			else {
-				ret = false;
-			}
+			attack_value_calc = attack_value_calc - 1500;
+		}
+
+		// フェイタルアタックチップの効果を反映する
+		if(fatal_attack_lv == 1) {
+			blust_break_damage = blust_break_damage - 1000;
+		}
+		else if(fatal_attack_lv == 2) {
+			blust_break_damage = blust_break_damage - 2000;
+		}
+		
+		// 大破するかどうか判定する
+		if(attack_value >= blust_break_damage) {
+			ret = true;
 		}
 		else {
-			if(attack_value >= SpecValues.getBlustBreakDamage()) {
-				ret = true;
-			}
-			else {
-				ret = false;
-			}
+			ret = false;
 		}
 		
 		return ret;
