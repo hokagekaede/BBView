@@ -199,7 +199,7 @@ public class InfoActivity extends BaseActivity {
 		}
 		
 		if(mTargetData.existCategory("主武器")) {
-			MenuItem item = menu.add(0, MENU_ITEM1, 0, "武器シミュ表示");
+			MenuItem item = menu.add(0, MENU_ITEM1, 0, "耐性シミュ表示");
 			item.setCheckable(true);
 		}
 		

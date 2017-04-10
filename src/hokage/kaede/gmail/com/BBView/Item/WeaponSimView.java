@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class WeaponSimView extends LinearLayout implements OnClickListener {
+
+	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
+	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	private static final int VIEWID_ONESHOT_BASE      = 1000;
 	private static final int VIEWID_ONESHOT_CS_BASE   = 2000;
@@ -40,6 +43,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private static final int VIEWID_PRECISE_BASE      = 8000;
 	private static final int VIEWID_FATAL_BASE        = 9000;
 	
+	private static final int VIEWID_REDUCE_BREAK_BASE = 10000;
+	
 	private static final int VIEWID_OFFSET_CHIPI      = 0;
 	private static final int VIEWID_OFFSET_CHIPII     = 1;
 	private static final int VIEWID_OFFSET_CHIPIII    = 2;
@@ -49,6 +54,12 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private static final int VIEWID_DEF_LIFE          = 20000;
 	private static final int VIEWID_DEF_NDEF          = 20001;
 
+	private static final int VIEWID_ARMOR_BASE        = 30000;
+	private static final int VIEWID_OFFSET_ARMOR_HEAD = 0;
+	private static final int VIEWID_OFFSET_ARMOR_BODY = 1;
+	private static final int VIEWID_OFFSET_ARMOR_ARMS = 2;
+	private static final int VIEWID_OFFSET_ARMOR_LEGS = 3;
+
 	// シミュレーションの武器データ
 	private BBData mTargetData;
 	private int mChargeLevel = 0;
@@ -57,8 +68,10 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private CustomData mAttackBlust;
 	private int mFatalChipLv = 0;
 	
+	// 防御側のアセン情報
 	private CustomData mDefenceBlust;
 	private int mDefenceLife = SpecValues.BLUST_LIFE_MAX;
+	private String[] mArmorArray = { "C+", "C+", "C+", "C+"};
 	
 	// チップデータ
 	private ArrayList<BBData> mSpeedUpChips = new ArrayList<BBData>();
@@ -100,35 +113,67 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	/**
 	 * 画面に表示するビューを生成する。
 	 * @param context コンテキスト
+	 * @param data 対象の武器
 	 */
 	private void createView(Context context, BBData data) {
+		this.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
 		this.setOrientation(LinearLayout.VERTICAL);
 		this.setGravity(Gravity.LEFT | Gravity.TOP);
 		
+		this.addView(createPowerTable(context, data));
+		this.addView(createSettingTable(context));
+	}
+	
+	/**
+	 * 火力を表示するテーブルを生成する。
+	 * @param context コンテキスト
+	 * @param data 対象の武器
+	 * @return テーブルデータ
+	 */
+	private TableLayout createPowerTable(Context context, BBData data) {
 		String title = data.get("名称");
 		float fontsize = BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL);
 		
 		TableLayout table_power = new TableLayout(context);
+		table_power.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		table_power.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), fontsize, title, "ダメージ", "よろけ", "転倒", "大破"));
 		table_power.addView(createPowerRow(context, "単発火力(BS)", VIEWID_ONESHOT_BASE));
 		table_power.addView(createPowerRow(context, "単発火力(CS)", VIEWID_ONESHOT_CS_BASE));
 		table_power.addView(createPowerRow(context, "マガジン火力", VIEWID_MAGAZINE_BASE));
 		table_power.addView(createPowerRow(context, "瞬間火力", VIEWID_1SEC_BASE));
 		table_power.addView(createPowerRow(context, "戦術火力", VIEWID_BATTLE_BASE));
-		this.addView(table_power);
-
-		TableLayout table_attack_chip = new TableLayout(context);
-		table_attack_chip.addView(createChipRow(context, "実弾速射", VIEWID_SPEEDUP_BASE, 3));
-		table_attack_chip.addView(createChipRow(context, "ニュード強化", VIEWID_NEWDUP_BASE, 3));
-		table_attack_chip.addView(createChipRow(context, "プリサイス", VIEWID_PRECISE_BASE, 3));
-		table_attack_chip.addView(createChipRow(context, "フェイタル", VIEWID_FATAL_BASE, 2));
-		table_attack_chip.addView(createLifeSeekBar(context));
+		
+		return table_power;
+	}
+	
+	/**
+	 * 設定テーブルを生成する。
+	 * @param context コンテキスト
+	 * @return テーブルデータ
+	 */
+	private TableLayout createSettingTable(Context context) {
+		TableLayout table_setting = new TableLayout(context);
+		table_setting.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		table_setting.addView(createChipRow(context, "実弾速射", VIEWID_SPEEDUP_BASE, 3));
+		table_setting.addView(createChipRow(context, "ニュード強化", VIEWID_NEWDUP_BASE, 3));
+		table_setting.addView(createChipRow(context, "プリサイス", VIEWID_PRECISE_BASE, 3));
+		table_setting.addView(createChipRow(context, "フェイタル", VIEWID_FATAL_BASE, 2));
 		
 		if(mTargetData.isChargeWeapon()) {
-			table_attack_chip.addView(createChipRow(context, "チャージLv", VIEWID_CHARGE_LEVEL_BASE, 2));
+			table_setting.addView(createChipRow(context, "チャージLv", VIEWID_CHARGE_LEVEL_BASE, 2));
 		}
+
+		table_setting.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		table_setting.addView(createLifeRow(context));
+		/*
+		table_setting.addView(createArmorRow(context, "頭部", VIEWID_OFFSET_ARMOR_HEAD));
+		table_setting.addView(createArmorRow(context, "胴部", VIEWID_OFFSET_ARMOR_BODY));
+		table_setting.addView(createArmorRow(context, "腕部", VIEWID_OFFSET_ARMOR_ARMS));
+		table_setting.addView(createArmorRow(context, "脚部", VIEWID_OFFSET_ARMOR_LEGS));
+		table_setting.addView(createChipRow(context, "大破抑制", VIEWID_REDUCE_BREAK_BASE, 1));
+		*/
 		
-		this.addView(table_attack_chip);
+		return table_setting;	
 	}
 	
 	/**
@@ -226,10 +271,10 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	}
 	
 	/**
-	 * 耐久力のシークバーを生成する。
+	 * 耐久力のシークバー行を生成する。
 	 * @param context コンテキスト
 	 */
-	private TableRow createLifeSeekBar(Context context) {
+	private TableRow createLifeRow(Context context) {
 		TableRow row = new TableRow(context);
 		
 		TextView title_text_view = new TextView(context);
@@ -252,7 +297,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	}
 	
 	/**
-	 * シークバーが変化した時の処理を行うリスナー
+	 * 耐久値のシークバーが変化した時の処理を行うリスナー
 	 */
 	private class OnLifeSeekBarChangeListener implements OnSeekBarChangeListener {
 
@@ -268,6 +313,90 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 			
 			TextView title_text_view = (TextView)WeaponSimView.this.findViewById(VIEWID_DEF_LIFE);
 			title_text_view.setText("耐久値(" + mDefenceLife + ")");
+			
+			updateView();
+		}
+
+		/**
+		 * スライド開始した時の処理を行う。
+		 * @param seekbar シークバー
+		 */
+		@Override
+		public void onStartTrackingTouch(SeekBar seekbar) {
+			// 何もしない
+		}
+
+		/**
+		 * スライド終了した時の処理を行う。火力および大破計算を再実行する。
+		 * @param seekbar シークバー
+		 */
+		@Override
+		public void onStopTrackingTouch(SeekBar seekbar) {
+			// 何もしない
+		}
+	}
+
+	/**
+	 * 装甲値のシークバーを生成する。
+	 * @param context コンテキスト
+	 */
+	private TableRow createArmorRow(Context context, String title, int offset) {
+		int id = VIEWID_ARMOR_BASE + offset;
+
+		TableRow row = new TableRow(context);
+		
+		TextView title_text_view = new TextView(context);
+		title_text_view.setId(id);
+		title_text_view.setText(title + "(" + mArmorArray[offset] + ")");
+		title_text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		title_text_view.setTextColor(SettingManager.getColorWhite());
+		row.addView(title_text_view);
+		
+	    TableRow.LayoutParams seekbar_row_layout = new TableRow.LayoutParams();
+	    seekbar_row_layout.span = 3;
+		
+		SeekBar bar = new SeekBar(context);
+		bar.setMax(BBDataManager.SPEC_POINT.length - 1);
+		bar.setProgress(BBDataManager.SPEC_POINT.length - 8);  // C+の設定
+		bar.setOnSeekBarChangeListener(new OnArmorSeekBarChangeListener(title, id, offset));
+		row.addView(bar, seekbar_row_layout);
+		
+		return row;
+	}
+	
+	/**
+	 * 装甲値のシークバーが変化した時の処理を行うリスナー。
+	 */
+	private class OnArmorSeekBarChangeListener implements OnSeekBarChangeListener {
+		
+		private String mTitle = "";
+		private int mId = 0;
+		private int mOffset = 0;
+		
+		/**
+		 * 初期化処理を行う。テキストビューのIDを設定する。
+		 * @param title テキストビューに表示するタイトル
+		 * @param text_view_id テキストビューID
+		 */
+		public OnArmorSeekBarChangeListener(String title, int id, int offset) {
+			mTitle = title;
+			mId = id;
+			mOffset = offset;
+		}
+
+		/**
+		 * シークバーが変化した時の処理を行う。
+		 * @param seekbar シークバー
+		 * @param progress シークバーの位置
+		 * @param from_user ユーザー操作によるものかどうか
+		 */
+		@Override
+		public void onProgressChanged(SeekBar seekbar, int progress, boolean from_user) {
+			String selected_armor = BBDataManager.SPEC_POINT[BBDataManager.SPEC_POINT.length - progress - 1];
+			mArmorArray[mOffset] = selected_armor;
+			
+			TextView title_text_view = (TextView)WeaponSimView.this.findViewById(mId);
+			title_text_view.setText(mTitle + "(" + selected_armor + ")");
 			
 			updateView();
 		}
