@@ -14,8 +14,15 @@ import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -54,7 +61,9 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private static final int VIEWID_DEF_LIFE          = 20000;
 	private static final int VIEWID_DEF_NDEF          = 20001;
 
-	private static final int VIEWID_ARMOR_BASE        = 30000;
+	private static final int VIEWID_ARMOR_TEXT_BASE   = 30000;
+	private static final int VIEWID_ARMOR_LIST_BASE   = 31000;
+	private static final int VIEWID_ARMOR_HIT_BASE    = 32000;
 	private static final int VIEWID_OFFSET_ARMOR_HEAD = 0;
 	private static final int VIEWID_OFFSET_ARMOR_BODY = 1;
 	private static final int VIEWID_OFFSET_ARMOR_ARMS = 2;
@@ -71,13 +80,21 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	// 防御側のアセン情報
 	private CustomData mDefenceBlust;
 	private int mDefenceLife = SpecValues.BLUST_LIFE_MAX;
-	private String[] mArmorArray = { "C+", "C+", "C+", "C+"};
+	
+	private boolean mIsArmorValid = false;
+	private double[] mArmorArray = { 0, 0, 0, 0 };
+	private int[] mHitPercentArray = { 0, 0, 0, 0 };
+	private static final String[] ARMOR_TEXT_TITLE = { "頭部", "胴部", "腕部", "脚部" };
+	
+	private static final int ARMOR_HEAD = 0;
+	private static final int ARMOR_BODY = 1;
+	private static final int ARMOR_ARMS = 2;
+	private static final int ARMOR_LEGS = 3;
 	
 	// チップデータ
 	private ArrayList<BBData> mSpeedUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mNewdUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mPriciseChips = new ArrayList<BBData>();
-	private ArrayList<BBData> mFatalChips = new ArrayList<BBData>();
 
 	/**
 	 * 初期化を行う。
@@ -107,7 +124,6 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		mSpeedUpChips = data_mng.getChipSeries("実弾速射");
 		mNewdUpChips = data_mng.getChipSeries("ニュード威力上昇");
 		mPriciseChips = data_mng.getChipSeries("プリサイスショット");
-		mFatalChips = data_mng.getChipSeries("フェイタルアタック");
 	}
 	
 	/**
@@ -165,13 +181,13 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 
 		table_setting.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		table_setting.addView(createLifeRow(context));
-		/*
+
+		table_setting.addView(createArmorValidRow(context));
 		table_setting.addView(createArmorRow(context, "頭部", VIEWID_OFFSET_ARMOR_HEAD));
 		table_setting.addView(createArmorRow(context, "胴部", VIEWID_OFFSET_ARMOR_BODY));
 		table_setting.addView(createArmorRow(context, "腕部", VIEWID_OFFSET_ARMOR_ARMS));
 		table_setting.addView(createArmorRow(context, "脚部", VIEWID_OFFSET_ARMOR_LEGS));
 		table_setting.addView(createChipRow(context, "大破抑制", VIEWID_REDUCE_BREAK_BASE, 1));
-		*/
 		
 		return table_setting;	
 	}
@@ -335,52 +351,128 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 			// 何もしない
 		}
 	}
-
+	
 	/**
-	 * 装甲値のシークバーを生成する。
+	 * 装甲設定の有効/無効を選択するチェックボックス行を生成する。
 	 * @param context コンテキスト
+	 * @return 行
 	 */
-	private TableRow createArmorRow(Context context, String title, int offset) {
-		int id = VIEWID_ARMOR_BASE + offset;
-
+	private TableRow createArmorValidRow(Context context) {
 		TableRow row = new TableRow(context);
+
+	    TableRow.LayoutParams row_layout = new TableRow.LayoutParams();
+	    row_layout.span = 4;
 		
-		TextView title_text_view = new TextView(context);
-		title_text_view.setId(id);
-		title_text_view.setText(title + "(" + mArmorArray[offset] + ")");
-		title_text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		title_text_view.setTextColor(SettingManager.getColorWhite());
-		row.addView(title_text_view);
-		
-	    TableRow.LayoutParams seekbar_row_layout = new TableRow.LayoutParams();
-	    seekbar_row_layout.span = 3;
-		
-		SeekBar bar = new SeekBar(context);
-		bar.setMax(BBDataManager.SPEC_POINT.length - 1);
-		bar.setProgress(BBDataManager.SPEC_POINT.length - 8);  // C+の設定
-		bar.setOnSeekBarChangeListener(new OnArmorSeekBarChangeListener(title, id, offset));
-		row.addView(bar, seekbar_row_layout);
+		CheckBox armor_valid_checkbox = new CheckBox(context);
+		armor_valid_checkbox.setText("装甲の設定を有効にする");
+		armor_valid_checkbox.setChecked(mIsArmorValid);
+		armor_valid_checkbox.setOnCheckedChangeListener(new OnArmorValidChangeListener());
+		armor_valid_checkbox.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		row.addView(armor_valid_checkbox, row_layout);
 		
 		return row;
 	}
 	
 	/**
-	 * 装甲値のシークバーが変化した時の処理を行うリスナー。
+	 * 装甲設定の有効/無効を変化させた時の処理を行うリスナー
 	 */
-	private class OnArmorSeekBarChangeListener implements OnSeekBarChangeListener {
+	private class OnArmorValidChangeListener implements OnCheckedChangeListener {
+
+		/**
+		 * 設定変更時の処理を行う。
+		 */
+		@Override
+		public void onCheckedChanged(CompoundButton button_view, boolean is_checked) {
+			mIsArmorValid = is_checked;
+			updateView();
+		}
+	}
+
+	/**
+	 * 装甲値のシークバーを生成する。
+	 * @param context コンテキスト
+	 * @return 行
+	 */
+	private TableRow createArmorRow(Context context, String title, int offset) {
+		TableRow row = new TableRow(context);
 		
-		private String mTitle = "";
-		private int mId = 0;
+		TextView title_text_view = new TextView(context);
+		title_text_view.setId(VIEWID_ARMOR_TEXT_BASE + offset);
+		title_text_view.setText(title + "(" + mArmorArray[offset] + ")");
+		title_text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		title_text_view.setTextColor(SettingManager.getColorWhite());
+		row.addView(title_text_view);
+		
+		StringAdapter adapter = new StringAdapter(context, BBDataManager.SPEC_POINT);
+		adapter.setMode(StringAdapter.MODE_SPINNER);
+		
+		Spinner armor_spinner = new Spinner(context);
+		armor_spinner.setId(VIEWID_ARMOR_LIST_BASE + offset);
+		armor_spinner.setAdapter(adapter);
+		armor_spinner.setOnItemSelectedListener(new OnArmorSelectedListener(offset));
+		armor_spinner.setSelection(8);
+		row.addView(armor_spinner);
+		
+	    TableRow.LayoutParams seekbar_row_layout = new TableRow.LayoutParams();
+	    seekbar_row_layout.span = 2;
+		
+		SeekBar hit_parcent_bar = new SeekBar(context);
+		hit_parcent_bar.setId(VIEWID_ARMOR_HIT_BASE + offset);
+		hit_parcent_bar.setMax(100);
+		hit_parcent_bar.setProgress(0);
+		hit_parcent_bar.setOnSeekBarChangeListener(new OnHitSeekBarChangeListener(offset));
+		row.addView(hit_parcent_bar, seekbar_row_layout);
+		
+		return row;
+	}
+	
+	/**
+	 * 装甲値を選択した時の処理を行うリスナー
+	 */
+	private class OnArmorSelectedListener implements OnItemSelectedListener {
+
 		private int mOffset = 0;
 		
 		/**
 		 * 初期化処理を行う。テキストビューのIDを設定する。
-		 * @param title テキストビューに表示するタイトル
-		 * @param text_view_id テキストビューID
+		 * @param offset オフセット値
 		 */
-		public OnArmorSeekBarChangeListener(String title, int id, int offset) {
-			mTitle = title;
-			mId = id;
+		public OnArmorSelectedListener(int offset) {
+			mOffset = offset;
+		}
+
+		/**
+		 * 装甲選択時の処理を行う。
+		 */
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			String selected_armor = BBDataManager.SPEC_POINT[position];
+			mArmorArray[mOffset] = SpecValues.getSpecValue(selected_armor, "装甲", false);
+			
+			updateView();
+		}
+
+		/**
+		 * 装甲非選択時の処理を行う。
+		 */
+		@Override
+		public void onNothingSelected(AdapterView<?> parent) {
+			// 処理無し
+		}
+	}
+	
+	/**
+	 * 被弾率のシークバーが変化した時の処理を行うリスナー。
+	 */
+	private class OnHitSeekBarChangeListener implements OnSeekBarChangeListener {
+		
+		private int mOffset = 0;
+		
+		/**
+		 * 初期化処理を行う。テキストビューのIDを設定する。
+		 * @param offset オフセット値
+		 */
+		public OnHitSeekBarChangeListener(int offset) {
 			mOffset = offset;
 		}
 
@@ -392,11 +484,30 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		 */
 		@Override
 		public void onProgressChanged(SeekBar seekbar, int progress, boolean from_user) {
-			String selected_armor = BBDataManager.SPEC_POINT[BBDataManager.SPEC_POINT.length - progress - 1];
-			mArmorArray[mOffset] = selected_armor;
+			mHitPercentArray[mOffset] = progress;
 			
-			TextView title_text_view = (TextView)WeaponSimView.this.findViewById(mId);
-			title_text_view.setText(mTitle + "(" + selected_armor + ")");
+			int per_sum = mHitPercentArray[ARMOR_HEAD] + mHitPercentArray[ARMOR_BODY] + mHitPercentArray[ARMOR_ARMS] + mHitPercentArray[ARMOR_LEGS];
+			
+			int size = mHitPercentArray.length;
+			for(int i=size-1; i>=0; i--) {
+				if(i == mOffset) {
+					continue;
+				}
+				
+				if(per_sum <= 100) {
+					break;
+				}
+				
+				int over_value = per_sum - 100;
+				
+				if(mHitPercentArray[i] >= over_value) {
+					mHitPercentArray[i] = mHitPercentArray[i] - over_value;
+					break;
+				}
+				else {
+					mHitPercentArray[i] = 0;
+				}
+			}
 			
 			updateView();
 		}
@@ -441,6 +552,14 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		double sec_damage         = mAttackBlust.get1SecPower(mTargetData);
 		double battle_damage      = mAttackBlust.getBattlePower(mTargetData);
 		
+		if(mIsArmorValid) {
+			one_shot_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_damage, mArmorArray[ARMOR_BODY]);
+			one_shot_cs_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_damage, mArmorArray[ARMOR_BODY]);
+			magazine_damage = mDefenceBlust.getHitDamage(mTargetData, magazine_damage, mArmorArray, mHitPercentArray);
+			sec_damage = mDefenceBlust.getHitDamage(mTargetData, sec_damage, mArmorArray, mHitPercentArray);
+			battle_damage = mDefenceBlust.getHitDamage(mTargetData, battle_damage, mArmorArray, mHitPercentArray);
+		}
+		
 		String one_shot_damage_str    = SpecValues.getSpecUnit(one_shot_damage, "威力", false);
 		String one_shot_cs_damage_str = SpecValues.getSpecUnit(one_shot_cs_damage, "威力", false);
 		String magazine_damage_str    = SpecValues.getSpecUnit(magazine_damage, "威力", false);
@@ -455,7 +574,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		
 		// ノックバック有無を再計算して表示する
 		boolean one_shot_kb = mAttackBlust.isBack(one_shot_damage);
-		boolean one_shot_cs_kb = mAttackBlust.isBack(one_shot_damage);
+		boolean one_shot_cs_kb = mAttackBlust.isBack(one_shot_cs_damage);
 		
 		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_kb));
 		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_cs_kb));
@@ -483,6 +602,17 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		updateTextView(VIEWID_1SEC_BASE, VIEWID_OFFSET_BREAK, "－");
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_BREAK, "－");
 
+		int size = mArmorArray.length;
+		for(int i=0; i<size; i++) {
+			String armor_str = SpecValues.getSpecUnit(mArmorArray[i], "装甲", false);
+			String per_str = mHitPercentArray[i] + "(%)";
+			
+			TextView title_text_view = (TextView)this.findViewById(VIEWID_ARMOR_TEXT_BASE + i);
+			title_text_view.setText(ARMOR_TEXT_TITLE[i] + "(" + armor_str + "/" + per_str + ")");
+			
+			SeekBar hit_bar = (SeekBar)this.findViewById(VIEWID_ARMOR_HIT_BASE + i);
+			hit_bar.setProgress(mHitPercentArray[i]);
+		}
 	}
 	
 	/**

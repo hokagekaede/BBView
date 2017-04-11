@@ -2315,7 +2315,7 @@ public class CustomData {
 	 * @param is_critical クリティカルかどうか。
 	 * @param is_stn 転倒ダメージ値かどうか。
 	 * @param is_obj 対施設攻撃かどうか。
-	 * @return
+	 * @return 単発火力
 	 */
 	public double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn) {
 		double power = 0;
@@ -3055,7 +3055,7 @@ public class CustomData {
 	public double getShotDamage(BBData data, String parts_type, int charge_level) {
 		double damage;
 		double armor = getArmor(parts_type);
-		int attack_value = data.getOneShotPower(charge_level);
+		double attack_value = data.getOneShotPower(charge_level);
 		
 		damage = getBulletDamage(data, attack_value, armor)
 		    + getExplosionDamage(data, attack_value, armor)
@@ -3071,6 +3071,22 @@ public class CustomData {
 	}
 	
 	/**
+	 * 射撃武器に被弾した際のダメージを計算する。威力、装甲値は引数の値を使用する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値
+	 * @return ダメージ値
+	 */
+	public double getShotDamage(BBData data, double attack_value, double armor) {
+		double damage = getBulletDamage(data, attack_value, armor)
+			    + getExplosionDamage(data, attack_value, armor)
+				+ getNewdDamage(data, attack_value, armor)
+				+ getSlashDamage(data, attack_value, armor);
+		
+		return damage;
+	}
+	
+	/**
 	 * 爆発武器に被弾した際のダメージを計算する。
 	 * @param data 武器データ
 	 * @param parts_type パーツの種類
@@ -3079,7 +3095,7 @@ public class CustomData {
 	public double getExplosionDamage(BBData data, int charge_level) {
 		double damage;
 		double armor = getArmorAve();
-		int attack_value = data.getOneShotPower(charge_level);
+		double attack_value = data.getOneShotPower(charge_level);
 		
 		damage = getBulletDamage(data, attack_value, armor)
 		    + getExplosionDamage(data, attack_value, armor)
@@ -3108,7 +3124,7 @@ public class CustomData {
 	public double getSlashDamage(BBData data, boolean is_dash, int charge_level) {
 		double armor = getArmorAve();
 		
-		int attack_value = data.getSlashDamage(is_dash, charge_level);
+		double attack_value = data.getSlashDamage(is_dash, charge_level);
 		
 		double damage = getBulletDamage(data, attack_value, armor)
 			+ getExplosionDamage(data, attack_value, armor)
@@ -3125,7 +3141,7 @@ public class CustomData {
 	 * @param armor 装甲値
 	 * @return ダメージ値
 	 */
-	private double getBulletDamage(BBData data, int attack_value, double armor) {
+	private double getBulletDamage(BBData data, double attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
 		if(existChip("対実弾防御")) {
@@ -3151,7 +3167,7 @@ public class CustomData {
 	 * @param armor 装甲値
 	 * @return ダメージ値
 	 */
-	private double getExplosionDamage(BBData data, int attack_value, double armor) {
+	private double getExplosionDamage(BBData data, double attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
 		if(existChip("対爆発防御")) {
@@ -3177,7 +3193,7 @@ public class CustomData {
 	 * @param armor 装甲値
 	 * @return ダメージ値
 	 */
-	private double getNewdDamage(BBData data, int attack_value, double armor) {
+	private double getNewdDamage(BBData data, double attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
 		if(existChip("対ニュード防御")) {
@@ -3203,7 +3219,7 @@ public class CustomData {
 	 * @param armor 装甲値
 	 * @return ダメージ値
 	 */
-	private double getSlashDamage(BBData data, int attack_value, double armor) {
+	private double getSlashDamage(BBData data, double attack_value, double armor) {
 		double chip_bonus = 1.0;
 		
 		if(existChip("対近接防御")) {
@@ -3230,10 +3246,38 @@ public class CustomData {
 	 * @param armor 装甲値
 	 * @return ダメージ値
 	 */
-	private double calcDamage(int attack_value, double chip_bonus, double abs_per, double armor) {
+	private double calcDamage(double attack_value, double chip_bonus, double abs_per, double armor) {
 		double attack_damege = (attack_value * chip_bonus) * (abs_per / 100);
 		
 		return ((100.0 - armor) / 100.0) * attack_damege;
+	}
+	
+	/**
+	 * 被弾割合から計算したダメージ量を取得する。
+	 * @param data 武器データ
+	 * @param attack_value 威力値
+	 * @param armor 装甲値。頭部、胴部、腕部、脚部の順で設定する。
+	 * @param hit_per 被弾割合。頭部、胴部、腕部、脚部の順で設定する。
+	 * @return ダメージ値
+	 */
+	public double getHitDamage(BBData data, double attack_value, double[] armor, int[] hit_per) {
+		double ret = 0;
+		int size = armor.length;
+			
+		for(int i=0; i<size; i++) {
+			double damage = getBulletDamage(data, attack_value, armor[i]) 
+				           + getExplosionDamage(data, attack_value, armor[i])
+			               + getNewdDamage(data, attack_value, armor[i])
+			               + getSlashDamage(data, attack_value, armor[i]);
+			
+			if(i == HEAD_IDX) {
+				damage = damage * 2.5;
+			}
+			
+			ret += damage * ((double)hit_per[i] / 100.0);
+		}
+		
+		return ret;
 	}
 	
 	/**
