@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -49,14 +50,15 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private static final int VIEWID_NEWDUP_BASE       = 7000;
 	private static final int VIEWID_PRECISE_BASE      = 8000;
 	private static final int VIEWID_FATAL_BASE        = 9000;
+
+	private static final int VIEWID_CHARGE_LEVEL_BASE = 10000;
 	
-	private static final int VIEWID_REDUCE_BREAK_BASE = 10000;
+	private static final int VIEWID_REDUCE_BREAK_BASE = 11000;
+	private static final int VIEWID_GURAD_DOWN_BASE   = 12000;
 	
 	private static final int VIEWID_OFFSET_CHIPI      = 0;
 	private static final int VIEWID_OFFSET_CHIPII     = 1;
 	private static final int VIEWID_OFFSET_CHIPIII    = 2;
-	
-	private static final int VIEWID_CHARGE_LEVEL_BASE = 10000;
 	
 	private static final int VIEWID_DEF_LIFE          = 20000;
 	private static final int VIEWID_DEF_NDEF          = 20001;
@@ -95,6 +97,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private ArrayList<BBData> mSpeedUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mNewdUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mPriciseChips = new ArrayList<BBData>();
+	private ArrayList<BBData> mReduceBreakChips = new ArrayList<BBData>();
+	private ArrayList<BBData> mGuardDownChips = new ArrayList<BBData>();
 
 	/**
 	 * 初期化を行う。
@@ -124,6 +128,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		mSpeedUpChips = data_mng.getChipSeries("実弾速射");
 		mNewdUpChips = data_mng.getChipSeries("ニュード威力上昇");
 		mPriciseChips = data_mng.getChipSeries("プリサイスショット");
+		mReduceBreakChips = data_mng.getChipSeries("大破抑制");
+		mGuardDownChips = data_mng.getChipSeries("転倒耐性");
 	}
 	
 	/**
@@ -137,7 +143,12 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		this.setGravity(Gravity.LEFT | Gravity.TOP);
 		
 		this.addView(createPowerTable(context, data));
-		this.addView(createSettingTable(context));
+		
+		ScrollView data_view = new ScrollView(context);
+		data_view.addView(createSettingTable(context));
+		data_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		
+		this.addView(data_view);
 	}
 	
 	/**
@@ -188,6 +199,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		table_setting.addView(createArmorRow(context, "腕部", VIEWID_OFFSET_ARMOR_ARMS));
 		table_setting.addView(createArmorRow(context, "脚部", VIEWID_OFFSET_ARMOR_LEGS));
 		table_setting.addView(createChipRow(context, "大破抑制", VIEWID_REDUCE_BREAK_BASE, 1));
+		table_setting.addView(createChipRow(context, "転倒耐性", VIEWID_GURAD_DOWN_BASE, 2));
 		
 		return table_setting;	
 	}
@@ -554,7 +566,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		
 		if(mIsArmorValid) {
 			one_shot_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_damage, mArmorArray[ARMOR_BODY]);
-			one_shot_cs_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_damage, mArmorArray[ARMOR_BODY]);
+			one_shot_cs_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_damage, mArmorArray[ARMOR_HEAD]);
 			magazine_damage = mDefenceBlust.getHitDamage(mTargetData, magazine_damage, mArmorArray, mHitPercentArray);
 			sec_damage = mDefenceBlust.getHitDamage(mTargetData, sec_damage, mArmorArray, mHitPercentArray);
 			battle_damage = mDefenceBlust.getHitDamage(mTargetData, battle_damage, mArmorArray, mHitPercentArray);
@@ -573,8 +585,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_DAMAGE, battle_damage_str);
 		
 		// ノックバック有無を再計算して表示する
-		boolean one_shot_kb = mAttackBlust.isBack(one_shot_damage);
-		boolean one_shot_cs_kb = mAttackBlust.isBack(one_shot_cs_damage);
+		boolean one_shot_kb = mDefenceBlust.isBack(one_shot_damage);
+		boolean one_shot_cs_kb = mDefenceBlust.isBack(one_shot_cs_damage);
 		
 		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_kb));
 		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_cs_kb));
@@ -583,8 +595,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_KB, "－");
 
 		// 転倒有無を再計算して表示する
-		boolean one_shot_down = mAttackBlust.isDown(one_shot_damage);
-		boolean one_shot_cs_down = mAttackBlust.isDown(one_shot_cs_damage);
+		boolean one_shot_down = mDefenceBlust.isDown(one_shot_damage);
+		boolean one_shot_cs_down = mDefenceBlust.isDown(one_shot_cs_damage);
 
 		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_DOWN, getJudgeString(one_shot_down));
 		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_DOWN, getJudgeString(one_shot_cs_down));
@@ -593,8 +605,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_DOWN, "－");
 
 		// 大破有無を再計算して表示する
-		boolean one_shot_break = mAttackBlust.isBreak(one_shot_damage, mDefenceLife, mFatalChipLv);
-		boolean one_shot_cs_break = mAttackBlust.isBreak(one_shot_cs_damage, mDefenceLife, mFatalChipLv);
+		boolean one_shot_break = mDefenceBlust.isBreak(one_shot_damage, mDefenceLife, mFatalChipLv);
+		boolean one_shot_cs_break = mDefenceBlust.isBreak(one_shot_cs_damage, mDefenceLife, mFatalChipLv);
 
 		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_BREAK, getJudgeString(one_shot_break));
 		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_BREAK, getJudgeString(one_shot_cs_break));
@@ -661,52 +673,56 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 
 		switch(id) {
 		
+			//----------------------------------------------------------
+			// 攻撃側
+			//----------------------------------------------------------
+			
 			// 実弾速射
 			case VIEWID_SPEEDUP_BASE + VIEWID_OFFSET_CHIPI:
 				updateButtonLamp(VIEWID_SPEEDUP_BASE, VIEWID_OFFSET_CHIPI, checked);
-				updateChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPI, checked);
+				updateAttackChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPI, checked);
 				break;
 
 			case VIEWID_SPEEDUP_BASE + VIEWID_OFFSET_CHIPII:
 				updateButtonLamp(VIEWID_SPEEDUP_BASE, VIEWID_OFFSET_CHIPII, checked);
-				updateChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPII, checked);
+				updateAttackChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPII, checked);
 				break;
 
 			case VIEWID_SPEEDUP_BASE + VIEWID_OFFSET_CHIPIII:
 				updateButtonLamp(VIEWID_SPEEDUP_BASE, VIEWID_OFFSET_CHIPIII, checked);
-				updateChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPIII, checked);
+				updateAttackChip("実弾速射", mSpeedUpChips, VIEWID_OFFSET_CHIPIII, checked);
 				break;
 
 			// ニュード威力上昇
 			case VIEWID_NEWDUP_BASE + VIEWID_OFFSET_CHIPI:
 				updateButtonLamp(VIEWID_NEWDUP_BASE, VIEWID_OFFSET_CHIPI, checked);
-				updateChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPI, checked);
+				updateAttackChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPI, checked);
 				break;
 
 			case VIEWID_NEWDUP_BASE + VIEWID_OFFSET_CHIPII:
 				updateButtonLamp(VIEWID_NEWDUP_BASE, VIEWID_OFFSET_CHIPII, checked);
-				updateChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPII, checked);
+				updateAttackChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPII, checked);
 				break;
 
 			case VIEWID_NEWDUP_BASE + VIEWID_OFFSET_CHIPIII:
 				updateButtonLamp(VIEWID_NEWDUP_BASE, VIEWID_OFFSET_CHIPIII, checked);
-				updateChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPIII, checked);
+				updateAttackChip("ニュード威力上昇", mNewdUpChips, VIEWID_OFFSET_CHIPIII, checked);
 				break;
 
 			// プリサイスショット
 			case VIEWID_PRECISE_BASE + VIEWID_OFFSET_CHIPI:
 				updateButtonLamp(VIEWID_PRECISE_BASE, VIEWID_OFFSET_CHIPI, checked);
-				updateChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPI, checked);
+				updateAttackChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPI, checked);
 				break;
 
 			case VIEWID_PRECISE_BASE + VIEWID_OFFSET_CHIPII:
 				updateButtonLamp(VIEWID_PRECISE_BASE, VIEWID_OFFSET_CHIPII, checked);
-				updateChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPII, checked);
+				updateAttackChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPII, checked);
 				break;
 
 			case VIEWID_PRECISE_BASE + VIEWID_OFFSET_CHIPIII:
 				updateButtonLamp(VIEWID_PRECISE_BASE, VIEWID_OFFSET_CHIPIII, checked);
-				updateChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPIII, checked);
+				updateAttackChip("プリサイスショット", mPriciseChips, VIEWID_OFFSET_CHIPIII, checked);
 				break;
 
 			// フェイタルアタック
@@ -732,6 +748,26 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 				updateChargeLevel(2, checked);
 				break;
 
+			//----------------------------------------------------------
+			// 防御側
+			//----------------------------------------------------------
+
+			// 大破抑制
+			case VIEWID_REDUCE_BREAK_BASE + VIEWID_OFFSET_CHIPI:
+				updateButtonLamp(VIEWID_REDUCE_BREAK_BASE, VIEWID_OFFSET_CHIPI, checked);
+				updateDefenceChip("大破抑制", mReduceBreakChips, VIEWID_OFFSET_CHIPI, checked);
+				break;
+
+			// 転倒耐性
+			case VIEWID_GURAD_DOWN_BASE + VIEWID_OFFSET_CHIPI:
+				updateButtonLamp(VIEWID_GURAD_DOWN_BASE, VIEWID_OFFSET_CHIPI, checked);
+				updateDefenceChip("転倒耐性", mGuardDownChips, VIEWID_OFFSET_CHIPI, checked);
+				break;
+
+			case VIEWID_GURAD_DOWN_BASE + VIEWID_OFFSET_CHIPII:
+				updateButtonLamp(VIEWID_GURAD_DOWN_BASE, VIEWID_OFFSET_CHIPII, checked);
+				updateDefenceChip("転倒耐性", mGuardDownChips, VIEWID_OFFSET_CHIPII, checked);
+				break;
 		}
 	}
 
@@ -764,6 +800,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		
 		((ToggleButton)btn1).setChecked(checked);
 	}
+	
 	/**
 	 * 攻撃側チップ情報を更新する。
 	 * @param chip_series チップの系統名
@@ -771,7 +808,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	 * @param level レベル
 	 * @param is_setting 現在の設定状態
 	 */
-	private void updateChip(String chip_series, ArrayList<BBData> chip_list, int level, boolean is_setting) {
+	private void updateAttackChip(String chip_series, ArrayList<BBData> chip_list, int level, boolean is_setting) {
 		mAttackBlust.removeChipSeries(chip_series);
 
 		if(!is_setting) {
@@ -779,7 +816,22 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		}
 		
 	}
-	
+
+	/**
+	 * 防御側チップ情報を更新する。
+	 * @param chip_series チップの系統名
+	 * @param chip_list チップリスト
+	 * @param level レベル
+	 * @param is_setting 現在の設定状態
+	 */
+	private void updateDefenceChip(String chip_series, ArrayList<BBData> chip_list, int level, boolean is_setting) {
+		mDefenceBlust.removeChipSeries(chip_series);
+
+		if(!is_setting) {
+			mDefenceBlust.addChip(chip_list.get(level));
+		}
+		
+	}
 	/**
 	 * フェイタルチップの設定状態を更新する。
 	 * ※防御側アセンの大破計算の引数として必要であるため、他の攻撃チップとは別枠で設定状態を管理する。

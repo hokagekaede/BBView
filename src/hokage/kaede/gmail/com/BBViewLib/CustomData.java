@@ -3357,7 +3357,7 @@ public class CustomData {
 		}
 		
 		// 大破するかどうか判定する
-		if(attack_value >= blust_break_damage) {
+		if(attack_value_calc >= blust_break_damage) {
 			ret = true;
 		}
 		else {

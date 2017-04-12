@@ -237,15 +237,15 @@ public class InfoActivity extends BaseActivity {
 		
 		BBData data = mTargetData;
 		
-		weapon_sim_view.setData(data);
-		
 		if(isShowingTypeB) {
 			isShowingTypeB = false;
 			setSpecView(layout_spec, data);
+			weapon_sim_view.setData(data);
 		}
 		else {
 			isShowingTypeB = true;
 			setSpecView(layout_spec, data.getTypeB());	// スイッチ武器のみメニューを表示するので、nullチェックはしない
+			weapon_sim_view.setData(data.getTypeB());
 		}
 	}
 	
