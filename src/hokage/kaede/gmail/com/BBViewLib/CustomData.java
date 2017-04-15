@@ -2307,6 +2307,20 @@ public class CustomData {
 	public double getObjectShotPower(BBData data) {
 		return getOneShotPowerMain(data, 0, false, false);
 	}
+	
+	/**
+	 * 命中距離を考慮した爆発武器の威力を算出する。
+	 * @param data 武器データ
+	 * @param charge_level チャージレベル
+	 * @param is_stn 転倒ダメージ値かどうか。
+	 * @param distance 命中距離
+	 * @param range 爆発範囲。
+	 * @return 爆発武器の威力
+	 */
+	public double getExplosionPower(BBData data, int charge_level, boolean is_stn, double distance, double range) {
+		double power = getOneShotPowerMain(data, charge_level, false, is_stn);
+		return power * (1.0 - (distance / range));
+	}
 
 	/**
 	 * 単発威力を取得する。
@@ -3258,9 +3272,10 @@ public class CustomData {
 	 * @param attack_value 威力値
 	 * @param armor 装甲値。頭部、胴部、腕部、脚部の順で設定する。
 	 * @param hit_per 被弾割合。頭部、胴部、腕部、脚部の順で設定する。
+	 * @param is_shot 射撃武器かどうか。射撃武器の場合はCS計算も行う。
 	 * @return ダメージ値
 	 */
-	public double getHitDamage(BBData data, double attack_value, double[] armor, int[] hit_per) {
+	public double getHitDamage(BBData data, double attack_value, double[] armor, int[] hit_per, boolean is_shot) {
 		double ret = 0;
 		int size = armor.length;
 			
@@ -3270,7 +3285,7 @@ public class CustomData {
 			               + getNewdDamage(data, attack_value, armor[i])
 			               + getSlashDamage(data, attack_value, armor[i]);
 			
-			if(i == HEAD_IDX) {
+			if(is_shot && i == HEAD_IDX) {
 				damage = damage * 2.5;
 			}
 			
@@ -3279,7 +3294,7 @@ public class CustomData {
 		
 		return ret;
 	}
-	
+
 	/**
 	 * 装甲平均値から算出する実耐久値を算出する。(近接攻撃時)
 	 * @param ndef_on N-DEFが残っている場合の実耐久値。

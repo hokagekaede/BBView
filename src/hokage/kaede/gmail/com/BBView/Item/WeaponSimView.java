@@ -35,37 +35,41 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
-	private static final int VIEWID_ONESHOT_BASE      = 1000;
-	private static final int VIEWID_ONESHOT_CS_BASE   = 2000;
-	private static final int VIEWID_MAGAZINE_BASE     = 3000;
-	private static final int VIEWID_1SEC_BASE         = 4000;
-	private static final int VIEWID_BATTLE_BASE       = 5000;
+	private static final int VIEWID_ONESHOT_BASE      = 100;
+	private static final int VIEWID_ONESHOT_CS_BASE   = 200;
+	private static final int VIEWID_MAGAZINE_BASE     = 300;
+	private static final int VIEWID_1SEC_BASE         = 400;
+	private static final int VIEWID_BATTLE_BASE       = 500;
 
 	private static final int VIEWID_OFFSET_DAMAGE     = 0;
 	private static final int VIEWID_OFFSET_KB         = 1;
 	private static final int VIEWID_OFFSET_DOWN       = 2;
 	private static final int VIEWID_OFFSET_BREAK      = 3;
 	
-	private static final int VIEWID_SPEEDUP_BASE      = 6000;
-	private static final int VIEWID_NEWDUP_BASE       = 7000;
-	private static final int VIEWID_PRECISE_BASE      = 8000;
-	private static final int VIEWID_FATAL_BASE        = 9000;
+	private static final int VIEWID_SPEEDUP_BASE      = 1000;
+	private static final int VIEWID_NEWDUP_BASE       = 1100;
+	private static final int VIEWID_PRECISE_BASE      = 1200;
+	private static final int VIEWID_FATAL_BASE        = 1300;
+	private static final int VIEWID_ANTISTN_BASE      = 1400;
 
-	private static final int VIEWID_CHARGE_LEVEL_BASE = 10000;
+	private static final int VIEWID_CHARGE_LEVEL_BASE = 1500;
+	private static final int VIEWID_EXPLOSION_BASE    = 1600;
+	private static final int VIEWID_EXPLOSION_BAR     = 1601;
+	private static final int VIEWID_EXPLOSION_ROW     = 1602;
 	
-	private static final int VIEWID_REDUCE_BREAK_BASE = 11000;
-	private static final int VIEWID_GURAD_DOWN_BASE   = 12000;
+	private static final int VIEWID_REDUCE_BREAK_BASE = 2000;
+	private static final int VIEWID_GURAD_DOWN_BASE   = 2100;
 	
 	private static final int VIEWID_OFFSET_CHIPI      = 0;
 	private static final int VIEWID_OFFSET_CHIPII     = 1;
 	private static final int VIEWID_OFFSET_CHIPIII    = 2;
 	
-	private static final int VIEWID_DEF_LIFE          = 20000;
-	private static final int VIEWID_DEF_NDEF          = 20001;
+	private static final int VIEWID_DEF_LIFE          = 3000;
+	private static final int VIEWID_DEF_NDEF          = 3100;
 
-	private static final int VIEWID_ARMOR_TEXT_BASE   = 30000;
-	private static final int VIEWID_ARMOR_LIST_BASE   = 31000;
-	private static final int VIEWID_ARMOR_HIT_BASE    = 32000;
+	private static final int VIEWID_ARMOR_TEXT_BASE   = 4000;
+	private static final int VIEWID_ARMOR_LIST_BASE   = 4100;
+	private static final int VIEWID_ARMOR_HIT_BASE    = 4200;
 	private static final int VIEWID_OFFSET_ARMOR_HEAD = 0;
 	private static final int VIEWID_OFFSET_ARMOR_BODY = 1;
 	private static final int VIEWID_OFFSET_ARMOR_ARMS = 2;
@@ -73,11 +77,15 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 
 	// シミュレーションの武器データ
 	private BBData mTargetData;
-	private int mChargeLevel = 0;
+	private boolean mIsTypeShot = false;
+	private boolean mIsTypeExplosion = false;
+	private int mExplosionRange = 0;
 	
 	// 攻撃側のアセン情報
 	private CustomData mAttackBlust;
-	private int mFatalChipLv = 0;
+	private int mFatalChipLv       = 0;
+	private int mChargeLevel       = 0;
+	private int mExplotionDistance = 0;
 	
 	// 防御側のアセン情報
 	private CustomData mDefenceBlust;
@@ -97,6 +105,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	private ArrayList<BBData> mSpeedUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mNewdUpChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mPriciseChips = new ArrayList<BBData>();
+	private ArrayList<BBData> mAntiStnChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mReduceBreakChips = new ArrayList<BBData>();
 	private ArrayList<BBData> mGuardDownChips = new ArrayList<BBData>();
 
@@ -120,6 +129,10 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	 */
 	private void initData(BBData target) {
 		mTargetData = target;
+		mIsTypeShot = target.isShotWeapon();
+		mIsTypeExplosion = target.isExplosionWeapon();
+		mExplosionRange = target.getExplosionRange();
+		
 		mAttackBlust = CustomDataManager.getDefaultCustomData();
 		mDefenceBlust = CustomDataManager.getDefaultCustomData();
 		
@@ -128,6 +141,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		mSpeedUpChips = data_mng.getChipSeries("実弾速射");
 		mNewdUpChips = data_mng.getChipSeries("ニュード威力上昇");
 		mPriciseChips = data_mng.getChipSeries("プリサイスショット");
+		mAntiStnChips = data_mng.getChipSeries("アンチスタビリティ");
 		mReduceBreakChips = data_mng.getChipSeries("大破抑制");
 		mGuardDownChips = data_mng.getChipSeries("転倒耐性");
 	}
@@ -185,10 +199,13 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		table_setting.addView(createChipRow(context, "ニュード強化", VIEWID_NEWDUP_BASE, 3));
 		table_setting.addView(createChipRow(context, "プリサイス", VIEWID_PRECISE_BASE, 3));
 		table_setting.addView(createChipRow(context, "フェイタル", VIEWID_FATAL_BASE, 2));
+		table_setting.addView(createChipRow(context, "アンスタ", VIEWID_ANTISTN_BASE, 3));
 		
 		if(mTargetData.isChargeWeapon()) {
 			table_setting.addView(createChipRow(context, "チャージLv", VIEWID_CHARGE_LEVEL_BASE, 2));
 		}
+		
+		table_setting.addView(createExplosionDistance(context));
 
 		table_setting.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		table_setting.addView(createLifeRow(context));
@@ -297,6 +314,80 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		
 		return row;
 	}
+
+	/**
+	 * 命中距離のシークバー行を生成する。
+	 * @param context コンテキスト
+	 */
+	private TableRow createExplosionDistance(Context context) {
+		TableRow row = new TableRow(context);
+		row.setId(VIEWID_EXPLOSION_ROW);
+		
+		TextView title_text_view = new TextView(context);
+		title_text_view.setId(VIEWID_EXPLOSION_BASE);
+		title_text_view.setText("命中距離(" + mExplotionDistance + "m)");
+		title_text_view.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		title_text_view.setTextColor(SettingManager.getColorWhite());
+		row.addView(title_text_view);
+
+	    TableRow.LayoutParams seekbar_row_layout = new TableRow.LayoutParams();
+	    seekbar_row_layout.span = 3;
+		
+		SeekBar bar = new SeekBar(context);
+		bar.setId(VIEWID_EXPLOSION_BAR);
+		bar.setMax(mExplosionRange);
+		bar.setProgress(0);
+		bar.setPadding(30, 0, 30, 30);
+		bar.setOnSeekBarChangeListener(new OnExplosionBarChangeListener());
+		row.addView(bar, seekbar_row_layout);
+		
+		if(!mIsTypeExplosion) {
+			row.setVisibility(View.GONE);
+		}
+		
+		return row;
+	}
+	
+	/**
+	 * 命中距離のシークバーが変化した時の処理を行うリスナー
+	 */
+	private class OnExplosionBarChangeListener implements OnSeekBarChangeListener {
+
+		/**
+		 * シークバーが変化した時の処理を行う。
+		 * @param seekbar シークバー
+		 * @param progress シークバーの位置
+		 * @param from_user ユーザー操作によるものかどうか
+		 */
+		@Override
+		public void onProgressChanged(SeekBar seekbar, int progress, boolean from_user) {
+			mExplotionDistance = progress;
+
+			TextView title_text_view = (TextView)WeaponSimView.this.findViewById(VIEWID_EXPLOSION_BASE);
+			title_text_view.setText("命中距離(" + mExplotionDistance + "m)");
+			
+			updateView();
+		}
+
+		/**
+		 * スライド開始した時の処理を行う。
+		 * @param seekbar シークバー
+		 */
+		@Override
+		public void onStartTrackingTouch(SeekBar seekbar) {
+			// 何もしない			
+		}
+
+		/**
+		 * スライド終了した時の処理を行う。火力および大破計算を再実行する。
+		 * @param seekbar シークバー
+		 */
+		@Override
+		public void onStopTrackingTouch(SeekBar seekbar) {
+			// 何もしない
+		}
+		
+	}
 	
 	/**
 	 * 耐久力のシークバー行を生成する。
@@ -318,6 +409,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		SeekBar bar = new SeekBar(context);
 		bar.setMax(SpecValues.BLUST_LIFE_MAX);
 		bar.setProgress(SpecValues.BLUST_LIFE_MAX);
+		bar.setPadding(30, 0, 30, 30);
 		bar.setOnSeekBarChangeListener(new OnLifeSeekBarChangeListener());
 		row.addView(bar, seekbar_row_layout);
 		
@@ -415,8 +507,21 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		title_text_view.setTextColor(SettingManager.getColorWhite());
 		row.addView(title_text_view);
 		
-		StringAdapter adapter = new StringAdapter(context, BBDataManager.SPEC_POINT);
+		int size = BBDataManager.SPEC_POINT.length;
+		String[] spec_strs = new String[size];
+		
+		for(int i=0; i<size; i++) {
+			String point = BBDataManager.SPEC_POINT[i];
+			double value = SpecValues.getSpecValue(point, "装甲", false);
+			String armor_str = SpecValues.getSpecUnit(value, "装甲", false);
+			
+			spec_strs[i] = point + " (" + armor_str + ")";
+		}
+		
+		StringAdapter adapter = new StringAdapter(context, spec_strs);
 		adapter.setMode(StringAdapter.MODE_SPINNER);
+		adapter.setTextSize(BBViewSetting.FLAG_TEXTSIZE_NORMAL);
+		adapter.setTextColor(SettingManager.getColorWhite());
 		
 		Spinner armor_spinner = new Spinner(context);
 		armor_spinner.setId(VIEWID_ARMOR_LIST_BASE + offset);
@@ -549,7 +654,34 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	 */
 	public void setData(BBData target) {
 		mTargetData = target;
+
+		mIsTypeShot = target.isShotWeapon();
+		mIsTypeExplosion = target.isExplosionWeapon();
+		mExplosionRange = target.getExplosionRange();
+
+		updateExplosionBar();
 		updateView();
+	}
+	
+	/**
+	 * 爆発距離のバーを更新する。
+	 */
+	private void updateExplosionBar() {
+
+		if(mIsTypeExplosion) {
+			SeekBar bar = (SeekBar)this.findViewById(VIEWID_EXPLOSION_BAR);
+			bar.setMax(mExplosionRange);
+			bar.setProgress(0);
+			
+			mExplotionDistance = 0;
+			
+			TextView title_text_view = (TextView)this.findViewById(VIEWID_EXPLOSION_BASE);
+			title_text_view.setText("命中距離(" + mExplotionDistance + "m)");
+		}
+		else {
+			TableRow row = (TableRow)this.findViewById(VIEWID_EXPLOSION_ROW);
+			row.setVisibility(View.GONE);
+		}
 	}
 	
 	/**
@@ -557,19 +689,40 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	 */
 	private void updateView() {
 		
+		// 射撃武器として計算するかどうか。falseの場合は爆発武器として計算する。
+		boolean is_shot = true;
+		if(!mIsTypeShot || mExplotionDistance > 0) {
+			is_shot = false;
+		}
+		
 		// 火力を再計算して表示する
-		double one_shot_damage    = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, false, true);
-		double one_shot_cs_damage = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, true, true);
+		double one_shot_damage    = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, false, false);
+		double one_shot_cs_damage = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, true, false);
+		double one_shot_stn_damage    = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, false, true);
+		double one_shot_cs_stn_damage = mAttackBlust.getOneShotPowerMain(mTargetData, mChargeLevel, true, true);
 		double magazine_damage    = mAttackBlust.getMagazinePower(mTargetData);
 		double sec_damage         = mAttackBlust.get1SecPower(mTargetData);
 		double battle_damage      = mAttackBlust.getBattlePower(mTargetData);
 		
+		if(!is_shot) {
+			one_shot_damage = mAttackBlust.getExplosionPower(mTargetData, mChargeLevel, false, mExplotionDistance, mExplosionRange);
+			one_shot_stn_damage = mAttackBlust.getExplosionPower(mTargetData, mChargeLevel, true, mExplotionDistance, mExplosionRange);
+		}
+		
 		if(mIsArmorValid) {
-			one_shot_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_damage, mArmorArray[ARMOR_BODY]);
-			one_shot_cs_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_damage, mArmorArray[ARMOR_HEAD]);
-			magazine_damage = mDefenceBlust.getHitDamage(mTargetData, magazine_damage, mArmorArray, mHitPercentArray);
-			sec_damage = mDefenceBlust.getHitDamage(mTargetData, sec_damage, mArmorArray, mHitPercentArray);
-			battle_damage = mDefenceBlust.getHitDamage(mTargetData, battle_damage, mArmorArray, mHitPercentArray);
+			if(is_shot) {
+				one_shot_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_damage, mArmorArray[ARMOR_BODY]);
+				one_shot_cs_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_damage, mArmorArray[ARMOR_HEAD]);
+				one_shot_stn_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_stn_damage, mArmorArray[ARMOR_BODY]);
+				one_shot_cs_stn_damage = mDefenceBlust.getShotDamage(mTargetData, one_shot_cs_stn_damage, mArmorArray[ARMOR_HEAD]);
+			}
+			else {
+				one_shot_damage = mDefenceBlust.getHitDamage(mTargetData, one_shot_damage, mArmorArray, mHitPercentArray, is_shot);
+				one_shot_stn_damage = mDefenceBlust.getHitDamage(mTargetData, one_shot_stn_damage,mArmorArray, mHitPercentArray, is_shot);
+			}
+			magazine_damage = mDefenceBlust.getHitDamage(mTargetData, magazine_damage, mArmorArray, mHitPercentArray, is_shot);
+			sec_damage = mDefenceBlust.getHitDamage(mTargetData, sec_damage, mArmorArray, mHitPercentArray, is_shot);
+			battle_damage = mDefenceBlust.getHitDamage(mTargetData, battle_damage, mArmorArray, mHitPercentArray, is_shot);
 		}
 		
 		String one_shot_damage_str    = SpecValues.getSpecUnit(one_shot_damage, "威力", false);
@@ -578,6 +731,13 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		String sec_damage_str         = SpecValues.getSpecUnit(sec_damage, "威力", false);
 		String battle_damage_str      = SpecValues.getSpecUnit(battle_damage, "威力", false);
 		
+		if(!is_shot) {
+			one_shot_cs_damage_str = "－";
+			magazine_damage_str = "－";
+			sec_damage_str = "－";
+			battle_damage_str = "－";
+		}
+	
 		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_DAMAGE, one_shot_damage_str);
 		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_DAMAGE, one_shot_cs_damage_str);
 		updateTextView(VIEWID_MAGAZINE_BASE, VIEWID_OFFSET_DAMAGE, magazine_damage_str);
@@ -585,21 +745,35 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_DAMAGE, battle_damage_str);
 		
 		// ノックバック有無を再計算して表示する
-		boolean one_shot_kb = mDefenceBlust.isBack(one_shot_damage);
-		boolean one_shot_cs_kb = mDefenceBlust.isBack(one_shot_cs_damage);
+		boolean one_shot_kb = mDefenceBlust.isBack(one_shot_stn_damage);
+		boolean one_shot_cs_kb = mDefenceBlust.isBack(one_shot_cs_stn_damage);
 		
-		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_kb));
-		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_KB, getJudgeString(one_shot_cs_kb));
+		String one_shot_kb_str = getJudgeString(one_shot_kb);
+		String one_shot_cs_kb_str = getJudgeString(one_shot_cs_kb);
+
+		if(!is_shot) {
+			one_shot_cs_kb_str = "－";
+		}
+	
+		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_KB, one_shot_kb_str);
+		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_KB, one_shot_cs_kb_str);
 		updateTextView(VIEWID_MAGAZINE_BASE, VIEWID_OFFSET_KB, "－");
 		updateTextView(VIEWID_1SEC_BASE, VIEWID_OFFSET_KB, "－");
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_KB, "－");
 
 		// 転倒有無を再計算して表示する
-		boolean one_shot_down = mDefenceBlust.isDown(one_shot_damage);
-		boolean one_shot_cs_down = mDefenceBlust.isDown(one_shot_cs_damage);
+		boolean one_shot_down = mDefenceBlust.isDown(one_shot_stn_damage);
+		boolean one_shot_cs_down = mDefenceBlust.isDown(one_shot_cs_stn_damage);
+		
+		String one_shot_down_str = getJudgeString(one_shot_down);
+		String one_shot_cs_down_str = getJudgeString(one_shot_cs_down);
 
-		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_DOWN, getJudgeString(one_shot_down));
-		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_DOWN, getJudgeString(one_shot_cs_down));
+		if(!is_shot) {
+			one_shot_cs_down_str = "－";
+		}
+	
+		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_DOWN, one_shot_down_str);
+		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_DOWN, one_shot_cs_down_str);
 		updateTextView(VIEWID_MAGAZINE_BASE, VIEWID_OFFSET_DOWN, "－");
 		updateTextView(VIEWID_1SEC_BASE, VIEWID_OFFSET_DOWN, "－");
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_DOWN, "－");
@@ -607,20 +781,26 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		// 大破有無を再計算して表示する
 		boolean one_shot_break = mDefenceBlust.isBreak(one_shot_damage, mDefenceLife, mFatalChipLv);
 		boolean one_shot_cs_break = mDefenceBlust.isBreak(one_shot_cs_damage, mDefenceLife, mFatalChipLv);
+		
+		String one_shot_break_str = getJudgeString(one_shot_break);
+		String one_shot_cs_break_str = getJudgeString(one_shot_cs_break);
 
-		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_BREAK, getJudgeString(one_shot_break));
-		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_BREAK, getJudgeString(one_shot_cs_break));
+		if(!is_shot) {
+			one_shot_cs_break_str = "－";
+		}
+	
+		updateTextView(VIEWID_ONESHOT_BASE, VIEWID_OFFSET_BREAK, one_shot_break_str);
+		updateTextView(VIEWID_ONESHOT_CS_BASE, VIEWID_OFFSET_BREAK, one_shot_cs_break_str);
 		updateTextView(VIEWID_MAGAZINE_BASE, VIEWID_OFFSET_BREAK, "－");
 		updateTextView(VIEWID_1SEC_BASE, VIEWID_OFFSET_BREAK, "－");
 		updateTextView(VIEWID_BATTLE_BASE, VIEWID_OFFSET_BREAK, "－");
 
 		int size = mArmorArray.length;
 		for(int i=0; i<size; i++) {
-			String armor_str = SpecValues.getSpecUnit(mArmorArray[i], "装甲", false);
 			String per_str = mHitPercentArray[i] + "(%)";
 			
 			TextView title_text_view = (TextView)this.findViewById(VIEWID_ARMOR_TEXT_BASE + i);
-			title_text_view.setText(ARMOR_TEXT_TITLE[i] + "(" + armor_str + "/" + per_str + ")");
+			title_text_view.setText(ARMOR_TEXT_TITLE[i] + "(" + per_str + ")");
 			
 			SeekBar hit_bar = (SeekBar)this.findViewById(VIEWID_ARMOR_HIT_BASE + i);
 			hit_bar.setProgress(mHitPercentArray[i]);
@@ -734,6 +914,22 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 			case VIEWID_FATAL_BASE + VIEWID_OFFSET_CHIPII:
 				updateButtonLamp(VIEWID_FATAL_BASE, VIEWID_OFFSET_CHIPII, checked);
 				updateFatalChip(2, checked);
+				break;
+
+			// アンチスタビリティ
+			case VIEWID_ANTISTN_BASE + VIEWID_OFFSET_CHIPI:
+				updateButtonLamp(VIEWID_ANTISTN_BASE, VIEWID_OFFSET_CHIPI, checked);
+				updateAttackChip("アンチスタビリティ", mAntiStnChips, VIEWID_OFFSET_CHIPI, checked);
+				break;
+
+			case VIEWID_ANTISTN_BASE + VIEWID_OFFSET_CHIPII:
+				updateButtonLamp(VIEWID_ANTISTN_BASE, VIEWID_OFFSET_CHIPII, checked);
+				updateAttackChip("アンチスタビリティ", mAntiStnChips, VIEWID_OFFSET_CHIPII, checked);
+				break;
+
+			case VIEWID_ANTISTN_BASE + VIEWID_OFFSET_CHIPIII:
+				updateButtonLamp(VIEWID_ANTISTN_BASE, VIEWID_OFFSET_CHIPIII, checked);
+				updateAttackChip("アンチスタビリティ", mAntiStnChips, VIEWID_OFFSET_CHIPIII, checked);
 				break;
 
 			

@@ -25,8 +25,8 @@ public class InfoActivity extends BaseActivity {
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	// スペック表示画面のID
-	private static final int VIEWID_SHOWSPEC  = 100;
-	private static final int VIEWID_WEAPONSIM = 200;
+	private static final int VIEWID_SHOWSPEC  = 30000;
+	private static final int VIEWID_WEAPONSIM = 30001;
 
 	// オプションメニューのID
 	private static final int MENU_ITEM0 = 0;
@@ -198,7 +198,7 @@ public class InfoActivity extends BaseActivity {
 			item.setCheckable(true);
 		}
 		
-		if(mTargetData.existCategory("主武器")) {
+		if(mTargetData.isShotWeapon() || mTargetData.isExplosionWeapon()) {
 			MenuItem item = menu.add(0, MENU_ITEM1, 0, "耐性シミュ表示");
 			item.setCheckable(true);
 		}

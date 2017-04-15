@@ -16,6 +16,7 @@ public class StringAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<String> mList;
 	private int mTextSize;
+	private int mTextColor;
 	private int mMode;
 	
 	public static final int MODE_DEFAULT = 0;
@@ -136,6 +137,7 @@ public class StringAdapter extends BaseAdapter {
 			item_view.setText(mList.get(position));
 			item_view.setPadding(10, 10, 10, 10);
 			item_view.setTextSize(SettingManager.getTextSize(mContext, mTextSize));
+			item_view.setTextColor(mTextColor);
 		}
 		else {
 			item_view = (TextView)convertView;
@@ -160,6 +162,7 @@ public class StringAdapter extends BaseAdapter {
 			item_view.setText(mList.get(position));
 			item_view.setPadding(10, 10, 10, 10);
 			item_view.setTextSize(SettingManager.getTextSize(context, mTextSize));
+			item_view.setTextColor(mTextColor);
 		}
 		else {
 			item_view = (TextView)convertView;
@@ -195,6 +198,14 @@ public class StringAdapter extends BaseAdapter {
 	 */
 	public void setTextSize(int text_size) {
 		mTextSize = text_size;
+	}
+	
+	/**
+	 * テキストカラーを設定する。
+	 * @param color カラー値
+	 */
+	public void setTextColor(int color) {
+		mTextColor = color;
 	}
 	
 	/**
