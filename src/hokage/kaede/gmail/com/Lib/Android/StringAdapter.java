@@ -21,6 +21,9 @@ public class StringAdapter extends BaseAdapter {
 	
 	public static final int MODE_DEFAULT = 0;
 	public static final int MODE_SPINNER = 1;
+
+	private static final int NOTHING_COLOR = -1;
+	
 	
 	/**
 	 * 初期化処理を行う。空リストを生成する。
@@ -52,6 +55,7 @@ public class StringAdapter extends BaseAdapter {
 		mContext = context;
 		mList = new ArrayList<String>();
 		mTextSize = SettingManager.FLAG_TEXTSIZE_NORMAL;
+		mTextColor = NOTHING_COLOR;
 		mMode = MODE_DEFAULT;
 	}
 
@@ -137,7 +141,10 @@ public class StringAdapter extends BaseAdapter {
 			item_view.setText(mList.get(position));
 			item_view.setPadding(10, 10, 10, 10);
 			item_view.setTextSize(SettingManager.getTextSize(mContext, mTextSize));
-			item_view.setTextColor(mTextColor);
+			
+			if(mTextColor != NOTHING_COLOR) {
+				item_view.setTextColor(mTextColor);
+			}
 		}
 		else {
 			item_view = (TextView)convertView;
