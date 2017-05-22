@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import hokage.kaede.gmail.com.BBViewLib.BBData;
 
 public class CustomAdapter extends BaseAdapter {
 	private ArrayList<CustomAdapterBaseItem> mList;
@@ -56,6 +57,7 @@ public class CustomAdapter extends BaseAdapter {
 	public static interface CustomAdapterBaseItem {
 		public LinearLayout createView(Context context);
 		public void updateView();
+		public BBData getItem();
 		public void click();
 	}
 }

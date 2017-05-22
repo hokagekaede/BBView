@@ -19,16 +19,18 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 	public String blust;
 	public String type;
 	
+	private BBData mItem;
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
 	
-	public CustomAdapterItemWeapon(Context context, String title, String blust, String type) {
-		this.title = title;
+	public CustomAdapterItemWeapon(Context context, BBData item, String blust, String type) {
+		this.title = item.get("名称");
 		this.summary = blust + ":" + type;
 		this.blust = blust;
 		this.type = type;
 		this.mContext = context;
+		this.mItem = item;
 	}
 
 	@Override
@@ -86,4 +88,12 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 		mContext.startActivity(intent);
 	}
 
+	/**
+	 * 武器データを取得する。
+	 * @return 武器データ
+	 */
+	@Override
+	public BBData getItem() {
+		return mItem;
+	}
 }

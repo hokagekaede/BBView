@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib.Adapter;
 
+import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
@@ -46,6 +47,14 @@ public class CustomAdapterItemCategory implements CustomAdapterBaseItem {
 	@Override
 	public void click() {
 		// Do Nothing
+	}
+	
+	/**
+	 * データを取得する。カテゴリ表示なのでデータ無し。
+	 */
+	@Override
+	public BBData getItem() {
+		return null;
 	}
 }
 

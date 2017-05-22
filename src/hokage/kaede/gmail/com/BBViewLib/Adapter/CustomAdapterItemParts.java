@@ -17,16 +17,18 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 	public String title;
 	public String summary;
 	public String type;
-	
+
+	private BBData mItem;
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
 	
-	public CustomAdapterItemParts(Context context, String title, String summary, String type) {
-		this.title = title;
+	public CustomAdapterItemParts(Context context, BBData item, String summary, String type) {
+		this.title = item.get("名称");
 		this.summary = summary;
 		this.type = type;
 		this.mContext = context;
+		this.mItem = item;
 	}
 
 	@Override
@@ -82,4 +84,12 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 		mContext.startActivity(intent);
 	}
 
+	/**
+	 * パーツデータを取得する。
+	 * @return パーツデータ
+	 */
+	@Override
+	public BBData getItem() {
+		return mItem;
+	}
 }

@@ -17,6 +17,7 @@ public class StringAdapter extends BaseAdapter {
 	private ArrayList<String> mList;
 	private int mTextSize;
 	private int mTextColor;
+	private int mBackGroundColor;
 	private int mMode;
 	
 	public static final int MODE_DEFAULT = 0;
@@ -56,6 +57,7 @@ public class StringAdapter extends BaseAdapter {
 		mList = new ArrayList<String>();
 		mTextSize = SettingManager.FLAG_TEXTSIZE_NORMAL;
 		mTextColor = NOTHING_COLOR;
+		mBackGroundColor = NOTHING_COLOR;
 		mMode = MODE_DEFAULT;
 	}
 
@@ -145,6 +147,10 @@ public class StringAdapter extends BaseAdapter {
 			if(mTextColor != NOTHING_COLOR) {
 				item_view.setTextColor(mTextColor);
 			}
+
+			if(mBackGroundColor != NOTHING_COLOR) {
+				item_view.setBackgroundColor(mBackGroundColor);
+			}
 		}
 		else {
 			item_view = (TextView)convertView;
@@ -169,7 +175,14 @@ public class StringAdapter extends BaseAdapter {
 			item_view.setText(mList.get(position));
 			item_view.setPadding(10, 10, 10, 10);
 			item_view.setTextSize(SettingManager.getTextSize(context, mTextSize));
-			item_view.setTextColor(mTextColor);
+
+			if(mTextColor != NOTHING_COLOR) {
+				item_view.setTextColor(mTextColor);
+			}
+			
+			if(mBackGroundColor != NOTHING_COLOR) {
+				item_view.setBackgroundColor(mBackGroundColor);
+			}
 		}
 		else {
 			item_view = (TextView)convertView;
@@ -213,6 +226,14 @@ public class StringAdapter extends BaseAdapter {
 	 */
 	public void setTextColor(int color) {
 		mTextColor = color;
+	}
+	
+	/**
+	 * 背景色を設定する。
+	 * @param color カラー値
+	 */
+	public void setBackGroundColor(int color) {
+		mBackGroundColor = color;
 	}
 	
 	/**

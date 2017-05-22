@@ -352,6 +352,15 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
             		item_name = value + "個";
             	}
         	}
+        	else if(mTargetData.existCategory(BBDataManager.SEED_STR)) {
+            	String value = net_database.getSeeds().get(data_name);
+            	if(value.equals("null")) {
+            		item_name = "(情報なし)";
+            	}
+            	else {
+            		item_name = value + "個";
+            	}
+        	}
     	}
     	
     	return item_name;

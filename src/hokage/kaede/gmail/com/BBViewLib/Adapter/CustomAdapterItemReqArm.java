@@ -17,15 +17,17 @@ import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 public class CustomAdapterItemReqArm implements CustomAdapterBaseItem {
 	public String title;
 	public String summary;
-	
+
+	private BBData mItem;
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
 	
-	public CustomAdapterItemReqArm(Context context, BBData data) {
-		this.title = data.get("名称");
+	public CustomAdapterItemReqArm(Context context, BBData item) {
+		this.title = item.get("名称");
 		this.summary = BBDataManager.REQARM_STR;
 		this.mContext = context;
+		this.mItem = item;
 	}
 
 	@Override
@@ -81,5 +83,14 @@ public class CustomAdapterItemReqArm implements CustomAdapterBaseItem {
 		IntentManager.setSelectedData(intent, select_item);
 		
 		mContext.startActivity(intent);
+	}
+	
+	/**
+	 * 要請兵器データを取得する。
+	 * @return 要請兵器データ
+	 */
+	@Override
+	public BBData getItem() {
+		return mItem;
 	}
 }

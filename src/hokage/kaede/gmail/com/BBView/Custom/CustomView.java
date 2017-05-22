@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBView.Custom;
 
+import hokage.kaede.gmail.com.BBView.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.BBData;
 import hokage.kaede.gmail.com.BBViewLib.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.BBViewSetting;
@@ -11,6 +12,7 @@ import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemParts;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemReqArm;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapterItemWeapon;
 import hokage.kaede.gmail.com.BBViewLib.Adapter.CustomAdapter.CustomAdapterBaseItem;
+import hokage.kaede.gmail.com.BBViewLib.Android.IntentManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.ViewBuilder;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 import hokage.kaede.gmail.com.Lib.Java.FileIO;
@@ -18,9 +20,11 @@ import hokage.kaede.gmail.com.Lib.Java.FileIO;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -173,6 +177,7 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 		grid_view.setAdapter(grid_adapter);
 		grid_view.setLayoutParams(new TableLayout.LayoutParams(FP, WC, 1));
 		grid_view.setOnItemClickListener(this);
+		grid_view.setOnItemLongClickListener(new OnWeaponLongClickListener());
 		
 		String assult_spec_str = String.format("%s (積載：%d / 初速：%.2f)", 
 				BBDataManager.BLUST_TYPE_ASSALT, 
@@ -272,12 +277,12 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 					data.get("加速"));
 		}
 		
-		return new CustomAdapterItemParts(context, title, summary, type);
+		return new CustomAdapterItemParts(context, data, summary, type);
 	}
 
 	private static CustomAdapterBaseItem createItem(Context context, CustomData custom_data, String blust_type, String weapon_type) {
 		BBData data = custom_data.getWeapon(blust_type, weapon_type);
-		return new CustomAdapterItemWeapon(context, data.get("名称"), blust_type, weapon_type);
+		return new CustomAdapterItemWeapon(context, data, blust_type, weapon_type);
 	}
 
 	@Override
@@ -288,6 +293,32 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 		CustomAdapter adapter = (CustomAdapter)arg0.getAdapter();
 		CustomAdapterBaseItem base_item = adapter.getItem(position);
 		base_item.click();
+	}
+	
+	/**
+	 * 武器を長タップした際の処理を行う。
+	 */
+	private class OnWeaponLongClickListener implements OnItemLongClickListener {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+			CustomAdapter adapter = (CustomAdapter)parent.getAdapter();
+			CustomAdapterBaseItem item_view = adapter.getItem(position);
+			
+			moveInfoActivity(item_view.getItem());
+			return false;
+		}
+	}
+
+	/**
+	 * 詳細画面へ移動する。
+	 * @param to_item 詳細画面で表示するデータ
+	 */
+	private void moveInfoActivity(BBData to_item) {
+		Context context = this.getContext();
+		Intent intent = new Intent(context, InfoActivity.class);
+		IntentManager.setSelectedData(intent, to_item);
+		context.startActivity(intent);
 	}
 	
 	/**

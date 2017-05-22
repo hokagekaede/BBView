@@ -23,6 +23,7 @@ public class BBNetDatabase {
 	private static final String CHIP_FILENAME_HEAD = "chip";
 	private static final String MATERIAL_FILENAME_HEAD = "material";
 	private static final String MEDAL_FILENAME_HEAD = "medal";
+	private static final String SEED_FILENAME_HEAD = "seed";
 	private static final String FILENAME_TAIL = ".dat";
 	
 	private static final String CARDKEY_HEAD = "card";
@@ -39,6 +40,7 @@ public class BBNetDatabase {
 	private FileKeyValueStore[] mChipStore;
 	private FileKeyValueStore[] mMaterialStore;
 	private FileKeyValueStore[] mMedalStore;
+	private FileKeyValueStore[] mSeedStore;
 	
 	private BBNetDatabase() {
 		mCardNumber = 0;
@@ -50,6 +52,7 @@ public class BBNetDatabase {
 		mChipStore = new FileKeyValueStore[CARD_MAX];
 		mMaterialStore = new FileKeyValueStore[CARD_MAX];
 		mMedalStore = new FileKeyValueStore[CARD_MAX];
+		mSeedStore = new FileKeyValueStore[CARD_MAX];
 	}
 	
 	/**
@@ -77,6 +80,8 @@ public class BBNetDatabase {
 			mMaterialStore[i].load();
 			mMedalStore[i] = new FileKeyValueStore(dir_path, MEDAL_FILENAME_HEAD + String.valueOf(i) + FILENAME_TAIL);
 			mMedalStore[i].load();
+			mSeedStore[i] = new FileKeyValueStore(dir_path, SEED_FILENAME_HEAD + String.valueOf(i) + FILENAME_TAIL);
+			mSeedStore[i].load();
 		}
 	}
 	
@@ -92,6 +97,7 @@ public class BBNetDatabase {
 			mChipStore[i].save();
 			mMaterialStore[i].save();
 			mMedalStore[i].save();
+			mSeedStore[i].save();
 		}
 	}
 	
@@ -113,6 +119,7 @@ public class BBNetDatabase {
 		mChipStore[card_index].clear();
 		mMaterialStore[card_index].clear();
 		mMedalStore[card_index].clear();
+		mSeedStore[card_index].clear();
 	}
 	
 	public static BBNetDatabase getInstance() {
@@ -211,6 +218,10 @@ public class BBNetDatabase {
 	
 	public FileKeyValueStore getMedals() {
 		return mMedalStore[mCardNumber];
+	}
+
+	public FileKeyValueStore getSeeds() {
+		return mSeedStore[mCardNumber];
 	}
 	
 	public boolean existChip(String name) {

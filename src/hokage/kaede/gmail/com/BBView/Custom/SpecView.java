@@ -312,7 +312,7 @@ public class SpecView extends FrameLayout {
 	 */
 	private LinearLayout createStatusView(Context context) {
 		StringAdapter adapter = new StringAdapter(context, CustomData.CUSTOM_MODES);
-		adapter.setMode(StringAdapter.MODE_SPINNER);
+		adapter.setTextColor(SettingManager.getColorWhite());
 		
 		Spinner sts_spinner = new Spinner(context);
 		sts_spinner.setAdapter(adapter);

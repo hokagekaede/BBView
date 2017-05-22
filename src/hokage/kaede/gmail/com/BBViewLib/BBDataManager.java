@@ -34,9 +34,10 @@ public class BBDataManager extends KeyValueStoreManager<BBData> {
 	public static final String ACTION_DASH_CHIP_STR  = "アクションチップ(ダッシュボタン)";
 	public static final String ACTION_JUMP_CHIP_STR  = "アクションチップ(ジャンプボタン)";
 	
-	public static final String MEDAL_STR = "勲章";
+	public static final String MEDAL_STR    = "勲章";
 	public static final String MATERIAL_STR = "素材";
-	public static final String REQARM_STR = "要請兵器";
+	public static final String SEED_STR     = "シード";
+	public static final String REQARM_STR   = "要請兵器";
 
 	public static final String[] ROOT_LIST         = { ROOT_PARTS, ROOT_WEAPON };
 	public static final String[] BLUST_PARTS_LIST  = { BLUST_PARTS_HEAD, BLUST_PARTS_BODY, BLUST_PARTS_ARMS, BLUST_PARTS_LEGS };

@@ -472,6 +472,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		armor_valid_checkbox.setChecked(mIsArmorValid);
 		armor_valid_checkbox.setOnCheckedChangeListener(new OnArmorValidChangeListener());
 		armor_valid_checkbox.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		armor_valid_checkbox.setTextColor(SettingManager.getColorWhite());
 		row.addView(armor_valid_checkbox, row_layout);
 		
 		return row;
@@ -520,8 +521,8 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		
 		StringAdapter adapter = new StringAdapter(context, spec_strs);
 		adapter.setMode(StringAdapter.MODE_SPINNER);
-		adapter.setTextSize(BBViewSetting.FLAG_TEXTSIZE_NORMAL);
 		adapter.setTextColor(SettingManager.getColorWhite());
+		adapter.setBackGroundColor(SettingManager.getColorBlack());
 		
 		Spinner armor_spinner = new Spinner(context);
 		armor_spinner.setId(VIEWID_ARMOR_LIST_BASE + offset);

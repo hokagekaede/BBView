@@ -148,6 +148,14 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		material_btn.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		material_btn.setOnClickListener(this);
 		others_layout.addView(material_btn);
+
+		// シード
+		Button seed_btn = new Button(this);
+		seed_btn.setText(BBDataManager.SEED_STR);
+		seed_btn.setTag("");
+		seed_btn.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
+		seed_btn.setOnClickListener(this);
+		others_layout.addView(seed_btn);
 		
 		layout.addView(others_layout);
 

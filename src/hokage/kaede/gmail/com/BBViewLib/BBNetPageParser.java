@@ -3,6 +3,7 @@ package hokage.kaede.gmail.com.BBViewLib;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import android.util.Log;
 import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
 import hokage.kaede.gmail.com.Lib.Java.NetAccess;
 
@@ -178,6 +179,10 @@ public class BBNetPageParser {
 		sProgressMessage = card_name + "の勲章データ取得";
 		buf_url_str = getUrlFromNextPage(my_items_url_str, "勲章");
 		getMedalList(buf_url_str, database.getMedals());
+		
+		sProgressMessage = card_name + "のシードデータ取得";
+		buf_url_str = getUrlFromNextPage(start_url, "シード");
+		getSeedList(buf_url_str, database.getSeeds());
 	}
 	
 	/**
@@ -468,6 +473,39 @@ public class BBNetPageParser {
 		}
 	}
 
+	/**
+	 * シードデータを取得する。
+	 * @param input
+	 * @return
+	 */
+	public static void getSeedList(String url_str, KeyValueStore output) throws Exception {
+		URLConnection uc = NetAccess.getConnection(BASE_URL + url_str);
+		String page_str = readPage(uc);
+		
+		String[] seed_names = {
+			"<span>ピュアシード</span>：",
+			"<span>ディープシード</span>：",
+			"<span>ナチュラルシード</span>：",
+			"<span>ライトシード</span>：",
+			"<span>コアシード</span>："
+		};
+		
+		// 所持数上限時の赤文字タグを削除する
+		page_str = page_str.replace("<font color=\"red\">", "");
+		page_str = page_str.replace("</font>", "");
+		
+		int size = seed_names.length;
+		for(int i=0; i<size; i++) {
+			int head_idx = page_str.indexOf(seed_names[i]);
+			int tail_idx = page_str.indexOf("<br>", head_idx);
+			String seed_count = page_str.substring(head_idx + seed_names[i].length(), tail_idx);
+			Log.e("check", "head=" + head_idx + "/tail=" + tail_idx + "/data=" + seed_count);
+			
+			String name = seed_names[i].replace("<span>", "").replace("</span>：", "");
+			output.set(name, seed_count);
+		}
+	}
+	
 	/**
 	 * ページソースからURLの一覧を取得する。
 	 * @param web_data

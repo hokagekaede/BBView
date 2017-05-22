@@ -45,10 +45,11 @@ public class BBDataListActivity extends BaseActivity implements OnItemClickListe
 		// フィルタを設定する
 		BBDataFilter filter = new BBDataFilter();
 
-		if(main_filter_str.equals("勲章") || main_filter_str.equals("素材")) {
+		if(main_filter_str.equals("勲章") || main_filter_str.equals("素材") || main_filter_str.equals("シード")) {
 			filter.setType(main_filter_str);
 			filter.setNotHavingShow(true);
 		}
+		
 		if(sub_filter_str.equals("")) {
 			filter.setType(main_filter_str);
 		}
