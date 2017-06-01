@@ -1231,7 +1231,7 @@ public class CustomData {
 				ret = ret + getFullSetBonus(250);
 			}
 			else if(isFullSet("ヤマ")) {
-				ret = ret + getFullSetBonus(500);
+				ret = ret + getFullSetBonus(375);
 			}
 			
 			// チップボーナス
@@ -1627,16 +1627,16 @@ public class CustomData {
 
 			// フルセットボーナス
 			if(isFullSet("ガルム")) {
-				ret = ret - getFullSetBonus(0.54);
+				ret = ret - getFullSetBonus(0.27);
 			}
 			else if(isFullSet("ジーシェン")) {
-				ret = ret - getFullSetBonus(0.54);
+				ret = ret - getFullSetBonus(0.27);
 			}
 			else if(isFullSet("ネレイド")) {
-				ret = ret - getFullSetBonus(0.54);
+				ret = ret - getFullSetBonus(0.27);
 			}
 			else if(isFullSet("フォーミュラ")) {
-				ret = ret - getFullSetBonus(0.54);
+				ret = ret - getFullSetBonus(0.27);
 			}
 
 			// チップボーナス
@@ -2048,16 +2048,16 @@ public class CustomData {
 			
 			// フルセットボーナス
 			if(isFullSet("ヤクシャ")) {
-				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
+				ret = ret + getFullSetBonus(2.16);
 			}
 			else if(isFullSet("フォーミュラ")) {
-				ret = ret + getFullSetBonus(0.72 * 3600 / 1000);
+				ret = ret + getFullSetBonus(2.592);
 			}
 			else if(isFullSet("ヤーデ")) {
-				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
+				ret = ret + getFullSetBonus(2.16);
 			}
 			else if(isFullSet("Z.t.")) {
-				ret = ret + getFullSetBonus(0.60 * 3600 / 1000);
+				ret = ret + getFullSetBonus(2.16);
 			}
 
 		} catch (Exception e) {
