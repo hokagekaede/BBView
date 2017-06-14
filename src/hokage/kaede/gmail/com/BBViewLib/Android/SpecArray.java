@@ -115,6 +115,16 @@ public class SpecArray {
 		}
 		
 		/**
+		 * 文字色をクリアする。
+		 */
+		public void clearColors() {
+			mColors[KEY_INDEX] = SettingManager.getColorWhite();
+			mColors[KEY_NORMAL] = SettingManager.getColorWhite();
+			mColors[KEY_REAL] = SettingManager.getColorWhite();
+			mColors[KEY_MEMO] = SettingManager.getColorWhite();
+		}
+		
+		/**
 		 * 表示文字列の配列を取得する。
 		 * @return 表示文字列の配列
 		 */
@@ -489,6 +499,20 @@ public class SpecArray {
 	}
 
 	/**
+	 * 単発威力の配列を生成する。備考欄に転倒ダメージ値を表示する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpOneShotPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		String key = "単発火力";
+		double fm_value = from_data.getOneShotPower(from_weapon);
+		double to_value = to_data.getOneShotPower(to_weapon);
+
+		return new SpecRow(key, fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
 	 * 単発威力(CS時)の配列を生成する。備考欄に転倒ダメージ値を表示する。
 	 * @param data アセンデータ
 	 * @param weapon 武器データ
@@ -512,11 +536,32 @@ public class SpecArray {
 		return new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 
+	/**
+	 * 単発威力(CS時)の配列を生成する。備考欄に転倒ダメージ値を表示する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpCsShotPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		String key = "単発火力(CS時)";
+		double fm_value = from_data.getCsShotPower(from_weapon);
+		double to_value = to_data.getCsShotPower(to_weapon);
+		
+		return new SpecRow(key, fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
 	public static SpecRow getChargeTimeArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getChargeTime();
 		double real_value = data.getChargeTime(weapon);
 		
 		return new SpecRow("充填時間", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	public static SpecRow getCmpChargeTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_data.getChargeTime(from_weapon);
+		double to_value = to_data.getChargeTime(to_weapon);
+		
+		return new SpecRow("充填時間", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 	
 	//----------------------------------------------------------
@@ -530,11 +575,37 @@ public class SpecArray {
 		return new SpecRow("マガジン火力", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 
+	public static SpecRow getCmpMagazinePowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_data.getMagazinePower(from_weapon);
+		double to_value = to_data.getMagazinePower(to_weapon);
+		
+		return new SpecRow("マガジン火力", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
 	public static SpecRow getOverheatPowerArray(CustomData data, BBData weapon) {
 		double normal_value = weapon.getOverHeatPower();
 		double real_value = data.getOverHeatPower(weapon);
 		
 		return new SpecRow("OH火力", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	public static SpecRow getCmpOverheatPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_data.getOverHeatPower(from_weapon);
+		double to_value = to_data.getOverHeatPower(to_weapon);
+		
+		SpecRow row = new SpecRow("OH火力", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+
+		if(fm_value <= 0) {
+			row.setValues("-", SpecRow.KEY_NORMAL);
+			row.clearColors();
+		}
+
+		if(to_value <= 0) {
+			row.setValues("-", SpecRow.KEY_REAL);
+			row.clearColors();
+		}
+		
+		return row;
 	}
 	
 	public static SpecRow getSecPowerArray(CustomData data, BBData weapon) {
@@ -542,6 +613,13 @@ public class SpecArray {
 		double real_value = data.get1SecPower(weapon);
 
 		return new SpecRow("瞬間火力", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	public static SpecRow getCmpSecPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_data.get1SecPower(from_weapon);
+		double to_value = to_data.get1SecPower(to_weapon);
+
+		return new SpecRow("瞬間火力", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
 
 	/**
@@ -569,6 +647,33 @@ public class SpecArray {
 	}
 
 	/**
+	 * 戦術火力の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpBattlePowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		String key = "戦術火力";
+
+		double fm_value, to_value;
+		if(from_weapon.existKey("OH耐性")) {
+			fm_value = from_data.getBattlePowerOverHeat(from_weapon, false);
+		}
+		else {
+			fm_value = from_data.getBattlePower(from_weapon);
+		}
+		
+		if(to_weapon.existKey("OH耐性")) {
+			to_value = to_data.getBattlePowerOverHeat(to_weapon, false);
+		}
+		else {
+			to_value = to_data.getBattlePower(to_weapon);
+		}
+
+		return new SpecRow(key, fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
 	 * OH武器の戦術火力の配列を生成する。
 	 * @param data アセンデータ
 	 * @param weapon 武器データ
@@ -592,7 +697,7 @@ public class SpecArray {
 		row.setValues(normal_str, real_str);
 		return row;
 	}
-
+	
 	/**
 	 * リロード時間の配列を生成する。
 	 * @param data アセンデータ
@@ -616,6 +721,20 @@ public class SpecArray {
 
 		return new SpecRow(key, normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 	}
+
+	/**
+	 * リロード時間の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpReloadTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		String key = "リロード時間";
+		double fm_value = from_data.getReloadTime(from_weapon);
+		double to_value = to_data.getReloadTime(to_weapon);
+
+		return new SpecRow(key, fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
 	
 	/**
 	 * OH耐性の配列を生成する。
@@ -628,6 +747,31 @@ public class SpecArray {
 		double real_value = normal_value;
 
 		return new SpecRow("OH耐性", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
+	}
+
+	/**
+	 * OH耐性の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpOverheatTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_weapon.getOverheatTime();
+		double to_value = to_weapon.getOverheatTime();
+
+		SpecRow row = new SpecRow("OH耐性", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		
+		if(fm_value <= 0) {
+			row.setValues("-", SpecRow.KEY_NORMAL);
+			row.clearColors();
+		}
+
+		if(to_value <= 0) {
+			row.setValues("-", SpecRow.KEY_REAL);
+			row.clearColors();
+		}
+		
+		return row;
 	}
 
 	/**
@@ -652,6 +796,45 @@ public class SpecArray {
 		
 		SpecRow row = new SpecRow(key, normal_value_notoh, real_value_notoh, BBViewSetting.IS_KM_PER_HOUR);
 		row.setValues(normal_str, real_str);
+		return row;
+	}
+
+	/**
+	 * OH復帰時間の配列を生成する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpOverheatRepairTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		String key = "OH復帰時間";
+		double fm_value_notoh = from_data.getOverheatRepairTime(from_weapon, false);
+		double fm_value_oh = from_data.getOverheatRepairTime(from_weapon, true);
+		
+		double to_value_notoh = to_data.getOverheatRepairTime(to_weapon, false);
+		double to_value_oh = to_data.getOverheatRepairTime(to_weapon, true);
+		
+		SpecRow row = new SpecRow(key, fm_value_notoh, to_value_notoh, BBViewSetting.IS_KM_PER_HOUR);
+		
+		String fm_str, to_str;
+		if(fm_value_notoh > 0) {
+			fm_str = SpecValues.getSpecUnit(fm_value_oh, key, BBViewSetting.IS_KM_PER_HOUR) + " ("
+				     + SpecValues.getSpecUnit(fm_value_notoh, key, BBViewSetting.IS_KM_PER_HOUR) + ")";
+		}
+		else {
+			fm_str = "-";
+			row.clearColors();
+		}
+
+		if(to_value_notoh > 0) {
+			to_str = SpecValues.getSpecUnit(to_value_oh, key, BBViewSetting.IS_KM_PER_HOUR) + " ("
+			         + SpecValues.getSpecUnit(to_value_notoh, key, BBViewSetting.IS_KM_PER_HOUR) + ")";
+		}
+		else {
+			to_str = "-";
+			row.clearColors();
+		}
+		
+		row.setValues(fm_str, to_str);
 		return row;
 	}
 
@@ -681,6 +864,46 @@ public class SpecArray {
 		
 		SpecRow row = new SpecRow("総弾数", normal_value, real_value, BBViewSetting.IS_KM_PER_HOUR);
 		row.setValues(weapon.get("総弾数"), bullet_str);
+		
+		return row;
+	}
+
+	/**
+	 * 総弾数の配列を生成する。
+	 * 1マガジンからあふれた分は"+n"で表示する。
+	 * @param data アセンデータ
+	 * @param weapon 武器データ
+	 * @return 配列
+	 */
+	public static SpecRow getCmpMagazineCount(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+		double fm_value = from_data.getBulletSum(from_weapon);
+		double magazine_bullet = from_weapon.getMagazine();
+		double over_bullet = fm_value % magazine_bullet;
+		double magazine_count = Math.floor(fm_value / magazine_bullet);
+		
+		String fm_str = "";
+		if(magazine_bullet == 1) {
+			fm_str = String.format("1x%.0f", fm_value);
+		}
+		else {
+			fm_str = String.format("%.0fx%.0f +%.0f", magazine_bullet, magazine_count, over_bullet);
+		}
+		
+		double to_value = to_data.getBulletSum(to_weapon);
+		magazine_bullet = to_weapon.getMagazine();
+		over_bullet = to_value % magazine_bullet;
+		magazine_count = Math.floor(to_value / magazine_bullet);
+
+		String to_str = "";
+		if(magazine_bullet == 1) {
+			to_str = String.format("1x%.0f", to_value);
+		}
+		else {
+			to_str = String.format("%.0fx%.0f +%.0f", magazine_bullet, magazine_count, over_bullet);
+		}
+		
+		SpecRow row = new SpecRow("総弾数", fm_value, to_value, BBViewSetting.IS_KM_PER_HOUR);
+		row.setValues(fm_str, to_str);
 		
 		return row;
 	}

@@ -181,7 +181,7 @@ public class CompareActivity extends BaseActivity {
 		else {
 			layout_table.addView(AssembleViewBuilder.create(context, mCmpFmData, mCmpToData, mBlustType));
 			layout_table.addView(PartsSpecViewBuilder.create(context, mCmpFmData, mCmpToData, mBlustType));
-			//layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType));
+			layout_table.addView(WeaponSpecViewBuilder.create(context, mCmpFmData, mCmpToData, mBlustType));
 		}
 	}
 	
@@ -368,14 +368,19 @@ public class CompareActivity extends BaseActivity {
 				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_HEAD));
 				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_BODY));
 				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_ARMS));
-				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS));				
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS));
 			}
 			else {
-				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先", "", "比較元", "比較先"));
-				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_HEAD, blust_type, BBDataManager.WEAPON_TYPE_MAIN));
-				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_BODY, blust_type, BBDataManager.WEAPON_TYPE_SUB));
-				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_ARMS, blust_type, BBDataManager.WEAPON_TYPE_SUPPORT));
-				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS, blust_type, BBDataManager.WEAPON_TYPE_SPECIAL));
+				table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), "", "比較元", "比較先"));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_HEAD));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_BODY));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_ARMS));
+				table.addView(createPartsRow(context, from_data, to_data, BBDataManager.BLUST_PARTS_LEGS));
+
+				table.addView(createWeaponRow(context, from_data, to_data, blust_type, BBDataManager.WEAPON_TYPE_MAIN));
+				table.addView(createWeaponRow(context, from_data, to_data, blust_type, BBDataManager.WEAPON_TYPE_SUB));
+				table.addView(createWeaponRow(context, from_data, to_data, blust_type, BBDataManager.WEAPON_TYPE_SUPPORT));
+				table.addView(createWeaponRow(context, from_data, to_data, blust_type, BBDataManager.WEAPON_TYPE_SPECIAL));
 			}
 
 			return table;
@@ -403,12 +408,11 @@ public class CompareActivity extends BaseActivity {
 		 * パーツスペックテーブルの行を生成する。
 		 * @param from_data 比較元のアセンデータ
 		 * @param to_data 比較先のアセンデータ
-		 * @param parts_type パーツの種類
 		 * @param blust_type 兵装名
 		 * @param weapon_type 武器の種類
 		 * @return 指定のパーツ種類に対応する行
 		 */
-		private static TableRow createPartsRow(Context context, CustomData from_data, CustomData to_data, String parts_type, String blust_type, String weapon_type) {
+		private static TableRow createWeaponRow(Context context, CustomData from_data, CustomData to_data, String blust_type, String weapon_type) {
 			int[] colors = {
 					SettingManager.getColorYellow(),
 					SettingManager.getColorWhite(),
@@ -417,13 +421,11 @@ public class CompareActivity extends BaseActivity {
 					SettingManager.getColorWhite(),
 					SettingManager.getColorWhite()
 			};
-			BBData from_parts = from_data.getParts(parts_type);
-			BBData to_parts = to_data.getParts(parts_type);
-			
+
 			BBData from_weapon = from_data.getWeapon(blust_type, weapon_type);
 			BBData to_weapon = to_data.getWeapon(blust_type, weapon_type);
 			
-			return ViewBuilder.createTableRow(context, colors, parts_type, from_parts.get("名称"), to_parts.get("名称"), weapon_type, from_weapon.get("名称"), to_weapon.get("名称"));
+			return ViewBuilder.createTableRow(context, colors, weapon_type, from_weapon.get("名称"), to_weapon.get("名称"));
 		}
 	}
 	
@@ -484,6 +486,175 @@ public class CompareActivity extends BaseActivity {
 			layout_table.addView(table);
 			
 			return layout_table;
+		}
+	}
+
+	/**
+	 * 「武器スペック」のビューを生成するクラス
+	 */
+	private static class WeaponSpecViewBuilder {
+		
+		private static View create(Context context, CustomData from_data, CustomData to_data, String blust_type) {
+
+			int color = SettingManager.getColorWhite();
+			int bg_color = SettingManager.getColorBlue();
+
+			LinearLayout layout_table = new LinearLayout(context);
+			layout_table.setOrientation(LinearLayout.VERTICAL);
+			layout_table.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+
+			TextView weapon_spec_view = ViewBuilder.createTextView(context, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
+			layout_table.addView(weapon_spec_view);
+			layout_table.addView(createWeaponView(context, from_data, to_data, blust_type));
+
+			return layout_table;
+		}
+
+		/**
+		 * 武器スペックテーブルを生成する。(マガジン火力、瞬間火力、戦術火力、リロード時間)
+		 * @param data データ
+		 * @return 武器スペックテーブル
+		 */
+		private static TableLayout createWeaponView(Context context, CustomData from_data, CustomData to_data, String blust_type) {
+			TableLayout table = new TableLayout(context);
+			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
+
+			BBData fm_weapon = from_data.getWeapon(blust_type, BBDataManager.WEAPON_TYPE_MAIN);
+			BBData to_weapon = to_data.getWeapon(blust_type, BBDataManager.WEAPON_TYPE_MAIN);
+			addMainWeaponRow(table, from_data, to_data, fm_weapon, to_weapon);
+			/*
+			int weapon_list_len = BBDataManager.WEAPON_TYPE_LIST.length;
+			for(int weapon_idx=0; weapon_idx<weapon_list_len; weapon_idx++) {
+				String weapon_type = BBDataManager.WEAPON_TYPE_LIST[weapon_idx];
+				BBData weapon = data.getWeapon(blust_type, weapon_type);
+
+				if(blust_type.equals("強襲兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						addSlashRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("特別装備")) {
+						addACRow(table, data, weapon);
+					}
+				}
+				else if(blust_type.equals("重火力兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						if(weapon.existCategory("パイク系統") || weapon.existCategory("チェーンソー系統")) {
+							addSlashRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("ハウルHSG系統")) {
+							addMainWeaponRow(table, data, weapon);
+						}
+						else {
+							addSupportBombRow(table, data, weapon);
+						}
+					}
+					else if(weapon.existCategory("特別装備")) {
+						if(weapon.existCategory("バリアユニット系統")) {
+							addBarrierRow(table, data, weapon);
+						}
+						else {
+							addCannonRow(table, data, weapon);
+						}
+					}
+				}
+				else if(blust_type.equals("遊撃兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						if(weapon.existCategory("偵察機系統") || weapon.existCategory("レーダーユニット系統") ||
+						   weapon.existCategory("NDディテクター系統") || weapon.existCategory("クリアリングソナー系統")) {
+							addSearchRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("高振動ブレード系統")) {
+							addSlashRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("スタングレネード系統")) {
+							addSupportBombRow(table, data, weapon);
+						}
+						else {
+							addMainWeaponRow(table, data, weapon);
+						}
+					}
+					else if(weapon.existCategory("特別装備")) {
+						if(weapon.existCategory("EUS系統")) {
+							addEUSRow(table, data, weapon);
+						}
+						else if(weapon.existCategory("シールド系統")) {
+							addBarrierRow(table, data, weapon);
+						}
+						else {
+							addExtraRow(table, data, blust_type, weapon);
+						}
+					}
+				}
+				else if(blust_type.equals("支援兵装")) {
+					if(weapon.existCategory("主武器")) {
+						addMainWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("副武器")) {
+						addSubWeaponRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("補助装備")) {
+						addSearchRow(table, data, weapon);
+					}
+					else if(weapon.existCategory("特別装備")) {
+						addReapirRow(table, data, weapon);
+					}
+				}
+			}
+			*/
+			
+			return table;
+		}
+
+		/**
+		 * 主武器の情報を記載した列を追加する。
+		 * @param table 追加先のテーブル
+		 * @param data 対象のアセンデータ
+		 * @param weapon 対象の武器データ
+		 */
+		private static void addMainWeaponRow(TableLayout table, CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
+			Context context = table.getContext();
+			
+			String[] title = { "", "比較元", "比較先" };
+			String[] names = { "名称", from_weapon.get("名称"), to_weapon.get("名称") };
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
+			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorWhite(), names));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpOneShotPowerArray(from_data, to_data, from_weapon, to_weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpCsShotPowerArray(from_data, to_data, from_weapon, to_weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpMagazinePowerArray(from_data, to_data, from_weapon, to_weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpSecPowerArray(from_data, to_data, from_weapon, to_weapon)));
+			
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpBattlePowerArray(from_data, to_data, from_weapon, to_weapon)));
+
+			if(from_weapon.existKey("OH耐性") || to_weapon.existKey("OH耐性")) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpOverheatPowerArray(from_data, to_data, from_weapon, to_weapon)));
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpOverheatTimeArray(from_data, to_data, from_weapon, to_weapon)));
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpOverheatRepairTimeArray(from_data, to_data, from_weapon, to_weapon)));
+			}
+
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpReloadTimeArray(from_data, to_data, from_weapon, to_weapon)));
+			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpMagazineCount(from_data, to_data, from_weapon, to_weapon)));
+			
+			if(from_weapon.isChargeWeapon() || to_weapon.isChargeWeapon()) {
+				table.addView(ViewBuilder.createTableRow(context, SpecArray.getCmpChargeTimeArray(from_data, to_data, from_weapon, to_weapon)));
+			}
 		}
 	}
 }
