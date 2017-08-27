@@ -200,7 +200,6 @@ public class BBAdapterValueFilterManager implements OnClickListener {
 	
 	/**
 	 * 選択中のパーツのデータをフィルタ値に設定する。
-	 * @author kaede
 	 */
 	private class OnClickSetDataListener implements android.view.View.OnClickListener {
 

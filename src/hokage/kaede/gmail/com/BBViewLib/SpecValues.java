@@ -331,7 +331,7 @@ public class SpecValues {
 	private static void initArmor() {
 		ARMOR = new KeyValueStore();
 		ARMOR.set("S",   "37");
-		ARMOR.set("S-",  "33");
+		ARMOR.set("S-",  "32");
 		ARMOR.set("A+",  "29");
 		ARMOR.set("A",   "22");
 		ARMOR.set("A-",  "18");
@@ -1118,7 +1118,7 @@ public class SpecValues {
 			
 			// 設定ONの場合はダメージ係数に表記を変更する
 			if(BBViewSetting.IS_ARMOR_RATE) {
-				ret = String.format("x%.2f", (100 - value) / 100);
+				ret = String.format("x%.2f", (100.0 - value) / 100.0);
 			}
 			else {
 				ret = String.format("%.1f(%%)", value);
@@ -1192,7 +1192,7 @@ public class SpecValues {
 			ret = String.format("%.0f", value) + "/min";
 		}
 		else if(key.equals("出力")) {
-			ret = String.format("%.1f(倍)", value);
+			ret = String.format("%.2f(倍)", value);
 		}
 		else if(key.equals("爆発半径")) {
 			ret = String.format("%.1f(m)", value);
@@ -1308,7 +1308,7 @@ public class SpecValues {
 			
 			// 設定ONの場合はダメージ係数に表記を変更する
 			if(BBViewSetting.IS_ARMOR_RATE) {
-				ret = String.format("x%.2f", value / 100);
+				ret = String.format("x%.2f", value / 100.0);
 			}
 			else {
 				ret = String.format("%.1f(%%)", value);

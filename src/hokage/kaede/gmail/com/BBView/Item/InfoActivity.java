@@ -12,6 +12,7 @@ import hokage.kaede.gmail.com.Lib.Android.SettingManager;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,6 +32,11 @@ public class InfoActivity extends BaseActivity {
 	// オプションメニューのID
 	private static final int MENU_ITEM0 = 0;
 	private static final int MENU_ITEM1 = 1;
+
+	// 表示モード
+	public static final String INTENTKEY_SHOWMODE = "INTENTKEY_SHOWMODE";
+	public static final int MODE_INFO = 0;
+	public static final int MODE_SIM  = 1;
 	
 	// 表示するデータ
 	private BBData mTargetData;
@@ -46,7 +52,12 @@ public class InfoActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		BBData data = IntentManager.getSelectedData(getIntent());
+		// intentデータ読み込み
+		Intent intent = getIntent();
+		BBData data = IntentManager.getSelectedData(intent);
+		if(intent.getIntExtra(INTENTKEY_SHOWMODE, MODE_INFO) == MODE_SIM) {
+			isShowingWeaponSim = true;
+		}
 		
 		setTitle(getTitle() + " (項目詳細情報)");
 
@@ -78,11 +89,17 @@ public class InfoActivity extends BaseActivity {
 		
 		WeaponSimView sim_view = new WeaponSimView(this, mTargetData);
 		sim_view.setId(VIEWID_WEAPONSIM);
-		sim_view.setVisibility(View.GONE);
+		
+		if(isShowingWeaponSim) {
+			layout_spec.setVisibility(View.GONE);
+		}
+		else {
+			sim_view.setVisibility(View.GONE);
+		}
 		
 		layout_all.addView(layout_spec);
 		layout_all.addView(sim_view);
-
+		
 		// 全体レイアウトの画面表示
 		setContentView(layout_all);
 	} 
@@ -201,6 +218,7 @@ public class InfoActivity extends BaseActivity {
 		if(mTargetData.isShotWeapon() || mTargetData.isExplosionWeapon()) {
 			MenuItem item = menu.add(0, MENU_ITEM1, 0, "耐性シミュ表示");
 			item.setCheckable(true);
+			item.setChecked(isShowingWeaponSim);
 		}
 		
 		return true;

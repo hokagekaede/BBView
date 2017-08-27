@@ -32,6 +32,7 @@ public class CustomMainActivity extends BaseActivity {
 	private static final String MENU_SHOW_CHIPS      = "チップを表示する";
 	private static final String MENU_SHOW_SIMPLE     = "簡易表示する";
 	private static final String MENU_CHIP_FILTER     = "フィルタ設定";
+	private static final String MENU_RESIST_FILTER   = "フィルタ設定";
 	private static final String MENU_SHARE           = "アセン共有";
 	
 	private boolean mIsShowChips = false;
@@ -273,6 +274,10 @@ public class CustomMainActivity extends BaseActivity {
 			item.setChecked(mIsShowSimple);
 			item.setOnMenuItemClickListener(new OnMenuShowSimpleListener());
 		}
+		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
+			MenuItem item = menu.add(MENU_RESIST_FILTER);
+			item.setOnMenuItemClickListener(new OnMenuFilterResistListener());
+		}
 		
 		menu.add(MENU_SHARE);
 		
@@ -315,6 +320,24 @@ public class CustomMainActivity extends BaseActivity {
 			
 			if(view instanceof ChipView) {
 				((ChipView)view).showFilterDialog(CustomMainActivity.this);
+			}
+			
+			return false;
+		}
+	}
+
+	/**
+	 * チップのフィルタ設定起動時の処理を行う。
+	 */
+	private class OnMenuFilterResistListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem arg0) {
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			View view = main_layout.findViewById(SHOW_VIEW_ID);
+			
+			if(view instanceof ResistView) {
+				((ResistView)view).showFilterDialog(CustomMainActivity.this);
 			}
 			
 			return false;

@@ -31,7 +31,7 @@ public class ResistAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int arg0) {
+	public BBData getItem(int arg0) {
 		return mList.get(arg0);
 	}
 
