@@ -117,7 +117,7 @@ public class SpecValues {
 	/**
 	 * サテライトバンカーの重量
 	 */
-	public static final int SB_WEIGHT = 800;
+	public static final int SB_WEIGHT = 600;
 
 	/**
 	 * サテライトバンカーRの重量
