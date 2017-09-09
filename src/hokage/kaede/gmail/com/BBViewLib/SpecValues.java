@@ -1245,6 +1245,9 @@ public class SpecValues {
 		else if(key.equals("精密照準")) {
 			ret = String.format("%.1f(倍)", value);
 		}
+		else if(key.equals("索敵間隔")) {
+			ret = String.format("%.1f(秒)", value);
+		}
 		else if(key.equals("射程")) {
 			ret = String.format("%.0f(m)", value);
 		}
