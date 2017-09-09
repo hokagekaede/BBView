@@ -31,7 +31,6 @@ public abstract class BaseActivity extends Activity {
 	 * 通常時のベースレイアウトを生成する。
 	 * @param view
 	 */
-	/*
 	private void createLayout(View view) {
 
 		// テーマを設定する
@@ -53,9 +52,9 @@ public abstract class BaseActivity extends Activity {
 
 		super.setContentView(main_layout);
 	}
-	*/
 	
 	// バージョンアップ前のレイアウトを生成する
+	/*
 	private static final int VER_VIEW_ID = 1000;
 	
 	private void createLayout(View view) {
@@ -109,6 +108,7 @@ public abstract class BaseActivity extends Activity {
 		
 		ver_text_view.setText(ver_text_str);
 	}
+	*/
 
 	private void setTheme() {
 		int res_id = BBViewSetting.sThemeID;
