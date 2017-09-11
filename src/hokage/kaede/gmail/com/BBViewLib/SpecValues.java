@@ -323,6 +323,7 @@ public class SpecValues {
 		SETBONUS.set("X", "リロードUP / 重量耐性UP");
 		SETBONUS.set("ヤマ", "DEF耐久UP");
 		SETBONUS.set("Z.t.", "ダッシュUP / DEF回復UP");
+		SETBONUS.set("PLUS", "装甲UP / 重量耐性UP");
 	}
 	
 	/**

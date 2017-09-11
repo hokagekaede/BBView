@@ -784,6 +784,9 @@ public class CustomData {
 		else if(isFullSet("ロージー")) {
 			ret = ret + getFullSetBonus(4.5);
 		}
+		else if(isFullSet("PLUS")) {
+			ret = ret + getFullSetBonus(3);
+		}
 		
 		// チップ上乗せ分を反映する
 		if(existChip("装甲")) {
@@ -1583,6 +1586,9 @@ public class CustomData {
 				ret = ret + getFullSetBonus(150);
 			}
 			else if(isFullSet("X－")) {
+				ret = ret + getFullSetBonus(150);
+			}
+			else if(isFullSet("PLUS")) {
 				ret = ret + getFullSetBonus(150);
 			}
 
