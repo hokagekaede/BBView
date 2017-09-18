@@ -65,18 +65,22 @@ public class SpecView extends FrameLayout {
 	// モード設定値に対する選択中の兵装名
 	private String mBlustType = "";
 
+	// 武器スペックをタイプB表示にするかどうか
+	private boolean mIsShowTypeB = false;	
+	
 	private boolean mIsShowSimple = false;
 	
 	/**
 	 * 初期化を行う。画面を生成する。
 	 * @param context 対象の画面
 	 */
-	public SpecView(Context context, boolean is_simple, int mode) {
+	public SpecView(Context context, boolean is_simple, int mode, boolean is_show_typeb) {
 		super(context);
 		
 		mIsShowSimple = is_simple;
 		mMode = mode;
 		mBlustType = MODE_NAME_LIST[mMode];
+		mIsShowTypeB = is_show_typeb;
 
 		LinearLayout main_layout = new LinearLayout(context);
 		main_layout.setOrientation(LinearLayout.VERTICAL);
@@ -153,7 +157,7 @@ public class SpecView extends FrameLayout {
 			else {
 				layout_table.addView(PartsSpecViewBuilder.create(context, mBlustType));
 			}
-			layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType));
+			layout_table.addView(WeaponSpecViewBuilder.create(context, mBlustType, mIsShowTypeB));
 		}
 	}
 	
@@ -848,7 +852,7 @@ public class SpecView extends FrameLayout {
 	 */
 	private static class WeaponSpecViewBuilder {
 		
-		private static View create(Context context, String blust_type) {
+		private static View create(Context context, String blust_type, boolean is_show_typeb) {
 			CustomData custom_data = CustomDataManager.getCustomData();
 
 			int color = SettingManager.getColorWhite();
@@ -860,7 +864,7 @@ public class SpecView extends FrameLayout {
 
 			TextView weapon_spec_view = ViewBuilder.createTextView(context, "武器スペック", SettingManager.FLAG_TEXTSIZE_SMALL, color, bg_color);
 			layout_table.addView(weapon_spec_view);
-			layout_table.addView(createWeaponView(context, custom_data, blust_type));
+			layout_table.addView(createWeaponView(context, custom_data, blust_type, is_show_typeb));
 
 			return layout_table;
 		}
@@ -870,7 +874,7 @@ public class SpecView extends FrameLayout {
 		 * @param data データ
 		 * @return 武器スペックテーブル
 		 */
-		private static TableLayout createWeaponView(Context context, CustomData data, String blust_type) {
+		private static TableLayout createWeaponView(Context context, CustomData data, String blust_type, boolean is_show_typeb) {
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
 			
@@ -878,94 +882,104 @@ public class SpecView extends FrameLayout {
 			for(int weapon_idx=0; weapon_idx<weapon_list_len; weapon_idx++) {
 				String weapon_type = BBDataManager.WEAPON_TYPE_LIST[weapon_idx];
 				BBData weapon = data.getWeapon(blust_type, weapon_type);
-
+				
+				// タイプB表示設定が有効の場合、武器データを切り替える
+				String name = weapon.getNameWithType(is_show_typeb);
+				if(is_show_typeb) {
+					BBData weapon_typeb = weapon.getTypeB();
+					
+					if(weapon_typeb != null) {
+						weapon = weapon_typeb;
+					}
+				}
+				
 				if(blust_type.equals("強襲兵装")) {
 					if(weapon.existCategory("主武器")) {
-						addMainWeaponRow(table, data, weapon);
+						addMainWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("副武器")) {
-						addSubWeaponRow(table, data, weapon);
+						addSubWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("補助装備")) {
-						addSlashRow(table, data, weapon);
+						addSlashRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("特別装備")) {
-						addACRow(table, data, weapon);
+						addACRow(table, data, weapon, name);
 					}
 				}
 				else if(blust_type.equals("重火力兵装")) {
 					if(weapon.existCategory("主武器")) {
-						addMainWeaponRow(table, data, weapon);
+						addMainWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("副武器")) {
-						addSubWeaponRow(table, data, weapon);
+						addSubWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("補助装備")) {
 						if(weapon.existCategory("パイク系統") || weapon.existCategory("チェーンソー系統")) {
-							addSlashRow(table, data, weapon);
+							addSlashRow(table, data, weapon, name);
 						}
 						else if(weapon.existCategory("ハウルHSG系統")) {
-							addMainWeaponRow(table, data, weapon);
+							addMainWeaponRow(table, data, weapon, name);
 						}
 						else {
-							addSupportBombRow(table, data, weapon);
+							addSupportBombRow(table, data, weapon, name);
 						}
 					}
 					else if(weapon.existCategory("特別装備")) {
 						if(weapon.existCategory("バリアユニット系統")) {
-							addBarrierRow(table, data, weapon);
+							addBarrierRow(table, data, weapon, name);
 						}
 						else {
-							addCannonRow(table, data, weapon);
+							addCannonRow(table, data, weapon, name);
 						}
 					}
 				}
 				else if(blust_type.equals("遊撃兵装")) {
 					if(weapon.existCategory("主武器")) {
-						addMainWeaponRow(table, data, weapon);
+						addMainWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("副武器")) {
-						addMainWeaponRow(table, data, weapon);
+						addMainWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("補助装備")) {
 						if(weapon.existCategory("偵察機系統") || weapon.existCategory("レーダーユニット系統") ||
 						   weapon.existCategory("NDディテクター系統") || weapon.existCategory("クリアリングソナー系統")) {
-							addSearchRow(table, data, weapon);
+							addSearchRow(table, data, weapon, name);
 						}
 						else if(weapon.existCategory("高振動ブレード系統")) {
-							addSlashRow(table, data, weapon);
+							addSlashRow(table, data, weapon, name);
 						}
 						else if(weapon.existCategory("スタングレネード系統")) {
-							addSupportBombRow(table, data, weapon);
+							addSupportBombRow(table, data, weapon, name);
 						}
 						else {
-							addMainWeaponRow(table, data, weapon);
+							addMainWeaponRow(table, data, weapon, name);
 						}
 					}
 					else if(weapon.existCategory("特別装備")) {
 						if(weapon.existCategory("EUS系統")) {
-							addEUSRow(table, data, weapon);
+							addEUSRow(table, data, weapon, name);
 						}
 						else if(weapon.existCategory("シールド系統")) {
-							addBarrierRow(table, data, weapon);
+							addBarrierRow(table, data, weapon, name);
 						}
 						else {
-							addExtraRow(table, data, blust_type, weapon);
+							addExtraRow(table, data, blust_type, weapon, name);
 						}
 					}
 				}
 				else if(blust_type.equals("支援兵装")) {
 					if(weapon.existCategory("主武器")) {
-						addMainWeaponRow(table, data, weapon);
+						addMainWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("副武器")) {
-						addSubWeaponRow(table, data, weapon);
+						addSubWeaponRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("補助装備")) {
-						addSearchRow(table, data, weapon);
+						addSearchRow(table, data, weapon, name);
 					}
 					else if(weapon.existCategory("特別装備")) {
-						addReapirRow(table, data, weapon);
+						addReapirRow(table, data, weapon, name);
 					}
 				}
 			}
@@ -979,10 +993,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addMainWeaponRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addMainWeaponRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
 			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getCsShotPowerArray(data, weapon)));
@@ -1012,10 +1026,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addSubWeaponRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addSubWeaponRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
@@ -1033,10 +1047,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addSlashRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addSlashRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getNormalSlashArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getDashSlashArray(data, weapon)));
@@ -1048,10 +1062,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addSupportBombRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addSupportBombRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getReloadTimeArray(data, weapon)));
@@ -1067,10 +1081,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addSearchRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addSearchRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSearchTimeArray(data, weapon)));
 		}
@@ -1081,10 +1095,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addACRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addACRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getAcSpeedArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getAcBattleSpeedArray(data, weapon)));
@@ -1097,10 +1111,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addCannonRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addCannonRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getOneShotPowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getExplosionRangeArray(data, weapon)));
@@ -1113,10 +1127,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addBarrierRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addBarrierRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getBattleBarrierGuardArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_HEAVY)));
@@ -1128,10 +1142,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addEUSRow(TableLayout table, CustomData data,  BBData weapon) {
+		private static void addEUSRow(TableLayout table, CustomData data,  BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMagazinePowerArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSecPowerArray(data, weapon)));
@@ -1146,10 +1160,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addReapirRow(TableLayout table, CustomData data, BBData weapon) {
+		private static void addReapirRow(TableLayout table, CustomData data, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getMaxRepairArray(data, weapon)));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, BBDataManager.BLUST_TYPE_SUPPORT)));
@@ -1161,10 +1175,10 @@ public class SpecView extends FrameLayout {
 		 * @param data 対象のアセンデータ
 		 * @param weapon 対象の武器データ
 		 */
-		private static void addExtraRow(TableLayout table, CustomData data, String blust_type, BBData weapon) {
+		private static void addExtraRow(TableLayout table, CustomData data, String blust_type, BBData weapon, String name) {
 			Context context = table.getContext();
-			
-			String[] title = { weapon.get("名称"), "補正前", "補正後" };
+
+			String[] title = { name, "補正前", "補正後" };
 			table.addView(ViewBuilder.createTableRow(context, SettingManager.getColorYellow(), title));
 			table.addView(ViewBuilder.createTableRow(context, SpecArray.getSpChargeTimeArray(data, weapon, blust_type)));
 		}

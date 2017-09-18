@@ -33,10 +33,15 @@ public class ResistView extends LinearLayout implements OnClickValueFilterButton
 	private static final String ABSOLUTE_SHOT_KEY      = "射撃";
 	private static final String ABSOLUTE_EXPLOSION_KEY = "爆発";
 	private static final String ABSOLUTE_SLASH_KEY     = "近接";
-	
-	public ResistView(Context context) {
+
+	// 武器スペックをタイプB表示にするかどうか
+	private boolean mIsShowTypeB = false;	
+
+	public ResistView(Context context, boolean is_show_typeb) {
 		super(context);
-	
+
+		mIsShowTypeB = is_show_typeb;
+		
 		// 各管理変数
 		CustomData custom_data = CustomDataManager.getCustomData();
 
@@ -49,6 +54,7 @@ public class ResistView extends LinearLayout implements OnClickValueFilterButton
 		
 		// アダプタの生成
 		mAdapter = new ResistAdapter(context, custom_data, null);
+		mAdapter.setShowTypeB(mIsShowTypeB);
 		mRecentAbsolute = ABSOLUTE_SHOT_KEY;
 		updateList();
 

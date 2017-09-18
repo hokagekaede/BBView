@@ -49,6 +49,26 @@ public class BBData extends KVCStore {
 	}
 	
 	/**
+	 * スイッチ武器かどうかを考慮して武器データを取得する
+	 * @param is_show_typeb タイプBの場合はtrueを設定し、タイプAの場合はfalseを設定する。
+	 * @return 武器名
+	 */
+	public String getNameWithType(boolean is_show_typeb) {
+		String name = this.get("名称");
+		
+		if(mTypeB_data != null) {
+			if(is_show_typeb) {
+				name = name + " (タイプB)";
+			}
+			else {
+				name = name + " (タイプA)";
+			}
+		}
+		
+		return name;
+	}
+	
+	/**
 	 * 値の取得
 	 * @param key
 	 * @return

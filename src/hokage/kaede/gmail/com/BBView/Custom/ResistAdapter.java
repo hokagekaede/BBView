@@ -14,7 +14,10 @@ public class ResistAdapter extends BaseAdapter {
 	private CustomData mCustomData;
 	private ArrayList<BBData> mList;
 	private int mPatternMode = ResistAdapterItem.MODE_SHOT;
-	
+
+	// 武器スペックをタイプB表示にするかどうか
+	private boolean mIsShowTypeB = false;	
+
 	public ResistAdapter(Context context, CustomData custom_data, ArrayList<BBData> list) {
 		mContext = context;
 		mCustomData = custom_data;
@@ -39,26 +42,29 @@ public class ResistAdapter extends BaseAdapter {
 	public long getItemId(int arg0) {
 		return 0;
 	}
+	
+	/**
+	 * スイッチ武器のスペックをタイプB表示をするかどうか。
+	 * @param is_show_typeb タイプBにする場合はtrueを設定し、しない場合はfalseを設定する。
+	 */
+	public void setShowTypeB(boolean is_show_typeb) {
+		mIsShowTypeB = is_show_typeb;
+	}
 
 	@Override
-	public View getView(int arg0, View arg1, ViewGroup arg2) {
-		ResistAdapterItem item_view = (ResistAdapterItem)arg1;
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ResistAdapterItem item_view = (ResistAdapterItem)convertView;
 		
-		if(item_view == null) {
-			item_view = new ResistAdapterItem(mContext, mCustomData, mList.get(arg0), mPatternMode);
-		}
-		else {
-			
-			// 表示モードが異なる場合はインスタンスを再生成する。
-			if(item_view.getMode() == mPatternMode) {
-				item_view.update(mCustomData, mList.get(arg0));
-			}
-			else {
-				item_view = new ResistAdapterItem(mContext, mCustomData, mList.get(arg0), mPatternMode);
-			}
-		}
+		BBData item = mList.get(position);
 		
-		return (View)(item_view);
+		// インスタンスがnullの場合または表示モードが異なる場合は、インスタンスを再生成する
+		if(item_view == null || item_view.getMode() != mPatternMode) {
+			item_view = new ResistAdapterItem(mContext, mPatternMode);
+		}
+
+		item_view.update(mCustomData, item, mIsShowTypeB);
+		
+		return item_view;
 	}
 	
 	public void setMode(int mode) {

@@ -29,12 +29,14 @@ public class CustomMainActivity extends BaseActivity {
 	private static final String VIEWMODE_STR_RESIST = "耐性";
 	private static final String VIEWMODE_STR_FILE   = "データ";
 
+	private static final String MENU_SHOW_TYPEB      = "タイプB表示";
 	private static final String MENU_SHOW_CHIPS      = "チップを表示する";
 	private static final String MENU_SHOW_SIMPLE     = "簡易表示する";
 	private static final String MENU_CHIP_FILTER     = "フィルタ設定";
 	private static final String MENU_RESIST_FILTER   = "フィルタ設定";
 	private static final String MENU_SHARE           = "アセン共有";
 	
+	private boolean mIsShowTypeB = false;
 	private boolean mIsShowChips = false;
 	private boolean mIsShowSimple = false;
 	private int mSpecViewMode = SpecView.MODE_BASE;
@@ -123,10 +125,10 @@ public class CustomMainActivity extends BaseActivity {
 			target_view = new ChipView(this);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
-			target_view = new SpecView(this, mIsShowSimple, mSpecViewMode);
+			target_view = new SpecView(this, mIsShowSimple, mSpecViewMode, mIsShowTypeB);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
-			target_view = new ResistView(this);
+			target_view = new ResistView(this, mIsShowTypeB);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_FILE)) {
 			target_view = new FileListView(this);
@@ -273,15 +275,50 @@ public class CustomMainActivity extends BaseActivity {
 			item.setCheckable(true);
 			item.setChecked(mIsShowSimple);
 			item.setOnMenuItemClickListener(new OnMenuShowSimpleListener());
+
+			item = menu.add(MENU_SHOW_TYPEB);
+			item.setCheckable(true);
+			item.setChecked(mIsShowTypeB);
+			item.setOnMenuItemClickListener(new OnMenuShowTypeBListener());
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_RESIST)) {
 			MenuItem item = menu.add(MENU_RESIST_FILTER);
 			item.setOnMenuItemClickListener(new OnMenuFilterResistListener());
+
+			item = menu.add(MENU_SHOW_TYPEB);
+			item.setCheckable(true);
+			item.setChecked(mIsShowTypeB);
+			item.setOnMenuItemClickListener(new OnMenuShowTypeBListener());
 		}
 		
 		menu.add(MENU_SHARE);
 		
 		return true;
+	}
+	
+	/**
+	 * タイプB表示のメニュー選択時の処理を行う。
+	 */
+	private class OnMenuShowTypeBListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			
+			if(item.isChecked()) {
+				mIsShowTypeB = false;
+				item.setChecked(false);
+				updateView(main_layout);
+			}
+			else {
+				mIsShowTypeB = true;
+				item.setChecked(true);
+				updateView(main_layout);
+			}
+			
+			return false;
+		}
+		
 	}
 	
 	/**

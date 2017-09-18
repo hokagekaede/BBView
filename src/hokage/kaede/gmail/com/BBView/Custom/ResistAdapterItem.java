@@ -33,7 +33,7 @@ public class ResistAdapterItem extends TableLayout {
 	private static final String[] PATTERN_EXPLOSION = { "爆発" };
 	private static final String[] PATTERN_CHARGE_EXPLOSION = { "爆発(CG0)", "爆発(CG1)", "爆発(CG2)" };
 
-	public ResistAdapterItem(Context context, CustomData custom_data, BBData data, int mode) {
+	public ResistAdapterItem(Context context, int mode) {
 		super(context);
 		this.setColumnStretchable(0, true);    // 列幅最大表示
 		
@@ -61,23 +61,35 @@ public class ResistAdapterItem extends TableLayout {
 		for(int col=1; col<TABLE_COL_MAX; col++) {
 			mTextViews[0][col].setText(TITLE_ROW_STR[col]);
 		}
-		
-		update(custom_data, data);
 	}
-	
+
 	/**
 	 * テーブルの内容を更新する
-	 * @param data
+	 * @param custom_data 被弾側のカスタムデータ
+	 * @param data 攻撃側の武器データ
+	 * @param is_show_typeb 攻撃側の武器をタイプB扱いするかどうか
 	 */
-	public void update(CustomData custom_data, BBData data) {
-		String[] pattern = selectPattern(data);
+	public void update(CustomData custom_data, BBData data, boolean is_show_typeb) {
+
+		// タイプB設定が有効の場合は、武器のデータをタイプBに切り替える
+		String name = data.getNameWithType(is_show_typeb);
+		BBData item = data;
+		if(is_show_typeb) {
+			BBData item_typeb = item.getTypeB();
+			
+			if(item_typeb != null) {
+				item = item_typeb;
+			}
+		}
+		
+		String[] pattern = selectPattern(item);
 		int size = pattern.length;
 		
-		mTextViews[0][0].setText(data.get("名称"));
+		mTextViews[0][0].setText(name);
 		
 		for(int idx=0; idx<size; idx++) {
 			int target_row = idx + 1;
-			double damage = getDamage(custom_data, data, pattern[idx]);
+			double damage = getDamage(custom_data, item, pattern[idx]);
 			
 			mTextViews[target_row][0].setText(pattern[idx]);
 			mTextViews[target_row][1].setText(String.format("%.0f", damage));
@@ -94,7 +106,7 @@ public class ResistAdapterItem extends TableLayout {
 	
 	/**
 	 * テーブルに表示するパターンを選択する
-	 * @param data
+	 * @param data 
 	 * @return
 	 */
 	private String[] selectPattern(BBData data) {
