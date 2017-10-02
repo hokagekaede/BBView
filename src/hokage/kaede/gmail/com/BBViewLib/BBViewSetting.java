@@ -35,6 +35,12 @@ public class BBViewSetting extends SettingManager {
 	 */
 	public static boolean IS_BATTLE_POWER_OH = true;
 	public static final String SETTING_BATTLE_POWER_OH = "SETTING_BATTLE_POWER_OH";
+	
+	/**
+	 * 前回の編集データを読み込むかどうか。trueの場合は前回データを読み込み、falseの場合は初期アセンを読み込む。
+	 */
+	public static boolean IS_LOADING_LASTDATA = true;
+	public static final String SETTING_LOADING_LASTDATA = "SETTING_LOADING_LASTDATA";
 
 	/**
 	 * アセン画面の2列表示設定。trueで表示する。

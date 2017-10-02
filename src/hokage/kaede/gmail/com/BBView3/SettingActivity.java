@@ -120,6 +120,13 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		battle_power_oh_view_type.setKey(BBViewSetting.SETTING_BATTLE_POWER_OH);
 		battle_power_oh_view_type.setChecked(BBViewSetting.IS_BATTLE_POWER_OH);
 		screen.addPreference(battle_power_oh_view_type);
+
+		CheckBoxPreference loading_lastdata_preference = new CheckBoxPreference(this);
+		loading_lastdata_preference.setTitle("起動時に前回データを読み込む");
+		loading_lastdata_preference.setSummary("ONの場合は前回データを読み込み、OFFの場合は初期アセンを読み込む");
+		loading_lastdata_preference.setKey(BBViewSetting.SETTING_LOADING_LASTDATA);
+		loading_lastdata_preference.setChecked(BBViewSetting.IS_LOADING_LASTDATA);
+		screen.addPreference(loading_lastdata_preference);
 		
 		// アセン画面
 		PreferenceCategory custom_category = new PreferenceCategory(this);

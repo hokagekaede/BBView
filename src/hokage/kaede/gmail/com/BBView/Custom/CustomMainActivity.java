@@ -5,7 +5,8 @@ import hokage.kaede.gmail.com.BBViewLib.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.BaseActivity;
 import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,6 +32,7 @@ public class CustomMainActivity extends BaseActivity {
 
 	private static final String MENU_SHOW_TYPEB      = "タイプB表示";
 	private static final String MENU_SHOW_CHIPS      = "チップを表示する";
+	private static final String MENU_RESET_CUSTOM    = "アセンをリセットする";
 	private static final String MENU_SHOW_SIMPLE     = "簡易表示する";
 	private static final String MENU_CHIP_FILTER     = "フィルタ設定";
 	private static final String MENU_RESIST_FILTER   = "フィルタ設定";
@@ -265,6 +267,9 @@ public class CustomMainActivity extends BaseActivity {
 			item.setCheckable(true);
 			item.setChecked(mIsShowChips);
 			item.setOnMenuItemClickListener(new OnMenuShowChipListener());
+			
+			item = menu.add(MENU_RESET_CUSTOM);
+			item.setOnMenuItemClickListener(new OnMenuResetCustomListener());
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
 			MenuItem item = menu.add(MENU_CHIP_FILTER);
@@ -342,6 +347,34 @@ public class CustomMainActivity extends BaseActivity {
 			}
 			
 			return false;
+		}
+	}
+	
+	/**
+	 * アセンリセットメニュー選択時の処理を行う。
+	 */
+	private class OnMenuResetCustomListener implements OnMenuItemClickListener, android.content.DialogInterface.OnClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			AlertDialog.Builder reset_dialog = new AlertDialog.Builder(CustomMainActivity.this);
+			reset_dialog.setTitle("アセンのリセット");
+			reset_dialog.setPositiveButton("OK", this);
+			reset_dialog.setNegativeButton("Cancel", null);
+			reset_dialog.setMessage("編集中のデータを初期状態にリセットしますか？");
+			reset_dialog.show();
+			
+			return false;
+		}
+
+		@Override
+		public void onClick(DialogInterface arg0, int arg1) {
+			CustomData custom_data = CustomDataManager.getDefaultCustomData();
+			CustomDataManager.setCustomData(custom_data);
+
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			updateView(main_layout);
+
 		}
 	}
 	

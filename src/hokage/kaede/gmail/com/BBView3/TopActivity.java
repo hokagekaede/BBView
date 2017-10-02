@@ -255,10 +255,16 @@ public class TopActivity extends BaseActivity {
 			CustomDataManager.setDefaultData(default_data);
 
 			// カスタムデータの読み込み (ユーザ環境のファイルであるため、S-JISで入出力すること)
-			FileKeyValueStore file_data = new FileKeyValueStore(filedir);
-			file_data.load();
-			CustomData custom_data = CustomDataReader.read(file_data, default_data, data_mng);
-			CustomDataManager.setCustomData(custom_data);
+			if(BBViewSetting.IS_LOADING_LASTDATA) {
+				FileKeyValueStore file_data = new FileKeyValueStore(filedir);
+				file_data.load();
+				CustomData custom_data = CustomDataReader.read(file_data, default_data, data_mng);
+				CustomDataManager.setCustomData(custom_data);
+			}
+			else {
+				CustomData custom_data = CustomDataManager.getDefaultCustomData();
+				CustomDataManager.setCustomData(custom_data);
+			}
 
 		} catch(Resources.NotFoundException res_e) {
 			Toast.makeText(this, "リソースデータが見つかりません。", Toast.LENGTH_LONG).show();

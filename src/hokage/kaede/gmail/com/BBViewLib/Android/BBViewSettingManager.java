@@ -21,6 +21,7 @@ public class BBViewSettingManager extends SettingManager {
 		BBViewSetting.IS_HOVER_TO_LEGS = isHoverToLegs(context);
 		BBViewSetting.IS_ARMOR_RATE = isArmorRate(context);
 		BBViewSetting.IS_BATTLE_POWER_OH = isBattlePowerOH(context);
+		BBViewSetting.IS_LOADING_LASTDATA = isLoadingLastData(context);
 		
 		BBViewSetting.IS_SHOW_COLUMN2 = isShowCOLUMN2(context);
 		BBViewSetting.IS_SHOW_SPECLABEL = isShowSpecLabel(context);
@@ -60,7 +61,11 @@ public class BBViewSettingManager extends SettingManager {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(BBViewSetting.SETTING_BATTLE_POWER_OH, true);
 	}
-	
+
+	private static boolean isLoadingLastData(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(BBViewSetting.SETTING_LOADING_LASTDATA, true);
+	}
 	private static boolean isShowCOLUMN2(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(BBViewSetting.SETTING_SHOW_COLUMN2, true);
