@@ -270,7 +270,7 @@ public class SpecValues {
 	 */
 	private static void initAcceleration() {
 		ACCELERATION = new KeyValueStore();
-		ACCELERATION.set("S",  "0.84");   // 5.0該当パーツなし (2016/8/27)
+		ACCELERATION.set("S",  "0.84");   // PLUS：S－sd (2017/10/24)
 		ACCELERATION.set("S-", "1.11");   // 5.0該当パーツなし (2016/8/27)
 		ACCELERATION.set("A+", "1.38");   // ヤマ・羅          (2016/12/13)
 		ACCELERATION.set("A",  "1.65");   // ツェーブラ38
@@ -323,7 +323,8 @@ public class SpecValues {
 		SETBONUS.set("X", "リロードUP / 重量耐性UP");
 		SETBONUS.set("ヤマ", "DEF耐久UP");
 		SETBONUS.set("Z.t.", "ダッシュUP / DEF回復UP");
-		SETBONUS.set("PLUS", "装甲UP / 重量耐性UP");
+		SETBONUS.set("PLUS：G", "装甲UP / 重量耐性UP");
+		SETBONUS.set("PLUS：S", "DEF耐久UP / 歩行UP");
 	}
 	
 	/**

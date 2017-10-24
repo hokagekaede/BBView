@@ -784,7 +784,7 @@ public class CustomData {
 		else if(isFullSet("ロージー")) {
 			ret = ret + getFullSetBonus(4.5);
 		}
-		else if(isFullSet("PLUS")) {
+		else if(isFullSet("PLUS：G")) {
 			ret = ret + getFullSetBonus(3);
 		}
 		
@@ -1236,6 +1236,9 @@ public class CustomData {
 			else if(isFullSet("ヤマ")) {
 				ret = ret + getFullSetBonus(375);
 			}
+			else if(isFullSet("PLUS：S")) {
+				ret = ret + getFullSetBonus(250);
+			}
 			
 			// チップボーナス
 			if(existChip("DEF耐久")) {
@@ -1514,6 +1517,9 @@ public class CustomData {
 			else if(isFullSet("ケーファー")) {
 				ret = ret + getFullSetBonus(1.62);    // +0.45[m/s]
 			}
+			else if(isFullSet("PLUS：S")) {
+				ret = ret + getFullSetBonus(1.62);    // +0.45[m/s]
+			}
 			
 			// 上限値によるガードを行う (ホバー：14.70[m/s], 二脚：11.02[m/s])
 			if(is_hover && ret > 52.92) {
@@ -1588,7 +1594,7 @@ public class CustomData {
 			else if(isFullSet("X－")) {
 				ret = ret + getFullSetBonus(150);
 			}
-			else if(isFullSet("PLUS")) {
+			else if(isFullSet("PLUS：G")) {
 				ret = ret + getFullSetBonus(150);
 			}
 
