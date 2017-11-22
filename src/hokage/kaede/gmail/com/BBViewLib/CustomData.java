@@ -3410,6 +3410,9 @@ public class CustomData {
 		else if(existChip("転倒耐性II")) {
 			resist_chip_value = 1000;
 		}
+		else if(existChip("転倒耐性III")) {
+			resist_chip_value = 1500;
+		}
 		
 		if(isHoverLegs()) {
 			if(attack_value >= SpecValues.HOVER_DOWN_DAMAGE + resist_chip_value) {
