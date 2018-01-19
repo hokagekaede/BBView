@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hokage.kaede.gmail.com.BBView3"
-    android:versionCode="5701"
-    android:versionName="5.7.01">
+    android:versionCode="5702"
+    android:versionName="5.7.02">
     
     <uses-permission android:name="android.hardware.touchscreen" />
     <uses-permission android:name="android.permission.INTERNET"/>
