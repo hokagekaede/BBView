@@ -23,3 +23,13 @@ project.properties
 .hg/store/undo.phaseroots
 .hg/store/undo
 .hg/store/phaseroots
+.hg/cache/tags2-visible
+.hg/cache/rbc-names-v1
+.hg/cache/tags2-visible
+.hg/cache/rbc-revs-v1
+.hg/cache/tags2-visible
+.hg/cache/tags2-visible
+.hg/cache/tags2-visible
+.hg/cache/tags2-visible
+.hg/cache/tags2-visible
+.hg/cache/tags2-visible
