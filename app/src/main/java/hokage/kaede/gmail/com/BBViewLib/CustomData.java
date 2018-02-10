@@ -2340,7 +2340,6 @@ public class CustomData {
 	 * @param charge_level チャージレベル
 	 * @param is_critical クリティカルかどうか。
 	 * @param is_stn 転倒ダメージ値かどうか。
-	 * @param is_obj 対施設攻撃かどうか。
 	 * @return 単発火力
 	 */
 	public double getOneShotPowerMain(BBData data, int charge_level, boolean is_critical, boolean is_stn) {
@@ -2854,7 +2853,7 @@ public class CustomData {
 
 	/**
 	 * 近接攻撃強化チップの効果による上昇倍率を取得する。
-	 * @param newd_percent 武器の近接属性倍率
+	 * @param slash_percent 武器の近接属性倍率
 	 * @return 上昇率の値
 	 */
 	private double getSlashChipBonus(double slash_percent) {
@@ -3111,11 +3110,46 @@ public class CustomData {
 		
 		return damage;
 	}
-	
+
+	/**
+	 * 爆発武器に被弾した際のダメージを計算する。(空爆時)
+	 * @param data 武器データ
+	 * @return ダメージ値
+	 */
+	public double getExplosionHeadDamage(BBData data, int charge_level) {
+		double damage;
+		double armor = getArmorAveHead();
+		double attack_value = data.getOneShotPower(charge_level);
+
+		damage = getBulletDamage(data, attack_value, armor)
+				+ getExplosionDamage(data, attack_value, armor)
+				+ getNewdDamage(data, attack_value, armor)
+				+ getSlashDamage(data, attack_value, armor);
+
+		return damage;
+	}
+
+	/**
+	 * 爆発武器に被弾した際のダメージを計算する。(地爆時)
+	 * @param data 武器データ
+	 * @return ダメージ値
+	 */
+	public double getExplosionLegsDamage(BBData data, int charge_level) {
+		double damage;
+		double armor = getArmorAveLegs();
+		double attack_value = data.getOneShotPower(charge_level);
+
+		damage = getBulletDamage(data, attack_value, armor)
+				+ getExplosionDamage(data, attack_value, armor)
+				+ getNewdDamage(data, attack_value, armor)
+				+ getSlashDamage(data, attack_value, armor);
+
+		return damage;
+	}
+
 	/**
 	 * 爆発武器に被弾した際のダメージを計算する。
 	 * @param data 武器データ
-	 * @param parts_type パーツの種類
 	 * @return ダメージ値
 	 */
 	public double getExplosionDamage(BBData data, int charge_level) {
@@ -3522,7 +3556,7 @@ public class CustomData {
 	/**
 	 * 兵装依存の指定データを取得する
 	 * @param key キー
-	 * @param blust_name 兵装名
+	 * @param blust_type 兵装名
 	 * @return データ
 	 */
 	public double getSpecValue(String key, String blust_type) {

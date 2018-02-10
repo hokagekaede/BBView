@@ -19,12 +19,13 @@ public class ResistAdapterItem extends TableLayout {
 	private TableRow[] mTableRows;
 	private TextView[][] mTextViews;
 
-	private int mPatternMode = MODE_SHOT;
-	
 	private static final int TABLE_ROW_MAX = 7;
-	private static final int TABLE_COL_MAX = 5;
-	
-	private static final String[] TITLE_ROW_STR = { "攻撃方法", "被ダメージ", "破", "転", "仰" };
+
+	private int mPatternMode = MODE_SHOT;
+	private int mColumnCount = 0;
+
+	private static final String[] TITLE_ROW_STR_DEFAULT = { "攻撃方法", "被ダメージ", "破", "転", "仰" };
+	private static final String[] TITLE_ROW_STR_EXPLOSION = { "攻撃方法", "空爆時ダメ", "破", "転", "仰", "地爆時ダメ", "破", "転", "仰" };
 	
 	private static final String[] PATTERN_SHOT = { "CS" };
 	private static final String[] PATTERN_CHARGE_SHOT = { "CS(CG0)", "CS(CG1)", "CS(CG2)" };
@@ -38,15 +39,25 @@ public class ResistAdapterItem extends TableLayout {
 		this.setColumnStretchable(0, true);    // 列幅最大表示
 		
 		mPatternMode = mode;
-		
+		String[] target_title;
+
+		if(mPatternMode == MODE_EXPLOSION) {
+			mColumnCount = TITLE_ROW_STR_EXPLOSION.length;
+			target_title = TITLE_ROW_STR_EXPLOSION;
+		}
+		else {
+			mColumnCount = TITLE_ROW_STR_DEFAULT.length;
+			target_title = TITLE_ROW_STR_DEFAULT;
+		}
+
 		mTableRows = new TableRow[TABLE_ROW_MAX];
 		mTextViews = new TextView[TABLE_ROW_MAX][];
 		
 		for(int row=0; row<TABLE_ROW_MAX; row++) {
 			mTableRows[row] = new TableRow(context);
-			mTextViews[row] = new TextView[TABLE_COL_MAX];
+			mTextViews[row] = new TextView[mColumnCount];
 			
-			for(int col=0; col<TABLE_COL_MAX; col++) {
+			for(int col=0; col<mColumnCount; col++) {
 				mTextViews[row][col] = new TextView(context);
 				mTextViews[row][col].setPadding(5, 5, 5, 5);
 				mTextViews[row][col].setGravity(Gravity.RIGHT);
@@ -57,9 +68,9 @@ public class ResistAdapterItem extends TableLayout {
 			mTextViews[row][0].setGravity(Gravity.LEFT);
 			this.addView(mTableRows[row]);
 		}
-		
-		for(int col=1; col<TABLE_COL_MAX; col++) {
-			mTextViews[0][col].setText(TITLE_ROW_STR[col]);
+
+		for(int col=1; col<mColumnCount; col++) {
+			mTextViews[0][col].setText(target_title[col]);
 		}
 	}
 
@@ -71,26 +82,42 @@ public class ResistAdapterItem extends TableLayout {
 	 */
 	public void update(CustomData custom_data, BBData data, boolean is_show_typeb) {
 
+		if(mPatternMode == MODE_EXPLOSION) {
+			update_explosion(custom_data, data, is_show_typeb);
+		}
+		else {
+			update_default(custom_data, data, is_show_typeb);
+		}
+	}
+
+	/**
+	 * テーブルのデータを更新する。(爆発武器以外)
+	 * @param custom_data 被弾側のカスタムデータ
+	 * @param data 攻撃側の武器データ
+	 * @param is_show_typeb 攻撃側の武器をタイプB扱いするかどうか
+	 */
+	private void update_default(CustomData custom_data, BBData data, boolean is_show_typeb) {
+
 		// タイプB設定が有効の場合は、武器のデータをタイプBに切り替える
 		String name = data.getNameWithType(is_show_typeb);
 		BBData item = data;
 		if(is_show_typeb) {
 			BBData item_typeb = item.getTypeB();
-			
+
 			if(item_typeb != null) {
 				item = item_typeb;
 			}
 		}
-		
+
 		String[] pattern = selectPattern(item);
 		int size = pattern.length;
-		
+
 		mTextViews[0][0].setText(name);
-		
+
 		for(int idx=0; idx<size; idx++) {
 			int target_row = idx + 1;
-			double damage = getDamage(custom_data, item, pattern[idx]);
-			
+			double damage = getDamage(custom_data, item, pattern[idx], false);
+
 			mTextViews[target_row][0].setText(pattern[idx]);
 			mTextViews[target_row][1].setText(String.format("%.0f", damage));
 			mTextViews[target_row][2].setText(getJudgeString(custom_data.isBreak(damage)));
@@ -98,7 +125,55 @@ public class ResistAdapterItem extends TableLayout {
 			mTextViews[target_row][4].setText(getJudgeString(custom_data.isBack(damage)));
 			mTableRows[target_row].setVisibility(View.VISIBLE);
 		}
-		
+
+		for(int row=size+1; row<TABLE_ROW_MAX; row++) {
+			mTableRows[row].setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * テーブルのデータを更新する。(爆発武器)
+	 * @param custom_data 被弾側のカスタムデータ
+	 * @param data 攻撃側の武器データ
+	 * @param is_show_typeb 攻撃側の武器をタイプB扱いするかどうか
+	 */
+	private void update_explosion(CustomData custom_data, BBData data, boolean is_show_typeb) {
+
+		// タイプB設定が有効の場合は、武器のデータをタイプBに切り替える
+		String name = data.getNameWithType(is_show_typeb);
+		BBData item = data;
+		if(is_show_typeb) {
+			BBData item_typeb = item.getTypeB();
+
+			if(item_typeb != null) {
+				item = item_typeb;
+			}
+		}
+
+		String[] pattern = selectPattern(item);
+		int size = pattern.length;
+
+		mTextViews[0][0].setText(name);
+
+		for(int idx=0; idx<size; idx++) {
+			int target_row = idx + 1;
+			double damage = getDamage(custom_data, item, pattern[idx], true);
+
+			mTextViews[target_row][0].setText(pattern[idx]);
+			mTextViews[target_row][1].setText(String.format("%.0f", damage));
+			mTextViews[target_row][2].setText(getJudgeString(custom_data.isBreak(damage)));
+			mTextViews[target_row][3].setText(getJudgeString(custom_data.isDown(damage)));
+			mTextViews[target_row][4].setText(getJudgeString(custom_data.isBack(damage)));
+
+			damage = getDamage(custom_data, item, pattern[idx], false);
+			mTextViews[target_row][5].setText(String.format("%.0f", damage));
+			mTextViews[target_row][6].setText(getJudgeString(custom_data.isBreak(damage)));
+			mTextViews[target_row][7].setText(getJudgeString(custom_data.isDown(damage)));
+			mTextViews[target_row][8].setText(getJudgeString(custom_data.isBack(damage)));
+
+			mTableRows[target_row].setVisibility(View.VISIBLE);
+		}
+
 		for(int row=size+1; row<TABLE_ROW_MAX; row++) {
 			mTableRows[row].setVisibility(View.GONE);
 		}
@@ -145,9 +220,10 @@ public class ResistAdapterItem extends TableLayout {
 	 * @param custom_data
 	 * @param data
 	 * @param type
+	 * @param is_headbomb 空爆の時はtrueを設定し、地爆の時はfalseを設定する。(爆発武器時以外は無効)
 	 * @return
 	 */
-	private double getDamage(CustomData custom_data, BBData data, String type) {
+	private double getDamage(CustomData custom_data, BBData data, String type, boolean is_headbomb) {
 		double ret = 0;
 		int charge_level = 0;
 		
@@ -167,7 +243,12 @@ public class ResistAdapterItem extends TableLayout {
 			ret = custom_data.getShotDamage(data, BBDataManager.BLUST_PARTS_HEAD, charge_level);
 		}
 		else if(type.contains("爆発")) {
-			ret = custom_data.getExplosionDamage(data, charge_level);
+			if(is_headbomb) {
+				ret = custom_data.getExplosionHeadDamage(data, charge_level);
+			}
+			else {
+				ret = custom_data.getExplosionLegsDamage(data, charge_level);
+			}
 		}
 		else if(type.contains("通常")) {
 			ret = custom_data.getSlashDamage(data, false, charge_level);
