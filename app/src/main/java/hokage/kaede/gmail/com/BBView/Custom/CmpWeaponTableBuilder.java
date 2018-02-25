@@ -39,9 +39,8 @@ public class CmpWeaponTableBuilder {
 	
 	/**
 	 * 初期化を行う。
-	 * @param context
-	 * @param builder
-	 * @param is_km_per_hour
+	 * @param activity ダイアログのオーナーアクティビティ
+	 * @param is_km_per_hour 速度の単位。
 	 */
 	public CmpWeaponTableBuilder(Activity activity, boolean is_km_per_hour) {
 		this.mActivity = activity;
@@ -72,7 +71,7 @@ public class CmpWeaponTableBuilder {
 	}
 	
 	/**
-	 * 武器の比較行のリストを生成する
+	 * 武器の比較結果のテーブルを生成する
 	 * @param from_data 比較元のデータ
 	 * @param to_data 比較先のデータ
 	 */
@@ -141,7 +140,13 @@ public class CmpWeaponTableBuilder {
 		
 		return table;
 	}
-	
+
+	/**
+	 * 武器の比較行をテーブルに設定する。
+	 * @param table 比較テーブル
+	 * @param from_data 比較元の武器データ
+	 * @param to_data 比較先の武器データ
+	 */
 	private void setCmpWeaponRows(TableLayout table, BBData from_data, BBData to_data) {
 
 		// 比較行を設定

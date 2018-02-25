@@ -79,20 +79,17 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	
 	/**
 	 * ビューを生成する。テキストサイズや文字色の設定を行う。
-	 * @param item リストのデータ
 	 */
 	abstract public void createView();
 
 	/**
 	 * ビューの更新する。
-	 * @param item リストのデータ
-	 * @param position リストの位置
 	 */
 	abstract public void updateView();
 	
 	/**
 	 * 表示対象のデータを設定する。
-	 * @param item データ。
+	 * @param item 表示対象のデータ
 	 */
 	public void setItem(BBData item) {
 		mTargetData = item;
@@ -108,7 +105,6 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	
 	/**
 	 * 項目の名前を生成する
-	 * @param data 項目
 	 * @return 項目の名前を生成する。パーツの場合はどの部位のパーツかの情報も追記する。
 	 */
 	protected String createNameText() {
@@ -138,7 +134,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	
 	/**
 	 * 追加表示する文字列を生成する
-	 * @param data 項目
+	 * @param base_item 項目
 	 * @return 追加表示する文字列
 	 */
 	protected String createSubText(BBData base_item) {
@@ -228,7 +224,7 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 	/**
 	 * 大破判定、転倒判定、KB判定の文字列を生成する。
 	 * @param key
-	 * @param value_str
+	 * @param target_data
 	 * @return
 	 */
 	private String createArmorBreakString(String key, BBData target_data) {

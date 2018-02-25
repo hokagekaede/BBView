@@ -1491,7 +1491,7 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * 大破可能な装甲値(スペック)を表示する。
-	 * @param is_critilal クリティカルかどうか
+	 * @param is_critical クリティカルかどうか
 	 * @return
 	 */
 	public double getArmorBreakJdg(boolean is_critical) {
@@ -1502,7 +1502,7 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * 転倒可能な装甲値(スペック)を表示する。
-	 * @param is_critilal クリティカルかどうか
+	 * @param is_critical クリティカルかどうか
 	 * @return
 	 */
 	public double getArmorDownJdg(boolean is_critical) {
@@ -1513,7 +1513,7 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * ノックバック可能な装甲値(スペック)を表示する。
-	 * @param is_critilal クリティカルかどうか
+	 * @param is_critical クリティカルかどうか
 	 * @return
 	 */
 	public double getArmorKBJdg(boolean is_critical) {
