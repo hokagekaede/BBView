@@ -216,7 +216,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		table_setting.addView(createArmorRow(context, "腕部", VIEWID_OFFSET_ARMOR_ARMS));
 		table_setting.addView(createArmorRow(context, "脚部", VIEWID_OFFSET_ARMOR_LEGS));
 		table_setting.addView(createChipRow(context, "大破抑制", VIEWID_REDUCE_BREAK_BASE, 1));
-		table_setting.addView(createChipRow(context, "転倒耐性", VIEWID_GURAD_DOWN_BASE, 2));
+		table_setting.addView(createChipRow(context, "転倒耐性", VIEWID_GURAD_DOWN_BASE, 3));
 		
 		return table_setting;	
 	}
@@ -225,7 +225,7 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 	 * 火力を表示するテキストビュー行を生成する。
 	 * @param context コンテキスト
 	 * @param title タイトル
-	 * @param id1 ベースID
+	 * @param base_id ベースID
 	 * @return 行のView
 	 */
 	private TableRow createPowerRow(Context context, String title, int base_id) {
@@ -964,6 +964,11 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 			case VIEWID_GURAD_DOWN_BASE + VIEWID_OFFSET_CHIPII:
 				updateButtonLamp(VIEWID_GURAD_DOWN_BASE, VIEWID_OFFSET_CHIPII, checked);
 				updateDefenceChip("転倒耐性", mGuardDownChips, VIEWID_OFFSET_CHIPII, checked);
+				break;
+
+			case VIEWID_GURAD_DOWN_BASE + VIEWID_OFFSET_CHIPIII:
+				updateButtonLamp(VIEWID_GURAD_DOWN_BASE, VIEWID_OFFSET_CHIPIII, checked);
+				updateDefenceChip("転倒耐性", mGuardDownChips, VIEWID_OFFSET_CHIPIII, checked);
 				break;
 		}
 	}
