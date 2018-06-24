@@ -185,7 +185,7 @@ public class BBExpandableChipAdapter extends BBExpandableAdapter {
 	/**
 	 * 選択フラグを設定する。
 	 * @param groupPosition 親のアイテム位置
-	 * @param position 子のアイテム位置
+	 * @param childPosition 子のアイテム位置
 	 * @param flag 設定するフラグ値
 	 */
 	public void setFlag(int groupPosition, int childPosition, boolean flag) {

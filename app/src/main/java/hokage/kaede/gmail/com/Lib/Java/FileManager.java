@@ -78,7 +78,7 @@ public class FileManager {
 	
 	/**
 	 * 実際のファイル名を取得する。
-	 * @param filename
+	 * @param tag
 	 * @return
 	 */
 	public String getFileName(String tag) {
@@ -143,7 +143,7 @@ public class FileManager {
 	
 	/**
 	 * ファイルタグに合致したファイルを削除する。
-	 * @param filename
+	 * @param tag
 	 * @return
 	 */
 	public boolean delete(String tag) {

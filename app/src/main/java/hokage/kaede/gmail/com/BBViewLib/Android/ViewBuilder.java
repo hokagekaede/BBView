@@ -126,8 +126,8 @@ public class ViewBuilder {
 	
 	/**
 	 * テーブルビューの行の色を取得する。
-	 * @param from_data 比較元のデータ値
-	 * @param to_data 比較先のデータ値
+	 * @param from_value 比較元のデータ値
+	 * @param to_value 比較先のデータ値
 	 * @param target_key 対象のスペック項目
 	 * @return 色データ(配列3)
 	 */
@@ -157,8 +157,8 @@ public class ViewBuilder {
 
 	/**
 	 * テーブルビューの行の色を取得する。
-	 * @param from_data 比較元のデータ値
-	 * @param to_data 比較先のデータ値
+	 * @param from_value 比較元のデータ値
+	 * @param to_value 比較先のデータ値
 	 * @param target_key 対象のスペック項目
 	 * @return 色データ(配列3)
 	 */

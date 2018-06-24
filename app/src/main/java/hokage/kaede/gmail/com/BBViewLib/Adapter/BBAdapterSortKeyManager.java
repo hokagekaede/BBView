@@ -108,21 +108,6 @@ public class BBAdapterSortKeyManager implements OnClickListener, OnCheckedChange
 		RadioGroup sort_group = new RadioGroup(mActivity);
 		sort_group.setOrientation(LinearLayout.HORIZONTAL);
 		sort_group.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
-		
-		RadioButton up_sort_btn = new RadioButton(mActivity);
-		up_sort_btn.setText("昇順");
-		up_sort_btn.setOnCheckedChangeListener(this);
-		sort_group.addView(up_sort_btn);
-		
-		RadioButton down_sort_btn = new RadioButton(mActivity);
-		down_sort_btn.setText("降順");
-		sort_group.addView(down_sort_btn);
-		
-		builder.setView(sort_group);
-
-		// 値の設定はグループ設定が終わってから行う。
-		up_sort_btn.setChecked(mIsAsc);
-		down_sort_btn.setChecked(!mIsAsc);
 
 		mDialog = builder.create();
 		mDialog.setOwnerActivity(mActivity);

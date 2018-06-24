@@ -400,8 +400,11 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * パーツスペックテーブルの行を生成する。
-		 * @param data アセンデータ
-		 * @param parts_type パーツの種類
+		 * @param context
+		 * @param custom_data
+		 * @param blust_type
+		 * @param parts_key
+		 * @param weapon_key
 		 * @return 指定のパーツ種類に対応する行
 		 */
 		private static TableRow createPartsRow(Context context, CustomData custom_data, String blust_type, String parts_key, String weapon_key) {
@@ -418,8 +421,10 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * パーツスペックテーブルの行を生成する。
-		 * @param data アセンデータ
-		 * @param parts_type パーツの種類
+		 * @param context
+		 * @param custom_data
+		 * @param blust_type
+		 * @param parts_key
 		 * @return 指定のパーツ種類に対応する行
 		 */
 		private static TableRow createPartsRow(Context context, CustomData custom_data, String blust_type, String parts_key) {
@@ -433,7 +438,8 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * チップテーブルを生成する
-		 * @param data データ
+		 * @param context
+		 * @param custom_data
 		 * @return チップデータのテーブル
 		 */
 		private static LinearLayout createChipTable(Context context, CustomData custom_data) {
@@ -540,7 +546,7 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
-		 * @param custom_data 表示するカスタムデータ
+		 * @param context
 		 * @return 総合スペックテーブル
 		 */
 		private static View create(Context context) {
@@ -615,7 +621,7 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * 総合スペックテーブルを生成する。(セットボーナス、チップ容量、装甲平均値、総重量(猶予))
-		 * @param custom_data 表示するカスタムデータ
+		 * @param context
 		 * @return 総合スペックテーブル
 		 */
 		private static View create(Context context) {
@@ -707,7 +713,8 @@ public class SpecView extends FrameLayout {
 
 		/**
 		 * パーツスペックテーブルを生成する。
-		 * @param data_list データ一覧
+		 * @param context
+		 * @param blust_type
 		 * @return パーツスペックのテーブル
 		 */
 		private static View create(Context context, String blust_type) {
@@ -767,7 +774,8 @@ public class SpecView extends FrameLayout {
 		
 		/**
 		 * パーツスペックテーブルを生成する。
-		 * @param data_list データ一覧
+		 * @param context
+		 * @param blust_type
 		 * @return パーツスペックのテーブル
 		 */
 		private static View create(Context context, String blust_type) {

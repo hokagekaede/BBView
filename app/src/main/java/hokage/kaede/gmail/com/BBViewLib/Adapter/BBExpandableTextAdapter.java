@@ -241,7 +241,7 @@ public class BBExpandableTextAdapter extends BBExpandableAdapter {
 	
 	/**
 	 * データのリストを追加する。
-	 * @param chiplist チップのリスト
+	 * @param itemlist チップのリスト
 	 */
 	public void addChildren(ArrayList<BBData> itemlist) {
 		int size = itemlist.size();

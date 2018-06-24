@@ -196,7 +196,6 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 
 	/**
 	 * 購入プレビュー画面に戻る処理を行う。
-	 * @param data 選択したデータ
 	 */
 	private void backPurchaseView() {
 		ArrayList<BBData> list = mAdapter.getSelectedList();

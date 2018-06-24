@@ -12,7 +12,8 @@ public class PurchaseManager {
 	/**
 	 * 初期化処理を行う。
 	 * 勲章データおよび素材データのリストを抽出する。
-	 * @param data_mng 全データを管理するオブジェクト
+	 * @param medal_list
+	 * @param material_list
 	 */
 	public PurchaseManager(ArrayList<BBData> medal_list, ArrayList<BBData> material_list) {
 		this.mMedalNameList = new ArrayList<String>();

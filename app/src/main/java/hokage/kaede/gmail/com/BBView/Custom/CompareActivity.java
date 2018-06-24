@@ -436,7 +436,9 @@ public class CompareActivity extends BaseActivity {
 
 		/**
 		 * パーツスペックテーブルを生成する。
-		 * @param data_list データ一覧
+		 * @param from_data
+		 * @param to_data
+		 * @param blust_type
 		 * @return パーツスペックのテーブル
 		 */
 		private static View create(Context context, CustomData from_data, CustomData to_data, String blust_type) {
@@ -512,7 +514,9 @@ public class CompareActivity extends BaseActivity {
 
 		/**
 		 * 武器スペックテーブルを生成する。(マガジン火力、瞬間火力、戦術火力、リロード時間)
-		 * @param data データ
+		 * @param from_data
+		 * @param to_data
+		 * @param blust_type
 		 * @return 武器スペックテーブル
 		 */
 		private static TableLayout createWeaponView(Context context, CustomData from_data, CustomData to_data, String blust_type) {
@@ -626,8 +630,10 @@ public class CompareActivity extends BaseActivity {
 		/**
 		 * 主武器の情報を記載した列を追加する。
 		 * @param table 追加先のテーブル
-		 * @param data 対象のアセンデータ
-		 * @param weapon 対象の武器データ
+		 * @param from_data
+		 * @param to_data
+		 * @param from_weapon
+		 * @param to_weapon
 		 */
 		private static void addMainWeaponRow(TableLayout table, CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
 			Context context = table.getContext();

@@ -81,6 +81,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	private static final int MENU_ITEM3 = 3;
 	private static final int MENU_ITEM4 = 4;
 	private static final int MENU_ITEM5 = 5;
+	private static final int MENU_ITEM6 = 6;
 	
 	// コマンド制御ダイアログ関連の定義
 	private static final String DIALOG_LIST_ITEM_INFO = "詳細を表示する";
@@ -339,6 +340,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		String weapon_type = intent.getStringExtra(INTENTKEY_WEAPONTYPE);
 		
 		menu.add(0, MENU_ITEM0, 0, "ソート設定").setIcon(android.R.drawable.ic_menu_sort_alphabetically);
+		menu.add(0, MENU_ITEM6, 0, "ソート昇順/降順切替");
 		menu.add(0, MENU_ITEM2, 0, "表示項目設定").setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM1, 0, "フィルタ設定").setIcon(android.R.drawable.ic_menu_add);
 
@@ -412,6 +414,11 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 				item.setChecked(mIsHavingOnly);
 				updateList();
 				break;
+
+			case MENU_ITEM6:
+				mSortKeyDialog.setAsc(!mSortKeyDialog.getAsc());
+				updateSort(mSortKeyDialog);
+				break;
 		}
 		
 		return true;
@@ -480,7 +487,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 
 	/**
 	 * 指定の位置のパーツでフルセットを設定し、前画面に戻る。
-	 * @param data パーツデータ
+	 * @param target_data パーツデータ
 	 */
 	private void backCustomViewFullSetCheck(BBData target_data) {
 		String name = target_data.get("名称");
@@ -511,7 +518,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 
 	/**
 	 * 指定の位置のパーツでフルセットを設定し、前画面に戻る。
-	 * @param data パーツデータ
+	 * @param target_data パーツデータ
 	 */
 	private void backCustomViewFullSet(BBData target_data) {
 		
@@ -579,17 +586,26 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public void onSelectItem(BBAdapterSortKeyManager manager) {
+		updateSort(manager);
+	}
+
+	/**
+	 * ソート設定に応じてリストを更新する。
+	 */
+	private void updateSort(BBAdapterSortKeyManager manager) {
 		String sort_key = manager.getSortKey();
 		mDataManager.setSortKey(sort_key);
 		mDataManager.setASC(manager.getAsc());
-		
+
 		// ソートキー選択状態を記録する
-		mSortKeyDialog.updateSetting();
-		
+		if(BBViewSetting.IS_MEMORY_SORT) {
+			mSortKeyDialog.updateSetting();
+		}
+
 		// 表示項目の再設定を行う
 		ArrayList<String> recent_key_list = mAdapter.getShownKeys();
 		ArrayList<String> new_key_list = new ArrayList<String>();
-		
+
 		int size = mSortKeys.length;
 		for(int i=0; i<size; i++) {
 			String key_buf = mSortKeys[i];
@@ -600,14 +616,14 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 				new_key_list.add(key_buf);
 			}
 		}
-		
+
 		mShownKeysDialog.set(sort_key, true);
-		
+
 		// 表示項目選択状態を記録する
 		if(BBViewSetting.IS_MEMORY_SHOWSPEC) {
 			mShownKeysDialog.updateSetting();
 		}
-		
+
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
 		mAdapter.setList(datalist);
 		mAdapter.setShownKeys(new_key_list);

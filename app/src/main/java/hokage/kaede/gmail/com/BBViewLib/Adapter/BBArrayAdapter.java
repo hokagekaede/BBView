@@ -24,7 +24,6 @@ public class BBArrayAdapter extends BaseAdapter {
 
 	/**
 	 * コンストラクタ
-	 * @param context
 	 * @param list
 	 */
 	public BBArrayAdapter(ArrayList<BBData> list) {

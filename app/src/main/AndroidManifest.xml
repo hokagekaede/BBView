@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hokage.kaede.gmail.com.BBView3"
-    android:versionCode="5709"
-    android:versionName="5.7.09">
+    android:versionCode="5710"
+    android:versionName="5.7.10">
     
     <uses-permission android:name="android.hardware.touchscreen" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -35,9 +35,7 @@
         <activity android:name="hokage.kaede.gmail.com.BBView.Custom.CustomMainActivity" />
         
         <activity android:name="hokage.kaede.gmail.com.BBView.Custom.SelectActivity" />
-        
-        <activity android:name="hokage.kaede.gmail.com.BBView.Custom.SpecBlustActivity" />
-        
+
         <activity android:name="hokage.kaede.gmail.com.BBView.Custom.CompareActivity" />
         
         <activity android:name="hokage.kaede.gmail.com.BBView.Item.CategoryListActivity" />
