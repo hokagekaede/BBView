@@ -23,9 +23,9 @@ public class ManualActivity extends BaseActivity
 	/**
 	 * 画面生成時の処理を行う。
 	 */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		
 		// aboutデータの読み込み
 		Resources res = this.getResources();
@@ -37,7 +37,7 @@ public class ManualActivity extends BaseActivity
 		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
-        layout_all.setOrientation(LinearLayout.VERTICAL);
+		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setGravity(Gravity.TOP);
 		
 		TextView about_text_view = new TextView(this);
@@ -51,7 +51,7 @@ public class ManualActivity extends BaseActivity
 		
 		layout_all.addView(sv);
 		
-        
-        setContentView(layout_all);
-    }
+		
+		setContentView(layout_all);
+	}
 }

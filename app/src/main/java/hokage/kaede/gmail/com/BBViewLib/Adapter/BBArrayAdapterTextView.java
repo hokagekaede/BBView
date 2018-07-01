@@ -45,41 +45,41 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 	public void createView() {
 		Context context = getContext();
 		
-        mNameTextView = new TextView(context);
-        mNameTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-        
-    	mSubTextView = new TextView(context);
-        mSubTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
+		mNameTextView = new TextView(context);
+		mNameTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		
+		mSubTextView = new TextView(context);
+		mSubTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 
-    	mExistTextView = new TextView(context);
-        mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-        mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-        mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+		mExistTextView = new TextView(context);
+		mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
+		mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
 
-    	mFavoriteTextView = new TextView(context);
-        mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-        mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-        mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
-        mFavoriteTextView.setPadding(10, 0, 10, 0);
+		mFavoriteTextView = new TextView(context);
+		mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
+		mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+		mFavoriteTextView.setPadding(10, 0, 10, 0);
 
-        mMainLayout = new LinearLayout(context);
-        mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mMainLayout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-        mMainLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		mMainLayout = new LinearLayout(context);
+		mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
+		mMainLayout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
+		mMainLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-        LinearLayout sub_layout = new LinearLayout(context);
-        sub_layout.setOrientation(LinearLayout.VERTICAL);
-        sub_layout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-        sub_layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-        
-        sub_layout.addView(mNameTextView);
-        sub_layout.addView(mSubTextView);
-        
-        mMainLayout.addView(sub_layout);
-        mMainLayout.addView(mExistTextView);
-        mMainLayout.addView(mFavoriteTextView);
-        
-        this.addView(mMainLayout);
+		LinearLayout sub_layout = new LinearLayout(context);
+		sub_layout.setOrientation(LinearLayout.VERTICAL);
+		sub_layout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
+		sub_layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		
+		sub_layout.addView(mNameTextView);
+		sub_layout.addView(mSubTextView);
+		
+		mMainLayout.addView(sub_layout);
+		mMainLayout.addView(mExistTextView);
+		mMainLayout.addView(mFavoriteTextView);
+		
+		this.addView(mMainLayout);
 	}
 	
 	/**
@@ -87,28 +87,28 @@ public class BBArrayAdapterTextView extends BBArrayAdapterBaseView {
 	 */
 	public void updateView() {
 		String sub_text = createSubText(mBaseItem);
-        mNameTextView.setText(createNameText());
-    	mSubTextView.setText(Html.fromHtml(sub_text));
-    	mExistTextView.setText(createExistText());
+		mNameTextView.setText(createNameText());
+		mSubTextView.setText(Html.fromHtml(sub_text));
+		mExistTextView.setText(createExistText());
 
-    	// テキストを更新する
-        if(sub_text.equals("")) {
-        	mSubTextView.setVisibility(View.GONE);
-        }
-        else {
-        	mSubTextView.setVisibility(View.VISIBLE);
-        }
+		// テキストを更新する
+		if(sub_text.equals("")) {
+			mSubTextView.setVisibility(View.GONE);
+		}
+		else {
+			mSubTextView.setVisibility(View.VISIBLE);
+		}
 
-        // 選択中のアイテムの場合は文字色を黄色に変更する
-        BBData target_item = getItem();
-        if(mBaseItem != null && BBDataManager.equalData(target_item, mBaseItem)) {
-        	mNameTextView.setTextColor(SettingManager.getColorYellow());
-        }
-        else {
-        	mNameTextView.setTextColor(SettingManager.getColorWhite());
-        }
+		// 選択中のアイテムの場合は文字色を黄色に変更する
+		BBData target_item = getItem();
+		if(mBaseItem != null && BBDataManager.equalData(target_item, mBaseItem)) {
+			mNameTextView.setTextColor(SettingManager.getColorYellow());
+		}
+		else {
+			mNameTextView.setTextColor(SettingManager.getColorWhite());
+		}
 
-    	super.updateFavorite(mFavoriteTextView);
+		super.updateFavorite(mFavoriteTextView);
 	}
 
 	/**

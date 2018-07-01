@@ -111,25 +111,25 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		String item_name = "";
 		String data_name = mTargetData.get("名称");
 		
-        if(BBDataManager.isParts(mTargetData)) {
-        	String part_type = BBDataManager.getPartsType(mTargetData).substring(0, 1);
-        	item_name = data_name + " (" + part_type + ")";
-        }
-        else {
-        	item_name = data_name;
-        }
-        
-        // スイッチ武器の場合はタイプ情報を追加表示する
-        if(mIsShowSwitch && mTargetData.getTypeB() != null) {
-        	if(mIsShowTypeB) {
-        		item_name = item_name + " (タイプB)";
-        	}
-        	else {
-        		item_name = item_name + " (タイプA)";
-        	}
-        }
-        
-        return item_name;
+		if(BBDataManager.isParts(mTargetData)) {
+			String part_type = BBDataManager.getPartsType(mTargetData).substring(0, 1);
+			item_name = data_name + " (" + part_type + ")";
+		}
+		else {
+			item_name = data_name;
+		}
+		
+		// スイッチ武器の場合はタイプ情報を追加表示する
+		if(mIsShowSwitch && mTargetData.getTypeB() != null) {
+			if(mIsShowTypeB) {
+				item_name = item_name + " (タイプB)";
+			}
+			else {
+				item_name = item_name + " (タイプA)";
+			}
+		}
+		
+		return item_name;
 	}
 	
 	/**
@@ -303,63 +303,63 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 		String item_name = "";
 		String data_name = mTargetData.get("名称");
 		
-    	BBNetDatabase net_database = BBNetDatabase.getInstance();
-    	if(!net_database.getCardName().equals(BBNetDatabase.NO_CARD_DATA)) {
+		BBNetDatabase net_database = BBNetDatabase.getInstance();
+		if(!net_database.getCardName().equals(BBNetDatabase.NO_CARD_DATA)) {
 
-    		if(BBDataManager.isParts(mTargetData)) {
-    			if(net_database.existParts(mTargetData)) {
-            		item_name = "(所持)";
-            	}
-            	else {
-            		item_name = "(未購入)";
-            	}
-    		}
-    		else if(BBDataManager.isWeapon(mTargetData)) {
-    			if(net_database.existWeapon(data_name)) {
-            		item_name = "(所持)";
-            	}
-            	else {
-            		item_name = "(未購入)";
-            	}
-    		}
-    		else if(mTargetData.existCategory(BBDataManager.CHIP_STR)) {
-            	if(net_database.existChip(data_name)) {
-            		item_name = "(所持)";
-            	}
-            	else {
-            		item_name = "(未開発)";
-            	}
-        	}
-        	else if(mTargetData.existCategory(BBDataManager.MATERIAL_STR)) {
-            	String value = net_database.getMaterials().get(data_name);
-            	if(value.equals("null")) {
-            		item_name = "(情報なし)";
-            	}
-            	else {
-            		item_name = value + "個";
-            	}
-        	}
-        	else if(mTargetData.existCategory(BBDataManager.MEDAL_STR)) {
-            	String value = net_database.getMedals().get(data_name);
-            	if(value.equals("null")) {
-            		item_name = "(情報なし)";
-            	}
-            	else {
-            		item_name = value + "個";
-            	}
-        	}
-        	else if(mTargetData.existCategory(BBDataManager.SEED_STR)) {
-            	String value = net_database.getSeeds().get(data_name);
-            	if(value.equals("null")) {
-            		item_name = "(情報なし)";
-            	}
-            	else {
-            		item_name = value + "個";
-            	}
-        	}
-    	}
-    	
-    	return item_name;
+			if(BBDataManager.isParts(mTargetData)) {
+				if(net_database.existParts(mTargetData)) {
+					item_name = "(所持)";
+				}
+				else {
+					item_name = "(未購入)";
+				}
+			}
+			else if(BBDataManager.isWeapon(mTargetData)) {
+				if(net_database.existWeapon(data_name)) {
+					item_name = "(所持)";
+				}
+				else {
+					item_name = "(未購入)";
+				}
+			}
+			else if(mTargetData.existCategory(BBDataManager.CHIP_STR)) {
+				if(net_database.existChip(data_name)) {
+					item_name = "(所持)";
+				}
+				else {
+					item_name = "(未開発)";
+				}
+			}
+			else if(mTargetData.existCategory(BBDataManager.MATERIAL_STR)) {
+				String value = net_database.getMaterials().get(data_name);
+				if(value.equals("null")) {
+					item_name = "(情報なし)";
+				}
+				else {
+					item_name = value + "個";
+				}
+			}
+			else if(mTargetData.existCategory(BBDataManager.MEDAL_STR)) {
+				String value = net_database.getMedals().get(data_name);
+				if(value.equals("null")) {
+					item_name = "(情報なし)";
+				}
+				else {
+					item_name = value + "個";
+				}
+			}
+			else if(mTargetData.existCategory(BBDataManager.SEED_STR)) {
+				String value = net_database.getSeeds().get(data_name);
+				if(value.equals("null")) {
+					item_name = "(情報なし)";
+				}
+				else {
+					item_name = value + "個";
+				}
+			}
+		}
+		
+		return item_name;
 	}
 	
 	/**
@@ -371,13 +371,13 @@ public abstract class BBArrayAdapterBaseView extends LinearLayout {
 			return;
 		}
 		
-    	if(mFavoriteStore.exist(mTargetData.get("名称"))) {
-    		target_view.setTextColor(SettingManager.getColorYellow());
-    		target_view.setText("[Fav:ON]");
-    	}
-    	else {
-    		target_view.setText("[Fav:OFF]");
-    		target_view.setTextColor(SettingManager.getColorCyan());
-    	}
+		if(mFavoriteStore.exist(mTargetData.get("名称"))) {
+			target_view.setTextColor(SettingManager.getColorYellow());
+			target_view.setText("[Fav:ON]");
+		}
+		else {
+			target_view.setText("[Fav:OFF]");
+			target_view.setTextColor(SettingManager.getColorCyan());
+		}
 	}
 }

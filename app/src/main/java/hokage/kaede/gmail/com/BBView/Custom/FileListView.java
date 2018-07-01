@@ -363,15 +363,15 @@ public class FileListView extends LinearLayout implements AdapterView.OnItemClic
 		}
 	}
 	
-    /**
-     * アセンの比較画面に移動する。
-     */
-    private void compareCustomData() {
-    	// リストからファイルデータを取得する。
-    	String select_file_name = mFileManager.getFileName(mSelectName);
+	/**
+	 * アセンの比較画面に移動する。
+	 */
+	private void compareCustomData() {
+		// リストからファイルデータを取得する。
+		String select_file_name = mFileManager.getFileName(mSelectName);
 
 		Intent intent = new Intent(mContext, CompareActivity.class);
 		intent.putExtra(CompareActivity.INTENTKEY_CMPTO_FILENAME, select_file_name);
 		mContext.startActivity(intent);
-    }
+	}
 }

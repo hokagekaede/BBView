@@ -24,17 +24,17 @@ public class ShopMainActivity extends BaseActivity implements OnClickListener {
 	 * 起動時の処理を行う。
 	 * @param savedInstanceState
 	 */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        setTitle(this.getTitle() + " (店舗検索)");
-        
-        ShopDataTask task = new ShopDataTask(this);
-        task.execute();
-        
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		setTitle(this.getTitle() + " (店舗検索)");
+		
+		ShopDataTask task = new ShopDataTask(this);
+		task.execute();
+		
 		// 全体レイアウト設定
-        LinearLayout layout_all = new LinearLayout(this);
+		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
 		layout_all.setGravity(Gravity.LEFT | Gravity.TOP);
@@ -62,8 +62,8 @@ public class ShopMainActivity extends BaseActivity implements OnClickListener {
 		layout_all.addView(feature_btn);
 		layout_all.addView(position_btn);
 		
-        setContentView(layout_all);
-    }
+		setContentView(layout_all);
+	}
 
 	@Override
 	public void onClick(View v) {

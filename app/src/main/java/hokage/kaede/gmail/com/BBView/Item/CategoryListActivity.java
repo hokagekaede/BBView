@@ -38,17 +38,17 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 	/**
 	 * アプリ起動時の処理を行う。
 	 */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        // インスタンス生成
-        mTitle = getTitle();
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// インスタンス生成
+		mTitle = getTitle();
 
-        mUidManager = new UidManager(this);
-        
-        updateTitle();
-        
+		mUidManager = new UidManager(this);
+		
+		updateTitle();
+		
 		ScrollView sv = new ScrollView(this);
 		sv.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
 		
@@ -190,11 +190,11 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		layout.addView(bbnet_layout);
 		
 		setContentView(sv);
-    }
+	}
 
-    /**
-     * 各ボタンを押下した時の処理を行う。
-     */
+	/**
+	 * 各ボタンを押下した時の処理を行う。
+	 */
 	@Override
 	public void onClick(View v) {
 		if(v instanceof Button) {
@@ -291,20 +291,20 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 	 * タイトル名を更新する。
 	 */
 	private void updateTitle() {
-        String card_name = BBNetDatabase.getInstance().getCardName();
-        
-        if(card_name == null) {
-            setTitle(mTitle + " (所持品確認)");
-        }
-        else if(card_name.equals(BBNetDatabase.NO_CARD_DATA)) {
-            setTitle(mTitle + " (所持品確認)");
-        }
-        else if(BBNetDatabase.getInstance().isEmpty()) {
-        	Toast.makeText(this, "カードデータ未取得です。", Toast.LENGTH_SHORT).show();
-            setTitle(mTitle + " (所持品確認)");
-        }
-        else {
-            setTitle(mTitle + " (所持品確認/" + card_name + ")");
-        }
+		String card_name = BBNetDatabase.getInstance().getCardName();
+		
+		if(card_name == null) {
+		    setTitle(mTitle + " (所持品確認)");
+		}
+		else if(card_name.equals(BBNetDatabase.NO_CARD_DATA)) {
+		    setTitle(mTitle + " (所持品確認)");
+		}
+		else if(BBNetDatabase.getInstance().isEmpty()) {
+			Toast.makeText(this, "カードデータ未取得です。", Toast.LENGTH_SHORT).show();
+		    setTitle(mTitle + " (所持品確認)");
+		}
+		else {
+		    setTitle(mTitle + " (所持品確認/" + card_name + ")");
+		}
 	}
 }

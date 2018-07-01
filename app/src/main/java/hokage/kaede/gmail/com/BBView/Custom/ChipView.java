@@ -81,7 +81,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		Context context = getContext();
 		
 		setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
-        setOrientation(LinearLayout.VERTICAL);
+		setOrientation(LinearLayout.VERTICAL);
 		setGravity(Gravity.TOP);
 		
 		// フィルタをチップのみに設定

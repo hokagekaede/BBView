@@ -42,15 +42,15 @@ public class GpsActivity extends BaseActivity implements OnItemClickListener, Lo
 	/**
 	 * 起動時の処理を行う。
 	 */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setTitle(getString(R.string.app_name) + " (現在位置から検索する)");
+		setTitle(getString(R.string.app_name) + " (現在位置から検索する)");
 
 		mShopDatabase = ShopDatabase.getShopDatabase();
 		mShopDatabase.clear();
-        
+		
 		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setOrientation(LinearLayout.VERTICAL);
@@ -64,29 +64,29 @@ public class GpsActivity extends BaseActivity implements OnItemClickListener, Lo
 		location_list.setOnItemClickListener(this);
 		location_list.setAdapter(mPlaceAdapter);
 
-    	mAddressTextView = new TextView(this);
-    	mAddressTextView.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
-    	
+		mAddressTextView = new TextView(this);
+		mAddressTextView.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
+		
 		layout_all.addView(location_list);
 		layout_all.addView(mAddressTextView);
 
 		LocationManager location_manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		location_manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 1, this);
 		
-        setContentView(layout_all);
-        
-        // 進捗ダイアログを表示する
-        mGpsDialog = new ProgressDialog(this);
-        mGpsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mGpsDialog.setMessage("現在位置を取得中");
-        mGpsDialog.setOwnerActivity(this);
-        mGpsDialog.setOnCancelListener(this);
-        mGpsDialog.show();
-    }
-    
-    /**
-     * 終了時にGPS動作を停止させる。
-     */
+		setContentView(layout_all);
+		
+		// 進捗ダイアログを表示する
+		mGpsDialog = new ProgressDialog(this);
+		mGpsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mGpsDialog.setMessage("現在位置を取得中");
+		mGpsDialog.setOwnerActivity(this);
+		mGpsDialog.setOnCancelListener(this);
+		mGpsDialog.show();
+	}
+	
+	/**
+	 * 終了時にGPS動作を停止させる。
+	 */
 	@Override
 	protected void onDestroy() {
 		LocationManager location_manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -192,7 +192,7 @@ public class GpsActivity extends BaseActivity implements OnItemClickListener, Lo
 		mPlaceAdapter.setDistanceFlag(true);
 		mPlaceAdapter.notifyDataSetChanged();
 
-        setTitle(getString(R.string.app_name) + " (" + mAddressName + "の店舗一覧/" + String.valueOf(mShopDatabase.getCount()) + "店舗)");
+		setTitle(getString(R.string.app_name) + " (" + mAddressName + "の店舗一覧/" + String.valueOf(mShopDatabase.getCount()) + "店舗)");
 	}
 
 	/**

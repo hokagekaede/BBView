@@ -552,13 +552,13 @@ public class CustomData {
 		// サテライトバンカー/要請兵器の重量を加算する
 		int carried_weight = 0;
 		if(mMode == MODE_SB) {
-			carried_weight = carried_weight + SpecValues.SB_WEIGHT;
+			carried_weight = SpecValues.SB_WEIGHT;
 		}
 		else if(mMode == MODE_SBR) {
-			carried_weight = carried_weight + SpecValues.SBR_WEIGHT;
+			carried_weight = SpecValues.SBR_WEIGHT;
 		}
 		else if(mMode == MODE_REQARM) {
-			carried_weight = carried_weight + reqarm_weight;
+			carried_weight = reqarm_weight;
 		}
 		
 		// チップの効果を反映する
@@ -1123,10 +1123,10 @@ public class CustomData {
 				ret = ret + getFullSetBonus(0.050);
 			}
 			else if(isFullSet("セイバー")) {
-				ret = ret + getFullSetBonus(0.05);
+				ret = ret + getFullSetBonus(0.050);
 			}
 			else if(isFullSet("迅牙")) {
-				ret = ret + getFullSetBonus(0.05);
+				ret = ret + getFullSetBonus(0.050);
 			}
 
 			// チップセットボーナス
@@ -3343,7 +3343,7 @@ public class CustomData {
 
 	/**
 	 * 装甲平均値から算出する実耐久値を算出する。(近接攻撃時)
-	 * @param ndef_on N-DEFが残っている場合の実耐久値。
+	 * @param ndef_on N-DEFが残っている場合の実耐久値。対近接時は効果を発揮しない。
 	 * @return 耐久値
 	 */
 	public double getLife(boolean ndef_on) {

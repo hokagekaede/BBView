@@ -360,7 +360,7 @@ public class BBData extends KVCStore {
 	}
 
 	//--------------------------------------------------
-	// 索敵面積関連
+	// 索敵装備関連
 	//--------------------------------------------------
 	
 	/**
@@ -669,7 +669,6 @@ public class BBData extends KVCStore {
 
 	/**
 	 * 指定の属性値の数値を読み込む。
-	 * @param abs_str 武器の属性値
 	 * @param abs_type 属性値の種類
 	 * @return 属性値 [%]
 	 */
@@ -1057,7 +1056,6 @@ public class BBData extends KVCStore {
 
 	/**
 	 * 秒間火力を取得する。
-	 * @param data 指定の武器
 	 * @return 秒間火力
 	 */
 	public double get1SecPower() {
@@ -1106,8 +1104,7 @@ public class BBData extends KVCStore {
 	 * ポンプアクション込みの計算を行う。
 	 * 連射速度から1射に要する時間を求め、それにポンプアクションの時間(0.8s)を加算し、
 	 * 1秒から算出結果を除算することで実連射速度を求める。
-	 * 
-	 * @param data ライトニングスマック
+	 *
 	 * @return 秒間火力
 	 */
 	private double get1SecPowerLightning() {
@@ -1183,7 +1180,6 @@ public class BBData extends KVCStore {
 
 	/**
 	 * ライトニングスマックの戦術火力を取得する。
-	 * @param data ライトニングスマック
 	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
 	 * @return 戦術火力
 	 */
@@ -1204,7 +1200,6 @@ public class BBData extends KVCStore {
 	
 	/**
 	 * OH火力を取得する。
-	 * @param data 武器データ
 	 * @return OH火力
 	 */
 	public double getOverHeatPower() {
@@ -1405,7 +1400,7 @@ public class BBData extends KVCStore {
 	/**
 	 * 近接武器の威力の文字列から合計ダメージ値を取得する.
 	 * 合計ダメージは"="以降の数値とする。
-	 * @param damege_str 武器の文字列データ
+	 * @param damage_str 武器の文字列データ
 	 * @return 合計ダメージ値
 	 */
 	private int getSlashSumPower(String damage_str) {

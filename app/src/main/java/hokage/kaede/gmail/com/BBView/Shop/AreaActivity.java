@@ -26,14 +26,14 @@ public class AreaActivity extends BaseActivity implements OnItemClickListener {
 	 * 起動時の処理を行う。
 	 * @param savedInstanceState
 	 */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        this.setTitle(getString(R.string.app_name) + " (都道府県で検索する)");
-        
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		this.setTitle(getString(R.string.app_name) + " (都道府県で検索する)");
+		
 		// 全体レイアウト設定
-        LinearLayout layout_all = new LinearLayout(this);
+		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
 		layout_all.setGravity(Gravity.LEFT | Gravity.TOP);
@@ -47,13 +47,13 @@ public class AreaActivity extends BaseActivity implements OnItemClickListener {
 
 		layout_all.addView(area_list);
 		
-        setContentView(layout_all);
-    }
+		setContentView(layout_all);
+	}
 
-    /**
-     * リスト項目選択時の処理を行う。
-     * 店舗一覧を取得し、次の店舗一覧画面へ遷移する。
-     */
+	/**
+	 * リスト項目選択時の処理を行う。
+	 * 店舗一覧を取得し、次の店舗一覧画面へ遷移する。
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> list, View arg1, int index, long arg3) {
 		Intent intent = new Intent(this, PlaceActivity.class);

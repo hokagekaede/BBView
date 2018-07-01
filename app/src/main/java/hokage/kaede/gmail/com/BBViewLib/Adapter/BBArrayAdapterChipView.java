@@ -40,30 +40,30 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 		mCheckBox = new CheckBox(context);
 
 		mExtraDataView = new LinearLayout(context);
-    	mExistTextView = new TextView(context);
-    	mFavoriteTextView = new TextView(context);
-    	
+		mExistTextView = new TextView(context);
+		mFavoriteTextView = new TextView(context);
+		
 		mCheckBox.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
 		mCheckBox.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 
-        mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-        mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-        mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
+		mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-        mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-        mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-        mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        mFavoriteTextView.setPadding(10, 0, 10, 0);
+		mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
+		mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		mFavoriteTextView.setPadding(10, 0, 10, 0);
 
-        mExtraDataView.setOrientation(LinearLayout.HORIZONTAL);
-        mExtraDataView.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
-        mExtraDataView.setWeightSum((float)1.0);
-        mExtraDataView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
-        mExtraDataView.addView(mExistTextView);
-        mExtraDataView.addView(mFavoriteTextView);
-        
-        this.addView(mCheckBox);
-        this.addView(mExtraDataView);
+		mExtraDataView.setOrientation(LinearLayout.HORIZONTAL);
+		mExtraDataView.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
+		mExtraDataView.setWeightSum((float)1.0);
+		mExtraDataView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+		mExtraDataView.addView(mExistTextView);
+		mExtraDataView.addView(mFavoriteTextView);
+		
+		this.addView(mCheckBox);
+		this.addView(mExtraDataView);
 	}
 
 	/**
@@ -73,9 +73,9 @@ public class BBArrayAdapterChipView extends BBArrayAdapterBaseView {
 	public void updateView() {
 		BBData target_item = getItem();
 		mCheckBox.setText(target_item.get("名称") + " [" + target_item.get("コスト") + "]");
-    	mExistTextView.setText(createExistText());
-    	
-    	super.updateFavorite(mFavoriteTextView);
+		mExistTextView.setText(createExistText());
+		
+		super.updateFavorite(mFavoriteTextView);
 	}
 
 	/**

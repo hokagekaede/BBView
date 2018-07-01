@@ -54,7 +54,7 @@ public class PurchasePreviewActivity extends BaseActivity {
 		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
-        layout_all.setOrientation(LinearLayout.VERTICAL);
+		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setGravity(Gravity.TOP);
 
 		// 購入リストの読み込み

@@ -93,41 +93,41 @@ public class FileIO {
 	 * @return
 	 */
 	public static boolean copyFile(File in, File out)
-    {
-    	boolean ret = true;
-    	FileChannel sourceChannel = null;
-    	FileChannel destinationChannel = null;
-    	
-    	try {
-	        sourceChannel = new FileInputStream(in).getChannel();
-	        destinationChannel = new FileOutputStream(out).getChannel();
-	
-	        sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-	        sourceChannel.close();
-	        destinationChannel.close();
-	        
-    	} catch (Exception e) {
-    		ret = false;
-    		// e.printStackTrace();
-    		
-    	} finally {
-    		try { sourceChannel.close(); } catch (Exception e) { };
-    		try { destinationChannel.close(); } catch (Exception e) { };
-    	}
-    	
-    	return ret;
-    }
+	{
+		boolean ret = true;
+		FileChannel sourceChannel = null;
+		FileChannel destinationChannel = null;
+		
+		try {
+			sourceChannel = new FileInputStream(in).getChannel();
+			destinationChannel = new FileOutputStream(out).getChannel();
+			
+			sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+			sourceChannel.close();
+			destinationChannel.close();
+			
+		} catch (Exception e) {
+			ret = false;
+			// e.printStackTrace();
+			
+		} finally {
+			try { sourceChannel.close(); } catch (Exception e) { };
+			try { destinationChannel.close(); } catch (Exception e) { };
+		}
+		
+		return ret;
+	}
 	
 	private static final int READ_MAX_BUFFER = 2048 * 4;
-    
-    /**
-     * 指定のストリームから文字データを読み込む
-     * @param is 入力元のストリーム
-     * @param encode 文字のエンコード
-     * @return 読み込んだ文字列
-     */
-    public static String readInputStream(InputStream is, String encode)
-    {
+	
+	/**
+	 * 指定のストリームから文字データを読み込む
+	 * @param is 入力元のストリーム
+	 * @param encode 文字のエンコード
+	 * @return 読み込んだ文字列
+	 */
+	public static String readInputStream(InputStream is, String encode)
+	{
 		String ret = "";
 		
 		InputStreamReader isr = null;
@@ -159,14 +159,14 @@ public class FileIO {
 		}
 		
 		return ret;
-    }
-    
-    /**
-     * 指定のパスにテキストを書き込む
-     * @param filepath ファイルパス
-     * @param data 書き込むデータ
-     * @param encode エンコード
-     */
+	}
+	
+	/**
+	 * 指定のパスにテキストを書き込む
+	 * @param filepath ファイルパス
+	 * @param data 書き込むデータ
+	 * @param encode エンコード
+	 */
 	public static void write(String filepath, String data, String encode) {
 		FileOutputStream fos = null;
 		OutputStreamWriter osr = null;

@@ -67,20 +67,20 @@ public class PreferenceIO {
 	 * @param key
 	 * @param value
 	 */
-    public static void write(Context context, String key, boolean value) {
+	public static void write(Context context, String key, boolean value) {
 		SharedPreferences pf = PreferenceManager.getDefaultSharedPreferences(context);
 		pf.edit().putBoolean(key, value).commit();
-    }
+	}
 
-    /**
-     * boolean型のデータをプリファレンスから読み込む。
-     * @param context
-     * @param key
-     * @param default_value
-     * @return
-     */
-    public static Boolean read(Context context, String key, boolean default_value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(key, default_value);
-    }
+	/**
+	 * boolean型のデータをプリファレンスから読み込む。
+	 * @param context
+	 * @param key
+	 * @param default_value
+	 * @return
+	 */
+	public static Boolean read(Context context, String key, boolean default_value) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(key, default_value);
+	}
 }

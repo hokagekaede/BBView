@@ -283,7 +283,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
 		layout_all.setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
-        layout_all.setOrientation(LinearLayout.VERTICAL);
+		layout_all.setOrientation(LinearLayout.VERTICAL);
 		layout_all.setGravity(Gravity.TOP);
 
 		// タイトルを設定
