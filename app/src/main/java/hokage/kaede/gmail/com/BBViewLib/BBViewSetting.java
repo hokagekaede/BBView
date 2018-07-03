@@ -104,7 +104,7 @@ public class BBViewSetting extends SettingManager {
 	 */
 	public static boolean IS_SHOW_CATEGORYPARTS_INIT = false;
 	public static final String SETTING_SHOW_CATEGORYPARTS_INIT = "SETTING_SHOW_CATEGORYPARTS_INIT";
-	
+
 	/**
 	 * 所持品表示設定。Trueで購入済み(開発済み)のみを表示する。
 	 */

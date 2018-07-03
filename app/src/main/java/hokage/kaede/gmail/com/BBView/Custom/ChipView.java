@@ -49,16 +49,21 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	private BBExpandableChipAdapter mChipListAdapter;
 
 	private ArrayList<BBData> mBeforeChipList;
-	
+
+	// チップ画面表示前の状態から変更があったかどうか
 	private boolean mIsChanged;
+
+	// 所持品のみ表示設定
+	private boolean mIsHavingOnly = false;
 	
 	// チップ登録エラーメッセージ
 	private String mErrorMessage;
 
-	public ChipView(Context context) {
+	public ChipView(Context context, boolean is_show_having) {
 		super(context);
 		
 		mIsChanged = false;
+		mIsHavingOnly = is_show_having;
 		mErrorMessage = "";
 
 		mDataManager = BBDataManager.getInstance();
@@ -72,6 +77,14 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		
 		// 容量テキストを更新する
 		updateWeightText();
+	}
+
+	/**
+	 * 所持品のみ表示設定の状態を設定する。
+	 * @param is_having_only 有効にする場合はtrueを設定し、無効にする場合はfalseを設定する。
+	 */
+	public void setHavingMode(boolean is_having_only) {
+		mIsHavingOnly = is_having_only;
 	}
 	
 	/**
@@ -87,6 +100,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		// フィルタをチップのみに設定
 		mFilter = new BBDataFilter();
 		mFilter.setOtherType(BBDataManager.CHIP_STR);
+		mFilter.setNotHavingShow(!mIsHavingOnly);
 
 		// フィルタ設定ダイアログを初期化する
 		ArrayList<String> key_list = new ArrayList<String>();
@@ -115,11 +129,11 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		layout_btm.setOrientation(LinearLayout.HORIZONTAL);
 		layout_btm.setGravity(Gravity.TOP);
 		
-		// 決定ボタンを生成する
+		// 元に戻すボタンを生成する
 		Button ok_button = new Button(context);
-		ok_button.setText("決定");
+		ok_button.setText("戻す");
 		ok_button.setLayoutParams(new LinearLayout.LayoutParams(WC, WC, 1));
-		ok_button.setOnClickListener(new OnClickOKButtonListener());
+		ok_button.setOnClickListener(new OnClickUndoButtonListener());
 		
 		// クリアボタンを生成する
 		Button clear_button = new Button(context);
@@ -234,15 +248,16 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	}
 	
 	/**
-	 * 決定ボタンを押下した際の処理を行うリスナー。
-	 * データチェック後保存、処理をする。
+	 * 戻すボタンを押下した際の処理を行うリスナー。
+	 * チップの選択状態を変更前の状態に戻す。
 	 */
-	private class OnClickOKButtonListener implements OnClickListener {
+	private class OnClickUndoButtonListener implements OnClickListener {
 
 		@Override
 		public void onClick(View arg0) {
-			saveCustomData();
-			Toast.makeText(getContext(), "チップを登録しました。", Toast.LENGTH_SHORT).show();
+			undo();
+			redraw();
+			Toast.makeText(getContext(), "編集前の状態に戻しました。", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -326,7 +341,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	/**
 	 * カスタマイズデータを保存する
 	 */
-	private void saveCustomData() {
+	public void saveCustomData() {
 
 		// カスタムデータをファイルに書き込む。
 		Context context = getContext();
@@ -356,7 +371,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	}
 
 	/**
-	 * 次へボタンを押下した時の処理を行うリスナー
+	 * 前へボタンを押下した時の処理を行うリスナー
 	 */
 	private class OnClickLastButtonListener implements OnClickListener {
 
@@ -376,7 +391,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	/**
 	 * チップの編集状況をリセットする。画面切り替え時などに使用する。
 	 */
-	public void reset() {
+	private void undo() {
 		if(mIsChanged) {
 			mCustomData.clearChips();
 			
@@ -419,13 +434,21 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	 */
 	@Override
 	public void onClickValueFilterButton() {
+		updateFilter();
+	}
+
+	/**
+	 * フィルタの内容に応じてリストを更新する。
+	 */
+	public void updateFilter() {
 		mFilter = mFilterManager.getFilter();
+		mFilter.setNotHavingShow(!mIsHavingOnly);
 
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
 		mChipListAdapter.clear();
 		mChipListAdapter.addChildren(datalist);
 		mChipListAdapter.notifyDataSetChanged();
-		
+
 		if(datalist.size() <= 0) {
 			Toast.makeText(ChipView.this.getContext(), "条件に一致するチップはありません。", Toast.LENGTH_SHORT).show();
 		}

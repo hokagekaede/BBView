@@ -35,11 +35,13 @@ public class CustomMainActivity extends BaseActivity {
 	private static final String MENU_RESET_CUSTOM    = "アセンをリセットする";
 	private static final String MENU_SHOW_SIMPLE     = "簡易表示する";
 	private static final String MENU_CHIP_FILTER     = "フィルタ設定";
+	private static final String MENU_CHIP_HAVING     = "所持品のみ表示";
 	private static final String MENU_RESIST_FILTER   = "フィルタ設定";
 	private static final String MENU_SHARE           = "アセン共有";
 	
 	private boolean mIsShowTypeB = false;
 	private boolean mIsShowChips = false;
+	private boolean mIsChipHavingOnly = false;
 	private boolean mIsShowSimple = false;
 	private int mSpecViewMode = SpecView.MODE_BASE;
 	
@@ -110,6 +112,9 @@ public class CustomMainActivity extends BaseActivity {
 			if(view instanceof SpecView) {
 				mSpecViewMode = ((SpecView)view).getMode();
 			}
+			else if(view instanceof ChipView) {
+				((ChipView)view).saveCustomData();
+			}
 			
 		} catch(Exception e) {
 			mSpecViewMode = SpecView.MODE_BASE;
@@ -124,7 +129,7 @@ public class CustomMainActivity extends BaseActivity {
 			target_view = new CustomView(this, custom_data, mIsShowChips);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
-			target_view = new ChipView(this);
+			target_view = new ChipView(this, mIsChipHavingOnly);
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
 			target_view = new SpecView(this, mIsShowSimple, mSpecViewMode, mIsShowTypeB);
@@ -274,6 +279,11 @@ public class CustomMainActivity extends BaseActivity {
 		else if(mViewMode.equals(VIEWMODE_STR_CHIP)) {
 			MenuItem item = menu.add(MENU_CHIP_FILTER);
 			item.setOnMenuItemClickListener(new OnMenuFilterChipListener());
+
+			item = menu.add(MENU_CHIP_HAVING);
+			item.setCheckable(true);
+			item.setChecked(mIsChipHavingOnly);
+			item.setOnMenuItemClickListener(new OnMenuShorChipHavingListener());
 		}
 		else if(mViewMode.equals(VIEWMODE_STR_SPEC)) {
 			MenuItem item = menu.add(MENU_SHOW_SIMPLE);
@@ -325,7 +335,7 @@ public class CustomMainActivity extends BaseActivity {
 		}
 		
 	}
-	
+
 	/**
 	 * チップを表示するのメニュー選択時の処理を行う。
 	 */
@@ -377,7 +387,31 @@ public class CustomMainActivity extends BaseActivity {
 
 		}
 	}
-	
+
+	/**
+	 * 所持品のみ表示(チップ)選択時の処理を行う。
+	 */
+	private class OnMenuShorChipHavingListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			mIsChipHavingOnly = !mIsChipHavingOnly;
+			item.setChecked(mIsChipHavingOnly);
+
+			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
+			View view = main_layout.findViewById(SHOW_VIEW_ID);
+
+			if(view instanceof ChipView) {
+				ChipView targetview = ((ChipView)view);
+				targetview.setHavingMode(mIsChipHavingOnly);
+				targetview.updateFilter();
+				targetview.redraw();
+			}
+
+			return false;
+		}
+	}
+
 	/**
 	 * チップのフィルタ設定起動時の処理を行う。
 	 */
@@ -397,7 +431,7 @@ public class CustomMainActivity extends BaseActivity {
 	}
 
 	/**
-	 * チップのフィルタ設定起動時の処理を行う。
+	 * 耐性画面のフィルタ設定起動時の処理を行う。
 	 */
 	private class OnMenuFilterResistListener implements OnMenuItemClickListener {
 
