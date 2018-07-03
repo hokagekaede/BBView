@@ -500,8 +500,10 @@ public class SpecArray {
 
 	/**
 	 * 単発威力の配列を生成する。備考欄に転倒ダメージ値を表示する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpOneShotPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -538,8 +540,10 @@ public class SpecArray {
 
 	/**
 	 * 単発威力(CS時)の配列を生成する。備考欄に転倒ダメージ値を表示する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpCsShotPowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -648,8 +652,10 @@ public class SpecArray {
 
 	/**
 	 * 戦術火力の配列を生成する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpBattlePowerArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -724,8 +730,10 @@ public class SpecArray {
 
 	/**
 	 * リロード時間の配列を生成する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpReloadTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -751,8 +759,10 @@ public class SpecArray {
 
 	/**
 	 * OH耐性の配列を生成する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpOverheatTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -801,8 +811,10 @@ public class SpecArray {
 
 	/**
 	 * OH復帰時間の配列を生成する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpOverheatRepairTimeArray(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {
@@ -871,8 +883,10 @@ public class SpecArray {
 	/**
 	 * 総弾数の配列を生成する。
 	 * 1マガジンからあふれた分は"+n"で表示する。
-	 * @param data アセンデータ
-	 * @param weapon 武器データ
+	 * @param from_data
+	 * @param to_data
+	 * @param from_weapon
+	 * @param to_weapon
 	 * @return 配列
 	 */
 	public static SpecRow getCmpMagazineCount(CustomData from_data, CustomData to_data, BBData from_weapon, BBData to_weapon) {

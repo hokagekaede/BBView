@@ -35,7 +35,7 @@ public class CustomDataManager {
 	
 	/**
 	 * デフォルトのカスタムファイルを設定する。
-	 * @param custom_data カスタムファイル。
+	 * @param default_data カスタムファイル。
 	 */
 	public static void setDefaultData(FileKeyValueStore default_data) {
 		sDefault = default_data;

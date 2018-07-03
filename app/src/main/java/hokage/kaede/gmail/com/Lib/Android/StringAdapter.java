@@ -72,7 +72,7 @@ public class StringAdapter extends BaseAdapter {
 
 	/**
 	 * リストのデータを取得する。
-	 * @param 取得するデータの位置
+	 * @param position 取得するデータの位置
 	 * @return リストのデータ
 	 */
 	@Override

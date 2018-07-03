@@ -1143,7 +1143,7 @@ public class BBData extends KVCStore {
 			ret = getBattlePowerOverHeat(false);  // OH前の戦術火力を取得する
 		}
 		else if(super.get("名称").equals("ライトニングスマック")) {
-			ret = getBattlePowerLightning(false);
+			ret = getBattlePowerLightning();
 		}
 		else {
 			ret = getBattlePowerDefault();
@@ -1180,10 +1180,9 @@ public class BBData extends KVCStore {
 
 	/**
 	 * ライトニングスマックの戦術火力を取得する。
-	 * @param is_quickreload クイックリロードチップの効果を反映するかどうか。
 	 * @return 戦術火力
 	 */
-	public double getBattlePowerLightning(boolean is_quickreload) {
+	public double getBattlePowerLightning() {
 		double ret = 0;
 		double shot_speed = getShotSpeed();
 		double magazine_power = getMagazinePower();

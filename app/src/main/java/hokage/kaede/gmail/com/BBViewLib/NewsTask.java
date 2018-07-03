@@ -16,7 +16,7 @@ public class NewsTask extends AsyncTask<Object, Integer, Object> {
 	/**
 	 * 初期化処理を行う。
 	 * @param context 表示する画面
-	 * @param mNewsText ニュースの文字列
+	 * @param dir_path
 	 */
 	public NewsTask(Context context, String dir_path) {
 		mContext = context;

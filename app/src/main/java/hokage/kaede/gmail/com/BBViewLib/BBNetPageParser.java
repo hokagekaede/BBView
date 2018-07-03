@@ -187,7 +187,6 @@ public class BBNetPageParser {
 	
 	/**
 	 * BB.NETにログインし、カード名とURLを取得する。
-	 * @param context
 	 * @param uid
 	 * @param password
 	 * @return
@@ -232,7 +231,6 @@ public class BBNetPageParser {
 	
 	/**
 	 * 指定のURLのページデータから指定の文字列のリンクを取得する。
-	 * @param context
 	 * @param url_str
 	 * @param link_name
 	 * @return
@@ -260,7 +258,8 @@ public class BBNetPageParser {
 
 	/**
 	 * 機体パーツデータを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
 	 * @return
 	 */
 	public static void readPartsList(String url_str, KeyValueStore output) throws Exception {
@@ -289,7 +288,9 @@ public class BBNetPageParser {
 
 	/**
 	 * 武器データを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
+	 * @param blust_type
 	 * @return
 	 */
 	public static void getWeaponList(String url_str, KeyValueStore output, String blust_type) throws Exception {
@@ -318,7 +319,8 @@ public class BBNetPageParser {
 
 	/**
 	 * 武器データを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
 	 * @return
 	 */
 	public static void readWeaponList(String url_str, KeyValueStore output) throws Exception {
@@ -347,7 +349,6 @@ public class BBNetPageParser {
 	
 	/**
 	 * チップのデータを取得する。
-	 * @param context
 	 * @param url_str
 	 * @param output
 	 * @throws Exception
@@ -378,7 +379,8 @@ public class BBNetPageParser {
 
 	/**
 	 * 素材データを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
 	 * @return
 	 */
 	public static void getMaterialList(String url_str, KeyValueStore output) throws Exception {
@@ -411,7 +413,8 @@ public class BBNetPageParser {
 
 	/**
 	 * 勲章データを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
 	 * @return
 	 */
 	public static void getMedalList(String url_str, KeyValueStore output) throws Exception {
@@ -435,7 +438,6 @@ public class BBNetPageParser {
 	
 	/**
 	 * 勲章のデータを取得する。
-	 * @param context
 	 * @param url_str
 	 * @param output
 	 * @throws Exception
@@ -475,7 +477,8 @@ public class BBNetPageParser {
 
 	/**
 	 * シードデータを取得する。
-	 * @param input
+	 * @param url_str
+	 * @param output
 	 * @return
 	 */
 	public static void getSeedList(String url_str, KeyValueStore output) throws Exception {
@@ -541,6 +544,8 @@ public class BBNetPageParser {
 	/**
 	 * ページソースからURLを取得する。
 	 * @param web_data
+	 * @param keyword
+	 * @param number
 	 * @return
 	 */
 	private static String getUrl(String web_data, String keyword, int number) {
@@ -586,6 +591,8 @@ public class BBNetPageParser {
 	/**
 	 * ページソースから先頭文字列が等しいURLを取得する。
 	 * @param web_data
+	 * @param keyword
+	 * @param number
 	 * @return
 	 */
 	private static String getUrlStartsWith(String web_data, String keyword, int number) {

@@ -100,7 +100,7 @@ public class NewsReader {
 	
 	/**
 	 * ENUM_NEWS_ITEM列挙子に応じたニュースデータを取得する。
-	 * @param idx
+	 * @param item
 	 * @return
 	 */
 	public String get(ITEM item) {

@@ -25,7 +25,6 @@ public class CmpPartsTableBuilder {
 	/**
 	 * 初期化を行う。
 	 * @param activity
-	 * @param builder
 	 * @param is_km_per_hour
 	 */
 	public CmpPartsTableBuilder(Activity activity, boolean is_km_per_hour) {

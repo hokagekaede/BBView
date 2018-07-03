@@ -12,9 +12,7 @@ public class ShopDataTask extends AsyncTask<Object, Integer, Object> {
 	
 	/**
 	 * 初期化処理を行う。
-	 * @param context ダイアログを表示する画面
-	 * @param area_name 地域名
-	 * @param intent 次画面遷移用のインテント
+	 * @param activity タスクを実行しているアクティビティ
 	 */
 	public ShopDataTask(Activity activity) {
 		this.mActivity = activity;

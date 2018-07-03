@@ -114,7 +114,7 @@ public abstract class BBExpandableAdapter extends BaseExpandableListAdapter {
 	/**
 	 * 項目を削除する。
 	 * @param groupPosition グループの位置
-	 * @param item 削除する項目
+	 * @param data 削除する項目
 	 */
 	public void removeChild(int groupPosition, BBData data) {
 
@@ -129,7 +129,7 @@ public abstract class BBExpandableAdapter extends BaseExpandableListAdapter {
 	/**
 	 * 項目を削除する。
 	 * @param groupPosition グループの位置
-	 * @param childPosition データの位置
+	 * @param childPosotion データの位置
 	 */
 	public void removeChild(int groupPosition, int childPosotion) {
 		int size = mGroupDataList.size();
