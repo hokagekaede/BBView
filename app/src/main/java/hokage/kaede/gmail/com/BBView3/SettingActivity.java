@@ -100,13 +100,6 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		speed_view_type.setChecked(BBViewSetting.IS_KM_PER_HOUR);
 		screen.addPreference(speed_view_type);
 
-		CheckBoxPreference hover_view_type = new CheckBoxPreference(this);
-		hover_view_type.setTitle("ホバー脚部の二脚基準表示");
-		hover_view_type.setSummary("ONの場合は二脚基準、OFFの場合はホバー基準");
-		hover_view_type.setKey(BBViewSetting.SETTING_HOVER_TO_LEGS);
-		hover_view_type.setChecked(BBViewSetting.IS_HOVER_TO_LEGS);
-		screen.addPreference(hover_view_type);
-
 		CheckBoxPreference armor_view_type = new CheckBoxPreference(this);
 		armor_view_type.setTitle("装甲のダメージ係数表示");
 		armor_view_type.setSummary("ONの場合はダメージ係数で表示、OFFの場合は公式準拠値で表示");
@@ -153,7 +146,19 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		show_type_label.setKey(BBViewSetting.SETTING_SHOW_TYPELABEL);
 		show_type_label.setChecked(BBViewSetting.IS_SHOW_TYPELABEL);
 		screen.addPreference(show_type_label);
-		
+
+		// 性能画面
+		PreferenceCategory spec_category = new PreferenceCategory(this);
+		spec_category.setTitle("性能画面");
+		screen.addPreference(spec_category);
+
+		CheckBoxPreference hover_view_type = new CheckBoxPreference(this);
+		hover_view_type.setTitle("ホバー脚部の二脚基準表示");
+		hover_view_type.setSummary("ONの場合は二脚基準、OFFの場合はホバー基準");
+		hover_view_type.setKey(BBViewSetting.SETTING_HOVER_TO_LEGS);
+		hover_view_type.setChecked(BBViewSetting.IS_HOVER_TO_LEGS);
+		screen.addPreference(hover_view_type);
+
 		// パーツ/武器選択画面
 		PreferenceCategory select_category = new PreferenceCategory(this);
 		select_category.setTitle("パーツ/武器選択画面");

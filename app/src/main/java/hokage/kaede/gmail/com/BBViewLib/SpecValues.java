@@ -856,7 +856,6 @@ public class SpecValues {
 			// ホバー脚部の二脚基準/ホバー基準設定に応じて、使用するテーブルを変更する
 			if(!BBViewSetting.IS_HOVER_TO_LEGS && is_hover) {
 				point = getPointAsc(SpecValues.WALK_HOVER, tmp_value);
-				Log.e("check", "check");
 			}
 			else {
 				point = getPointAsc(SpecValues.WALK, tmp_value);

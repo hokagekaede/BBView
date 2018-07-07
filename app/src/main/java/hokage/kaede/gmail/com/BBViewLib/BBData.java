@@ -1360,7 +1360,15 @@ public class BBData extends KVCStore {
 	 * @return 近接武器のダメージ。
 	 */
 	public int getSlashDamage(boolean is_dash, int charge_level) {
-		String damage_str = selectSlashString(is_dash);
+		String damage_str = "";
+
+		// チェーンソー系統はダッシュ時も通常攻撃とダメージが同じ
+		if(existCategory("チェーンソー系統")) {
+			damage_str = selectSlashString(false);
+		}
+		else {
+			damage_str = selectSlashString(is_dash);
+		}
 		
 		// チャージ武器の場合、チャージレベルに応じた威力の文字列を取得する
 		if(isChargeWeapon()) {

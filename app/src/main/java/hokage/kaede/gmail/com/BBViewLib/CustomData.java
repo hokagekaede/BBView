@@ -3439,13 +3439,13 @@ public class CustomData {
 		
 		// 転倒耐性チップの効果を反映する
 		if(existChip("転倒耐性")) {
-			resist_chip_value = 500;
-		}
-		else if(existChip("転倒耐性II")) {
 			resist_chip_value = 1000;
 		}
+		else if(existChip("転倒耐性II")) {
+			resist_chip_value = 2000;
+		}
 		else if(existChip("転倒耐性III")) {
-			resist_chip_value = 1500;
+			resist_chip_value = 3000;
 		}
 		
 		if(isHoverLegs()) {
@@ -3483,6 +3483,9 @@ public class CustomData {
 		}
 		else if(existChip("転倒耐性II")) {
 			resist_chip_value = 1000;
+		}
+		else if(existChip("転倒耐性III")) {
+			resist_chip_value = 1500;
 		}
 		
 		if(isHoverLegs()) {
