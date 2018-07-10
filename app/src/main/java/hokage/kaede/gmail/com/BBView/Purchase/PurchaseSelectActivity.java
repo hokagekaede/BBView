@@ -147,8 +147,11 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		menu.add(0, MENU_ITEM1, 0, "絞込み設定").setIcon(android.R.drawable.ic_menu_add);
-		menu.add(0, MENU_ITEM2, 0, "全て表示").setIcon(android.R.drawable.ic_menu_add);
+		menu.add(0, MENU_ITEM1, 0, "フィルタ設定");
+
+		MenuItem item = menu.add(0, MENU_ITEM2, 0, "未所持のみ表示");
+		item.setCheckable(true);
+		item.setChecked(mIsNotHavingOnly);
 		
 		return true;
 	}
@@ -163,14 +166,8 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 				mFilterManager.showDialog();
 				break;
 			case MENU_ITEM2:
-				if(mIsNotHavingOnly) {
-					item.setTitle("未所持のみ表示");
-					mIsNotHavingOnly = false;
-				}
-				else {
-					item.setTitle("全て表示");
-					mIsNotHavingOnly = true;
-				}
+				mIsNotHavingOnly = !mIsNotHavingOnly;
+				item.setChecked(mIsNotHavingOnly);
 				updateList();
 		}
 		

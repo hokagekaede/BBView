@@ -703,29 +703,56 @@ public class BBData extends KVCStore {
 	}
 	
 	/**
-	 * 射撃武器かどうか。実弾武器またはニュード100%の武器を射撃武器とする。
-	 * また、炸薬砲系統も射撃武器とする。
+	 * 射撃武器かどうか。CSが存在する武器を射撃武器とする。
+	 * 以下の武器を対象とする。
+	 * ・実弾属性を含む武器。
+	 * ・パイロダート系統。(CSが存在する)
+	 * ・ニュード属性100%の武器。ただし、以下は除く。
+	 *     ・二連光波刃系統
+	 *     ・ランサー系統
+	 *     ・NeLIS系統
+	 *     ・バインドダート系統
+	 *     ・バインドマイン系統
+	 *     ・スタナー系統
+	 *     ・ワイヤーユニット系統
 	 * @return 射撃武器の場合はtrueを返し、そうでない場合はfalseを返す。
 	 */
 	public boolean isShotWeapon() {
 		String abs_str = super.get("属性");
 		String name = super.get("名称");
 
-		// スタナー系統、バインドマイン系統、NeLIS系統はニュード100%だが除外する
-		if(name.contains("スタナー") || name.contains("バインドマイン") || existCategory("NeLIS系統")) {
-			return false;
+		if(abs_str.contains(SHOT_ABS_BULLET)) {
+			return true;
 		}
-		else if(abs_str.contains(SHOT_ABS_BULLET)) {
+		else if(existCategory("パイロダート系統")) {
 			return true;
 		}
 		else if(abs_str.contains(SHOT_ABS_NEWD) && readAbsolutePer(SHOT_ABS_NEWD) == 100) {
-			return true;
-		}
-		else if(name.contains("炸薬砲")) {
-			return true;
-		}
-		else if(name.contains("炸薬狙撃銃")) {
-			return true;
+
+			if(existCategory("二連光波刃系統")) {
+				return false;
+			}
+			else if(existCategory("ランサー系統")) {
+				return false;
+			}
+			else if(existCategory("NeLIS系統")) {
+				return false;
+			}
+			else if(existCategory("バインドダート系統")) {
+				return false;
+			}
+			else if(existCategory("バインドマイン系統")) {
+				return false;
+			}
+			else if(existCategory("スタナー系統")) {
+				return false;
+			}
+			else if(existCategory("ワイヤーユニット系統")) {
+				return false;
+			}
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -739,6 +766,9 @@ public class BBData extends KVCStore {
 		String abs_str = super.get("属性");
 		
 		if(abs_str.contains(SHOT_ABS_SLASH)) {
+			return true;
+		}
+		else if(existCategory("二連光波刃系統")) {
 			return true;
 		}
 		
