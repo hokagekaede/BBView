@@ -3,7 +3,7 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 import java.util.ArrayList;
 
 /**
- * アセンの詳細情報を管理するクラス。
+ * アセンの詳細情報を保持するクラス。
  */
 public class CustomData {
 	private BBData[] mRecentParts;

@@ -1,6 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
  * 現在編集中のアセンデータを管理するクラス。

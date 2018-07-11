@@ -1,8 +1,12 @@
 package hokage.kaede.gmail.com.BBView3.Shop;
 
-import hokage.kaede.gmail.com.BBView3.Shop.DistanceSetTask.OnEndTaskListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.DistanceSetTask;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.DistanceSetTask.OnEndTaskListener;
 import hokage.kaede.gmail.com.BBView3.R;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.PlaceAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopData;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopDatabase;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +32,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 「GPS検索」画面を表示するクラス。
+ */
 public class GpsActivity extends BaseActivity implements OnItemClickListener, LocationListener, OnEndTaskListener, OnCancelListener {
 
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;

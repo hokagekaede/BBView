@@ -8,11 +8,11 @@ import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataWriter;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBExpandableChipAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBExpandableChipAdapter.OnChengedChipSetBaseListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ChipExpandableAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ChipExpandableAdapter.OnChengedChipSetBaseListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * チップ画面のレイアウト
+ * 「チップ」画面を表示するクラス。
  */
 public class ChipView extends LinearLayout implements OnClickValueFilterButtonListener {
 
@@ -42,11 +42,11 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	private static final int CHIP_LIST_VIEW_ID = 3231;
 
 	private BBDataManager mDataManager;
-	private BBAdapterValueFilterManager mFilterManager;
+	private ValueFilterDialog mFilterManager;
 	private CustomData mCustomData;
 	private BBDataFilter mFilter;
 	
-	private BBExpandableChipAdapter mChipListAdapter;
+	private ChipExpandableAdapter mChipListAdapter;
 
 	private ArrayList<BBData> mBeforeChipList;
 
@@ -105,11 +105,11 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		// フィルタ設定ダイアログを初期化する
 		ArrayList<String> key_list = new ArrayList<String>();
 		key_list.add("コスト");
-		mFilterManager = new BBAdapterValueFilterManager(mFilter, key_list);
+		mFilterManager = new ValueFilterDialog(mFilter, key_list);
 		mFilterManager.setOnClickValueFilterButtonListener(this);
 		
 		// アダプタを設定する
-		mChipListAdapter = new BBExpandableChipAdapter();
+		mChipListAdapter = new ChipExpandableAdapter();
 		mChipListAdapter.addChildren(mDataManager.getList(mFilter));
 		mChipListAdapter.loadCustomData();
 		mChipListAdapter.setOnChengedChipSetListener(new OnChengedChipSetListener());

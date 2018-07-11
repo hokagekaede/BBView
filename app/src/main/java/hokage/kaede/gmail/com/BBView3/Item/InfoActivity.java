@@ -5,10 +5,10 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBDataComparator;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.ViewBuilder;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 
 import java.util.ArrayList;
 
@@ -21,6 +21,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
+/**
+ * 「パーツ武器詳細」画面を表示するクラス。
+ */
 public class InfoActivity extends BaseActivity {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;

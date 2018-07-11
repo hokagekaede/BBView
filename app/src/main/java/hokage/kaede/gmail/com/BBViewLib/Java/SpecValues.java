@@ -1,10 +1,13 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStore;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * スペック値のアルファベット表記と実際の性能値を相互に変換する処理を有するクラス。
+ */
 public class SpecValues {
 
 	/**

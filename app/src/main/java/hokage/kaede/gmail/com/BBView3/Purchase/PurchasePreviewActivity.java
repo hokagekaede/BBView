@@ -7,9 +7,9 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.PurchaseManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.PurchaseStore;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStore;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * 「必要勲章・素材表示」画面を表示するクラス。
+ */
 public class PurchasePreviewActivity extends BaseActivity {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;

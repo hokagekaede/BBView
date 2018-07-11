@@ -1,14 +1,16 @@
 package hokage.kaede.gmail.com.BBView3.Item;
 
-import hokage.kaede.gmail.com.BBView3.Item.CardSelectDialog.OnSelectCardListener;
-import hokage.kaede.gmail.com.BBView3.Item.CardDataReadTask.OnPostExecuteListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.ItemLib.CardDataReadTask;
+import hokage.kaede.gmail.com.BBViewLib.Android.ItemLib.CardSelectDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.ItemLib.CardSelectDialog.OnSelectCardListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.ItemLib.CardDataReadTask.OnPostExecuteListener;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Android.UidManager;
-import hokage.kaede.gmail.com.Lib.Android.UidManager.OnInputPassListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Android.UidDialog;
+import hokage.kaede.gmail.com.StandardLib.Android.UidDialog.OnInputPassListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,6 +22,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 「カテゴリ選択」画面を表示するクラス。
+ */
 public class CategoryListActivity extends BaseActivity implements OnClickListener, OnPostExecuteListener, OnSelectCardListener, OnInputPassListener {
 	
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -31,7 +36,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 	// タイトル名
 	private CharSequence mTitle;
 	
-	private UidManager mUidManager;
+	private UidDialog mUidManager;
 	private String mUid;
 	private String mPassword;
 		
@@ -45,7 +50,7 @@ public class CategoryListActivity extends BaseActivity implements OnClickListene
 		// インスタンス生成
 		mTitle = getTitle();
 
-		mUidManager = new UidManager(this);
+		mUidManager = new UidDialog(this);
 		
 		updateTitle();
 		

@@ -6,10 +6,10 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.SpecArray;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.ViewBuilder;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SpecArray;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Android.StringAdapter;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 /**
- * 性能画面を生成するクラス
+ * 「耐性」画面を表示するクラス。
  */
 public class SpecView extends FrameLayout {
 	

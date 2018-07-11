@@ -1,6 +1,8 @@
 package hokage.kaede.gmail.com.BBView3.Custom;
 
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CmpPartsTableBuilder;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CmpWeaponTableBuilder;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
@@ -9,21 +11,21 @@ import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataWriter;
 import hokage.kaede.gmail.com.BBViewLib.Java.FavoriteManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterCmdManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterShownKeysManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterSortKeyManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBArrayAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBExpandableTextAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterCmdManager.OnExecuteInterface;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterShownKeysManager.OnOKClickListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterSortKeyManager.OnSelectItemListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Java.FileArrayList;
-import hokage.kaede.gmail.com.Lib.Java.ListConverter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ShownKeysDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SortKeyDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.BBDataExpandableAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager.OnExecuteInterface;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ShownKeysDialog.OnOKClickListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SortKeyDialog.OnSelectItemListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.FileArrayList;
+import hokage.kaede.gmail.com.StandardLib.Java.ListConverter;
 
 import java.util.ArrayList;
 
@@ -46,20 +48,23 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+/**
+ * 「パーツ武器選択」画面を表示するクラス。
+ */
 public class SelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnSelectItemListener, OnOKClickListener, OnExecuteInterface, OnClickValueFilterButtonListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	private BBDataManager mDataManager;
 	private BBArrayAdapter mAdapter;
-	private BBExpandableTextAdapter mExAdapter;
+	private BBDataExpandableAdapter mExAdapter;
 	private BBDataFilter mFilter;
 	
 	private FileArrayList mFavStore;
 	
-	private BBAdapterSortKeyManager mSortKeyDialog;
-	private BBAdapterShownKeysManager mShownKeysDialog;
-	private BBAdapterValueFilterManager mFilterManager;
+	private SortKeyDialog mSortKeyDialog;
+	private ShownKeysDialog mShownKeysDialog;
+	private ValueFilterDialog mFilterManager;
 	private BBAdapterCmdManager mCmdDialog;
 	
 	private CmpPartsTableBuilder mCmpPartsDialog;
@@ -172,7 +177,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		ArrayList<String> key_list = ListConverter.convert(mSortKeys);
 
 		// ソート選択ダイアログを初期化する
-		mSortKeyDialog = new BBAdapterSortKeyManager(this, key_list);
+		mSortKeyDialog = new SortKeyDialog(this, key_list);
 		mSortKeyDialog.setSelectItemListener(this);
 		
 		// ソート設定をロードする
@@ -184,7 +189,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 		
 		// 表示項目選択ダイアログを初期化する
-		mShownKeysDialog = new BBAdapterShownKeysManager(this, key_list);
+		mShownKeysDialog = new ShownKeysDialog(this, key_list);
 		mShownKeysDialog.setOnButtonClickListener(this);
 		
 		// 表示項目設定をロードする
@@ -194,7 +199,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 
 		// フィルタ設定ダイアログを初期化する
-		mFilterManager = new BBAdapterValueFilterManager(mFilter, key_list);
+		mFilterManager = new ValueFilterDialog(mFilter, key_list);
 		mFilterManager.setOnClickValueFilterButtonListener(this);
 		mFilterManager.setBBData(recent_data);
 		
@@ -214,11 +219,11 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		mAdapter.notifyDataSetChanged();
 
 		if(blust_type != null && weapon_type != null) {
-			mExAdapter = new BBExpandableTextAdapter(false);
+			mExAdapter = new BBDataExpandableAdapter(false);
 			mExAdapter.initWeapon(blust_type, weapon_type);
 		}
 		else {
-			mExAdapter = new BBExpandableTextAdapter(true);
+			mExAdapter = new BBDataExpandableAdapter(true);
 			mExAdapter.initParts();
 		}
 		
@@ -585,14 +590,14 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 * ソートキーの設定を行う。
 	 */
 	@Override
-	public void onSelectItem(BBAdapterSortKeyManager manager) {
+	public void onSelectItem(SortKeyDialog manager) {
 		updateSort(manager);
 	}
 
 	/**
 	 * ソート設定に応じてリストを更新する。
 	 */
-	private void updateSort(BBAdapterSortKeyManager manager) {
+	private void updateSort(SortKeyDialog manager) {
 		String sort_key = manager.getSortKey();
 		mDataManager.setSortKey(sort_key);
 		mDataManager.setASC(manager.getAsc());
@@ -634,7 +639,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 * 表示項目の設定を行う。
 	 */
 	@Override
-	public void onSelectItem(BBAdapterShownKeysManager manager) {
+	public void onSelectItem(ShownKeysDialog manager) {
 		mAdapter.setShownKeys(manager.getShownKeys());
 		mAdapter.notifyDataSetChanged();
 

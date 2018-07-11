@@ -1,10 +1,13 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.KeyValueStoreManager;
+import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStoreManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * 全てのパーツ、武器、チップなどの情報を管理するクラス。
+ */
 public class BBDataManager extends KeyValueStoreManager<BBData> {
 	
 	public static final String ROOT_PARTS  = "パーツ";

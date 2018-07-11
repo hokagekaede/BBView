@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 
+/**
+ * 購入リストにあるアイテムの購入に必要な勲章数と素材数、GPを算出するクラス。
+ */
 public class PurchaseManager {
 	private ArrayList<String> mMedalNameList;
 	private ArrayList<Integer> mMedalSumList;

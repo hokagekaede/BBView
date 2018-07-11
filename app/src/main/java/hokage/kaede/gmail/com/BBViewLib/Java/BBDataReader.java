@@ -1,12 +1,12 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.FileIO;
+import hokage.kaede.gmail.com.StandardLib.Java.FileIO;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
- * BBデータテキストファイルからデータを読み込むクラス。
+ * アプリ起動時にパーツ、武器のスペック情報を読み込むクラス。
  */
 public class BBDataReader {
 	

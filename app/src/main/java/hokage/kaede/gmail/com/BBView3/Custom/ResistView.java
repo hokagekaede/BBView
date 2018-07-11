@@ -1,14 +1,16 @@
 package hokage.kaede.gmail.com.BBView3.Custom;
 
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ResistAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ResistAdapterItem;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterValueFilterManager.OnClickValueFilterButtonListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
 import java.util.ArrayList;
 
@@ -23,9 +25,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+/**
+ * 「耐性」画面を表示するクラス。
+ */
 public class ResistView extends LinearLayout implements OnClickValueFilterButtonListener, OnItemClickListener {
 	
-	private BBAdapterValueFilterManager mFilterManager;
+	private ValueFilterDialog mFilterManager;
 	private BBDataFilter mFilter;
 	private ResistAdapter mAdapter;
 	
@@ -49,7 +54,7 @@ public class ResistView extends LinearLayout implements OnClickValueFilterButton
 		ArrayList<String> key_list = new ArrayList<String>();
 		key_list.add("威力");
 		mFilter = new BBDataFilter();
-		mFilterManager = new BBAdapterValueFilterManager(mFilter, key_list);
+		mFilterManager = new ValueFilterDialog(mFilter, key_list);
 		mFilterManager.setOnClickValueFilterButtonListener(this);
 		
 		// アダプタの生成

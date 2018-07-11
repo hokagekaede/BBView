@@ -6,16 +6,16 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapterItemCategory;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapterItemParts;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapterItemReqArm;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapterItemWeapon;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.CustomAdapter.CustomAdapterBaseItem;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.ViewBuilder;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Java.FileIO;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapterItemCategory;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapterItemParts;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapterItemReqArm;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapterItemWeapon;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter.CustomAdapterBaseItem;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.FileIO;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,9 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+/**
+ * 「アセン」画面を表示するクラス。
+ */
 public class CustomView extends FrameLayout implements android.widget.AdapterView.OnItemClickListener {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;

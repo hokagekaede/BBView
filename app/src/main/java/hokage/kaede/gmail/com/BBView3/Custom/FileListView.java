@@ -4,9 +4,9 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataReader;
-import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
-import hokage.kaede.gmail.com.Lib.Java.FileManager;
+import hokage.kaede.gmail.com.StandardLib.Android.StringAdapter;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * 「データ」画面を表示するクラス。
+ */
 public class FileListView extends LinearLayout implements AdapterView.OnItemClickListener, DialogInterface.OnClickListener, OnClickListener {
 
 	// レイアウト定義

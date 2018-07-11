@@ -3,7 +3,7 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 import java.util.ArrayList;
 
 /**
- * フィルタ処理とそのためのデータを管理するクラス。
+ * パーツや武器などを一覧表示する際に、そのアイテムが表示対象かどうかを判定するクラス。
  */
 public class BBDataFilter {
 

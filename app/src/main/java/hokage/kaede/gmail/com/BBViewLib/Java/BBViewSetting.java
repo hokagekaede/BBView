@@ -1,6 +1,6 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 
 /**
  * BBView専用の設定データを管理するクラス。

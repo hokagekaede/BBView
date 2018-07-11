@@ -1,10 +1,10 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.KVCStore;
-import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.KVCStore;
+import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStore;
 
 /**
- * ボーダーブレイクのパーツ・武器データを管理するクラス。
+ * １つのパーツや武器などの情報を保持するクラス。
  */
 public class BBData extends KVCStore {
 

@@ -2,10 +2,10 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 
 import java.util.ArrayList;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
- * カスタムデータをファイルに書き込むクラス。
+ * アセンデータをアセンファイルへ書き込むクラス。
  */
 public class CustomDataWriter {
 	

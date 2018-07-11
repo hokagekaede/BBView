@@ -1,7 +1,10 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.FileArrayList;
+import hokage.kaede.gmail.com.StandardLib.Java.FileArrayList;
 
+/**
+ * パーツ武器選択画面およびチップ画面の「お気に入り」グループを管理するクラス。
+ */
 public class FavoriteManager {
 
 	public static final String FAVORITE_CATEGORY_NAME = "お気に入り";

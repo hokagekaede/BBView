@@ -12,9 +12,9 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.ViewBuilder;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Android.StringAdapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
@@ -30,6 +30,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+/**
+ * 「耐性シミュ」画面を表示するクラス。
+ */
 public class WeaponSimView extends LinearLayout implements OnClickListener {
 
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;

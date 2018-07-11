@@ -1,9 +1,9 @@
 package hokage.kaede.gmail.com.BBView3.Main;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BBViewSettingManager;
-import hokage.kaede.gmail.com.Lib.Java.FileIO;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBViewSettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.FileIO;
 
 import java.io.File;
 
@@ -21,6 +21,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+/**
+ * 設定画面を表示するクラス。
+ */
 public class SettingActivity extends PreferenceActivity implements OnClickListener {
 	private static final String NEWLINE = System.getProperty("line.separator");
 

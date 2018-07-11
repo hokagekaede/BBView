@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".Main.ManualActivity" />
+        <activity android:name=".Main.AboutActivity" />
         
         <activity android:name=".Main.SettingActivity" />
         

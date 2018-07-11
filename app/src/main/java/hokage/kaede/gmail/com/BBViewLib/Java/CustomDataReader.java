@@ -1,9 +1,9 @@
 package hokage.kaede.gmail.com.BBViewLib.Java;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
- * ファイルからカスタムデータを読み込むクラス。
+ * アセンデータをアセンファイルから読み込むクラス。
  */
 public class CustomDataReader {
 

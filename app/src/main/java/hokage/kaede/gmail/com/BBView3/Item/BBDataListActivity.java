@@ -4,9 +4,9 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBNetDatabase;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBArrayAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+/**
+ * 「アイテム一覧」画面を表示するクラス。
+ */
 public class BBDataListActivity extends BaseActivity implements OnItemClickListener  {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;

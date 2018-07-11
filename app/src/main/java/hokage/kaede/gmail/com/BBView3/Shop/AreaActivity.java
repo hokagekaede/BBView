@@ -1,7 +1,9 @@
 package hokage.kaede.gmail.com.BBView3.Shop;
 
 import hokage.kaede.gmail.com.BBView3.R;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.AreaAdapter;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,9 +14,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * 地域データをリスト表示するアクティビティ
- * @author kaede
- *
+ * 「県別検索（県選択）」の都道府県一覧を生成するクラス。
  */
 public class AreaActivity extends BaseActivity implements OnItemClickListener {
 	

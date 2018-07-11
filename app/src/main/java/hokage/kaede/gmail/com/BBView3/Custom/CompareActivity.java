@@ -6,11 +6,11 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataReader;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.SpecArray;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.ViewBuilder;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SpecArray;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +30,9 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout.LayoutParams;
 
+/**
+ * 「アセン比較」画面を表示するクラス。
+ */
 public class CompareActivity extends BaseActivity {
 	
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;

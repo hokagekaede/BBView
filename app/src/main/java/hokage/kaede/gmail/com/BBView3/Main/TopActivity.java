@@ -16,11 +16,11 @@ import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataReader;
 import hokage.kaede.gmail.com.BBViewLib.Java.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BBViewSettingManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.Lib.Android.SettingManager;
-import hokage.kaede.gmail.com.Lib.Java.FileIO;
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBViewSettingManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Java.FileIO;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -41,6 +41,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 起動直後の画面を表示するクラス。
+ */
 public class TopActivity extends BaseActivity {
 	
 	private static final String BTN_TEXT_CUSTOM   = "機体カスタマイズ";
@@ -88,7 +91,7 @@ public class TopActivity extends BaseActivity {
 		// 初回起動時は説明ページを起動し、アップデート時は更新情報をダイアログ表示する。
 		if(BBViewSetting.isFirstFlag(this)) {
 			BBViewSetting.setVersionCode(this);
-			Intent intent = new Intent(this, ManualActivity.class);
+			Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
 		}
 		else if(BBViewSetting.isUpdateFlag(this)) {
@@ -389,7 +392,7 @@ public class TopActivity extends BaseActivity {
 			startActivity(intent);
 		}
 		else if(menu_title.equals(MENU_ABOUT)) {
-			Intent intent = new Intent(this, ManualActivity.class);
+			Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
 		}
 		

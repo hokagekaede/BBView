@@ -3,7 +3,7 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 import java.util.Comparator;
 
 /**
- * BBDataの比較処理を行うクラス
+ * ２つのパーツや武器に対し、特定のスペック項目で比較し、優劣を算出するクラス。
  */
 public class BBDataComparator implements Comparator<BBData> {
 	private String mTargetKey;

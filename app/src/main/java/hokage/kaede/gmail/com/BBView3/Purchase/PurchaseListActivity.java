@@ -3,9 +3,9 @@ package hokage.kaede.gmail.com.BBView3.Purchase;
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.PurchaseStore;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBArrayAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * 「購入リスト表示」画面を表示するクラス。
+ */
 public class PurchaseListActivity extends BaseActivity implements OnItemClickListener, OnClickListener, OnItemLongClickListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;

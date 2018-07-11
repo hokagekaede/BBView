@@ -2,10 +2,10 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 
 import java.util.ArrayList;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
- * 購入プレビューのデータ管理ストア
+ * 購入リストをファイルから読み込み、書き込みするクラス。
  */
 public class PurchaseStore {
 

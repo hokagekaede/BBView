@@ -1,7 +1,10 @@
 package hokage.kaede.gmail.com.BBView3.Shop;
 
 import hokage.kaede.gmail.com.BBView3.R;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.PlaceAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopData;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopDatabase;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +19,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+/**
+ * 「県別検索（店舗表示）」画面を表示するクラス。
+ */
 public class PlaceActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;

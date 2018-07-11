@@ -1,8 +1,12 @@
 package hokage.kaede.gmail.com.BBView3.Shop;
 
 import hokage.kaede.gmail.com.BBView3.R;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.Lib.Android.StringAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.DistanceSetTask;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.PlaceAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopData;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopDatabase;
+import hokage.kaede.gmail.com.StandardLib.Android.StringAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
@@ -22,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
- * 店舗検索機能の建物名から検索する画面のアクティビティ。
+ * 「建物地名検索」画面を表示するクラス。
  */
 public class PointActivity extends BaseActivity {
 
@@ -177,7 +181,7 @@ public class PointActivity extends BaseActivity {
 	 * 店舗リスト更新処理が終わった場合の処理を行うリスナー。
 	 * 店舗リストを更新する。
 	 */
-	private class OnEndTaskListener implements hokage.kaede.gmail.com.BBView3.Shop.DistanceSetTask.OnEndTaskListener {
+	private class OnEndTaskListener implements DistanceSetTask.OnEndTaskListener {
 
 		@Override
 		public void onEndTask() {

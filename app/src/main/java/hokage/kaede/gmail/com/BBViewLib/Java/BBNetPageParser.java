@@ -4,11 +4,11 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.util.Log;
-import hokage.kaede.gmail.com.Lib.Java.KeyValueStore;
-import hokage.kaede.gmail.com.Lib.Java.NetAccess;
+import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.NetAccess;
 
 /**
- * BB.NETへアクセスし、勲章と素材のデータを取得するクラス。
+ * BB.NETのページを解析するクラス。
  */
 public class BBNetPageParser {
 

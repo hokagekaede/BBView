@@ -5,13 +5,13 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterCmdManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterFilterManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.Adapter.BBSelectDataAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterCmdManager.OnExecuteInterface;
-import hokage.kaede.gmail.com.BBViewLib.Android.Dialog.BBAdapterFilterManager.OnOKFilterDialogListener;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseFilterDialog;
+import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager.OnExecuteInterface;
+import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseFilterDialog.OnOKFilterDialogListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
 import java.util.ArrayList;
 
@@ -30,15 +30,18 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+/**
+ * 「購入リスト追加」画面を表示するクラス。
+ */
 public class PurchaseSelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnOKFilterDialogListener, OnExecuteInterface, OnClickListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	private BBDataManager mDataManager;
-	private BBSelectDataAdapter mAdapter;
+	private PurchaseAdapter mAdapter;
 	private BBDataFilter mFilter;
 	
-	private BBAdapterFilterManager mFilterManager;
+	private PurchaseFilterDialog mFilterManager;
 	private BBAdapterCmdManager mCmdDialog;
 	
 	private boolean mIsNotHavingOnly = true;   // 未所持のみ表示
@@ -71,7 +74,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		mFilter.setWeaponType(BBDataManager.WEAPON_TYPE_LIST);
 		mFilter.setHavingShow(!mIsNotHavingOnly);
 		
-		mFilterManager = new BBAdapterFilterManager(this, mFilter);
+		mFilterManager = new PurchaseFilterDialog(this, mFilter);
 		mFilterManager.setOnOKFilterDialogListener(this);
 		
 		// コマンド制御ダイアログを初期化する
@@ -120,7 +123,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		
 		// リストの生成
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
-		mAdapter = new BBSelectDataAdapter(datalist);
+		mAdapter = new PurchaseAdapter(datalist);
 		mAdapter.setBaseItem(null);
 		list_view.setAdapter(mAdapter);
 

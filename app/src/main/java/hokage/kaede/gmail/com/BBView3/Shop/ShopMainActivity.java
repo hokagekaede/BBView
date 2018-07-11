@@ -1,6 +1,7 @@
 package hokage.kaede.gmail.com.BBView3.Shop;
 
-import hokage.kaede.gmail.com.BBViewLib.Android.Common.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.ShopLib.ShopDataTask;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+/**
+ * 「店舗検索メイン」画面を表示するクラス。
+ */
 public class ShopMainActivity extends BaseActivity implements OnClickListener {
 	
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;

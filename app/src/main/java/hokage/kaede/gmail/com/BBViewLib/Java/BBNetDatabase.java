@@ -2,11 +2,10 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 
 import java.util.ArrayList;
 
-import hokage.kaede.gmail.com.Lib.Java.FileKeyValueStore;
+import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
- * カード名と所持素材・所持勲章を連動して管理するクラス。
- * データ管理にあたり、ファイルへの入出力も行う。
+ * 所持情報の取得処理と管理処理を有するクラス。
  */
 public class BBNetDatabase {
 	
