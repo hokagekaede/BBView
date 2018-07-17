@@ -425,7 +425,7 @@ public class SpecValues {
 	}
 
 	/**
-	 * ブースト容量のデータを初期化
+	 * ブースターのデータを初期化
 	 */
 	private static void initBoost() {
 		BOOST = new KeyValueStore();

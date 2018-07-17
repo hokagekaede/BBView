@@ -30,7 +30,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 /**
- * 「耐性」画面を表示するクラス。
+ * 「性能」画面を表示するクラス。
  */
 public class SpecView extends FrameLayout {
 	

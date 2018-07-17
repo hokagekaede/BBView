@@ -272,7 +272,7 @@ public class ValueFilterDialog implements OnClickListener {
 	 * 表示項目設定を保存する。
 	 */
 	public void updateSetting(Context context) {
-		String base_key = ShownKeysDialog.class.getSimpleName() + "/" + mSaveKey;
+		String base_key = ValueFilterDialog.class.getSimpleName() + "/" + mSaveKey;
 		
 		int size = mKeys.length;
 		for(int i=0; i<size; i++) {
@@ -288,7 +288,7 @@ public class ValueFilterDialog implements OnClickListener {
 	 * 表示項目設定をロードする。
 	 */
 	public void loadSetting(Context context) {
-		String base_key = ShownKeysDialog.class.getSimpleName() + "/" + mSaveKey;
+		String base_key = ValueFilterDialog.class.getSimpleName() + "/" + mSaveKey;
 
 		int size = mKeys.length;
 		for(int i=0; i<size; i++) {

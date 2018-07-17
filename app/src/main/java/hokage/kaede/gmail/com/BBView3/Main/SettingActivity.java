@@ -182,7 +182,7 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 		screen.addPreference(show_listbutton);
 
 		CheckBoxPreference btn_listbutton_typetext = new CheckBoxPreference(this);
-		btn_listbutton_typetext.setTitle("操作ボタンの表示形式変更");
+		btn_listbutton_typetext.setTitle("操作ボタンの表示形式");
 		btn_listbutton_typetext.setSummary("操作ボタンの表示をテキストにする");
 		btn_listbutton_typetext.setKey(BBViewSetting.SETTING_LISTBUTTON_TYPETEXT);
 		btn_listbutton_typetext.setChecked(BBViewSetting.IS_LISTBUTTON_TYPETEXT);

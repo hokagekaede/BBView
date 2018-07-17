@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 /**
- * 所持情報の取得処理と管理処理を有するクラス。
+ * 所持情報の管理を行うクラス。
  */
 public class BBNetDatabase {
 	

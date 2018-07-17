@@ -3,7 +3,6 @@ package hokage.kaede.gmail.com.BBViewLib.Java;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import android.util.Log;
 import hokage.kaede.gmail.com.StandardLib.Java.KeyValueStore;
 import hokage.kaede.gmail.com.StandardLib.Java.NetAccess;
 
@@ -68,20 +67,7 @@ public class BBNetPageParser {
 			database.setCardNumber(i);
 			database.setCardName(sCardList.getKey(i));
 		}
-		
-		/*
-		int size = sCardList.size();
-		for(int i=0; i<size; i++) {
-			String card_name = sCardList.getKey(i);
-			if(card_name.equals("カード登録")) {
-				break;
-			}
-			
-			database.setCardNumber(i);
-			database.setCardName(sCardList.getKey(i));
-		}
-		*/
-		
+
 		return true;
 	}
 	
@@ -502,8 +488,7 @@ public class BBNetPageParser {
 			int head_idx = page_str.indexOf(seed_names[i]);
 			int tail_idx = page_str.indexOf("<br>", head_idx);
 			String seed_count = page_str.substring(head_idx + seed_names[i].length(), tail_idx);
-			Log.e("check", "head=" + head_idx + "/tail=" + tail_idx + "/data=" + seed_count);
-			
+
 			String name = seed_names[i].replace("<span>", "").replace("</span>：", "");
 			output.set(name, seed_count);
 		}
