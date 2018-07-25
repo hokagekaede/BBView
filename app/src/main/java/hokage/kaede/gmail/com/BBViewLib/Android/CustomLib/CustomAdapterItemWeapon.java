@@ -4,9 +4,10 @@ import hokage.kaede.gmail.com.BBView3.Custom.SelectActivity;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
@@ -26,6 +27,7 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
+	private CustomData mCustomData;
 	
 	public CustomAdapterItemWeapon(Context context, BBData item, String blust, String type) {
 		this.title = item.get("名称");
@@ -34,6 +36,10 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 		this.type = type;
 		this.mContext = context;
 		this.mItem = item;
+
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCustomData = custom_mng.getCacheData();
 	}
 
 	@Override
@@ -77,7 +83,6 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 
 	@Override
 	public void click() {
-		CustomData custom_data = CustomDataManager.getCustomData();
 		Intent intent = new Intent(mContext, SelectActivity.class);
 	
 		String title = blust + "(" + type + ")";
@@ -85,7 +90,7 @@ public class CustomAdapterItemWeapon implements CustomAdapterBaseItem {
 		intent.putExtra(SelectActivity.INTENTKEY_BLUSTTYPE, blust);
 		intent.putExtra(SelectActivity.INTENTKEY_WEAPONTYPE, type);
 
-		BBData select_item = custom_data.getWeapon(blust, type);
+		BBData select_item = mCustomData.getWeapon(blust, type);
 		IntentManager.setSelectedData(intent, select_item);
 		
 		mContext.startActivity(intent);

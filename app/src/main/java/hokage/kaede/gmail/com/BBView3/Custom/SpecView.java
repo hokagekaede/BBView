@@ -4,7 +4,7 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
@@ -61,6 +61,8 @@ public class SpecView extends FrameLayout {
 		BBDataManager.BLUST_TYPE_SNIPER,
 		BBDataManager.BLUST_TYPE_SUPPORT
 	};
+
+	private CustomData mCustomData;
 	
 	// モード設定値に対する選択中の兵装名
 	private String mBlustType = "";
@@ -76,7 +78,7 @@ public class SpecView extends FrameLayout {
 	 */
 	public SpecView(Context context, boolean is_simple, int mode, boolean is_show_typeb) {
 		super(context);
-		
+
 		mIsShowSimple = is_simple;
 		mMode = mode;
 		mBlustType = MODE_NAME_LIST[mMode];
@@ -334,7 +336,11 @@ public class SpecView extends FrameLayout {
 
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			Context context = getContext();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
+
 			custom_data.setMode(pos);
 			updateSpecTable(parent.getContext());
 		}
@@ -355,7 +361,9 @@ public class SpecView extends FrameLayout {
 	private static class AssembleViewBuilder {
 		
 		private static View create(Context context, String blust_type) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			int color = SettingManager.getColorWhite();
 			int bg_color = SettingManager.getColorBlue();
@@ -478,7 +486,9 @@ public class SpecView extends FrameLayout {
 	private static class BlustSpeedViewBuilder {
 
 		private static View create(Context context) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 
 			int color = SettingManager.getColorWhite();
 			int bg_color = SettingManager.getColorBlue();
@@ -550,7 +560,9 @@ public class SpecView extends FrameLayout {
 		 * @return 総合スペックテーブル
 		 */
 		private static View create(Context context) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
@@ -625,7 +637,9 @@ public class SpecView extends FrameLayout {
 		 * @return 総合スペックテーブル
 		 */
 		private static View create(Context context) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
@@ -718,7 +732,9 @@ public class SpecView extends FrameLayout {
 		 * @return パーツスペックのテーブル
 		 */
 		private static View create(Context context, String blust_type) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
@@ -779,7 +795,9 @@ public class SpecView extends FrameLayout {
 		 * @return パーツスペックのテーブル
 		 */
 		private static View create(Context context, String blust_type) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			TableLayout table = new TableLayout(context);
 			table.setLayoutParams(new TableLayout.LayoutParams(FP, WC));
@@ -861,7 +879,9 @@ public class SpecView extends FrameLayout {
 	private static class WeaponSpecViewBuilder {
 		
 		private static View create(Context context, String blust_type, boolean is_show_typeb) {
-			CustomData custom_data = CustomDataManager.getCustomData();
+			String file_dir = context.getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 
 			int color = SettingManager.getColorWhite();
 			int bg_color = SettingManager.getColorBlue();

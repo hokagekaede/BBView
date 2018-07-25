@@ -10,7 +10,7 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
 import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
@@ -135,9 +135,13 @@ public class WeaponSimView extends LinearLayout implements OnClickListener {
 		mIsTypeShot = target.isShotWeapon();
 		mIsTypeExplosion = target.isExplosionWeapon();
 		mExplosionRange = target.getExplosionRange();
-		
-		mAttackBlust = CustomDataManager.getDefaultCustomData();
-		mDefenceBlust = CustomDataManager.getDefaultCustomData();
+
+		Context context = getContext();
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+
+		mAttackBlust = custom_mng.getDefaultCustomData();
+		mDefenceBlust = custom_mng.getDefaultCustomData();
 		
 		BBDataManager data_mng = BBDataManager.getInstance();
 		

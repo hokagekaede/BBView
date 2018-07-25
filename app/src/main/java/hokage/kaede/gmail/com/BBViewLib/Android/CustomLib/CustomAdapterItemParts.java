@@ -4,9 +4,10 @@ import hokage.kaede.gmail.com.BBView3.Custom.SelectActivity;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
+	private CustomData mCustomData;
 	
 	public CustomAdapterItemParts(Context context, BBData item, String summary, String type) {
 		this.title = item.get("名称");
@@ -32,6 +34,10 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 		this.type = type;
 		this.mContext = context;
 		this.mItem = item;
+
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCustomData = custom_mng.getCacheData();
 	}
 
 	@Override
@@ -74,14 +80,12 @@ public class CustomAdapterItemParts implements CustomAdapterBaseItem {
 
 	@Override
 	public void click() {
-		CustomData custom_data = CustomDataManager.getCustomData();
-
 		Intent intent = new Intent(mContext, SelectActivity.class);
 		
 		intent.putExtra(SelectActivity.INTENTKEY_TITLENAME, type);
 		intent.putExtra(SelectActivity.INTENTKEY_PARTSTYPE, type);
 		
-		BBData select_item = custom_data.getParts(type);
+		BBData select_item = mCustomData.getParts(type);
 		IntentManager.setSelectedData(intent, select_item);
 		
 		mContext.startActivity(intent);

@@ -1,5 +1,6 @@
 package hokage.kaede.gmail.com.BBView3.Main;
 
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBViewSettingManager;
@@ -387,6 +388,10 @@ public class SettingActivity extends PreferenceActivity implements OnClickListen
 				"インポート元：" + copy_fm_str;
 			Toast.makeText(this, warning_str, Toast.LENGTH_LONG).show();
 		}
+
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		custom_mng.load();
 	}
 	
 	/**

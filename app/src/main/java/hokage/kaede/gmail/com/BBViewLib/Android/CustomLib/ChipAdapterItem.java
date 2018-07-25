@@ -1,70 +1,62 @@
 package hokage.kaede.gmail.com.BBViewLib.Android.CustomLib;
 
-import java.util.ArrayList;
-
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataBaseAdapterItem;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.FavoritePanel;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.OwnerInfoPanel;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
+import hokage.kaede.gmail.com.StandardLib.Android.NormalAdapterItem;
+import hokage.kaede.gmail.com.StandardLib.Java.FileArrayList;
+
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
  * 「チップ」画面のチップ一覧の中の表示内容を生成するクラス。
  */
-public class ChipAdapterItem extends BBDataBaseAdapterItem {
-	
+public class ChipAdapterItem extends NormalAdapterItem<BBData> {
+
+	private BBDataAdapterItemProperty mProperty;
+
 	private CheckBox mCheckBox;
-	
-	private LinearLayout mExtraDataView;
-	private TextView mExistTextView;
-	private TextView mFavoriteTextView;
-	
-	public ChipAdapterItem(Context context, ArrayList<String> keys) {
-		super(context, keys);
-		
-		this.setOrientation(LinearLayout.HORIZONTAL);
-		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-		this.setPadding(10, 10, 10, 10);
-		this.setWeightSum((float)1.0);
+	private OwnerInfoPanel mOwnerInfoPanel;
+	private FavoritePanel mFavoritePanel;
+
+	/**
+	 * 初期化を行う。
+	 * @param context リストを表示する画面
+	 * @param property 表示のためのデータと設定値
+	 */
+	public ChipAdapterItem(Context context, BBDataAdapterItemProperty property) {
+		super(context);
+		mProperty = property;
 	}
 
 	/**
-	 * 表示するビューを取得する。
+	 * 表示するビューを生成する。
 	 */
 	@Override
 	public void createView() {
 		Context context = getContext();
-		mCheckBox = new CheckBox(context);
 
-		mExtraDataView = new LinearLayout(context);
-		mExistTextView = new TextView(context);
-		mFavoriteTextView = new TextView(context);
-		
+		mCheckBox = new CheckBox(context);
 		mCheckBox.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
+		mCheckBox.setGravity(Gravity.LEFT | Gravity.CENTER);
 		mCheckBox.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 
-		mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-		mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-		mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-		mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		mFavoriteTextView.setPadding(10, 0, 10, 0);
-
-		mExtraDataView.setOrientation(LinearLayout.HORIZONTAL);
-		mExtraDataView.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
-		mExtraDataView.setWeightSum((float)1.0);
-		mExtraDataView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
-		mExtraDataView.addView(mExistTextView);
-		mExtraDataView.addView(mFavoriteTextView);
-		
 		this.addView(mCheckBox);
-		this.addView(mExtraDataView);
+
+		mOwnerInfoPanel = new OwnerInfoPanel(context);
+		mOwnerInfoPanel.createView();
+		this.addView(mOwnerInfoPanel);
+
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel = new FavoritePanel(context);
+			mFavoritePanel.createView();
+			this.addView(mFavoritePanel);
+		}
 	}
 
 	/**
@@ -72,11 +64,14 @@ public class ChipAdapterItem extends BBDataBaseAdapterItem {
 	 */
 	@Override
 	public void updateView() {
-		BBData target_item = getItem();
+		BBData target_item = getData();
 		mCheckBox.setText(target_item.get("名称") + " [" + target_item.get("コスト") + "]");
-		mExistTextView.setText(createExistText());
-		
-		super.updateFavorite(mFavoriteTextView);
+
+		mOwnerInfoPanel.updateView(target_item);
+
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.updateView(target_item);
+		}
 	}
 
 	/**
@@ -86,7 +81,15 @@ public class ChipAdapterItem extends BBDataBaseAdapterItem {
 	public void setChecked(boolean checked) {
 		mCheckBox.setChecked(checked);
 	}
-	
+
+	/**
+	 * チェックボックスのIDを設定する。
+	 * @param id ID値
+	 */
+	public void setCheckBoxID(int id) {
+		mCheckBox.setId(id);
+	}
+
 	/**
 	 * チェックボックスが変更された場合のリスナーを設定する。
 	 * @param listener 対象のリスナー
@@ -94,21 +97,24 @@ public class ChipAdapterItem extends BBDataBaseAdapterItem {
 	public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
 		mCheckBox.setOnCheckedChangeListener(listener);
 	}
-	
+
+	/**
+	 * お気に入りリストのデータストアを設定する。
+	 * @param store ストア
+	 */
+	public void setFavoriteList(FileArrayList store) {
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.setFavoriteStore(store);
+		}
+	}
+
 	/**
 	 * Favoriteボタンがクリックされた場合のリスナーを設定する。
 	 * @param listener 対象のリスナー
 	 */
 	public void setOnClickFavListener(OnClickListener listener) {
-		mFavoriteTextView.setOnClickListener(listener);
-	}
-	
-	/**
-	 * IDを設定する。
-	 */
-	@Override
-	public void setId(int id) {
-		super.setId(id);
-		mCheckBox.setId(id);
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.setOnClickListener(listener);
+		}
 	}
 }

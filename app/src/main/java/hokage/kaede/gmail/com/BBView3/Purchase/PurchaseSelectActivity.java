@@ -1,20 +1,24 @@
 package hokage.kaede.gmail.com.BBView3.Purchase;
 
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanel;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanelBuilder;
 import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseFilterDialog;
 import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager.OnExecuteInterface;
 import hokage.kaede.gmail.com.BBViewLib.Android.PurchaseLib.PurchaseFilterDialog.OnOKFilterDialogListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -33,7 +37,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 /**
  * 「購入リスト追加」画面を表示するクラス。
  */
-public class PurchaseSelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnOKFilterDialogListener, OnExecuteInterface, OnClickListener {
+public class PurchaseSelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnOKFilterDialogListener, OnClickListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
@@ -42,7 +46,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	private BBDataFilter mFilter;
 	
 	private PurchaseFilterDialog mFilterManager;
-	private BBAdapterCmdManager mCmdDialog;
+	private ControlPanelBuilder mCmdDialog;
 	
 	private boolean mIsNotHavingOnly = true;   // 未所持のみ表示
 	
@@ -88,12 +92,16 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 * コマンド制御ダイアログを初期化する
 	 */
 	private void initCmdListDialog() {
-		mCmdDialog = new BBAdapterCmdManager(DIALOG_LIST_ITEMS_LISTMODE);
-		mCmdDialog.setOnExecuteInterface(this);
-		
+		mCmdDialog = new ControlPanelBuilder(DIALOG_LIST_ITEMS_LISTMODE, new OnClickControlPanelListener());
+
 		// 設定に応じてボタンを非表示にする
-		if(!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
-			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
+		if(!BBViewSetting.IS_SHOW_LISTBUTTON) {
+			mCmdDialog.setHiddenPanel(true);
+		}
+		else {
+			if (!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
+				mCmdDialog.setHiddenButton(DIALOG_LIST_IDX_INFO);
+			}
 		}
 	}
 	
@@ -120,26 +128,25 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 		btn_ok.setText("決定");
 		btn_ok.setOnClickListener(this);
 		layout_all.addView(btn_ok);
-		
+
 		// リストの生成
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
-		mAdapter = new PurchaseAdapter(datalist);
-		mAdapter.setBaseItem(null);
+		mAdapter = new PurchaseAdapter(new BBDataAdapterItemProperty());
+		mAdapter.setList(datalist);
+		mAdapter.setBuilder(mCmdDialog);
 		list_view.setAdapter(mAdapter);
-
-		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
-			mAdapter.setBBAdapterCmdManager(mCmdDialog);
-		}
 
 		setContentView(layout_all);
 	}
-	
+
+	/**
+	 * リストを更新する。
+	 */
 	private void updateList() {
 		mFilter.setHavingShow(!mIsNotHavingOnly);
 		
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter);
 		mAdapter.setList(datalist);
-		mAdapter.setBaseItem(null);
 		mAdapter.notifyDataSetChanged();
 	}
 	
@@ -182,13 +189,11 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		BBData data = mAdapter.getItem(position);
-		
-		if(mAdapter.isSelect(data)) {
-			mAdapter.unselect(data);
+		if(mAdapter.isSelected(position)) {
+			mAdapter.setSelect(position, false);
 		}
 		else {
-			mAdapter.select(data);
+			mAdapter.setSelect(position, true);
 		}
 		
 		mAdapter.notifyDataSetChanged();
@@ -198,7 +203,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 * 購入プレビュー画面に戻る処理を行う。
 	 */
 	private void backPurchaseView() {
-		ArrayList<BBData> list = mAdapter.getSelectedList();
+		ArrayList<BBData> list = mAdapter.getSelectionList();
 		
 		Intent intent = new Intent();
 		IntentManager.setSelectedDataArray(intent, list.toArray(new BBData[0]));
@@ -213,13 +218,56 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-		BBData to_item = (BBData)(mAdapter.getItem(position));
-		mCmdDialog.setTarget(to_item);
-		mCmdDialog.showDialog(this);
-		
+		BBData to_item = mAdapter.getItem(position);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("操作を選択");
+		builder.setIcon(android.R.drawable.ic_menu_more);
+		builder.setItems(DIALOG_LIST_ITEMS_LISTMODE, new OnClickCommandListener(to_item));
+
+		Dialog dialog = builder.create();
+		dialog.setOwnerActivity(this);
+		dialog.show();
+
 		return false;
 	}
-	
+
+	/**
+	 * パーツまたは武器に対する処理を選択した場合の処理を行うリスナー
+	 */
+	private class OnClickCommandListener implements DialogInterface.OnClickListener {
+		private BBData mData;
+
+		public OnClickCommandListener(BBData data) {
+			mData = data;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialogInterface, int index) {
+			executeCommand(mData, index);
+		}
+	}
+
+	/**
+	 * パーツまたは武器に対する処理を選択した場合の処理を行うリスナー
+	 */
+	private class OnClickControlPanelListener implements ControlPanel.OnExecuteListenerInterface {
+
+		@Override
+		public void onExecute(BBData data, int cmd_idx) {
+			executeCommand(data, cmd_idx);
+		}
+	}
+
+	/**
+	 * コマンドボタン押下または操作選択ダイアログ選択時の処理を行う。
+	 */
+	public void executeCommand(BBData data, int cmd_idx) {
+		if(cmd_idx == DIALOG_LIST_IDX_INFO) {
+			moveInfoActivity(data);
+		}
+	}
+
 	/**
 	 * 詳細画面へ移動する。
 	 * @param to_item 詳細画面で表示するデータ
@@ -237,16 +285,6 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	public void onOKFilterDialog() {
 		mAdapter.setList(mDataManager.getList(mFilter));
 		mAdapter.notifyDataSetChanged();
-	}
-
-	/**
-	 * 指定された操作を実行する。
-	 */
-	@Override
-	public void onExecute(BBData data, int cmd_idx) {
-		if(DIALOG_LIST_ITEMS_LISTMODE[cmd_idx].equals(DIALOG_LIST_ITEM_INFO)) {
-			moveInfoActivity(data);
-		}
 	}
 
 	/**

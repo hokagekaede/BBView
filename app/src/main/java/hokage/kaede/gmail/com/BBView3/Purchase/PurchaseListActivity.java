@@ -1,9 +1,13 @@
 package hokage.kaede.gmail.com.BBView3.Purchase;
 
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanel;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanelBuilder;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
+import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.PurchaseStore;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
@@ -33,14 +37,20 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 	
 	public static final int INTENTCODE_RET_SELECT_ITEMID = 1;
 
-	private BBArrayAdapter mAdapter;
+	private BBDataAdapter mAdapter;
+	private ControlPanelBuilder mCmdDialog;
 	
 	private static final String BTN_TEXT_ADD     = "追加";
 	private static final String BTN_TEXT_CLEAR   = "クリア";
 	private static final String BTN_TEXT_PREVIEW = "プレビュー";
 	
 	private static final String MENU_ALL_SELECT = "不足勲章素材の表示";
-	
+
+	// コマンド制御ダイアログ関連の定義
+	private static final String DIALOG_LIST_ITEM_INFO   = "詳細を表示する";
+	private static final int DIALOG_LIST_IDX_INFO = 0;
+	private static final String[] DIALOG_LIST_ITEMS_LISTMODE = { DIALOG_LIST_ITEM_INFO };
+
 	/**
 	 * アプリ起動時の処理を行う。
 	 */
@@ -49,6 +59,32 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 		super.onCreate(savedInstanceState);
 		
 		setTitle(this.getTitle() + " (欲しいものリスト)");
+
+		initCmdListDialog();
+		createView();
+	}
+
+	/**
+	 * コマンド制御ダイアログを初期化する
+	 */
+	private void initCmdListDialog() {
+		mCmdDialog = new ControlPanelBuilder(DIALOG_LIST_ITEMS_LISTMODE, new OnClickControlPanelListener());
+
+		// 設定に応じてボタンを非表示にする
+		if(!BBViewSetting.IS_SHOW_LISTBUTTON) {
+			mCmdDialog.setHiddenPanel(true);
+		}
+		else {
+			if (!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
+				mCmdDialog.setHiddenButton(DIALOG_LIST_IDX_INFO);
+			}
+		}
+	}
+
+	/**
+	 * 画面を生成する。
+	 */
+	private void createView() {
 
 		// 全体レイアウト設定
 		LinearLayout layout_all = new LinearLayout(this);
@@ -59,8 +95,10 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 		// アダプタの設定
 		PurchaseStore store = new PurchaseStore(this.getFilesDir().toString());
 		ArrayList<BBData> data_list = store.getPurchaseList();
-		mAdapter = new BBArrayAdapter(data_list);
-		
+		mAdapter = new BBDataAdapter(new BBDataAdapterItemProperty());
+		mAdapter.setBuilder(mCmdDialog);
+		mAdapter.setList(data_list);
+
 		// リスト設定
 		ListView list_view = new ListView(this);
 		list_view.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
@@ -74,7 +112,7 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 		layout_bottom.setLayoutParams(new LinearLayout.LayoutParams(FP, WC));
 		layout_bottom.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
 		layout_all.addView(layout_bottom);
-		
+
 		// リスト追加ボタンの追加
 		Button btn_add = new Button(this);
 		btn_add.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
@@ -88,17 +126,46 @@ public class PurchaseListActivity extends BaseActivity implements OnItemClickLis
 		btn_clear.setText(BTN_TEXT_CLEAR);
 		btn_clear.setOnClickListener(this);
 		layout_bottom.addView(btn_clear);
-		
+
 		// プレビュー表示ボタンの追加
 		Button btn_preview = new Button(this);
 		btn_preview.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 		btn_preview.setText(BTN_TEXT_PREVIEW);
 		btn_preview.setOnClickListener(this);
 		layout_bottom.addView(btn_preview);
-		
+
 		setContentView(layout_all);
 	}
 
+	/**
+	 * パーツまたは武器に対する処理を選択した場合の処理を行うリスナー
+	 */
+	private class OnClickControlPanelListener implements ControlPanel.OnExecuteListenerInterface {
+
+		@Override
+		public void onExecute(BBData data, int cmd_idx) {
+			executeCommand(data, cmd_idx);
+		}
+	}
+
+	/**
+	 * コマンドボタン押下または操作選択ダイアログ選択時の処理を行う。
+	 */
+	public void executeCommand(BBData data, int cmd_idx) {
+		if(cmd_idx == DIALOG_LIST_IDX_INFO) {
+			moveInfoActivity(data);
+		}
+	}
+
+	/**
+	 * 詳細画面へ移動する。
+	 * @param to_item 詳細画面で表示するデータ
+	 */
+	private void moveInfoActivity(BBData to_item) {
+		Intent intent = new Intent(this, InfoActivity.class);
+		IntentManager.setSelectedData(intent, to_item);
+		startActivity(intent);
+	}
 
 	/**
 	 * オプションメニュー生成時の処理を行う。

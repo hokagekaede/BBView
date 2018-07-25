@@ -12,15 +12,13 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBDataReader;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBNetDatabase;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataReader;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.FavoriteManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBViewSettingManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
 import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 import hokage.kaede.gmail.com.StandardLib.Java.FileIO;
-import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -245,30 +243,13 @@ public class TopActivity extends BaseActivity {
 	 * アセンデータの初期化を行う。
 	 */
 	private void initCustomData() {
-		BBDataManager data_mng = BBDataManager.getInstance();
-		
-		try {
-			String filedir = getFilesDir().toString();
-			Resources res = this.getResources();
-			
-			// デフォルトデータを読み込む
-			InputStream is_defaultset = res.openRawResource(R.raw.defaultset);  // Resources.NotFoundException
-			FileKeyValueStore default_data = new FileKeyValueStore(filedir);
-			default_data.setEncode(FileIO.ENCODE_UTF8);
-			default_data.load(is_defaultset);
-			CustomDataManager.setDefaultData(default_data);
+		String filedir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(filedir);
 
-			// カスタムデータの読み込み (ユーザ環境のファイルであるため、S-JISで入出力すること)
-			if(BBViewSetting.IS_LOADING_LASTDATA) {
-				FileKeyValueStore file_data = new FileKeyValueStore(filedir);
-				file_data.load();
-				CustomData custom_data = CustomDataReader.read(file_data, default_data, data_mng);
-				CustomDataManager.setCustomData(custom_data);
-			}
-			else {
-				CustomData custom_data = CustomDataManager.getDefaultCustomData();
-				CustomDataManager.setCustomData(custom_data);
-			}
+		try {
+			Resources res = this.getResources();
+			InputStream is_defaultset = res.openRawResource(R.raw.defaultset);  // Resources.NotFoundException
+			custom_mng.init(is_defaultset);
 
 		} catch(Resources.NotFoundException res_e) {
 			Toast.makeText(this, "リソースデータが見つかりません。", Toast.LENGTH_LONG).show();
@@ -327,7 +308,11 @@ public class TopActivity extends BaseActivity {
 		
 		if(intent.getAction().equals(Intent.ACTION_SEND)) {
 			String code = intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString();
-			CustomData custom_data = CustomDataManager.getCustomData();
+
+			String file_dir = getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
+
 			int ret = custom_data.setCustomDataID(BBViewSetting.getVersionCode(this), (String) code);
 			
 			if(ret == CustomData.RET_SUCCESS) {

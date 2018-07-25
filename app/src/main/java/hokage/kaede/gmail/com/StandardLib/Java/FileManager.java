@@ -43,6 +43,13 @@ public class FileManager {
 	}
 
 	/**
+	 * ファイル一覧の読み込みを行う。
+	 */
+	public void load() {
+		mFileStore.load();
+	}
+
+	/**
 	 * 管理中のファイルの数を取得する。
 	 * @return
 	 */
@@ -131,6 +138,7 @@ public class FileManager {
 			return false;
 		}
 
+		/*
 		// ファイル名を取得し、当該ファイル名のキーと値を削除する。
 		String filename = mFileStore.get(from_tag);
 		mFileStore.remove(from_tag);
@@ -138,7 +146,9 @@ public class FileManager {
 		// 変更後のファイルタグでファイル名を登録する。
 		mFileStore.set(to_tag, filename);
 		mFileStore.save();
-		
+		*/
+		mFileStore.changeKey(from_tag, to_tag);
+
 		return true;
 	}
 	
@@ -153,7 +163,6 @@ public class FileManager {
 		String select_file_name = mFileStore.get(tag);
 		FileKeyValueStore select_file = new FileKeyValueStore(mDirPath, select_file_name);
 		select_file.delete();
-		select_file = null;
 		
 		// ファイルリストからファイルタグを削除し、ファイル数を1つ減らす。
 		mFileStore.remove(tag);

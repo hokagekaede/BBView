@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
 
 /**
  * 「アセン」画面のアイテム一覧を生成するクラス。
@@ -20,7 +21,7 @@ public class CustomAdapter extends BaseAdapter {
 		mList = new ArrayList<CustomAdapterBaseItem>();
 		mContext = context;
 	}
-	
+
 	/**
 	 * 対象のContextデータを取得する。
 	 * @return Contextデータ
@@ -28,7 +29,7 @@ public class CustomAdapter extends BaseAdapter {
 	public Context getContext() {
 		return mContext;
 	}
-	
+
 	@Override
 	public int getCount() {
 		return mList.size();

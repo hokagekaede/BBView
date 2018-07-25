@@ -1,23 +1,25 @@
 package hokage.kaede.gmail.com.BBView3.Custom;
 
 import hokage.kaede.gmail.com.BBView3.Item.InfoActivity;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanel;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CmpPartsTableBuilder;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CmpWeaponTableBuilder;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SelectPartsExpandableAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SelectWeaponExpandableAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataWriter;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.FavoriteManager;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ControlPanelBuilder;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ShownKeysDialog;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SortKeyDialog;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.BBDataExpandableAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBAdapterCmdManager.OnExecuteInterface;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SelectBBDataExpandableAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ShownKeysDialog.OnOKClickListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SortKeyDialog.OnSelectItemListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
@@ -30,6 +32,7 @@ import hokage.kaede.gmail.com.StandardLib.Java.ListConverter;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -51,21 +54,24 @@ import android.widget.AdapterView.OnItemLongClickListener;
 /**
  * 「パーツ武器選択」画面を表示するクラス。
  */
-public class SelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnSelectItemListener, OnOKClickListener, OnExecuteInterface, OnClickValueFilterButtonListener {
+public class SelectActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener, OnSelectItemListener, OnOKClickListener, OnClickValueFilterButtonListener {
 	private static final int WC = LinearLayout.LayoutParams.WRAP_CONTENT;
 	private static final int FP = LinearLayout.LayoutParams.FILL_PARENT;
 	
 	private BBDataManager mDataManager;
-	private BBArrayAdapter mAdapter;
-	private BBDataExpandableAdapter mExAdapter;
 	private BBDataFilter mFilter;
-	
 	private FileArrayList mFavStore;
+
+	private BBDataAdapterItemProperty mProperty;
+	private BBDataAdapter mAdapter;
+	private SelectBBDataExpandableAdapter mExAdapter;
+
 	
 	private SortKeyDialog mSortKeyDialog;
 	private ShownKeysDialog mShownKeysDialog;
 	private ValueFilterDialog mFilterManager;
-	private BBAdapterCmdManager mCmdDialog;
+	private ControlPanelBuilder mCmdDialog;
+	private String[] mCommandList;
 	
 	private CmpPartsTableBuilder mCmpPartsDialog;
 	private CmpWeaponTableBuilder mCmpWeaponDialog;
@@ -209,40 +215,37 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			mFilterManager.loadSetting(this);
 			mFilter = mFilterManager.getFilter();
 		}
+
+		// アダプタのプロパティの設定
+		mProperty = new BBDataAdapterItemProperty();
+		mProperty.setShowSwitch(true);
+		mProperty.setShowFavorite(true);
+		mProperty.setBaseItem(recent_data);
+		mProperty.setShownKeys(mShownKeysDialog.getShownKeys());
 		
 		// アダプタの生成
-		ArrayList<BBData> itemlist = mDataManager.getList(mFilter);
-		mAdapter = new BBArrayAdapter(itemlist);
-		mAdapter.setShowSwitch(true);
-		mAdapter.setBaseItem(recent_data);
-		mAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
+		ArrayList<BBData> item_list = mDataManager.getList(mFilter);
+		mAdapter = new BBDataAdapter(mProperty);
+		mAdapter.setList(item_list);
+		mAdapter.setBuilder(mCmdDialog);
 		mAdapter.notifyDataSetChanged();
 
 		if(blust_type != null && weapon_type != null) {
-			mExAdapter = new BBDataExpandableAdapter(false);
-			mExAdapter.initWeapon(blust_type, weapon_type);
+			mExAdapter = new SelectWeaponExpandableAdapter(mProperty, blust_type, weapon_type);
 		}
 		else {
-			mExAdapter = new BBDataExpandableAdapter(true);
-			mExAdapter.initParts();
+			mExAdapter = new SelectPartsExpandableAdapter(mProperty);
 		}
-		
+
 		mExAdapter.setFavStore(mFavStore);
-		mExAdapter.addChildren(itemlist);
-		mExAdapter.setShowSwitch(true);
-		mExAdapter.setBaseItem(recent_data);
-		mExAdapter.setShownKeys(mShownKeysDialog.getShownKeys());
+		mExAdapter.addChildren(item_list);
+		mExAdapter.setBuilder(mCmdDialog);
 		mExAdapter.notifyDataSetChanged();
 
-		if(itemlist.size() <= 0) {
+		if(item_list.size() <= 0) {
 			Toast.makeText(this, "条件に一致するパーツはありません。", Toast.LENGTH_SHORT).show();
 		}
-		
-		if(BBViewSetting.IS_SHOW_LISTBUTTON) {
-			mExAdapter.setBBAdapterCmdManager(mCmdDialog);
-			mAdapter.setBBAdapterCmdManager(mCmdDialog);
-		}
-		
+
 		// 比較ダイアログを初期化する
 		mCmpPartsDialog = new CmpPartsTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
 		mCmpWeaponDialog = new CmpWeaponTableBuilder(this, BBViewSetting.IS_KM_PER_HOUR);
@@ -253,26 +256,32 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 * @param is_parts パーツかどうか。
 	 */
 	private void initCmdListDialog(boolean is_parts) {
-		String[] cmd_list = DIALOG_LIST_ITEMS_BASE;
 
 		if(is_parts) {
-			cmd_list = DIALOG_LIST_ITEMS_PARTS;
+			mCommandList = DIALOG_LIST_ITEMS_PARTS;
+		}
+		else {
+			mCommandList = DIALOG_LIST_ITEMS_BASE;
 		}
 		
-		mCmdDialog = new BBAdapterCmdManager(cmd_list);
-		mCmdDialog.setOnExecuteInterface(this);
+		mCmdDialog = new ControlPanelBuilder(mCommandList, new OnClickControlPanelListener());
 		
 		// 設定に応じてボタンを非表示にする
-		if(!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
-			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_INFO);
+		if(!BBViewSetting.IS_SHOW_LISTBUTTON) {
+			mCmdDialog.setHiddenPanel(true);
 		}
+		else {
+			if (!BBViewSetting.IS_LISTBUTTON_SHOWINFO) {
+				mCmdDialog.setHiddenButton(DIALOG_LIST_IDX_INFO);
+			}
 
-		if(!BBViewSetting.IS_LISTBUTTON_SHOWCMP) {
-			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_CMP);
-		}
-		
-		if(!BBViewSetting.IS_LISTBUTTON_SHOWFULLSET) {
-			mCmdDialog.setHiddenTarget(DIALOG_LIST_IDX_FULL);
+			if (!BBViewSetting.IS_LISTBUTTON_SHOWCMP) {
+				mCmdDialog.setHiddenButton(DIALOG_LIST_IDX_CMP);
+			}
+
+			if (!BBViewSetting.IS_LISTBUTTON_SHOWFULLSET) {
+				mCmdDialog.setHiddenButton(DIALOG_LIST_IDX_FULL);
+			}
 		}
 	}
 	
@@ -376,16 +385,15 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
 			boolean is_checked = !item.isChecked();
+			mProperty.setShowTypeB(is_checked);
 
 			mIsSortTypeB = is_checked;
 			item.setChecked(is_checked);
 
 			ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
-			mAdapter.setShowTypeB(is_checked);
 			mAdapter.setList(datalist);
+
 			mAdapter.notifyDataSetChanged();
-			
-			mExAdapter.setShowTypeB(is_checked);
 			mExAdapter.notifyDataSetChanged();
 			
 			return false;
@@ -454,7 +462,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		BBData data = (BBData)(mAdapter.getItem(position));
+		BBData data = mAdapter.getItem(position);
 		backCustomView(data);
 	}
 	
@@ -476,16 +484,15 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 * @param data パーツデータ
 	 */
 	private void backCustomView(BBData data) {
-		
+
 		// カスタムデータに反映する
-		CustomData custom_data = CustomDataManager.getCustomData();
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
 		custom_data.setData(data);
 		
-		// カスタムデータをキャッシュファイルに書き込む。
-		CustomDataWriter.write(custom_data, getFilesDir().toString());
-		
-		// データ変更状態を設定する
-		CustomDataManager.setChanged(true);
+		// カスタムデータをキャッシュファイルに書き込む
+		custom_mng.saveCacheData(custom_data);
 
 		finish();
 	}
@@ -531,19 +538,19 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		String name = target_data.get("名称");
 
 		BBDataManager manager = BBDataManager.getInstance();
-		CustomData custom_data = CustomDataManager.getCustomData();
+
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
 		
 		int size = BBDataManager.BLUST_PARTS_LIST.length;
 		for(int i=0; i<size; i++) {
 			BBData data = manager.getPartsData(name, BBDataManager.BLUST_PARTS_LIST[i]);
 			custom_data.setData(data);
 		}
-		
-		// カスタムデータをキャッシュファイルに書き込む。
-		CustomDataWriter.write(custom_data, getFilesDir().toString());
-		
-		// データ変更状態を設定する
-		CustomDataManager.setChanged(true);
+
+		// カスタムデータをキャッシュファイルに書き込む
+		custom_mng.saveCacheData(custom_data);
 
 		finish();
 	}
@@ -554,9 +561,16 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-		BBData to_item = (BBData)(mAdapter.getItem(position));
-		mCmdDialog.setTarget(to_item);
-		mCmdDialog.showDialog(this);
+		BBData to_item = mAdapter.getItem(position);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("操作を選択");
+		builder.setIcon(android.R.drawable.ic_menu_more);
+		builder.setItems(mCommandList, new OnClickCommandListener(to_item));
+
+		Dialog dialog = builder.create();
+		dialog.setOwnerActivity(this);
+		dialog.show();
 		
 		return true;
 	}
@@ -608,7 +622,7 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 		}
 
 		// 表示項目の再設定を行う
-		ArrayList<String> recent_key_list = mAdapter.getShownKeys();
+		ArrayList<String> recent_key_list = mProperty.getShownKeys();
 		ArrayList<String> new_key_list = new ArrayList<String>();
 
 		int size = mSortKeys.length;
@@ -629,9 +643,10 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 			mShownKeysDialog.updateSetting();
 		}
 
+		mProperty.setShownKeys(new_key_list);
+
 		ArrayList<BBData> datalist = mDataManager.getList(mFilter, mIsSortTypeB);
 		mAdapter.setList(datalist);
-		mAdapter.setShownKeys(new_key_list);
 		mAdapter.notifyDataSetChanged();
 	}
 
@@ -640,18 +655,43 @@ public class SelectActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	@Override
 	public void onSelectItem(ShownKeysDialog manager) {
-		mAdapter.setShownKeys(manager.getShownKeys());
-		mAdapter.notifyDataSetChanged();
+		mProperty.setShownKeys(manager.getShownKeys());
 
-		mExAdapter.setShownKeys(manager.getShownKeys());
+		mAdapter.notifyDataSetChanged();
 		mExAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * パーツまたは武器に対する処理を選択した場合の処理を行うリスナー
+	 */
+	private class OnClickCommandListener implements DialogInterface.OnClickListener {
+		private BBData mData;
+
+		public OnClickCommandListener(BBData data) {
+			mData = data;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialogInterface, int index) {
+			executeCommand(mData, index);
+		}
+	}
+
+	/**
+	 * パーツまたは武器に対する処理を選択した場合の処理を行うリスナー
+	 */
+	private class OnClickControlPanelListener implements ControlPanel.OnExecuteListenerInterface {
+
+		@Override
+		public void onExecute(BBData data, int cmd_idx) {
+			executeCommand(data, cmd_idx);
+		}
 	}
 
 	/**
 	 * コマンドボタン押下または操作選択ダイアログ選択時の処理を行う。
 	 */
-	@Override
-	public void onExecute(BBData data, int cmd_idx) {
+	public void executeCommand(BBData data, int cmd_idx) {
 		if(cmd_idx == DIALOG_LIST_IDX_INFO) {
 			moveInfoActivity(data);
 		}

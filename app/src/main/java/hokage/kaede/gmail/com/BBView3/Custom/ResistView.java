@@ -7,10 +7,10 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,9 @@ public class ResistView extends LinearLayout implements OnClickValueFilterButton
 		mIsShowTypeB = is_show_typeb;
 		
 		// 各管理変数
-		CustomData custom_data = CustomDataManager.getCustomData();
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
 
 		// フィルタ設定ダイアログを初期化する
 		ArrayList<String> key_list = new ArrayList<String>();

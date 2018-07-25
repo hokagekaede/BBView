@@ -5,6 +5,7 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapterItemCategory;
@@ -44,6 +45,8 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 	private static int sLastListTop = -1;
 	
 	private boolean mShowChips = false;
+
+	private CustomData mCustomData;
 	
 	public CustomView(Context context, CustomData custom_data, boolean is_show_chips) {
 		super(context);
@@ -51,7 +54,11 @@ public class CustomView extends FrameLayout implements android.widget.AdapterVie
 		this.setLayoutParams(new FrameLayout.LayoutParams(FP, FP));
 		
 		mShowChips = is_show_chips;
-		
+
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCustomData = custom_mng.getCacheData();
+
 		if(BBViewSetting.IS_SHOW_COLUMN2) {
 			createViewColTwo(context, custom_data);
 		}

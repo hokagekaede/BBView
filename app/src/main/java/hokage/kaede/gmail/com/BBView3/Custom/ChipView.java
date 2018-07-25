@@ -1,16 +1,16 @@
 package hokage.kaede.gmail.com.BBView3.Custom;
 
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataWriter;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.SpecValues;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog;
-import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ChipExpandableAdapter;
-import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ChipExpandableAdapter.OnChengedChipSetBaseListener;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SelectChipExpandableAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SelectChipExpandableAdapter.OnChangedChipSetBaseListener;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.ValueFilterDialog.OnClickValueFilterButtonListener;
 import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 
@@ -46,7 +46,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	private CustomData mCustomData;
 	private BBDataFilter mFilter;
 	
-	private ChipExpandableAdapter mChipListAdapter;
+	private SelectChipExpandableAdapter mChipListAdapter;
 
 	private ArrayList<BBData> mBeforeChipList;
 
@@ -61,13 +61,16 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 
 	public ChipView(Context context, boolean is_show_having) {
 		super(context);
+
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCustomData = custom_mng.getCacheData();
 		
 		mIsChanged = false;
 		mIsHavingOnly = is_show_having;
 		mErrorMessage = "";
 
 		mDataManager = BBDataManager.getInstance();
-		mCustomData = CustomDataManager.getCustomData();
 
 		// 変更前のチップリストを取得する
 		mBeforeChipList = mCustomData.getChips();
@@ -92,7 +95,10 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	 */
 	private void createView() {
 		Context context = getContext();
-		
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
+
 		setLayoutParams(new LinearLayout.LayoutParams(FP, FP));
 		setOrientation(LinearLayout.VERTICAL);
 		setGravity(Gravity.TOP);
@@ -109,7 +115,9 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		mFilterManager.setOnClickValueFilterButtonListener(this);
 		
 		// アダプタを設定する
-		mChipListAdapter = new ChipExpandableAdapter();
+		BBDataAdapterItemProperty property = new BBDataAdapterItemProperty();
+		property.setShowFavorite(true);
+		mChipListAdapter = new SelectChipExpandableAdapter(custom_data, property);
 		mChipListAdapter.addChildren(mDataManager.getList(mFilter));
 		mChipListAdapter.loadCustomData();
 		mChipListAdapter.setOnChengedChipSetListener(new OnChengedChipSetListener());
@@ -174,7 +182,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	 * リストが更新された際の処理を行うリスナー。
 	 * チップ容量と変更状態を更新する。
 	 */
-	private class OnChengedChipSetListener implements OnChengedChipSetBaseListener {
+	private class OnChengedChipSetListener implements OnChangedChipSetBaseListener {
 
 		@Override
 		public void changed() {
@@ -270,7 +278,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 		@Override
 		public void onClick(View v) {
 			mCustomData.clearChips();
-			mChipListAdapter.clearFlags();
+			mChipListAdapter.clearSelectSts();
 			mChipListAdapter.notifyDataSetChanged();
 			mErrorMessage = "";
 			updateWeightText();
@@ -339,13 +347,15 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	}
 	
 	/**
-	 * カスタマイズデータを保存する
+	 * アセンデータを保存する
 	 */
 	public void saveCustomData() {
 
-		// カスタムデータをファイルに書き込む。
+		// アセンデータをファイルに書き込む。
 		Context context = getContext();
-		CustomDataWriter.write(mCustomData, context.getFilesDir().toString());
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		custom_mng.saveCacheData(mCustomData);
 		
 		// 変更前リストを更新し、変更フラグを解除する
 		mBeforeChipList = mCustomData.getChips();
@@ -406,7 +416,7 @@ public class ChipView extends LinearLayout implements OnClickValueFilterButtonLi
 	 * 再描画を行う。一旦全チェック状態をリセットして付け直す。
 	 */
 	public void redraw() {
-		mChipListAdapter.clearFlags();
+		mChipListAdapter.clearSelectSts();
 		mChipListAdapter.loadCustomData();
 		updateWeightText();
 		mChipListAdapter.notifyDataSetChanged();

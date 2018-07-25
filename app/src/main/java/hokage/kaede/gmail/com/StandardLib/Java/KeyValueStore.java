@@ -178,4 +178,18 @@ public class KeyValueStore {
 		return mKeys.indexOf(key);
 	}
 
+	/**
+	 * キーの名称を変更する。同名のキーが登録されている場合は処理を中止する。
+	 * @param from_key 変更前のキー
+	 * @param to_key 変更後のキー
+	 */
+	public void changeKey(String from_key, String to_key) {
+		if(mKeys.contains(to_key)) {
+			return;
+		}
+
+		int index = mKeys.indexOf(from_key);
+		mKeys.set(index, to_key);
+	}
+
 }

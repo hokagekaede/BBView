@@ -2,8 +2,8 @@ package hokage.kaede.gmail.com.BBView3.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -95,7 +95,10 @@ public class CustomMainActivity extends BaseActivity {
 	 */
 	protected void onPause() {
 		super.onPause();
-		CustomData custom_data = CustomDataManager.getCustomData();
+
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
 		custom_data.setMode(CustomData.MODE_NORMAL);
 	}
 	
@@ -105,7 +108,10 @@ public class CustomMainActivity extends BaseActivity {
 	 * @param main_layout ビューを載せる対象のレイアウト
 	 */
 	private void updateView(LinearLayout main_layout) {
-		CustomData custom_data = CustomDataManager.getCustomData();
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.getCacheData();
+
 		custom_data.setMode(CustomData.MODE_NORMAL);
 		
 		// SpecViewの前回のモードを取得する。前回が存在しない場合は標準を設定する。
@@ -382,8 +388,9 @@ public class CustomMainActivity extends BaseActivity {
 
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
-			CustomData custom_data = CustomDataManager.getDefaultCustomData();
-			CustomDataManager.setCustomData(custom_data);
+			String file_dir = getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			custom_mng.resetCacheData();
 
 			LinearLayout main_layout = (LinearLayout)CustomMainActivity.this.findViewById(MAIN_LAYOUT_ID);
 			updateView(main_layout);
@@ -484,8 +491,10 @@ public class CustomMainActivity extends BaseActivity {
 
 		if(menu_title.equals(MENU_SHARE)) {
 			Toast.makeText(this, "Twitterアプリを選択してください。", Toast.LENGTH_LONG).show();
-			
-			CustomData custom_data = CustomDataManager.getCustomData();
+
+			String file_dir = getFilesDir().toString();
+			CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+			CustomData custom_data = custom_mng.getCacheData();
 			
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");

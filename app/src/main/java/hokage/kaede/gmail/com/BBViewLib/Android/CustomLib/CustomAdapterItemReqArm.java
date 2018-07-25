@@ -10,9 +10,9 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.CustomAdapter.CustomAdapterBaseItem;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 
 /**
  * 「アセン」画面の要請兵器の表示内容を生成するクラス。
@@ -25,12 +25,17 @@ public class CustomAdapterItemReqArm implements CustomAdapterBaseItem {
 	private TextView mTitleTextView;
 	private TextView mSummaryTextView;
 	private Context mContext;
+	private CustomData mCustomData;
 	
 	public CustomAdapterItemReqArm(Context context, BBData item) {
 		this.title = item.get("名称");
 		this.summary = BBDataManager.REQARM_STR;
 		this.mContext = context;
 		this.mItem = item;
+
+		String file_dir = context.getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCustomData = custom_mng.getCacheData();
 	}
 
 	@Override
@@ -75,14 +80,12 @@ public class CustomAdapterItemReqArm implements CustomAdapterBaseItem {
 
 	@Override
 	public void click() {
-		CustomData custom_data = CustomDataManager.getCustomData();
-
 		Intent intent = new Intent(mContext, SelectActivity.class);
 		
 		intent.putExtra(SelectActivity.INTENTKEY_TITLENAME, summary);
 		intent.putExtra(SelectActivity.INTENTKEY_REQARM, summary);
 		
-		BBData select_item = custom_data.getReqArm();
+		BBData select_item = mCustomData.getReqArm();
 		IntentManager.setSelectedData(intent, select_item);
 		
 		mContext.startActivity(intent);

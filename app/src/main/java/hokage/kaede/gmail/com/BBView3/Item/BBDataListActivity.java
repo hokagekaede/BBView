@@ -1,10 +1,11 @@
 package hokage.kaede.gmail.com.BBView3.Item;
 
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapter;
+import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBDataAdapterItemProperty;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataFilter;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBNetDatabase;
-import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BBArrayAdapter;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.IntentManager;
 
@@ -92,8 +93,8 @@ public class BBDataListActivity extends BaseActivity implements OnItemClickListe
 		layout_all.addView(list_view);
 		
 		// リストの生成
-		BBArrayAdapter adapter = new BBArrayAdapter(data_manager.getList(filter));
-		adapter.setBaseItem(null);
+		BBDataAdapter adapter = new BBDataAdapter(new BBDataAdapterItemProperty());
+		adapter.setList(data_manager.getList(filter));
 		list_view.setAdapter(adapter);
 
 		setContentView(layout_all);
@@ -104,8 +105,8 @@ public class BBDataListActivity extends BaseActivity implements OnItemClickListe
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter_view, View view, int position, long id) {
-		BBArrayAdapter adapter = (BBArrayAdapter)(adapter_view.getAdapter());
-		BBData data = (BBData)(adapter.getItem(position));
+		BBDataAdapter adapter = (BBDataAdapter)(adapter_view.getAdapter());
+		BBData data = adapter.getItem(position);
 		moveInfoActivity(data);
 	}
 

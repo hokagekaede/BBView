@@ -1,115 +1,79 @@
 package hokage.kaede.gmail.com.BBViewLib.Android.CommonLib;
 
-import java.util.ArrayList;
-
 import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
-import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
-import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
+import hokage.kaede.gmail.com.StandardLib.Android.NormalAdapterItem;
+import hokage.kaede.gmail.com.StandardLib.Java.FileArrayList;
+
 import android.content.Context;
-import android.text.Html;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
- * 「パーツ武器選択」画面のアイテム一覧の中の表示内容を生成するクラス。
+ * 一般的なBBDataリストの各項目のアイテムクラス
  */
-public class BBDataAdapterItem extends BBDataBaseAdapterItem {
+public class BBDataAdapterItem extends NormalAdapterItem<BBData> {
 
-	private LinearLayout mMainLayout;
-	private TextView mNameTextView;
-	private TextView mSubTextView;
-	private TextView mExistTextView;
-	private TextView mFavoriteTextView;
-	
-	private BBData mBaseItem;
-	
+	private BBDataAdapterItemProperty mProperty;
+
+	private SpecInfoPanel mSpecInfoPanel;
+	private OwnerInfoPanel mOwnerInfoPanel;
+	private FavoritePanel mFavoritePanel;
+
 	/**
 	 * 初期化処理を行う。
 	 * LinearLayoutのコンストラクタをコールし、TextViewのオブジェクトを生成する。
 	 * @param context リストを表示する画面
+	 * @param property 表示のためのデータと設定値
 	 */
-	public BBDataAdapterItem(Context context, ArrayList<String> keys) {
-		super(context, keys);
-		
-		this.setOrientation(LinearLayout.HORIZONTAL);
-		this.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-		this.setPadding(10, 10, 10, 10);
-		this.setWeightSum((float)1.0);
+	public BBDataAdapterItem(Context context, BBDataAdapterItemProperty property) {
+		super(context);
+		mProperty = property;
 	}
-	
+
 	/**
-	 * ビューを生成する。テキストサイズや文字色の設定を行う。
+	 * ビューを生成する。
 	 */
+	@Override
 	public void createView() {
 		Context context = getContext();
-		
-		mNameTextView = new TextView(context);
-		mNameTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		
-		mSubTextView = new TextView(context);
-		mSubTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_SMALL));
 
-		mExistTextView = new TextView(context);
-		mExistTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		mExistTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-		mExistTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+		mSpecInfoPanel = new SpecInfoPanel(context, mProperty);
+		mSpecInfoPanel.createView();
+		mSpecInfoPanel.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		this.addView(mSpecInfoPanel);
 
-		mFavoriteTextView = new TextView(context);
-		mFavoriteTextView.setTextSize(BBViewSetting.getTextSize(context, BBViewSetting.FLAG_TEXTSIZE_NORMAL));
-		mFavoriteTextView.setGravity(Gravity.RIGHT | Gravity.CENTER);
-		mFavoriteTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
-		mFavoriteTextView.setPadding(10, 0, 10, 0);
+		mOwnerInfoPanel = new OwnerInfoPanel(context);
+		mOwnerInfoPanel.createView();
+		this.addView(mOwnerInfoPanel);
 
-		mMainLayout = new LinearLayout(context);
-		mMainLayout.setOrientation(LinearLayout.HORIZONTAL);
-		mMainLayout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-		mMainLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-
-		LinearLayout sub_layout = new LinearLayout(context);
-		sub_layout.setOrientation(LinearLayout.VERTICAL);
-		sub_layout.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-		sub_layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-		
-		sub_layout.addView(mNameTextView);
-		sub_layout.addView(mSubTextView);
-		
-		mMainLayout.addView(sub_layout);
-		mMainLayout.addView(mExistTextView);
-		mMainLayout.addView(mFavoriteTextView);
-		
-		this.addView(mMainLayout);
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel = new FavoritePanel(context);
+			mFavoritePanel.createView();
+			this.addView(mFavoritePanel);
+		}
 	}
-	
+
 	/**
 	 * ビューの更新する。
 	 */
+	@Override
 	public void updateView() {
-		String sub_text = createSubText(mBaseItem);
-		mNameTextView.setText(createNameText());
-		mSubTextView.setText(Html.fromHtml(sub_text));
-		mExistTextView.setText(createExistText());
+		BBData target_item = getData();
 
-		// テキストを更新する
-		if(sub_text.equals("")) {
-			mSubTextView.setVisibility(View.GONE);
-		}
-		else {
-			mSubTextView.setVisibility(View.VISIBLE);
-		}
+		mSpecInfoPanel.updateView(target_item);
+		mOwnerInfoPanel.updateView(target_item);
 
-		// 選択中のアイテムの場合は文字色を黄色に変更する
-		BBData target_item = getItem();
-		if(mBaseItem != null && BBDataManager.equalData(target_item, mBaseItem)) {
-			mNameTextView.setTextColor(SettingManager.getColorYellow());
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.updateView(target_item);
 		}
-		else {
-			mNameTextView.setTextColor(SettingManager.getColorWhite());
-		}
+	}
 
-		super.updateFavorite(mFavoriteTextView);
+	/**
+	 * お気に入りリストのデータストアを設定する。
+	 * @param store ストア
+	 */
+	public void setFavoriteList(FileArrayList store) {
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.setFavoriteStore(store);
+		}
 	}
 
 	/**
@@ -117,14 +81,8 @@ public class BBDataAdapterItem extends BBDataBaseAdapterItem {
 	 * @param listener 対象のリスナー
 	 */
 	public void setOnClickFavListener(OnClickListener listener) {
-		mFavoriteTextView.setOnClickListener(listener);
-	}
-	
-	/**
-	 * 比較対象のデータを設定する。
-	 * @param base_item 比較対象のデータ
-	 */
-	public void setBaseItem(BBData base_item) {
-		mBaseItem = base_item;
+		if(mProperty.isShowFavorite()) {
+			mFavoritePanel.setOnClickListener(listener);
+		}
 	}
 }

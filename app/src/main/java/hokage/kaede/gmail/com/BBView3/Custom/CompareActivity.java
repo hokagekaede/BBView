@@ -4,13 +4,11 @@ import hokage.kaede.gmail.com.BBViewLib.Java.BBData;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBDataManager;
 import hokage.kaede.gmail.com.BBViewLib.Java.BBViewSetting;
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomData;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataManager;
-import hokage.kaede.gmail.com.BBViewLib.Java.CustomDataReader;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.BaseActivity;
 import hokage.kaede.gmail.com.BBViewLib.Android.CustomLib.SpecArray;
 import hokage.kaede.gmail.com.BBViewLib.Android.CommonLib.ViewBuilder;
+import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
 import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
-import hokage.kaede.gmail.com.StandardLib.Java.FileKeyValueStore;
 
 import android.content.Context;
 import android.content.Intent;
@@ -69,8 +67,7 @@ public class CompareActivity extends BaseActivity {
 	 * 比較対象のファイル名指定用のintentキー
 	 */
 	public static final String INTENTKEY_CMPTO_FILENAME = "INTENTKEY_CMPTO_FILENAME";
-	
-	private BBDataManager mDataManager;
+
 	private CustomData mCmpFmData;
 	private CustomData mCmpToData;
 
@@ -81,8 +78,9 @@ public class CompareActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mDataManager = BBDataManager.getInstance();
-		mCmpFmData = CustomDataManager.getCustomData();
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		mCmpFmData = custom_mng.getCacheData();
 		mCmpToData = getCmpToCustomData();
 		
 		if(mCmpFmData == null || mCmpToData == null) {
@@ -95,7 +93,7 @@ public class CompareActivity extends BaseActivity {
 	}
 
 	/**
-	 * 比較対象のカスタムデータを読み込む
+	 * 比較対象のカスタムデータを読み込む。
 	 * @return カスタムデータ。読み込みに失敗した場合はnullを返す。
 	 */
 	private CustomData getCmpToCustomData() {
@@ -112,11 +110,9 @@ public class CompareActivity extends BaseActivity {
 			return null;
 		}
 		
-		String dir = getFilesDir().toString();
-		FileKeyValueStore select_file = new FileKeyValueStore(dir, select_file_name);
-		select_file.load();
-		
-		CustomData custom_data = CustomDataReader.read(select_file, CustomDataManager.getDefaultData(), mDataManager);
+		String file_dir = getFilesDir().toString();
+		CustomFileManager custom_mng = CustomFileManager.getInstance(file_dir);
+		CustomData custom_data = custom_mng.read(select_file_name);
 		custom_data.setSpeedUnit(BBViewSetting.IS_KM_PER_HOUR);
 		
 		return custom_data;
@@ -359,7 +355,9 @@ public class CompareActivity extends BaseActivity {
 		/**
 		 * 「アセン」のビューを生成する。
 		 * @param context
-		 * @param custom_data
+		 * @param from_data
+		 * @param to_data
+		 * @param blust_type
 		 * @return
 		 */
 		private static TableLayout createAssembleView(Context context, CustomData from_data, CustomData to_data, String blust_type) {
