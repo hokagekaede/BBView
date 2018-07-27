@@ -1,7 +1,8 @@
 package hokage.kaede.gmail.com.BBView3.Custom;
 
 import hokage.kaede.gmail.com.BBViewLib.Java.CustomFileManager;
-import hokage.kaede.gmail.com.StandardLib.Android.StringAdapter;
+import hokage.kaede.gmail.com.StandardLib.Android.SelectionAdapter;
+import hokage.kaede.gmail.com.StandardLib.Android.SettingManager;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class FileListView extends LinearLayout {
 
 	// ファイル一覧データ
 	private CustomFileManager mCustomFileManager;
-	private StringAdapter mFileListAdapter;
+	private SelectionAdapter<String> mFileListAdapter;
 	private String mSelectName;
 	private String mNewName;
 	
@@ -48,7 +49,10 @@ public class FileListView extends LinearLayout {
 	private static final int CMD_COMPARE = 4;
 
 	// ボタンテキスト
-	private static final String BTN_NEW_FILE = "新規保存";
+	private static final String BTN_NEW_FILE = "新規";
+	private static final String BTN_MENU = "メニュー";
+	private static final String BTN_MOVE_UP = "▲";
+	private static final String BTN_MOVE_DOWN = "▼";
 
 	/**
 	 * 初期化を行う。
@@ -59,6 +63,11 @@ public class FileListView extends LinearLayout {
 
 		String file_dir = context.getFilesDir().toString();
 		mCustomFileManager = CustomFileManager.getInstance(file_dir);
+		ArrayList<String> tag_list = mCustomFileManager.getTagList();
+
+		// リストビューの生成
+		mFileListAdapter = new SelectionAdapter<String>();
+		mFileListAdapter.setList(tag_list);
 
 		createView();
 	}
@@ -74,38 +83,133 @@ public class FileListView extends LinearLayout {
 		setOrientation(LinearLayout.VERTICAL);
 		setGravity(Gravity.LEFT | Gravity.TOP);
 
-		// リストビューの生成
-		mFileListAdapter = new StringAdapter(context);
-		ArrayList<String> tag_list = mCustomFileManager.getTagList();
-		int size = tag_list.size();
-
-		for(int i=0; i<size; i++) {
-			mFileListAdapter.add(tag_list.get(i));
-		}
-
 		ListView listview = new ListView(context);
-		listview.setOnItemClickListener(new OnSelectFileNameListener());
 		listview.setAdapter(mFileListAdapter);
+		listview.setOnItemClickListener(new OnClickFileListener());
 		listview.setLayoutParams(new LinearLayout.LayoutParams(FP, WC, 1));
 
+		// 画面下部のボタンレイアウトを生成する
+		LinearLayout layout = new LinearLayout(context);
+		layout.setOrientation(LinearLayout.HORIZONTAL);
+		layout.setGravity(Gravity.CENTER);
+		layout.setBackgroundColor(SettingManager.getColorGray());
+
 		// 新規作成ボタンの生成
-		Button newfile_btn = new Button(context);
-		newfile_btn.setText(BTN_NEW_FILE);
-		newfile_btn.setTag(BTN_NEW_FILE);
-		newfile_btn.setOnClickListener(new OnClickCreateFileButtonListener());
+		Button new_file_btn = new Button(context);
+		new_file_btn.setText(BTN_NEW_FILE);
+		new_file_btn.setOnClickListener(new OnClickCreateFileButtonListener());
+
+		// メニューボタンの生成
+		Button menu_btn = new Button(context);
+		menu_btn.setText(BTN_MENU);
+		menu_btn.setOnClickListener(new OnClickMenuButtonListener());
+
+		// 上移動ボタンの生成
+		Button move_up_btn = new Button(context);
+		move_up_btn.setText(BTN_MOVE_UP);
+		move_up_btn.setOnClickListener(new OnClickMoveUpButtonListener());
+
+		// 下移動ボタンの生成
+		Button move_down_btn = new Button(context);
+		move_down_btn.setText(BTN_MOVE_DOWN);
+		move_down_btn.setOnClickListener(new OnClickMoveDownButtonListener());
+
+		layout.addView(new_file_btn);
+		layout.addView(menu_btn);
+		layout.addView(move_up_btn);
+		layout.addView(move_down_btn);
 
 		addView(listview);
-		addView(newfile_btn);
+		addView(layout);
 	}
 
 	/**
-	 * ファイル一覧から指定のファイル名をタップした時の処理を行う。
+	 * リストのファイル名をクリックしたときの処理を行うリスナー。
 	 */
-	private class OnSelectFileNameListener implements AdapterView.OnItemClickListener {
+	private class OnClickFileListener implements AdapterView.OnItemClickListener {
+
 		@Override
-		public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+			if(mFileListAdapter.isSelected(position)) {
+				mFileListAdapter.unselect();
+			}
+			else {
+				mFileListAdapter.select(position);
+			}
+
+			mFileListAdapter.notifyDataSetChanged();
+		}
+	}
+
+	/**
+	 * 新規作成ボタンを押下した時の処理を行うリスナー。
+	 */
+	private class OnClickCreateFileButtonListener implements OnClickListener {
+		@Override
+		public void onClick(View view) {
+			saveNewFileDiaglog();
+		}
+	}
+
+	/**
+	 * ファイルの新規保存ダイアログを表示する。
+	 */
+	private void saveNewFileDiaglog() {
+		Context context = getContext();
+
+		EditText mDialogText = new EditText(context);
+		mDialogText.setInputType(InputType.TYPE_CLASS_TEXT);
+		mDialogText.addTextChangedListener(new OnUpdateFileNameTextListener());
+
+		AlertDialog.Builder alt_dialog = new AlertDialog.Builder(context);
+		alt_dialog.setTitle("データの新規保存");
+		alt_dialog.setView(mDialogText);
+		alt_dialog.setPositiveButton("OK", new OnInputNewFileNameListener());
+		alt_dialog.show();
+	}
+
+	/**
+	 * ファイルの新規作成ダイアログで名前を入力した後に処理を行うリスナー。
+	 */
+	private class OnInputNewFileNameListener implements DialogInterface.OnClickListener {
+
+		@Override
+		public void onClick(DialogInterface dialogInterface, int i) {
+			createFile();
+		}
+	}
+
+	/**
+	 * ファイルを新規保存する。
+	 */
+	private void createFile() {
+
+		// ファイルが既に存在する場合は、処理を終了する
+		if(!mCustomFileManager.createFile(mNewName)) {
+			String warning_str = "既にデータが存在しています。" + NEWLINE + "別の名前を入力してください。";
+			Toast.makeText(getContext(), warning_str, Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		// リストに追加し、再描画する
+		mFileListAdapter.add(mNewName);
+		mFileListAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * メニューボタンを押下した時の処理を行うリスナー。
+	 */
+	private class OnClickMenuButtonListener implements OnClickListener {
+		@Override
+		public void onClick(View view) {
 			// 選択されたファイルタイトルからファイル名を取得
-			mSelectName = mFileListAdapter.getItem(position);
+			mSelectName = mFileListAdapter.getSelectedItem();
+
+			if(mSelectName == null) {
+				String warning_str = "ファイルを選択してください。";
+				Toast.makeText(getContext(), warning_str, Toast.LENGTH_LONG).show();
+				return;
+			}
 
 			// ダイアログの表示
 			AlertDialog.Builder cmd_dialog = new AlertDialog.Builder(getContext());
@@ -136,20 +240,6 @@ public class FileListView extends LinearLayout {
 			}
 			else if(which == CMD_COMPARE) {
 				compareCustomData();
-			}
-		}
-	}
-
-	/**
-	 * 新規作成ボタンを押下した時の処理を行うリスナー。
-	 */
-	private class OnClickCreateFileButtonListener implements OnClickListener {
-		@Override
-		public void onClick(View view) {
-			String tag = view.getTag().toString();
-
-			if(tag.equals(BTN_NEW_FILE)) {
-				saveNewFileDiaglog();
 			}
 		}
 	}
@@ -190,51 +280,6 @@ public class FileListView extends LinearLayout {
 		mCustomFileManager.readFile(mSelectName);
 	}
 
-	/**
-	 * ファイルの新規保存ダイアログを表示する。
-	 */
-	private void saveNewFileDiaglog() {
-		Context context = getContext();
-
-		EditText mDialogText = new EditText(context);
-		mDialogText.setInputType(InputType.TYPE_CLASS_TEXT);
-		mDialogText.addTextChangedListener(new OnUpdateFileNameTextListener());
-		
-		AlertDialog.Builder alt_dialog = new AlertDialog.Builder(context);
-		alt_dialog.setTitle("データの新規保存");
-		alt_dialog.setView(mDialogText);
-		alt_dialog.setPositiveButton("OK", new OnInputNewFileNameListener());
-		alt_dialog.show();
-	}
-
-	/**
-	 * ファイルの新規作成ダイアログで名前を入力した後に処理を行うリスナー。
-	 */
-	private class OnInputNewFileNameListener implements DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialogInterface, int i) {
-			createFile();
-		}
-	}
-
-	/**
-	 * ファイルを新規保存する。
-	 */
-	private void createFile() {
-
-		// ファイルが既に存在する場合は、処理を終了する
-		if(!mCustomFileManager.createFile(mNewName)) {
-			String warning_str = "既にデータが存在しています。" + NEWLINE + "別の名前を入力してください。";
-			Toast.makeText(getContext(), warning_str, Toast.LENGTH_LONG).show();
-			return;
-		}
-
-		// リストに追加し、再描画する
-		mFileListAdapter.add(mNewName);
-		mFileListAdapter.notifyDataSetChanged();
-	}
-	
 	/**
 	 * ファイルを上書き保存する。
 	 */
@@ -297,7 +342,7 @@ public class FileListView extends LinearLayout {
 		}
 		
 		// リストを再描画する
-		mFileListAdapter.replaceItem(mSelectName, mNewName);
+		mFileListAdapter.replace(mSelectName, mNewName);
 		mFileListAdapter.notifyDataSetChanged();
 	}
 	
@@ -324,7 +369,7 @@ public class FileListView extends LinearLayout {
 			mCustomFileManager.delete(mSelectName);
 
 			// リストを再描画する
-			mFileListAdapter.removeItem(mSelectName);
+			mFileListAdapter.remove(mSelectName);
 			mFileListAdapter.notifyDataSetChanged();
 		}
 	}
@@ -338,6 +383,71 @@ public class FileListView extends LinearLayout {
 		intent.putExtra(CompareActivity.INTENTKEY_CMPTO_FILENAME, mSelectName);
 
 		context.startActivity(intent);
+	}
+
+	/**
+	 * 上移動ボタンを押下した時の処理を行うリスナー。
+	 */
+	private class OnClickMoveUpButtonListener implements OnClickListener {
+		@Override
+		public void onClick(View view) {
+			moveUpFile();
+		}
+	}
+
+	/**
+	 * 選択中のファイルを上のファイルと入れ替える。
+	 */
+	private void moveUpFile() {
+		int position = mFileListAdapter.getSelectedPosition();
+
+		if(position == SelectionAdapter.UNSELECTED_POSITION) {
+			String warning_str = "ファイルを選択してください。";
+			Toast.makeText(getContext(), warning_str, Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		if(position <= 0) {
+			return;
+		}
+
+		mCustomFileManager.swapFile(position, position - 1);
+		mFileListAdapter.swap(position, position - 1);
+		mFileListAdapter.select(position - 1);
+		mFileListAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * 下移動ボタンを押下した時の処理を行うリスナー。
+	 */
+	private class OnClickMoveDownButtonListener implements OnClickListener {
+		@Override
+		public void onClick(View view) {
+			moveDownFile();
+		}
+	}
+
+	/**
+	 * 選択中のファイルを下のファイルと入れ替える。
+	 */
+	private void moveDownFile() {
+		int position = mFileListAdapter.getSelectedPosition();
+
+		if(position == SelectionAdapter.UNSELECTED_POSITION) {
+			String warning_str = "ファイルを選択してください。";
+			Toast.makeText(getContext(), warning_str, Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		// アダプタの方がサイズ小さいことが保証されている (ファイル数のデータがあるため)
+		if(position >= mFileListAdapter.getCount() - 1) {
+			return;
+		}
+
+		mCustomFileManager.swapFile(position, position + 1);
+		mFileListAdapter.swap(position, position + 1);
+		mFileListAdapter.select(position + 1);
+		mFileListAdapter.notifyDataSetChanged();
 	}
 
 	/**

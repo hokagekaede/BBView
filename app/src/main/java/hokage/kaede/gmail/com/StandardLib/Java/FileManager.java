@@ -181,4 +181,16 @@ public class FileManager {
 	public boolean exist(String tag) {
 		return mFileStore.existKey(tag);
 	}
+
+	/**
+	 * ファイルの位置を入れ替える。
+	 * @param from_position 移動元の位置
+	 * @param to_position 移動先の位置
+	 */
+	public void swapFile(int from_position, int to_position) {
+
+		// ファイル数のキーが先頭にあるので、指定位置に対して1加算して処理する。
+		mFileStore.swap(from_position + 1, to_position + 1);
+		mFileStore.save();
+	}
 }

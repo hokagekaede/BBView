@@ -192,4 +192,23 @@ public class KeyValueStore {
 		mKeys.set(index, to_key);
 	}
 
+	/**
+	 * データの位置を入れ替える。
+	 * @param from_position 移動元の位置
+	 * @param to_position 移動先の位置
+	 */
+	public void swap(int from_position, int to_position) {
+		String from_key = mKeys.get(from_position);
+		String from_data = mValues.get(from_position);
+
+		String to_key = mKeys.get(to_position);
+		String to_data = mValues.get(to_position);
+
+		mKeys.set(from_position, to_key);
+		mKeys.set(to_position, from_key);
+
+		mValues.set(from_position, to_data);
+		mValues.set(to_position, from_data);
+	}
+
 }

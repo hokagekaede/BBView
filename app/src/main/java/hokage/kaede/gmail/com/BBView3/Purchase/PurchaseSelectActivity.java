@@ -203,7 +203,7 @@ public class PurchaseSelectActivity extends BaseActivity implements OnItemClickL
 	 * 購入プレビュー画面に戻る処理を行う。
 	 */
 	private void backPurchaseView() {
-		ArrayList<BBData> list = mAdapter.getSelectionList();
+		ArrayList<BBData> list = mAdapter.getSelectedList();
 		
 		Intent intent = new Intent();
 		IntentManager.setSelectedDataArray(intent, list.toArray(new BBData[0]));

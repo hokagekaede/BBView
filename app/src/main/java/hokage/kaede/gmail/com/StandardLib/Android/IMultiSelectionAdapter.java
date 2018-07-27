@@ -26,5 +26,5 @@ public interface IMultiSelectionAdapter {
      * 外部処理により、選択状態を示すリストとデータ数が不一致の場合、全て未選択状態として扱う。
      * @return 選択状態のアイテム
      */
-    ArrayList getSelectionList();
+    ArrayList getSelectedList();
 }

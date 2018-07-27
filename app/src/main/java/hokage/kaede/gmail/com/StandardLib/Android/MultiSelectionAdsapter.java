@@ -156,7 +156,7 @@ public class MultiSelectionAdsapter<T extends Object> extends BaseAdapter implem
      * @return 選択状態のアイテム
      */
     @Override
-    public ArrayList<T> getSelectionList() {
+    public ArrayList<T> getSelectedList() {
         ArrayList<T> selected_item_list = new ArrayList<T>();
 
         int item_count = getCount();

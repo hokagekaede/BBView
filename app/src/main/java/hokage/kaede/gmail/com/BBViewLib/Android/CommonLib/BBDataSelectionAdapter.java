@@ -42,12 +42,35 @@ public class BBDataSelectionAdapter extends BBDataAdapter implements ISelectionA
     }
 
     /**
+     * 指定の位置が選択されているかどうかを取得する。
+     * @param position 指定の位置
+     * @return 選択されている場合はtrueを返し、選択されていない場合はfalseを返す。
+     */
+    @Override
+    public boolean isSelected(int position) {
+        if(mSelectedPosition == position) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 選択状態のアイテムを取得する。
      * @return 選択状態のアイテム
      */
     @Override
-    public BBData getSelectionItem() {
+    public BBData getSelectedItem() {
         return get(mSelectedPosition);
+    }
+
+    /**
+     * 選択状態の位置を取得する。
+     * @return 選択状態の位置
+     */
+    @Override
+    public int getSelectedPosition() {
+        return mSelectedPosition;
     }
 
     /**

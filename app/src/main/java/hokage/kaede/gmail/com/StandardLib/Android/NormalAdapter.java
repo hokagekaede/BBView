@@ -71,6 +71,32 @@ public class NormalAdapter<T extends Object> extends BaseAdapter {
     }
 
     /**
+     * リストの指定データを置き換える。
+     * @param from_value 置き換え前のデータ
+     * @param to_value 置き換え後のデータ
+     */
+    public void replace(T from_value, T to_value) {
+        int idx = mList.indexOf(from_value);
+
+        if(idx >= 0) {
+            mList.set(idx, to_value);
+        }
+    }
+
+    /**
+     * リストのデータを入れ替える。
+     * @param from_position 移動元の位置
+     * @param to_position 移動先の位置
+     */
+    public void swap(int from_position, int to_position) {
+        T from_data = mList.get(from_position);
+        T to_data = mList.get(to_position);
+
+        mList.set(to_position, from_data);
+        mList.set(from_position, to_data);
+    }
+
+    /**
      * 指定位置のアイテムを取得する。
      * @param position 指定位置
      * @return 指定位置のアイテム
