@@ -66,7 +66,7 @@ public class SpecInfoPanel extends LinearLayout {
         BBData base_item = mProperty.getBaseItem();
 
         String name_text = createNameText(target_item);
-        String sub_text = createSubText(base_item);
+        String sub_text = createSubText(target_item);
 
         mNameTextView.setText(name_text);
         mSubTextView.setText(Html.fromHtml(sub_text));
