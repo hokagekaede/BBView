@@ -1399,20 +1399,20 @@ public class CustomData {
 			
 			// チップセットボーナス
 			if(existChip("武器変更")) {
-				ret = ret + getFullSetBonus(2);
+				ret = ret + 2;
 			}
 			else if(existChip("武器変更II")) {
-				ret = ret + getFullSetBonus(6);
+				ret = ret + 6;
 			}
 			else if(existChip("武器変更III")) {
-				ret = ret + getFullSetBonus(10);
+				ret = ret + 10;
 			}
 			
 			if(existChip("腕部パーツ強化")) {
-				ret = ret + getFullSetBonus(2);
+				ret = ret + 2;
 			}
 			else if(existChip("腕部パーツ強化II")) {
-				ret = ret + getFullSetBonus(4);
+				ret = ret + 4;
 			}
 			
 		} catch(Exception e) {
